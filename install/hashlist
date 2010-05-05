@@ -11,12 +11,12 @@ fac7c09a2f7b3c46a3c4d20ccb0eb2fb  *./install/templates/s2_site_setup.tpl
 98159de4e2de83127db1931eb35f818c  *./install/update_437.sql
 bf00b0a3b459a481cb1e0df47682e8d2  *./install/checkinstall.php
 c6384626328e54dd77c534d04ff65a44  *./install/update_700.sql
-59e0a341d050b8ec19d8f423371c243e  *./install/update.sql
+e460c18046a6c1e3e8de8c74742fc68b  *./install/update.sql
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 55c3722f079209f61fcfce707f077548  *./install/update_400.sql
 56522f3521444add8835afbba7375a11  *./install/update_854.sql
 0e366f4d9910ffc37ecb4051a93cf7df  *./install/dbtest.php
-57d1540938c2d737956ada10375bd73f  *./install/install.sql
+2ec3b123aa3c9d5f1a733e4dc146fc69  *./install/install.sql
 1ee77934d1a602e9c74861c9391a55d9  *./install/update_628.sql
 c272ba4d5e3656768e851f448face751  *./install/loader.inc.php
 20aed0ce417ba947f254459309b4ac1f  *./install/Installer.class.php
@@ -50,7 +50,7 @@ aaeea0a1746813611fd2258bcdb6f494  *./core/common/FuelData.class.php
 5fd6ab8aad8037d0e7cec7a9f62995f9  *./core/common/LogData.class.php
 8cf715ca3f9710c6fa9cedb383fbab37  *./core/common/ChartGraph.class.php
 c811db29accce3ea2beff8804a012daa  *./core/common/DownloadData.class.php
-8511673219501abab65952bdc1cb7033  *./core/common/ACARSData.class.php
+947ddcbc4fcf022efe3631215815ff4b  *./core/common/ACARSData.class.php
 feff42124dde394cd1a4c946dab95aea  *./core/common/OperationsData.class.php
 54d08de34e14adf506930c9433320756  *./core/common/CronData.class.php
 e1634f73751a74d4d411612fd3a9f307  *./core/common/OFCharts.class.php
@@ -69,7 +69,7 @@ b1ef381db34606fdc8e99cd5b1f62d91  *./core/templates/pages_notfound.tpl
 82b86159858493de753b39bb00f6d811  *./core/templates/pireps_addcomment.tpl
 854e9f598d8b036f7da9d8d8109b1db2  *./core/templates/frontpage_main.tpl
 c40dcf7a163e78dc894695222f2cced9  *./core/templates/fsfk_liveacars_config.tpl
-780eeb44c12f2037f0628256d5cbae2f  *./core/templates/finance_summarysheet.tpl
+d30a650036097d39de7302670885d90b  *./core/templates/finance_summarysheet.tpl
 e4d43600894f7df4d190cf4454cf9f46  *./core/templates/flown_routes_map.tpl
 8047a25dfd19749eb64a1f85627f9d4c  *./core/templates/registration_sentconfirmation.tpl
 ac16f67e8967087f030f7569ffc2d373  *./core/templates/schedule_list.tpl
@@ -142,7 +142,7 @@ b23f32e4f6adef4849275b4922c455ae  *./core/classes/Debug.class.php
 d96826e4415fc923497d5c9bd6eeac80  *./core/classes/CodonCache.class.php
 5ba6c886b93edf142519b533b573d547  *./core/classes/CodonWebService.class.php
 8e037ce1a5333ee8c02e7b0f533e013c  *./core/classes/TemplateSet.class.php
-6183f56debee48476d788f501cfbd4cf  *./core/classes/MainController.class.php
+aa486b04311f07e1363563a6edf65f2d  *./core/classes/MainController.class.php
 fd37aa8d637c2ba981952ab95c5f89f5  *./core/classes/CodonForm.class.php
 a844dbb633b2cb74a9c4f65e503c96e2  *./core/classes/Util.class.php
 ab76962c945c8c611814e355cd0ad940  *./core/classes/CodonRewrite.class.php
@@ -205,7 +205,7 @@ bdf27cdf3c6478d9c4f2bfa127d87c13  *./admin/templates/sidebar_aircraft.tpl
 671a17ddf0e33125ddaac6c1c232a60c  *./admin/templates/pilots_detailtabs.tpl
 9881bfc84b94e11a0eaf912bf53d2c32  *./admin/templates/ops_aircraftform.tpl
 96d041a086f80a0eb42c2c7fd5fa8ea0  *./admin/templates/groups_grouplist.tpl
-ad5fc294226720370f561235700a6f74  *./admin/templates/finance_summarysheet.tpl
+316f9c45b89506a2646a6a1a3c392c92  *./admin/templates/finance_summarysheet.tpl
 7eee22e868ad1cfa54c020876b10153c  *./admin/templates/sidebar_settings.tpl
 3d9dd4fd6f7fca6d9a77ed6aa4ecb71f  *./admin/templates/pilots_details.tpl
 43647f7912f986186e1bd6999c535ca9  *./admin/templates/core_message.tpl
@@ -296,7 +296,7 @@ df3fd32c3ecd78d2597c802156177528  *./admin/lib/phpvmsadmin.js
 53db9092a4bcd6a60cf0682434216fb7  *./admin/action.php
 f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
-2b7d048d2359cbca1868c0f8d753dc52  *./admin/modules/Finance/Finance.php
+1ecd0956f79d08bd574c481560313c62  *./admin/modules/Finance/Finance.php
 c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
 7aed690f41b17227478c751eb4e6168b  *./admin/modules/PilotAdmin/PilotAdmin.php
 36b45668ad6e73826bc8ef7ff02f7e4d  *./admin/modules/PilotRanking/PilotRanking.php
@@ -326,7 +326,7 @@ a73cd5d722a7390595c51e0ccf6fa82f  *./lib/js/jquery.colorbox.js
 7c6967f5c1ddbb9d61f69e7b19d88056  *./lib/js/acarsmap.js
 168c89d09d780812785edabdcc649b2e  *./lib/js/jquery.bigiframe.js
 fdf811e16f70717f1082e279a1cc52cc  *./lib/js/jquery.colorbox-min.js
-cc6783059b04b075d46e5cf8574b241f  *./lib/js/phpvms.js
+7dc490169b91b9f7365c6dc5113dcc6c  *./lib/js/phpvms.js
 ccf14f48623a2413286b3dfb7e43d163  *./lib/js/jquery.metadata.js
 2e06583b6d440b4cc60bf7484e696311  *./lib/js/jquery.pstrength.js
 0e35751d9b92233a155bbf2b9fde9bcb  *./lib/js/jquery-calendar.js

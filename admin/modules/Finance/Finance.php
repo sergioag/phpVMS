@@ -284,11 +284,11 @@ class Finance extends CodonModule
 		$this->render('finance_expenseform.tpl');
 	}
 	
-	public function editexpense()
+	public function editexpense($id)
 	{
 		$this->set('title', 'Edit Expense');
 		$this->set('action', 'editexpense');
-		$this->set('expense', FinanceData::GetExpenseDetail($this->get->id));
+		$this->set('expense', FinanceData::getExpenseDetail($id));
 		
 		$this->render('finance_expenseform.tpl');	
 	}

@@ -137,6 +137,14 @@ class ACARSData extends CodonData
 			}
 		}
 		
+		if(isset($data['gs']))
+		{
+			if($data['gs'] == '' || empty($data['gs']))
+			{
+				$data['gs'] = '0';
+			}
+		}
+		
 		// Manually add the last set
 		$data['lastupdate'] = 'NOW()';
 			

@@ -51,32 +51,26 @@ foreach ($allfinances as $month)
 		</td>
 		<td align="center">
 		<?php 
-			/*$flights[] = $month['pirepfinance']->TotalFlights==''?0:$month['pirepfinance']->TotalFlights;
-			echo ($month['pirepfinance']->TotalFlights=='') ? 0 : $month['pirepfinance']->TotalFlights;*/
 			echo $month->total;
 		?>
 		</td>
 		<td align="right" nowrap>
 			<?php 
-			/*$revenue[] = ($month['pirepfinance']->Revenue=='')?0:$month['pirepfinance']->Revenue;*/
 			echo FinanceData::FormatMoney($month->gross);
 			?>
 		</td>
 		<td align="right" nowrap>
 			<?php 
-			/*$pilot_pay[] = $month['pirepfinance']->TotalPay;*/
-			echo FinanceData::FormatMoney($month->pilotpay);
+			echo FinanceData::FormatMoney(-1 * $month->pilotpay);
 			?>
 		</td>
 		<td align="right" nowrap>
 			<?php 
-			/*$expenses[] = $month['totalexpenses']==''?0:$month['totalexpenses'];*/
 			echo FinanceData::FormatMoney((-1) * $month->expenses_total);
 			?>
 		</td>
 		<td align="right" nowrap>
 			<?php 
-			/*$fuelexpenses[] = $month['fuelcost']==''?0:$month['fuelcost'];*/
 			echo FinanceData::FormatMoney((-1) * $month->fuelprice);
 			?>
 		</td>

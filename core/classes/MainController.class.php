@@ -291,6 +291,8 @@ class MainController
 	{
 		if(self::$ModuleList[$Module] != '')
 			return true;
+			
+		return false;
 	}
 	
 	/**

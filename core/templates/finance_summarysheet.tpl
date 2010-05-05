@@ -61,7 +61,7 @@ foreach ($allfinances as $month)
 		</td>
 		<td align="right" nowrap>
 			<?php 
-			echo FinanceData::FormatMoney($month->pilotpay);
+			echo FinanceData::FormatMoney(-1 * $month->pilotpay);
 			?>
 		</td>
 		<td align="right" nowrap>
