@@ -37,6 +37,8 @@
  * @package codon_core
  */
 
+define('CODON_MODULES_PATH', dirname(__FILE__).'/core/modules');
+define('CODON_DEFAULT_MODULE', 'Frontpage');
 include 'core/codon.config.php';
 
 if(Config::Get('XDEBUG_BENCHMARK'))

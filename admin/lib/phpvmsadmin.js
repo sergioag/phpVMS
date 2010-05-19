@@ -45,7 +45,6 @@ function initListeners()
 				success: function() {
 					$('#jqmdialog').jqmAddTrigger('.jqModal');
 					$('#jqmdialog').jqmHide();
-					
 				}
 			});
 			

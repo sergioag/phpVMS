@@ -332,6 +332,15 @@ class Operations extends CodonModule
 			{
 				$row->fuelprice = 'Live';
 			}
+			
+			if($row->hub == 1)
+			{
+				$name = "<b>{$row->name}</b>";
+			}
+			else
+			{
+				$name = $row->name;
+			}
 
 			$edit = '<a href="#" onclick="editairport(\''.$row->icao.'\'); return false;">Edit</a>';
 			
@@ -340,7 +349,7 @@ class Operations extends CodonModule
 				'cell' => array(
 						# Each column, in order
 						$row->icao,
-						$row->name,
+						$name,
 						$row->country,
 						$row->fuelprice,
 						$row->lat,
@@ -872,7 +881,7 @@ class Operations extends CodonModule
 			'fuelprice' => $this->post->fuelprice
 		);
 
-		OperationsData::EditAirport($data);
+		OperationsData::editAirport($data);
 		
 		if(DB::errno() != 0)
 		{
@@ -882,7 +891,7 @@ class Operations extends CodonModule
 			return;
 		}
 
-		$this->set('message', $icao . ' has been edited');
+		$this->set('message', '"'.$this->post->icao.'" has been edited');
 		$this->render('core_success.tpl');
 		
 		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the airport "'.$this->post->icao.' - '.$this->post->name.'"');

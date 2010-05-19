@@ -40,7 +40,13 @@ jQuery("#grid").jqGrid('navGrid','#pager',
 function editairport(icao)
 {
 	$('#jqmdialog').jqm({
-		ajax:'<?php echo adminaction('/operations/editairport?icao=');?>'+icao
+		ajax:'<?php echo adminaction('/operations/editairport?icao=');?>'+icao,
+		onHide: function(h)
+		{
+			h.o.remove(); // remove overlay
+			h.w.fadeOut(100); // hide window 
+			$("#grid").trigger("reloadGrid"); 
+		}
 	}).jqmShow();
 }
 </script>

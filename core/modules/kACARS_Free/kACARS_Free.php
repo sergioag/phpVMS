@@ -39,7 +39,7 @@ class kACARS_Free extends CodonModule
 			
 			$case = strtolower($xml->switch->data);
 			switch($case)
-			{
+			{				
 				case 'verify':		
 					$results = Auth::ProcessLogin($xml->verify->pilotID, $xml->verify->password);		
 					if ($results)
@@ -291,6 +291,27 @@ class kACARS_Free extends CodonModule
 					
 					$this->getAllAircraft();
 					break;
+					
+				case 'aircraftinfo':
+						
+						$aircraftinfo = OperationsData::getAircraftByReg($xml->pirep->registration);
+			
+						
+							$params = array(								
+								'aircraftReg'      => $aircraftinfo->registration,
+								'aircraftICAO'     => $aircraftinfo->icao,
+								'aircraftFullName' => $aircraftinfo->fullname,								
+								'aircraftMaxPax'   => $aircraftinfo->maxpax,
+								'aircraftCargo'    => $aircraftinfo->maxcargo,								
+								'aircraftName'     => $aircraftinfo->name,
+								'aircraftRange'    => $aircraftinfo->range,
+								'aircraftWeight'   => $aircraftinfo->weight,
+								'aircraftCruise'   => $aircraftinfo->cruise
+								);	
+						
+						$send = $this->sendXML($params);
+						break;
+
 			}
 			
 		}
@@ -327,22 +348,6 @@ class kACARS_Free extends CodonModule
 		$tHours = $iHours .":". $Minutes;
 		return $tHours;
 	}
-	
-	/*public function getLatestBid2($pilotid)
-	{
-		$pilotid = DB::escape($pilotid);
-		
-		$sql = 'SELECT s.*, b.bidid, a.id as aircraftid, a.name as aircraft, a.registration, a.maxpax, a.maxcargo
-				FROM '.TABLE_PREFIX.'schedules s, 
-					 '.TABLE_PREFIX.'bids b,
-					 '.TABLE_PREFIX.'aircraft a
-				WHERE b.routeid = s.id 
-					AND s.aircraft=a.id
-					AND b.pilotid='.$pilotid.'
-				ORDER BY b.bidid ASC LIMIT 1';
-		
-		return DB::get_row($sql);
-	}*/
 	
 	public function sendXML($params)
 	{
@@ -385,64 +390,4 @@ class kACARS_Free extends CodonModule
 		echo $xml->asXML();
 	}
 	
-	public static function ProcessLogin($useridoremail, $password)
-	{
-		# Allow them to login in any manner:
-		#  Email: blah@blah.com
-		#  Pilot ID: VMA0001, VMA 001, etc
-		#  Just ID: 001
-		if(is_numeric($useridoremail))
-		{
-			$useridoremail =  $useridoremail - intval(Config::Get('PILOTID_OFFSET'));
-			$sql = 'SELECT * FROM '.TABLE_PREFIX.'pilots
-				   WHERE pilotid='.$useridoremail;
-		}
-		else
-		{
-			if(preg_match('/^.*\@.*$/i', $useridoremail) > 0)
-			{
-				$emailaddress = DB::escape($useridoremail);
-				$sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pilots
-					   WHERE email=\''.$useridoremail.'\'';
-			} 
-			
-			elseif(preg_match('/^([A-Za-z]*)(.*)(\d*)/', $useridoremail, $matches)>0)
-			{
-				$id = trim($matches[2]);
-				$id = $id - intval(Config::Get('PILOTID_OFFSET'));
-				
-				$sql = 'SELECT * FROM '.TABLE_PREFIX.'pilots
-					   WHERE pilotid='.$id;
-			}
-			else
-			{				
-				return false;
-			}
-		}
-		
-		$password = DB::escape($password);
-		$userinfo = DB::get_row($sql);
-
-		if(!$userinfo)
-		{			
-			return false;
-		}
-		
-		if($userinfo->retired == 1)
-		{			
-			return false;
-		}
-
-		//ok now check it
-		$hash = md5($password . $userinfo->salt);
-		
-		if($hash == $userinfo->password)
-		{						
-			return true;
-		}			
-		else 
-		{					
-			return false;
-		}
-	}
 }

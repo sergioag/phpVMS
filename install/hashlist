@@ -51,7 +51,7 @@ aaeea0a1746813611fd2258bcdb6f494  *./core/common/FuelData.class.php
 8cf715ca3f9710c6fa9cedb383fbab37  *./core/common/ChartGraph.class.php
 c811db29accce3ea2beff8804a012daa  *./core/common/DownloadData.class.php
 947ddcbc4fcf022efe3631215815ff4b  *./core/common/ACARSData.class.php
-feff42124dde394cd1a4c946dab95aea  *./core/common/OperationsData.class.php
+32d72a1d1ec05032dbc22e3320ff1aef  *./core/common/OperationsData.class.php
 54d08de34e14adf506930c9433320756  *./core/common/CronData.class.php
 e1634f73751a74d4d411612fd3a9f307  *./core/common/OFCharts.class.php
 a3311e897e99e5d9f331fabc56ddbc2b  *./core/common/CentralData.class.php
@@ -171,7 +171,7 @@ e989746517699422f43d3d1d5ba0d799  *./core/modules/Profile/Profile.php
 db56836cad01ef0f2b40a482e1b49828  *./core/modules/Registration/Registration.php
 fe8673f5292627c7589eed45b591a20b  *./core/modules/Downloads/Downloads.php
 e6eb59f2814008a2a20eb01591c12447  *./core/modules/Pilots/Pilots.php
-58af5b3d84bc54e45b2184eee9027c10  *./core/modules/kACARS_Free/kACARS_Free.php
+88d7e4a83049bd505da56158c4998151  *./core/modules/kACARS_Free/kACARS_Free.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/modules/index.php
 c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 4745bff609adac50676f834dbf25f46c  *./core/modules/ACARS/fsacars.php
@@ -186,7 +186,7 @@ a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
 713228773df8c23688125f98e9cb8f17  *./core/modules/Pages/Pages.php
 925c6ea3907403895286aff5d9838916  *./core/modules/Login/Login.php
 ad702069274d2c2fcafebc86806fc55f  *./core/modules/RouteMap/RouteMap.php
-b6a7b95650eefadf97f1ee941b42e430  *./index.php
+90b8b5f730d33915e49dc002179fd197  *./index.php
 a70283e88e1840bdfdee0b414d83ce4b  *./admin/maintenance.php
 9640f3f6d81dd2adce0aa39d0f820da8  *./admin/templates/diff_showdiff.tpl
 88e45847491bc3720114b632e32f05bd  *./admin/templates/sidebar_expenses.tpl
@@ -227,7 +227,7 @@ becefb73aa708db1993bb70e7c0c2027  *./admin/templates/sidebar_pending.tpl
 8d713e47e580563de7940d8919d71b82  *./admin/templates/ops_aircraftlist.tpl
 299bd7abf5df96bf2bd3a534a5cb3ef8  *./admin/templates/pirep_edit.tpl
 d074c0e9c23845e55f9a2b3dcb6063f2  *./admin/templates/settings_addcustomfield.tpl
-d280d4d43c22d097eea7bbe38d9570c1  *./admin/templates/ops_airportlist.tpl
+9654ff17c3533ab43b5e6ab4bac582c0  *./admin/templates/ops_airportlist.tpl
 713a3b7f8bc9f3976664dfa43aba820a  *./admin/templates/sidebar_pirepfields.tpl
 c6e5f16b6f088fb5f455e1b84c84e687  *./admin/templates/import_form.tpl
 d88eb80c9970ba1232c9deebff9c0ba0  *./admin/templates/ops_schedules.tpl
@@ -292,7 +292,7 @@ db51741d41836a2f96de6b82d249ed38  *./admin/index.php
 d43a6cbd0262b0d6e34bf6ba3cb82546  *./admin/lib/layout_dark/header.tpl
 ae9aa5679b1f8cc2cb06e3daad7bdeef  *./admin/lib/layout_dark/footer.tpl
 54610ae6edfcb9fca44114b104a027fb  *./admin/lib/layout_dark/layout_dark.php
-df3fd32c3ecd78d2597c802156177528  *./admin/lib/phpvmsadmin.js
+80385da1e9cc870133382762b17a38f4  *./admin/lib/phpvmsadmin.js
 53db9092a4bcd6a60cf0682434216fb7  *./admin/action.php
 f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
@@ -303,7 +303,7 @@ c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php
 fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
-66aae572260c20e3e4734bcd41af5ec2  *./admin/modules/Operations/Operations.php
+e339ba15cf6871a09c8981c727b5afc9  *./admin/modules/Operations/Operations.php
 9a5e81ef4a746047e8aa4d980cc56680  *./admin/modules/Import/Import.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
@@ -362,4 +362,4 @@ c7f1ec922ec7a3fd1c61f54bc92141b2  *./lib/js/jqgrid/js/i18n/grid.locale-it.js
 538d6d09c1e2e078be9e8702b5b151df  *./lib/js/jqgrid/js/i18n/grid.locale-bg.js
 d3fef3dadffe11d89ea8aba46a6817b3  *./lib/js/jqgrid/js/jquery.jqGrid.min.js
 c2df4618a63b494d8772f9fee66c4ef4  *./lib/js/jquery.form.js
-0a50c1c4d62e76ecf6ae892e37d7419b  *./action.php
+4f8032b77616217b57e8650d5ea0a0f3  *./action.php
