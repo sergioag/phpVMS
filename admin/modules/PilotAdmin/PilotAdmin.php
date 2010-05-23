@@ -122,10 +122,6 @@ class PilotAdmin extends CodonModule
 					$retired = false;
 				}
 				
-				
-				# Just do this as one call
-				//PilotData::ChangeName($this->post->pilotid, $this->post->firstname, $this->post->lastname);
-				
 				$params = array(
 					'code' => $this->post->code,
 					'firstname' => $this->post->firstname,
@@ -138,11 +134,10 @@ class PilotAdmin extends CodonModule
 					'totalflights' => $this->post->totalflights,
 					'totalpay' => $this->post->totalpay,
 					'transferhours' => $this->post->transferhours,
+					'comment' => $this->post->comment,
 				);
 					
 				PilotData::updateProfile($this->post->pilotid, $params);
-				//PilotData::ReplaceFlightData($params); // Called with above now
-				
 				PilotData::SaveFields($this->post->pilotid, $_POST);
 				
 				/* Don't calculate a pilot's rank if this is set */
@@ -536,6 +531,8 @@ class PilotAdmin extends CodonModule
 		$message = Template::GetTemplate('email_registrationaccepted.tpl', true, true, true);
 	
 		Util::SendEmail($pilot->email, $subject, $message);
+
+		CodonEvent::Dispatch('pilot_approved', 'PilotAdmin', $pilot);
 		
 		LogData::addLog(Auth::$userinfo->pilotid, 'Approved '.PilotData::getPilotCode($pilot->code, $pilot->pilotid).' - ' .$pilot->firstname.' ' .$pilot->lastname);
 	}
@@ -555,6 +552,9 @@ class PilotAdmin extends CodonModule
 		
 		# Reject in the end, since it's delted
 		PilotData::RejectPilot($this->post->id);
+
+		CodonEvent::Dispatch('pilot_rejected', 'PilotAdmin', $pilot);
+
 		LogData::addLog(Auth::$userinfo->pilotid, 'Approved '.PilotData::getPilotCode($pilot->code, $pilot->pilotid).' - ' .$pilot->firstname.' ' .$pilot->lastname);
 	}
 	

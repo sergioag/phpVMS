@@ -270,6 +270,7 @@ CREATE TABLE `phpvms_pilots` (
   `joindate` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastpirep` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastip` VARCHAR( 25 ) NULL DEFAULT '',
+  `comment` TEXT NULL ,
   PRIMARY KEY  (`pilotid`),
   KEY `code` (`code`),
   KEY `rank` (`rank`)

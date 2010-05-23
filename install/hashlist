@@ -11,12 +11,12 @@ fac7c09a2f7b3c46a3c4d20ccb0eb2fb  *./install/templates/s2_site_setup.tpl
 98159de4e2de83127db1931eb35f818c  *./install/update_437.sql
 bf00b0a3b459a481cb1e0df47682e8d2  *./install/checkinstall.php
 c6384626328e54dd77c534d04ff65a44  *./install/update_700.sql
-e460c18046a6c1e3e8de8c74742fc68b  *./install/update.sql
+fb432315e30287873239e490fbad1766  *./install/update.sql
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 55c3722f079209f61fcfce707f077548  *./install/update_400.sql
 56522f3521444add8835afbba7375a11  *./install/update_854.sql
 0e366f4d9910ffc37ecb4051a93cf7df  *./install/dbtest.php
-2ec3b123aa3c9d5f1a733e4dc146fc69  *./install/install.sql
+c9a5105dee26f333af0d6eb70ee4746c  *./install/install.sql
 1ee77934d1a602e9c74861c9391a55d9  *./install/update_628.sql
 c272ba4d5e3656768e851f448face751  *./install/loader.inc.php
 20aed0ce417ba947f254459309b4ac1f  *./install/Installer.class.php
@@ -27,7 +27,7 @@ d4d204c3560c283fa4d7a3a367473740  *./install/navdata.sql
 654a8ef74503b880f8526873986da3af  *./install/install.php
 0ce9f88088bd78d869525b8b202fb1bd  *./core/lang/en.lang.php
 02813e8f573062b56012fea15bccde90  *./core/common/MaintenanceData.class.php
-3aab365eb7324f024df783f01a7d125b  *./core/common/PIREPData.class.php
+c14711e118684471adc0197f6c462c09  *./core/common/PIREPData.class.php
 38c88cbada3413d09adc5255428fa579  *./core/common/Auth.class.php
 26e225d004bd0b758c49f994453aaac7  *./core/common/jqgrid.class.php
 d8cc600bc66b4e2afb1cca5b433fdeb7  *./core/common/RegistrationData.class.php
@@ -153,7 +153,7 @@ cf7005129f40c0b800ed987809debd89  *./core/classes/autoload.php
 a9028d246a90f26f329f3c76af93f4a1  *./core/classes/Template.class.php
 74f79f15db7476a6ce4a8521996eeeef  *./core/classes/CodonCondenser.class.php
 b95046044516e5a08b913ac039cc8e0d  *./core/classes/ezdb/ezdb.class.php
-ef808de18c3f4a218ca2e67fb9f1b952  *./core/classes/ezdb/ezdb_base.class.php
+c8e1978d2c561ecd5ed0ac72f2c9bfd4  *./core/classes/ezdb/ezdb_base.class.php
 b91d08223cbd16892191af87870e0bcf  *./core/classes/ezdb/ezdb_mysqli.class.php
 cbc5eb7865a3f59a4f679b386377d0c1  *./core/classes/ezdb/ezdb_mysql.class.php
 f45b5714e950fb9f0b7baadb5b1f08d1  *./core/classes/ezdb/ezdb_oracle.class.php
@@ -207,7 +207,7 @@ bdf27cdf3c6478d9c4f2bfa127d87c13  *./admin/templates/sidebar_aircraft.tpl
 96d041a086f80a0eb42c2c7fd5fa8ea0  *./admin/templates/groups_grouplist.tpl
 316f9c45b89506a2646a6a1a3c392c92  *./admin/templates/finance_summarysheet.tpl
 7eee22e868ad1cfa54c020876b10153c  *./admin/templates/sidebar_settings.tpl
-3d9dd4fd6f7fca6d9a77ed6aa4ecb71f  *./admin/templates/pilots_details.tpl
+3855be8636027f25b53057e4350d6ebb  *./admin/templates/pilots_details.tpl
 43647f7912f986186e1bd6999c535ca9  *./admin/templates/core_message.tpl
 285d07b8b358cb79b849ebf2c7a664a2  *./admin/templates/pireps_list.tpl
 2e79fc0f2948a8aae1d33b58a7fd60c5  *./admin/templates/downloads_overview.tpl
@@ -298,7 +298,7 @@ f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
 1ecd0956f79d08bd574c481560313c62  *./admin/modules/Finance/Finance.php
 c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
-7aed690f41b17227478c751eb4e6168b  *./admin/modules/PilotAdmin/PilotAdmin.php
+c99a5cd1bc6e7aa4c0f28d9cbe074215  *./admin/modules/PilotAdmin/PilotAdmin.php
 36b45668ad6e73826bc8ef7ff02f7e4d  *./admin/modules/PilotRanking/PilotRanking.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php

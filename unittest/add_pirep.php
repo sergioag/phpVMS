@@ -40,14 +40,11 @@ $data = array(
 	'comment'=>'Test Flight',
 	);
 
-$ret = PIREPData::fileReport($data);
+$pirepid = PIREPData::fileReport($data);
 if($ret == false)
 {
 	echo PIREPData::$lasterror;
 }
-
-$pirepid = DB::$insert_id;
-$pirepid = PIREPData::$pirepid;
 
 echo "pirep id is {$pirepid}";
 

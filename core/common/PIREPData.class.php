@@ -589,19 +589,10 @@ class PIREPData extends CodonData
 			if($res)
 			{
 				self::$lasterror = 'This PIREP was just submitted!';
-				return;
+				return $res->pirepid;
 			}
 		}
-		
-		if(isset($pirepdata['log']))
-		{
-			$pirepdata['log'] = DB::escape($pirepdata['log']);
-		}
-		else
-		{
-			$pirepdata['log'] = '';
-		}
-		
+			
 		if($pirepdata['depicao'] == '' || $pirepdata['arricao'] == '')
 		{
 			self::$lasterror = 'The departure or arrival airports are blank';
@@ -691,13 +682,6 @@ class PIREPData extends CodonData
 			}
 		}
 		
-		$pirepdata['route'] = DB::escape($pirepdata['route']);
-		
-		if(!empty($pirepdata['route_details']))
-		{
-			$pirepdata['route_details'] = DB::escape($pirepdata['route_details']);
-		}
-		
 		/*	This setting forces the next code to automatically
 			calculate a load value for this current PIREP */
 		if(Config::Get('PIREP_OVERRIDE_LOAD') == true)
@@ -727,7 +711,7 @@ class PIREPData extends CodonData
 		/* Any "raw" parameterized data which needs to be added */
 		if(isset($pirepdata['rawdata']))
 		{
-			$pirepdata['rawdata'] = DB::escape(serialize($pirepdata['rawdata']));
+			$pirepdata['rawdata'] = serialize($pirepdata['rawdata']);
 		}
 		else
 		{
@@ -735,8 +719,12 @@ class PIREPData extends CodonData
 		}
 	
 		/* Escape the comment field */
-		$pirepdata['log'] = DB::escape($pirepdata['log']);
-		$comment = DB::escape($pirepdata['comment']);
+		//$pirepdata['log'] = DB::escape($pirepdata['log']);
+		if(isset($pirepdata['comment']))
+		{
+			$comment = DB::escape($pirepdata['comment']);
+			unset($pirepdata['comment']);
+		}
 		
 		/* Proper timestamp */
 		$flighttime_stamp = str_replace('.', ':', $pirepdata['flighttime']).':00';
@@ -744,52 +732,13 @@ class PIREPData extends CodonData
 		
 		/* Export status as 0 */
 		$pirepdata['exported'] = 0;
-				
-		$sql = "INSERT INTO ".TABLE_PREFIX."pireps(	
-							`pilotid`, 
-							`code`, 
-							`flightnum`, 
-							`depicao`, 
-							`arricao`, 
-							`route`,
-							`route_details`,
-							`distance`,
-							`aircraft`, 
-							`flighttime`, 
-							`flighttime_stamp`,
-							`landingrate`,
-							`submitdate`, 
-							`accepted`, 
-							`log`,
-							`load`,
-							`fuelused`,
-							`expenselist`,
-							`source`,
-							`exported`,
-							`rawdata`)
-					VALUES ( {$pirepdata['pilotid']}, 
-							'{$pirepdata['code']}', 
-							'{$pirepdata['flightnum']}', 
-							'{$pirepdata['depicao']}', 
-							'{$pirepdata['arricao']}', 
-							'{$pirepdata['route']}',
-							'{$pirepdata['route_details']}',
-							'{$pirepdata['distance']}',
-							'{$pirepdata['aircraft']}', 
-							'{$pirepdata['flighttime']}', 
-							'{$flighttime_stamp}',
-							'{$pirepdata['landingrate']}',
-							NOW(), 
-							".PIREP_PENDING.", 
-							'{$pirepdata['log']}',
-							'{$pirepdata['load']}',
-							'{$pirepdata['fuelused']}',
-							'0',
-							'{$pirepdata['source']}',
-							{$pirepdata['exported']},
-							'{$pirepdata['rawdata']}')";
-
-		$ret = DB::query($sql);
+		$pirepdata['flighttime_stamp'] = $flighttime_stamp;
+		$pirepdata['submitdate'] = 'NOW()';
+		$pirepdata['accepted'] = PIREP_PENDING;
+		$pirepdata['expenselist'] = '0';
+		
+		# Do the insert based on the columns here
+		$ret = DB::quick_insert(TABLE_PREFIX.'pireps', $pirepdata);
 		$pirepid = DB::$insert_id;
 		
 		// Add the comment if its not blank

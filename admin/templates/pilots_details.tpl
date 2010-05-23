@@ -174,6 +174,11 @@
 	
 	</td>
 </tr>
+<tr>
+	<td>Admin Comment</td>
+	<td><textarea style="width: 100%; height: 70px;" name="comment"><?php echo $pilotinfo->comment;?></textarea>
+</tr>
+<tr>
 <?php
 if($customfields)
 {

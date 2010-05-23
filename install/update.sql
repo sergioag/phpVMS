@@ -26,6 +26,7 @@ CREATE TABLE `phpvms_expenselog` (
 ALTER TABLE `phpvms_pilots` ADD `lastip` VARCHAR( 25 ) NULL DEFAULT '';
 ALTER TABLE `phpvms_pilots` ADD `rankid` INT NOT NULL DEFAULT '0' AFTER `transferhours` ;
 ALTER TABLE `phpvms_pilots` ADD `ranklevel` INT NOT NULL DEFAULT '0' AFTER `rank` ;
+ALTER TABLE `phpvms_pilots` ADD `comment` TEXT NULL;
 UPDATE `phpvms_pilots` p SET `rankid` =  ( SELECT `rankid` FROM `phpvms_ranks` WHERE rank = p.rank ) ;
 
 ALTER TABLE `phpvms_pireps` ADD `gross` FLOAT NOT NULL AFTER `flighttype`;
