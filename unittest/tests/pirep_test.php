@@ -2,7 +2,7 @@
 /*	Test registration functionality
  */
 
-//$test->addTestCase(new PIREPTester);
+$test->addTestCase(new PIREPTester);
 
 class PIREPTester extends UnitTestCase  
 {
@@ -19,34 +19,44 @@ class PIREPTester extends UnitTestCase
 	public function testSubmitPIREP()
 	{
 		echo '<h3>PIREP Checks</h3>';
-		$data = array('pilotid'=>1,
-			'code'=>'VMA',
-			'flightnum'=>'1352',
-			'depicao'=>'KORD',
-			'arricao'=>'KJFK',
-			'aircraft'=>10,
-			'flighttime'=>'4.1',
+		
+		Config::Set('PIREP_CHECK_DUPLICATE', false);
+
+		$schedules = SchedulesData::findSchedules(array('s.flighttype'=>'P'));
+		$idx = rand(0, count($schedules)-1);
+		$sched = $schedules[$idx];
+		unset($schedules);
+
+		echo '<strong>Filing report...</strong><br />';
+		$data = array(
+			'pilotid'=>1,
+			'code'=>$sched->code,
+			'flightnum'=>$sched->flightnum,
+			'route' => 'HYLND DCT PUT J42 RBV J230 BYRDD J48 MOL DCT FLCON',
+			'depicao'=>$sched->depicao,
+			'arricao'=>$sched->arricao,
+			'aircraft'=>$sched->aircraft,
+			'flighttime'=>$sched->flighttime,
 			'submitdate'=>'NOW()',
-			'fuelused'=>'2800',
+			'fuelused'=>6000,
 			'source'=>'unittest',
-			'comment'=>'This is a test PIREP');
+			'comment'=>'Test Flight',
+		);
 		
-		$info = PIREPData::FileReport($data);
-		$this->assertTrue($info, DB::error());
-		
-		$this->pirep_id = DB::$insert_id;
-		
-		$this->assertIsA($this->pirep_id, int);
-		
-		unset($data);
-		echo '<br />';
+		$pirepid = PIREPData::fileReport($data);
+		if($pirepid === false)
+		{
+			echo PIREPData::$lasterror;
+		}
+
+		$this->assertTrue(intval($pirepid), 'PIREP filed properly');
+		$this->pirep_id = $pirepid;
 	}
 	
 	public function testRetrieveReport()
 	{
-		$this->report_details = PIREPData::GetReportDetails($this->pirep_id);
+		$this->report_details = PIREPData::findPIREPS(array('p.pirepid'=>$this->pirep_id));
 		$this->assertTrue($this->report_details);
-		echo '<br />';
 	}
 	
 	public function testChangePIREPStatus()
@@ -56,28 +66,25 @@ class PIREPTester extends UnitTestCase
 		$this->assertTrue($status, DB::$error);
 		
 		# Verify status change
-		$this->report_details = PIREPData::GetReportDetails($this->pirep_id);
-		$this->assertEqual($this->report_details->accepted, PIREP_REJECTED);
+		$this->report_details = PIREPData::findPIREPS(array('p.pirepid'=>$this->pirep_id));
+		$this->assertEqual($this->report_details[0]->accepted, PIREP_REJECTED);
 		
 		# Change to accepted
 		$status = PIREPData::ChangePIREPStatus($this->pirep_id, PIREP_ACCEPTED);
 		$this->assertTrue($status, DB::$error);
 		
 		# Verify status change
-		$this->report_details = PIREPData::GetReportDetails($this->pirep_id);
-		$this->assertEqual($this->report_details->accepted, PIREP_ACCEPTED);
-		
-		# Verify other changes due to accept
-		echo '<br />';
+		$this->report_details = PIREPData::findPIREPS(array('p.pirepid'=>$this->pirep_id));
+		$this->assertEqual($this->report_details[0]->accepted, PIREP_ACCEPTED);
 	}
 	
 	public function testDeletePIREP()
 	{
 		# Delete it
-		PIREPData::DeleteFlightReport($this->pirep_id);
+		PIREPData::deletePIREP($this->pirep_id);
 		
 		# Verify delete
-		$data = PIREPData::GetReportDetails($this->pirep_id);
+		$data = PIREPData::findPIREPS(array('p.pirepid'=>$this->pirep_id));
 		$this->assertFalse($data);
 		
 		echo '<br />';

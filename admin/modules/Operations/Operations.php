@@ -726,7 +726,7 @@ class Operations extends CodonModule
 			'enabled'=>$this->post->enabled
 		);
 			
-		OperationsData::AddAircaft($data);
+		OperationsData::AddAircraft($data);
 		
 		if(DB::errno() != 0)
 		{

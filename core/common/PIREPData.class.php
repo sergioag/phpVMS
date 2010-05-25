@@ -738,13 +738,35 @@ class PIREPData extends CodonData
 		$pirepdata['expenselist'] = '0';
 		
 		# Do the insert based on the columns here
-		$ret = DB::quick_insert(TABLE_PREFIX.'pireps', $pirepdata);
+		$cols = array();
+		$col_values = array();
+		foreach($pirepdata as $key => $value)
+		{
+			$cols[] = "`{$key}`";
+
+			if($key == 'submitdate')
+			{
+				$col_values[] = 'NOW()';
+			}
+			else
+			{
+				$value = DB::escape($value);
+				$col_values[] = "'{$value}'";
+			}
+		}
+
+		$cols = implode(', ', $cols);
+		$col_values = implode(', ', $col_values);
+		$sql = "INSERT INTO ".TABLE_PREFIX."pireps
+					({$cols}) VALUES ({$col_values});";
+
+		DB::query($sql);
 		$pirepid = DB::$insert_id;
 		
 		// Add the comment if its not blank
 		if($comment != '')
 		{
-			self::addComment($pirepid, $pirepdata['pilotid'], $pirepdata['comment']);
+			self::addComment($pirepid, $pirepdata['pilotid'], $comment);
 		}
 		
 		# Update the financial information for the PIREP, true to refresh fuel
@@ -766,7 +788,7 @@ class PIREPData extends CodonData
 				."Aircraft: {$pirepdata['aircraft']}\n"
 				."Flight Time: {$pirepdata['flighttime']}\n"
 				."Filed using: {$pirepdata['source']}\n\n"
-				."Comment: {$pirepdata['comment']}";
+				."Comment: {$comment}";
 		
 		$email = Config::Get('EMAIL_NEW_PIREP');
 		if(empty($email))
@@ -781,7 +803,7 @@ class PIREPData extends CodonData
 		// Reset this ID back
 		DB::$insert_id = $pirepid;
 		self::$pirepid = $pirepid;
-		return true;
+		return $pirepid;
 	}
 	
 	public static function updateReport($pirepid, $pirepdata)

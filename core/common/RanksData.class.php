@@ -30,6 +30,15 @@ class RanksData extends CodonData
 		
 		return DB::get_row($sql);
 	}
+
+	public static function getRankByName($name)
+	{
+		$sql = 'SELECT * 
+				FROM `'.TABLE_PREFIX."ranks`
+				WHERE `rank`='{$name}'";
+		
+		return DB::get_row($sql);
+	}
 	
 	/**
 	 * Returns all the ranks, and the total number of pilots

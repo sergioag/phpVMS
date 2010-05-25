@@ -25,9 +25,11 @@ class Import extends CodonModule
 			case '':
 			default:
 			case 'processimport':
-				
 				$this->set('sidebar', 'sidebar_import.tpl');
-				
+				break;
+
+			case 'importaircraft':
+				$this->set('sidebar', 'sidebar_aircraft.tpl');
 				break;
 		}
 	}
@@ -42,6 +44,131 @@ class Import extends CodonModule
 		$this->render('export_form.tpl');
 	}
 	
+	public function exportaircraft()
+	{
+		$allaircraft = OperationsData::getAllAircraft(false);
+		
+		# Get the column headers
+		$headers = array();
+		$dbcolumns = DB::get_cols();
+		foreach($dbcolumns as $col)
+		{
+			if($col->name == 'id' || $col->name == 'minrank' || $col->name == 'ranklevel')
+				continue;
+
+			$headers[] = $col->name;
+		}
+
+		header('Content-Type: text/plain');
+		header('Content-Disposition: attachment; filename="aircraft.csv"');
+		
+		$fp = fopen('php://output', 'w');
+
+		# Write out the header which is the columns
+		fputcsv($fp, $headers, ',');
+
+		# Then write out all of the aircraft
+		foreach($allaircraft as $aircraft)
+		{
+			unset($aircraft->id);
+			unset($aircraft->minrank);
+			unset($aircraft->ranklevel);
+
+			$aircraft = (array) $aircraft;
+
+			fputcsv($fp, $aircraft, ',');
+		}
+
+		fclose($fp);
+	}
+
+	public function importaircraft()
+	{
+		
+		if(!file_exists($_FILES['uploadedfile']['tmp_name']))
+		{
+			$this->render('import_aircraftform.tpl');
+			return;
+		}
+		
+		echo '<h3>Processing Import</h3>';
+
+		# Get the column headers
+		$allaircraft = OperationsData::getAllAircraft(false);
+		$headers = array();
+		$dbcolumns = DB::get_cols();
+		foreach($dbcolumns as $col)
+		{
+			if($col->name == 'id' || $col->name == 'minrank' || $col->name == 'ranklevel')
+				continue;
+
+			$headers[] = $col->name;
+		}
+		
+		# Open the import file
+		$fp = fopen($_FILES['uploadedfile']['tmp_name'], 'r');
+		if(isset($_POST['header'])) $skip = true;
+		
+		$added = 0;
+		$updated = 0;
+		$total = 0;
+		echo '<div style="overflow: auto; height: 400px; 
+					border: 1px solid #666; margin-bottom: 20px; 
+					padding: 5px; padding-top: 0px; padding-bottom: 20px;">';
+		
+		while($fields = fgetcsv($fp, 1000, ','))
+		{
+			// Skip the first line
+			if($skip == true)
+			{
+				$skip = false;
+				continue;
+			}
+			
+			# Map the read in values to the columns
+			$aircraft = array();
+			$aircraft = @array_combine($headers, $fields);
+
+			if(empty($aircraft))
+				continue;
+
+			# Enabled or not
+			if($aircraft['enabled'] == '1')
+			{
+				$aircraft['enabled'] = true;
+			}
+			else
+			{
+				$aircraft['enabled'] = false;
+			}
+
+			# Get the rank ID
+			$rank = RanksData::getRankByName($aircraft['rank']);
+			$aircraft['minrank'] = $rank->rankid;
+			unset($aircraft['rank']);
+
+			# Does this aircraft exist?
+			$ac_info = OperationsData::getAircraftByReg($aircraft['registration']);
+			if($ac_info)
+			{
+				echo "Editing {$aircraft['name']} - {$aircraft['registration']}<br>";
+				$aircraft['id'] = $ac_info->id;
+				OperationsData::editAircraft($aircraft);
+				$updated++;
+			}
+			else
+			{
+				echo "Adding {$aircraft['name']} - {$aircraft['registration']}<br>";
+				OperationsData::addAircraft($aircraft);
+				$added++;
+			}
+
+			$total ++;
+		}
+
+		echo "The import process is complete, added {$added} aircraft, updated {$updated}, for a total of {$total}<br />";
+	}
+
 	public function processexport()
 	{
 		$export='';

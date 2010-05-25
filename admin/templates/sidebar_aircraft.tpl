@@ -1,7 +1,18 @@
 <h3>Tasks</h3>
 <ul class="filetree treeview-famfamfam">
 	<li><span class="file">
-		<a href="<?php echo SITE_URL?>/admin/index.php/operations/addaircraft">Add an aircraft</a>
+		<a href="<?php echo adminurl('/operations/aircraft');?>">View aircraft</a>
+	</span></li>
+
+	<li><span class="file">
+		<a href="<?php echo adminurl('/operations/addaircraft');?>">Add an aircraft</a>
+	</span></li>
+
+	<li><span class="file">
+		<a href="<?php echo adminaction('/import/exportaircraft'); ?>">Export Aircraft</a>
+	</span></li>
+	<li><span class="file">
+		<a href="<?php echo adminurl('/import/importaircraft');?>">Import Aircraft</a>
 	</span></li>
 </ul>
 <h3>Help</h3>

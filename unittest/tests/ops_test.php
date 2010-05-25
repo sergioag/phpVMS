@@ -16,7 +16,7 @@ class OPSTester extends UnitTestCase
 	
 	public function testRetrieveAirport()
 	{
-		echo '<h3>Core API Tests</h3>';
+		echo '<h3>OperationsData Tests</h3>';
 		echo "<strong>Checking geonames server</strong><br />";
 		Config::Set('AIRPORT_LOOKUP_SERVER', 'geonames');
 		
@@ -40,11 +40,10 @@ class OPSTester extends UnitTestCase
 		heading('findSchedules');
 		$data = SchedulesData::findSchedules(array());
 		$this->assertNotEqual($data, false);
-		
-		
-		heading('Find disabled schedules');
-		$data = SchedulesData::findSchedules(array('s.enabled'=>0));
-		$this->assertNotEqual($data, false);
+	}
+
+	public function testFindAircraft()
+	{
 		
 	}
 }
