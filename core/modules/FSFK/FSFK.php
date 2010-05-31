@@ -153,22 +153,22 @@ class FSFK extends CodonModule
 		
 		/* Our data to send to the submit PIREP function */
 		$data = array(
-			'pilotid'=>$pilotid,
-			'code'=>$code,
-			'flightnum'=>$flightnum,
-			'depicao'=>$depicao,
-			'arricao'=>$arricao,
-			'aircraft'=> $aircraft,
-			'registration'=>(string) $xml->AircraftTailNumber,
-			'flighttime'=> $flighttime,
-			'landingrate'=> (string) $xml->ONVS,
-			'submitdate'=>'NOW()',
-			'comment'=> trim((string) $xml->COMMENT),
-			'fuelused'=> (string) $xml->BlockFuel,
-			'source'=>'fsfk',
-			'load'=>$load,
-			'log'=>$log,
-			'rawdata'=>$rawdata,
+			'pilotid' => $pilotid,
+			'code' => $code,
+			'flightnum' => $flightnum,
+			'depicao' => $depicao,
+			'arricao' => $arricao,
+			'aircraft' => $aircraft,
+			/*'registration'=>(string) $xml->AircraftTailNumber,*/
+			'flighttime' => $flighttime,
+			'landingrate' => (string) $xml->ONVS,
+			'submitdate' => 'NOW()',
+			'comment' => trim((string) $xml->COMMENT),
+			'fuelused' => (string) $xml->BlockFuel,
+			'source' => 'fsfk',
+			'load' => $load,
+			'log' => $log,
+			'rawdata' => $rawdata,
 		);
 				
 		$this->log(print_r($data, true), 'fsfk');

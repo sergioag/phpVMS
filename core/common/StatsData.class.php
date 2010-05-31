@@ -98,7 +98,8 @@ class StatsData extends CodonData
 	 */
 	public static function getMonthsSinceDate($start)
 	{
-		$key = 'months_since_'.$start;
+		$key_month = date('MY', $start);
+		$key = 'months_since_'.$key_month;
 		$months = CodonCache::read($key);
 		
 		if($months === false)

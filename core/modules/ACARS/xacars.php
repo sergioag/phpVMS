@@ -335,21 +335,21 @@ $route->flightlevel
 		$acars_data = ACARSData::get_flight_by_pilot($pilotid);
 		
 		$data = array(
-			'pilotid'=>$pilotid,
-			'code'=>$code,
-			'flightnum'=>$flightnum,
-			'depicao'=>$depicao,
-			'arricao'=>$arricao,
-			'aircraft'=>$ac->id,
-			'flighttime'=>$flighttime,
-			'submitdate'=>'NOW()',
+			'pilotid' => $pilotid,
+			'code' => $code,
+			'flightnum' => $flightnum,
+			'depicao' => $depicao,
+			'arricao' => $arricao,
+			'aircraft' => $ac->id,
+			'flighttime' => $flighttime,
+			'submitdate' => 'NOW()',
 			'route' => $acars_data->route,
 			'route_details' => $acars_data->route_details,
-			'comment'=>$comment,
-			'fuelused'=>$fuelused,
-			'source'=>'xacars',
-			'load'=>$load,
-			'log'=> $_GET['log']
+			'comment' => $comment,
+			'fuelused' => $fuelused,
+			'source' => 'xacars',
+			'load' => $load,
+			'log' => $_GET['log']
 		);
 				
 		Debug::log(print_r($data, true), 'xacars');

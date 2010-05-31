@@ -31,27 +31,6 @@ if($_POST['FsPAskConnexion'] == 'yes')
 	$_POST['UserName'] = DB::escape($_POST['UserName']);
 	$pilotid = PilotData::parsePilotID($_POST['UserName']);
 	
-	/*# Entered as ###
-	if(is_numeric($_POST['UserName']))
-	{
-		$pilotid = intval(intval(trim( $_POST['UserName']))) - Config::Get('PILOTID_OFFSET');
-	}
-	else
-	{
-		$pilotid = $pilotid = PilotData::parsePilotID($_POST['UserName']);
-		# Check if they entered as XXX###
-		if(preg_match('/^([A-Za-z]*)(.*)(\d*)/', $_POST['UserName'], $matches)>0)
-		{
-			$pilotid = intval(intval(trim($matches[2]))) - Config::Get('PILOTID_OFFSET');
-		}
-		else
-		{
-			# Invalid Pilot
-			echo '#Answer# Error - Invalid pilot ID format;';
-			return;
-		}
-	}*/
-	
 	$pilotdata = PilotData::GetPilotData($pilotid);
 	if(!$pilotdata)
 	{
@@ -73,37 +52,17 @@ if($_POST['FsPAskToRegister'] == 'yes')
 	
 	# Get the pilot id:
 	$pilotid = PilotData::parsePilotID($_POST['UserName']);
-	/*if(is_numeric($_POST['UserName']))
-	{
-		$pilotid = intval(intval(trim( $_POST['UserName']))) - Config::Get('PILOTID_OFFSET');
-	}
-	else
-	{
-		if(preg_match('/^([A-Za-z]*)(\d*)/', $_POST['UserName'], $matches) == 0)
-		{
-			echo "#Answer# Error: Pilot doesn't exist ;";
-			return;
-		}
-		
-		$pilotid = intval(intval(trim($matches[2]))) - Config::Get('PILOTID_OFFSET');
-	}*/
 	
 	# Get the flight ID
 	$flightinfo = SchedulesData::getProperFlightNum($_POST['FlightId']);
 	$code = $flightinfo['code'];
 	$flightnum = $flightinfo['flightnum'];
-	/*if(preg_match('/^([A-Za-z]*)(\d*)/', $_POST['FlightId'], $matches) == 0)
-	{
-		echo "#Answer# Error - Invalid flight ID;";
-		return;
-	}*/
-	
-				
+
 	preg_match('/^([A-Za-z]*) - .*/', $_POST['DepartureIcaoName'], $aptinfo);
 	$depicao = $aptinfo[1];
 	
 	# Make sure it exists
-	if(!OperationsData::GetAirportInfo($depicao))
+	if(!OperationsData::getAirportInfo($depicao))
 	{
 		OperationsData::RetrieveAirportInfo($depicao);
 	}
@@ -112,7 +71,7 @@ if($_POST['FsPAskToRegister'] == 'yes')
 	$arricao = $aptinfo[1];
 	
 	# Make sure it exists
-	if(!OperationsData::GetAirportInfo($arricao))
+	if(!OperationsData::getAirportInfo($arricao))
 	{
 		OperationsData::RetrieveAirportInfo($arricao);
 	}
@@ -129,7 +88,6 @@ if($_POST['FsPAskToRegister'] == 'yes')
 	
 	$code = $sched->code;
 	$flightnum = $sched->flightnum;
-	$leg = $sched->leg;
 	$aircraft = $sched->aircraft;
 	
 	if($depicao != $sched->depicao || $arricao != $sched->arricao)
@@ -158,22 +116,23 @@ if($_POST['FsPAskToRegister'] == 'yes')
 	
 	$comment .= 'FSPassengers Flight. No aircraft entered';
 	
-	$data = array(	'pilotid'=>$pilotid,
-					'code'=>$code,
-					'flightnum'=>$flightnum,
-					'leg'=>$leg,
-					'depicao'=>$depicao,
-					'arricao'=>$arricao,
-					'aircraft'=>$aircraft,
-					'route' => '',
-					'flighttime'=>$flighttime,
-					'landingrate'=>$_POST['TouchDownVertSpeedFt'],
-					'submitdate'=>'NOW()',
-					'load'=>$_POST['NbrPassengers'],
-					'fuelused'=>$fuelused,
-					'source'=>'fspax',
-					'comment'=>$comment,
-					'log'=> $log);
+	$data = array(	
+		'pilotid'=>$pilotid,
+		'code'=>$code,
+		'flightnum'=>$flightnum,
+		'depicao'=>$depicao,
+		'arricao'=>$arricao,
+		'aircraft'=>$aircraft,
+		'route' => '',
+		'flighttime'=>$flighttime,
+		'landingrate'=>$_POST['TouchDownVertSpeedFt'],
+		'submitdate'=>'NOW()',
+		'load'=>$_POST['NbrPassengers'],
+		'fuelused'=>$fuelused,
+		'source'=>'fspax',
+		'comment'=>$comment,
+		'log'=> $log
+	);
 		
 	Debug::log($data, 'fspax');
 		

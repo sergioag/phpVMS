@@ -24,14 +24,15 @@ class kACARS_Free extends CodonModule
 	{
 		if($_SERVER['REQUEST_METHOD'] === 'POST')
 		{ 
-			$postText = file_get_contents('php://input');		
-			
-			$rec_xml = trim(utf8_encode(file_get_contents('php://input')));
-			$xml = simplexml_load_string($rec_xml);	
+			$postText = file_get_contents('php://input');			
+			$encoding = mb_detect_encoding($postText);
+			$rec_xml = trim(iconv($encoding, "UTF-8", $postText));			
+			$xml = simplexml_load_string($rec_xml);		
 			
 			if(!$xml)
 			{
 				#$this->log("Invalid XML Sent: \n".$rec_xml, 'kacars');
+				echo "not xml";
 				return;	
 			}
 			
@@ -114,7 +115,7 @@ class kACARS_Free extends CodonModule
 						's.code' => $flightinfo['code'],
 						's.flightnum' => $flightinfo['flightnum'],
 						's.enabled' => 1,
-					);
+						);
 					
 					$biddata = SchedulesData::findSchedules($params, 1);
 					$aircraftinfo = OperationsData::getAircraftByReg($biddata[0]->registration);
@@ -154,13 +155,14 @@ class kACARS_Free extends CodonModule
 				case 'liveupdate':	
 					
 					$pilotid = PilotData::parsePilotID($xml->verify->pilotID);
+					$lat = str_replace(",", ".", $xml->liveupdate->latitude);
+					$lon = str_replace(",", ".", $xml->liveupdate->longitude);
 					
 					# Get the distance remaining
 					$depapt = OperationsData::GetAirportInfo($xml->liveupdate->depICAO);
 					$arrapt = OperationsData::GetAirportInfo($xml->liveupdate->arrICAO);
 					$dist_remain = round(SchedulesData::distanceBetweenPoints(
-						$xml->liveupdate->latitude, $xml->liveupdate->longitude, 
-						$arrapt->lat, $arrapt->lng));
+						$lat, $lon,	$arrapt->lat, $arrapt->lng));
 					
 					# Estimate the time remaining
 					if($xml->liveupdate->groundSpeed > 0)
@@ -171,10 +173,7 @@ class kACARS_Free extends CodonModule
 					else
 					{
 						$time_remain = '00:00';
-					}		
-					
-					$lat = str_replace(",", ".", $xml->liveupdate->latitude);
-					$lon = str_replace(",", ".", $xml->liveupdate->longitude);
+					}
 					
 					$fields = array(
 						'pilotid'        =>$pilotid,
@@ -253,13 +252,14 @@ class kACARS_Free extends CodonModule
 					}					
 					
 					$data = array(
-						 'pilotid'=>$pilotid,
+						'pilotid'=>$pilotid,
 						'code'=>$code,
 						'flightnum'=>$flightnum,
 						'depicao'=>$xml->pirep->depICAO,
 						'arricao'=>$xml->pirep->arrICAO,
 						'aircraft'=>$ac->id,
 						'flighttime'=>$xml->pirep->flightTime,
+						'flighttype'=>$xml->pirep->flightType,
 						'submitdate'=>'NOW()',
 						'comment'=>$xml->pirep->comments,
 						'fuelused'=>$fuelused,
@@ -267,7 +267,7 @@ class kACARS_Free extends CodonModule
 						'load'=>$load,
 						'landingrate'=>$xml->pirep->landing,
 						'log'=>$xml->pirep->log
-					);
+						);
 					
 					#$this->log("File PIREP: \n".print_r($data, true), 'kacars');
 					$ret = ACARSData::FilePIREP($pilotid, $data);		
@@ -291,26 +291,26 @@ class kACARS_Free extends CodonModule
 					
 					$this->getAllAircraft();
 					break;
-					
+				
 				case 'aircraftinfo':
-						
-						$aircraftinfo = OperationsData::getAircraftByReg($xml->pirep->registration);
-			
-						
-							$params = array(								
-								'aircraftReg'      => $aircraftinfo->registration,
-								'aircraftICAO'     => $aircraftinfo->icao,
-								'aircraftFullName' => $aircraftinfo->fullname,								
-								'aircraftMaxPax'   => $aircraftinfo->maxpax,
-								'aircraftCargo'    => $aircraftinfo->maxcargo,								
-								'aircraftName'     => $aircraftinfo->name,
-								'aircraftRange'    => $aircraftinfo->range,
-								'aircraftWeight'   => $aircraftinfo->weight,
-								'aircraftCruise'   => $aircraftinfo->cruise
-								);	
-						
-						$send = $this->sendXML($params);
-						break;
+					
+					$aircraftinfo = OperationsData::getAircraftByReg($xml->pirep->registration);
+					
+					
+					$params = array(								
+						'aircraftReg'      => $aircraftinfo->registration,
+						'aircraftICAO'     => $aircraftinfo->icao,
+						'aircraftFullName' => $aircraftinfo->fullname,								
+						'aircraftMaxPax'   => $aircraftinfo->maxpax,
+						'aircraftCargo'    => $aircraftinfo->maxcargo,								
+						'aircraftName'     => $aircraftinfo->name,
+						'aircraftRange'    => $aircraftinfo->range,
+						'aircraftWeight'   => $aircraftinfo->weight,
+						'aircraftCruise'   => $aircraftinfo->cruise
+						);	
+					
+					$send = $this->sendXML($params);
+					break;
 
 			}
 			
@@ -369,7 +369,7 @@ class kACARS_Free extends CodonModule
 		return;	
 	}
 	
-	public static function getAllAircraft()
+	public function getAllAircraft()
 	{
 		$results = OperationsData::getAllAircraft(true);
 		

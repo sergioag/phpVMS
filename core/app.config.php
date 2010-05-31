@@ -216,7 +216,7 @@ Config::Set('EMAIL_RETURN_PATH', '');
 	phpvms will use the phpVMS API server
 */
 
-Config::Set('AIRPORT_LOOKUP_SERVER', 'geonames'); 
+Config::Set('AIRPORT_LOOKUP_SERVER', 'phpvms'); 
 Config::Set('PHPVMS_API_SERVER', 'http://api.phpvms.net');
 Config::Set('PHPVMS_NEWS_FEED', 'http://feeds.feedburner.com/phpvms');
 Config::Set('VACENTRAL_NEWS_FEED', 'http://feeds.feedburner.com/vacentral');

@@ -395,7 +395,7 @@ class PIREPAdmin extends CodonModule
 			return false;
 		}
 		
-		$pirepInfo = PIREPData::getReportDetails($this->post_action->pirepid);
+		$pirepInfo = PIREPData::getReportDetails($this->post->pirepid);
 		if(!$pirepInfo)
 		{
 			$this->set('message', 'Invalid PIREP!');
@@ -412,7 +412,6 @@ class PIREPAdmin extends CodonModule
 			'pirepid'=>$this->post->pirepid,
 			'code'=>$this->post->code,
 			'flightnum'=>$this->post->flightnum,
-			'leg'=>$this->post->leg,
 			'depicao'=>$this->post->depicao,
 			'arricao'=>$this->post->arricao,
 			'aircraft'=>$this->post->aircraft,
@@ -426,7 +425,7 @@ class PIREPAdmin extends CodonModule
 			'expenses'=>$this->post->expenses
 		);
 					 		
-		if(!PIREPData::UpdateFlightReport($this->post->pirepid, $data))
+		if(!PIREPData::updateFlightReport($this->post->pirepid, $data))
 		{
 			$this->set('message', 'There was an error editing your PIREP');
 			$this->render('core_error.tpl');
@@ -456,7 +455,8 @@ class PIREPAdmin extends CodonModule
 		
 		StatsData::UpdateTotalHours();
 		
-		# Update a pilot's stats
+		# Refresh the PIREP
+		# $pirepInfo = PIREPData::getReportDetails($this->post_action->pirepid);
 		PilotData::updatePilotStats($pirepInfo->pilotid);
 		
 		LogData::addLog(Auth::$userinfo->pilotid, 'Edited PIREP #'.$this->post->id);

@@ -579,9 +579,9 @@ class PIREPData extends CodonData
 			}
 			
 			$sql = "SELECT `pirepid` FROM ".TABLE_PREFIX."pireps
-					WHERE `pilotid`={$pirepdata['pilotid']} 
-						AND `code`='{$pirepdata['code']}'
-						AND `flightnum`='{$pirepdata['flightnum']}' 
+					WHERE `pilotid` = {$pirepdata['pilotid']} 
+						AND `code` = '{$pirepdata['code']}'
+						AND `flightnum` = '{$pirepdata['flightnum']}' 
 						AND DATE_SUB(NOW(), INTERVAL {$time_limit} MINUTE) <= `submitdate`";
 						  
 			$res = DB::get_row($sql);
@@ -615,6 +615,10 @@ class PIREPData extends CodonData
 				if($ac)
 				{
 					$pirepdata['aircraft'] = $ac->id;
+				}
+				else
+				{
+					$pirepdata['aircraft'] = '0';
 				}
 			}
 		}
@@ -727,12 +731,11 @@ class PIREPData extends CodonData
 		}
 		
 		/* Proper timestamp */
-		$flighttime_stamp = str_replace('.', ':', $pirepdata['flighttime']).':00';
 		$pirepdata['flighttime'] = str_replace(':', '.', $pirepdata['flighttime']);
+		$pirepdata['flighttime_stamp'] = str_replace('.', ':', $pirepdata['flighttime']).':00';
 		
 		/* Export status as 0 */
 		$pirepdata['exported'] = 0;
-		$pirepdata['flighttime_stamp'] = $flighttime_stamp;
 		$pirepdata['submitdate'] = 'NOW()';
 		$pirepdata['accepted'] = PIREP_PENDING;
 		$pirepdata['expenselist'] = '0';
@@ -757,8 +760,7 @@ class PIREPData extends CodonData
 
 		$cols = implode(', ', $cols);
 		$col_values = implode(', ', $col_values);
-		$sql = "INSERT INTO ".TABLE_PREFIX."pireps
-					({$cols}) VALUES ({$col_values});";
+		$sql = 'INSERT INTO '.TABLE_PREFIX."pireps ({$cols}) VALUES ({$col_values});";
 
 		DB::query($sql);
 		$pirepid = DB::$insert_id;
