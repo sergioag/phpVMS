@@ -384,6 +384,7 @@ class CentralData extends CodonData
 		$pirep_xml->addChild('fuelprice', $pirep->fuelprice);
 		$pirep_xml->addChild('pilotpay', $pirep->pilotpay);
 		$pirep_xml->addChild('price', $pirep->price);
+		$pirep_xml->addChild('source', $pirep->source);
 		$pirep_xml->addChild('revenue', $pirep->revenue);
 	}
 	

@@ -106,7 +106,13 @@ class Import extends CodonModule
 		}
 		
 		# Open the import file
-		$fp = fopen($_FILES['uploadedfile']['tmp_name'], 'r');
+
+		# Fix for bug VMS-325
+		$temp_name = $_FILES['uploadedfile']['tmp_name'];
+		$new_name = CACHE_PATH.$_FILES['uploadedfile']['name'];
+		move_uploaded_file($temp_name, $new_name);
+
+		$fp = fopen($new_name, 'r');
 		if(isset($_POST['header'])) $skip = true;
 		
 		$added = 0;
@@ -166,6 +172,8 @@ class Import extends CodonModule
 			$total ++;
 		}
 
+		unlink($new_name);
+
 		echo "The import process is complete, added {$added} aircraft, updated {$updated}, for a total of {$total}<br />";
 	}
 
@@ -217,8 +225,14 @@ class Import extends CodonModule
 		set_time_limit(270);
 		$errs = array();
 		$skip = false;
+
+
+		# Fix for bug VMS-325
+		$temp_name = $_FILES['uploadedfile']['tmp_name'];
+		$new_name = CACHE_PATH.$_FILES['uploadedfile']['name'];
+		move_uploaded_file($temp_name, $new_name);
 		
-		$fp = fopen($_FILES['uploadedfile']['tmp_name'], 'r');
+		$fp = fopen($new_name, 'r');
 		
 		if(isset($_POST['header'])) $skip = true;
 		
@@ -386,6 +400,8 @@ class Import extends CodonModule
 		}
 		
 		echo '</div>';
+
+		unlink($new_name);
 	}
 	
 	protected function get_airport_info($icao)

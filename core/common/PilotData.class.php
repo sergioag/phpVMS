@@ -337,6 +337,10 @@ class PilotData extends CodonData
 			'retired' => false,
 		);*/
 		
+		if(empty($pilotid))
+		{
+			return false;
+		}
 		
 		if(!is_array($params))
 		{

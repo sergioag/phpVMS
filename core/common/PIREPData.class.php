@@ -745,16 +745,23 @@ class PIREPData extends CodonData
 		$col_values = array();
 		foreach($pirepdata as $key => $value)
 		{
-			$cols[] = "`{$key}`";
+			switch($key)
+			{
+				case 'submitdate':
+					$cols[] = "`{$key}`";
+					$col_values[] = 'NOW()';
 
-			if($key == 'submitdate')
-			{
-				$col_values[] = 'NOW()';
-			}
-			else
-			{
-				$value = DB::escape($value);
-				$col_values[] = "'{$value}'";
+					break;
+				case 'comment':
+					continue;
+
+					break;
+				default:
+					$cols[] = "`{$key}`";
+					$value = DB::escape($value);
+					$col_values[] = "'{$value}'";
+
+					break;
 			}
 		}
 

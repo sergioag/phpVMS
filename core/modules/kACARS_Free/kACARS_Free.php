@@ -10,10 +10,11 @@
  *   Creative Commons Attribution Non-commercial Share Alike (by-nc-sa)
  *   View license.txt in the root, or visit http://creativecommons.org/licenses/by-nc-sa/3.0/
  *
- * @author Jeffery Kobus
- * @copyright Copyright (c) 2010, Jeffery Kobus
+ * @author Jeffrey Kobus
+ * @copyright Copyright (c) 2010, Jeffrey Kobus
  * @link http://www.fs-products.net
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
+ * @ v1.0.0.7
  */
 
 
@@ -115,7 +116,7 @@ class kACARS_Free extends CodonModule
 						's.code' => $flightinfo['code'],
 						's.flightnum' => $flightinfo['flightnum'],
 						's.enabled' => 1,
-						);
+					);
 					
 					$biddata = SchedulesData::findSchedules($params, 1);
 					$aircraftinfo = OperationsData::getAircraftByReg($biddata[0]->registration);
@@ -252,22 +253,23 @@ class kACARS_Free extends CodonModule
 					}					
 					
 					$data = array(
-						'pilotid'=>$pilotid,
-						'code'=>$code,
-						'flightnum'=>$flightnum,
-						'depicao'=>$xml->pirep->depICAO,
-						'arricao'=>$xml->pirep->arrICAO,
-						'aircraft'=>$ac->id,
-						'flighttime'=>$xml->pirep->flightTime,
-						'flighttype'=>$xml->pirep->flightType,
-						'submitdate'=>'NOW()',
-						'comment'=>$xml->pirep->comments,
-						'fuelused'=>$fuelused,
-						'source'=>'kACARS',
-						'load'=>$load,
-						'landingrate'=>$xml->pirep->landing,
-						'log'=>$xml->pirep->log
-						);
+						'pilotid'			=>$pilotid,
+						'code'				=>$code,
+						'flightnum'			=>$flightnum,
+						'depicao'			=>$xml->pirep->depICAO,
+						'arricao'			=>$xml->pirep->arrICAO,
+						'aircraft'			=>$ac->id,
+						'flighttime'		=>$xml->pirep->flightTime,
+						'flighttype'		=>$xml->pirep->flightType,
+						'submitdate'		=>'NOW()',
+						'comment'			=>$xml->pirep->comments,
+						'fuelused'			=>$fuelused,
+						'route'          	=>$xml->liveupdate->route,
+						'source'			=>'kACARS',
+						'load'				=>$load,
+						'landingrate'		=>$xml->pirep->landing,
+						'log'				=>$xml->pirep->log
+					);
 					
 					#$this->log("File PIREP: \n".print_r($data, true), 'kacars');
 					$ret = ACARSData::FilePIREP($pilotid, $data);		
@@ -291,26 +293,26 @@ class kACARS_Free extends CodonModule
 					
 					$this->getAllAircraft();
 					break;
-				
+					
 				case 'aircraftinfo':
-					
-					$aircraftinfo = OperationsData::getAircraftByReg($xml->pirep->registration);
-					
-					
-					$params = array(								
-						'aircraftReg'      => $aircraftinfo->registration,
-						'aircraftICAO'     => $aircraftinfo->icao,
-						'aircraftFullName' => $aircraftinfo->fullname,								
-						'aircraftMaxPax'   => $aircraftinfo->maxpax,
-						'aircraftCargo'    => $aircraftinfo->maxcargo,								
-						'aircraftName'     => $aircraftinfo->name,
-						'aircraftRange'    => $aircraftinfo->range,
-						'aircraftWeight'   => $aircraftinfo->weight,
-						'aircraftCruise'   => $aircraftinfo->cruise
-						);	
-					
-					$send = $this->sendXML($params);
-					break;
+						
+						$aircraftinfo = OperationsData::getAircraftByReg($xml->pirep->registration);
+			
+						
+							$params = array(								
+								'aircraftReg'      => $aircraftinfo->registration,
+								'aircraftICAO'     => $aircraftinfo->icao,
+								'aircraftFullName' => $aircraftinfo->fullname,								
+								'aircraftMaxPax'   => $aircraftinfo->maxpax,
+								'aircraftCargo'    => $aircraftinfo->maxcargo,								
+								'aircraftName'     => $aircraftinfo->name,
+								'aircraftRange'    => $aircraftinfo->range,
+								'aircraftWeight'   => $aircraftinfo->weight,
+								'aircraftCruise'   => $aircraftinfo->cruise
+								);	
+						
+						$send = $this->sendXML($params);
+						break;
 
 			}
 			
@@ -388,6 +390,5 @@ class kACARS_Free extends CodonModule
 		
 		header('Content-type: text/xml');
 		echo $xml->asXML();
-	}
-	
+	}	
 }
