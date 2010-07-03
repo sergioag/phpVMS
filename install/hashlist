@@ -46,7 +46,7 @@ f8184cef63518b12c6e94ae96b2fe96c  *./core/common/NavData.class.php
 aaeea0a1746813611fd2258bcdb6f494  *./core/common/FuelData.class.php
 59863c2c7155ff0fcb27e840b912df02  *./core/common/SiteData.class.php
 00fba43386363e0d67be9469b2929610  *./core/common/AircraftStats.class.php
-3d483a59dfbbcb65ac6c129951261c53  *./core/common/FinanceData.class.php
+13b7c99b8ff27923965c91595594ab42  *./core/common/FinanceData.class.php
 5fd6ab8aad8037d0e7cec7a9f62995f9  *./core/common/LogData.class.php
 8cf715ca3f9710c6fa9cedb383fbab37  *./core/common/ChartGraph.class.php
 c811db29accce3ea2beff8804a012daa  *./core/common/DownloadData.class.php

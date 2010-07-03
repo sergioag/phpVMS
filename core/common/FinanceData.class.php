@@ -158,8 +158,7 @@ class FinanceData extends CodonData
 	public function setExpensesforMonth($timestamp)
 	{
 		$all_expenses = self::getAllExpenses();
-			
-		print_r($all_expenses);
+		
 		# Remove expenses first
 		self::removeExpensesforMonth($timestamp);
 		
