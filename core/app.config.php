@@ -205,6 +205,9 @@ Config::Set('EMAIL_SMTP_PASS', '');
 Config::Set('EMAIL_NEW_REGISTRATIONS', '');
 Config::Set('EMAIL_NEW_PIREP', '');
 
+# Whether to send an email or not
+Config::Set('EMAIL_SEND_PIREP', true);
+
 # This is email to specifically send email sent error to, such
 # as failure notices with an invalid email or something
 # If blank, it'll default to the "from" email that's specified

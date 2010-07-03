@@ -14,7 +14,7 @@ $("#grid").jqGrid({
    datatype: 'json',
    mtype: 'GET',
    colNames: ['Code', 'Flight Num', 'Departure', 'Arrival', 'Aircraft', 'Registration', 'Route', 'Days',
-				'Distance', 'Flown', 'Edit', 'Delete'],
+				'Distance', 'Flown', 'Active', 'Edit', 'Delete'],
    colModel : [
 		{index: 'code', name : 'code', width: 40, sortable : true, align: 'center', search: 'true', searchoptions:{sopt:['eq','ne']}},
 		{index: 'flightnum', name : 'flightnum', width: 65, sortable : true, align: 'center', searchoptions:{sopt:['eq','ne']}},
@@ -26,6 +26,7 @@ $("#grid").jqGrid({
 		{index: 'daysofweek', name : 'route', width: 100, sortable : true, align: 'center', search: false},
 		{index: 'distance', name : 'distance', width: 100, sortable : true, align: 'center', searchoptions:{sopt:['lt','le','gt','ge']}},
 		{index: 'timesflown', name : 'flown', width: 100, sortable : true, align: 'center', search: false},
+		{index: 's.enabled', name : 'enabled', width: 100, sortable : true, align: 'center', search: 'true',searchoptions:{sopt:['eq','ne']}},
 		{index: '', name : '', width: 100, sortable : true, align: 'center', search: false},
 		{index: '', name : '', width: 100, sortable : true, align: 'center', search: false}
 	],

@@ -4,11 +4,11 @@
 		<a href="<?php echo SITE_URL?>/admin/index.php/operations/addschedule">Add Schedule</a>
 	</span></li>
 	<li><span class="file">
-		<a href="<?php echo SITE_URL?>/admin/index.php/operations/activeschedules">View Active Schedule</a>
+		<a href="<?php echo SITE_URL?>/admin/index.php/operations/activeschedules">View Schedules</a>
 	</span></li>
-	<li><span class="file">
+	<!--<li><span class="file">
 		<a href="<?php echo SITE_URL?>/admin/index.php/operations/inactiveschedules">View Inactive Schedules</a>
-	</span></li>
+	</span></li>-->
 	<li><span class="file">
 		<a href="<?php echo SITE_URL?>/admin/index.php/maintenance/resetdistances">Recalculate Distances</a>
 	</span></li>	

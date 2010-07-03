@@ -41,7 +41,7 @@ function post_module_load()
 	/* If the setting to auto-retired pilots is on, then do that
 		and only check every 24 hours
 	 */
-	 if(Config::Get('USE_CRON') === true)
+	 if(Config::Get('USE_CRON') == false)
 	 {
 		if(Config::Get('PILOT_AUTO_RETIRE') == true)
 		{
@@ -64,8 +64,8 @@ function post_module_load()
 		}
 				
 		/* Expenses, make sure they're all populated */
-		$within_timelimit = CronData::check_hoursdiff('populate_expenses', '18');
-		if($within_timelimit == false)
+		$within_timelimit = CronData::check_hoursdiff('populate_expenses', 18);
+		if($within_timelimit === false)
 		{
 			FinanceData::updateAllExpenses();
 			CronData::set_lastupdate('populate_expenses');

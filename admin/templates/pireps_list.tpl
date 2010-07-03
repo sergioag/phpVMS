@@ -206,8 +206,7 @@ echo '</tr>';
 ?>
 </tbody>
 </table>
-<span style="float: right">* - double click to select</span><br />
-
+<br />
 <?php
 if(isset($paginate))
 {

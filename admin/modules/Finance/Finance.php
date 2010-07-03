@@ -177,11 +177,13 @@ class Finance extends CodonModule
 	{
 		$params = array(
 			'p.accepted' => PIREP_ACCEPTED,
-			"DATE_FORMAT(p.submitdate, '%Y%m') = {$yearmonth}"
+			"DATE_FORMAT(p.submitdate, '%Y%m') = '{$yearmonth}'"
 		);
 		
 		$params = array_merge($params, $this->formfilter());
-		return PIREPData::getIntervalData($params);
+		$ret = PIREPData::getIntervalData($params);
+		
+		return $ret;
 	}
 	
 	/**
@@ -190,11 +192,10 @@ class Finance extends CodonModule
 	 */
 	protected function getyearly($year)
 	{
-		
 		$params = $this->formfilter();
 		$all_finances = array();
 		
-		$months = StatsData::GetMonthsInRange('January '.$year, 'December '.$year);
+		$months = StatsData::getMonthsInRange('January '.$year, 'December '.$year);
 		foreach($months as $month)
 		{
 			$date_filter = array("DATE_FORMAT(p.submitdate, '%Y%m') = '".date('Ym', $month)."'");

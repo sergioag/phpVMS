@@ -497,6 +497,7 @@ class Operations extends CodonModule
 					Util::GetDaysCompact($row->daysofweek),
 					$row->distance,
 					$row->timesflown,
+					$row->enabled,
 					$edit,
 					$delete,
 				),

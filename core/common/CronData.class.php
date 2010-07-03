@@ -32,7 +32,9 @@ class CronData extends CodonData
 				 FROM `'.TABLE_PREFIX."updates`
 				 WHERE `name`='{$name}'";
 				 
-		return DB::get_row($sql);
+
+		$ret = DB::get_row($sql);
+		return $ret;
 	}
 	
 	public static function check_hoursdiff($name, $age_hours)
@@ -44,7 +46,6 @@ class CronData extends CodonData
 					AND name='{$name}'";
 
 		$row = DB::get_row($sql);
-		
 		if(!$row)
 		{
 			return false;

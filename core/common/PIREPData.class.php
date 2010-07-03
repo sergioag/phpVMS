@@ -790,22 +790,25 @@ class PIREPData extends CodonData
 		$pilotcode = PilotData::getPilotCode($pilotinfo->code, $pilotinfo->pilotid);
 		PilotData::UpdateLastPIREPDate($pilotinfo->pilotid);
 		
-		# Send an email to the admin that a PIREP was submitted
-		$sub = "A PIREP has been submitted by {$pilotcode} ({$pirepdata['depicao']} - {$pirepdata['arricao']})";
-		$message="A PIREP has been submitted by {$pilotcode} ({$pilotinfo->firstname} {$pilotinfo->lastname})\n\n"
-				."{$pirepdata['code']}{$pirepdata['flightnum']}: {$pirepdata['depicao']} to {$pirepdata['arricao']}\n"
-				."Aircraft: {$pirepdata['aircraft']}\n"
-				."Flight Time: {$pirepdata['flighttime']}\n"
-				."Filed using: {$pirepdata['source']}\n\n"
-				."Comment: {$comment}";
-		
-		$email = Config::Get('EMAIL_NEW_PIREP');
-		if(empty($email))
+		if(Config::Get('EMAIL_SEND_PIREP') === true)
 		{
-			$email = ADMIN_EMAIL;
-		}
+			# Send an email to the admin that a PIREP was submitted
+			$sub = "A PIREP has been submitted by {$pilotcode} ({$pirepdata['depicao']} - {$pirepdata['arricao']})";
+			$message="A PIREP has been submitted by {$pilotcode} ({$pilotinfo->firstname} {$pilotinfo->lastname})\n\n"
+					."{$pirepdata['code']}{$pirepdata['flightnum']}: {$pirepdata['depicao']} to {$pirepdata['arricao']}\n"
+					."Aircraft: {$pirepdata['aircraft']}\n"
+					."Flight Time: {$pirepdata['flighttime']}\n"
+					."Filed using: {$pirepdata['source']}\n\n"
+					."Comment: {$comment}";
 		
-		Util::SendEmail($email, $sub, $message);	
+			$email = Config::Get('EMAIL_NEW_PIREP');
+			if(empty($email))
+			{
+				$email = ADMIN_EMAIL;
+			}
+		
+			Util::SendEmail($email, $sub, $message);
+		}
 		
 		CentralData::send_pirep($pirepid);
 		

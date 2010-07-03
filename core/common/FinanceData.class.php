@@ -141,7 +141,6 @@ class FinanceData extends CodonData
 	public static function getExpensesForMonth($timestamp)
 	{
 		$time = date('Ym', $timestamp);
-
 		# If it's the current month, just return the latest expenses
 		if($time == date('Ym'))
 		{
@@ -152,23 +151,15 @@ class FinanceData extends CodonData
 				WHERE `dateadded`='.$time;
 		
 		$ret = DB::get_results($sql);
-		
-		/*if(empty($ret))
-		{
-			# Save and query again
-			self::setExpensesforMonth($timestamp);
-			return DB::get_results($sql);
-		}*/
-		
+			
 		return $ret;
 	}
 	
 	public function setExpensesforMonth($timestamp)
 	{
 		$all_expenses = self::getAllExpenses();
-		if(!$all_expenses)
-			return;
-		
+			
+		print_r($all_expenses);
 		# Remove expenses first
 		self::removeExpensesforMonth($timestamp);
 		

@@ -27,7 +27,7 @@ d4d204c3560c283fa4d7a3a367473740  *./install/navdata.sql
 654a8ef74503b880f8526873986da3af  *./install/install.php
 0ce9f88088bd78d869525b8b202fb1bd  *./core/lang/en.lang.php
 02813e8f573062b56012fea15bccde90  *./core/common/MaintenanceData.class.php
-a1c9e9985e273dea8ad53a24bad84f49  *./core/common/PIREPData.class.php
+4dea2e7e6e96a0b723e50911e1c7717f  *./core/common/PIREPData.class.php
 38c88cbada3413d09adc5255428fa579  *./core/common/Auth.class.php
 26e225d004bd0b758c49f994453aaac7  *./core/common/jqgrid.class.php
 d8cc600bc66b4e2afb1cca5b433fdeb7  *./core/common/RegistrationData.class.php
@@ -46,13 +46,13 @@ f8184cef63518b12c6e94ae96b2fe96c  *./core/common/NavData.class.php
 aaeea0a1746813611fd2258bcdb6f494  *./core/common/FuelData.class.php
 59863c2c7155ff0fcb27e840b912df02  *./core/common/SiteData.class.php
 00fba43386363e0d67be9469b2929610  *./core/common/AircraftStats.class.php
-68dca9d98c20e1a753cc1273f8182043  *./core/common/FinanceData.class.php
+3d483a59dfbbcb65ac6c129951261c53  *./core/common/FinanceData.class.php
 5fd6ab8aad8037d0e7cec7a9f62995f9  *./core/common/LogData.class.php
 8cf715ca3f9710c6fa9cedb383fbab37  *./core/common/ChartGraph.class.php
 c811db29accce3ea2beff8804a012daa  *./core/common/DownloadData.class.php
 947ddcbc4fcf022efe3631215815ff4b  *./core/common/ACARSData.class.php
 5a5bcb81df3aae165e10d92a482dbd31  *./core/common/OperationsData.class.php
-54d08de34e14adf506930c9433320756  *./core/common/CronData.class.php
+5e53b83cf57b56f8212302c171215e00  *./core/common/CronData.class.php
 e1634f73751a74d4d411612fd3a9f307  *./core/common/OFCharts.class.php
 24f2995ac13ad236e520e92ac85cbe99  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
@@ -132,7 +132,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 03a4e232571398c5b90714904a668178  *./core/templates/login_passwordreset.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
-dacd66a26ab705b8ac74131635e2d28a  *./core/bootstrap.inc.php
+0409c73200af1b2bffa9387a35404ec1  *./core/bootstrap.inc.php
 abb06860202b982b28e7061df7db8867  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 c1e6bb7c33856c0723f1139ccf20ad9f  *./core/classes/CodonData.class.php
@@ -162,7 +162,7 @@ f45b5714e950fb9f0b7baadb5b1f08d1  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-2940010bb4d378309a7d6c3af0ab2b79  *./core/app.config.php
+87ef4166a55f6f2966326f87d6c8217a  *./core/app.config.php
 1e7faecc8a132a2691e2dd66a38b38dc  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 935862c6f2d8c067c49c4af2797abebd  *./core/modules/XML/XML.php
@@ -194,7 +194,7 @@ a70283e88e1840bdfdee0b414d83ce4b  *./admin/maintenance.php
 b55dd3d7384a5408860e3096fd032d59  *./admin/templates/sidebar_dashboard.tpl
 3f0d8a07d152cf01b312a71131b3623e  *./admin/templates/maintenance_options.tpl
 0245573d95d0e18cc491cca089687725  *./admin/templates/ops_airlineslist.tpl
-012da0745259df0f77630666adcba996  *./admin/templates/sidebar_schedules.tpl
+b4b9e81758cbf89ef893990a2bdcca3c  *./admin/templates/sidebar_schedules.tpl
 bceb68b5280ebff5f0b2e17ac4b4a2fa  *./admin/templates/export_form.tpl
 07901354740ba857842cb5258eead798  *./admin/templates/awards_allawards.tpl
 97513a3466ebd2d7b4b426a114cdbeb6  *./admin/templates/pirep_reject.tpl
@@ -211,7 +211,7 @@ f4810662fd0c7191ae537045f4994d65  *./admin/templates/sidebar_awards.tpl
 e8c22cb9ae3fdd723ac9948697850c1c  *./admin/templates/import_aircraftform.tpl
 3855be8636027f25b53057e4350d6ebb  *./admin/templates/pilots_details.tpl
 43647f7912f986186e1bd6999c535ca9  *./admin/templates/core_message.tpl
-285d07b8b358cb79b849ebf2c7a664a2  *./admin/templates/pireps_list.tpl
+8d0515f54ff8db717a6a8fe45e6075d7  *./admin/templates/pireps_list.tpl
 2e79fc0f2948a8aae1d33b58a7fd60c5  *./admin/templates/downloads_overview.tpl
 9f89f5fb500fce5ab2d56ce3ec2a3ff0  *./admin/templates/pages_allpages.tpl
 d41d8cd98f00b204e9800998ecf8427e  *./admin/templates/pilots_addtogroup.tpl
@@ -232,7 +232,7 @@ d074c0e9c23845e55f9a2b3dcb6063f2  *./admin/templates/settings_addcustomfield.tpl
 9654ff17c3533ab43b5e6ab4bac582c0  *./admin/templates/ops_airportlist.tpl
 713a3b7f8bc9f3976664dfa43aba820a  *./admin/templates/sidebar_pirepfields.tpl
 c6e5f16b6f088fb5f455e1b84c84e687  *./admin/templates/import_form.tpl
-d88eb80c9970ba1232c9deebff9c0ba0  *./admin/templates/ops_schedules.tpl
+5b005e4e6c3cbfa64d0ea12e028792b5  *./admin/templates/ops_schedules.tpl
 f6859dd73bb69367fa470ec32ee4096b  *./admin/templates/settings_customfieldsform.tpl
 998c822282b68f3eaf12e3f178b6fa85  *./admin/templates/core_htmlreq.tpl
 81011a56d0b63f6d66f4343fccfc0f00  *./admin/templates/pilots_addawards.tpl
@@ -298,14 +298,14 @@ ae9aa5679b1f8cc2cb06e3daad7bdeef  *./admin/lib/layout_dark/footer.tpl
 53db9092a4bcd6a60cf0682434216fb7  *./admin/action.php
 f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
-1ecd0956f79d08bd574c481560313c62  *./admin/modules/Finance/Finance.php
+c90d0e87fa534828f86d14bb84b1cbb2  *./admin/modules/Finance/Finance.php
 c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
 c99a5cd1bc6e7aa4c0f28d9cbe074215  *./admin/modules/PilotAdmin/PilotAdmin.php
 36b45668ad6e73826bc8ef7ff02f7e4d  *./admin/modules/PilotRanking/PilotRanking.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php
 fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
-e722f56965c4e33fbc097de8c34aaf1e  *./admin/modules/Operations/Operations.php
+aa91dd2a98afefec3e3cfabb18d2913f  *./admin/modules/Operations/Operations.php
 60a55242a1e64b00f3bd4dcda8e7ea75  *./admin/modules/Import/Import.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
