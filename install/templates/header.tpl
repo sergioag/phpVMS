@@ -11,7 +11,7 @@ body
 {
 	font-family: Verdana;
 	font-size: 12px;
-	background: #666666;
+	background: #F2F2F2;
 	color: #000000;
 	margin: 0;
 	padding: 0;

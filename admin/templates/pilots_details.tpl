@@ -154,6 +154,10 @@
 	<td><input type="text" name="totalpay" value="<?php echo $pilotinfo->totalpay;?>" /></td>
 </tr>
 <tr>
+	<td>Pay Adjustment</td>
+	<td><input type="text" name="payadjust" value="<?php echo $pilotinfo->payadjust;?>" /></td>
+</tr>
+<tr>
 	<td>Pilot active?</td>
 	<td><?php 
 		if(intval($pilotinfo->retired) == 1) 

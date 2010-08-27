@@ -21,9 +21,11 @@ ini_set('display_errors', 'on');
 
 # Get the version info from the version file
 $revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
+$major = file_get_contents(dirname(__FILE__).'/major');
 
 define('ADMIN_PANEL', true);
-define('INSTALLER_VERSION', '2.1.'.$revision);
+define('MAJOR_VERSION', $major);
+define('INSTALLER_VERSION', MAJOR_VERSION.$revision);
 
 include dirname(__FILE__).'/loader.inc.php';
 
@@ -70,6 +72,8 @@ switch($_GET['page'])
 				break;
 			}
 			
+			SettingsData::saveSetting('PHPVMS_VERSION', INSTALLER_VERSION);
+
 			echo '<div align="center" style="font-size: 18px;"><br />
 					<a href="install.php?page=sitesetup">Continue to the next step</a>
 				  </div>';	

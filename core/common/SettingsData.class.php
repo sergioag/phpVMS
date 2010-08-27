@@ -190,7 +190,7 @@ class SettingsData extends CodonData
 					SET value=\''.$value.'\' WHERE name=\''.$name.'\'';
 		
 		$res = DB::query($sql);
-		
+				
 		if(DB::errno() != 0)
 			return false;
 			

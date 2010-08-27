@@ -1,0 +1,9 @@
+# Some basic security for phpVMS files
+# Thanks to mark1million
+
+Options All -Indexes 
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|tpl)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>

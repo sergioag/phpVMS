@@ -13,9 +13,10 @@ $("#grid").jqGrid({
    url: '<?php echo adminaction('/pilotadmin/getpilotsjson');?>',
    datatype: 'json',
    mtype: 'GET',
-   colNames: ['','First', 'Last', 'Email', 'Location', 'Status', 'Rank', 'Flights', 'Hours', 'IP', 'Edit'],
+   colNames: ['','Pilot ID', 'First', 'Last', 'Email', 'Location', 'Status', 'Rank', 'Flights', 'Hours', 'IP', 'Edit'],
    colModel : [
 		{index: 'id', name: 'id', hidden: true, search: false },
+		{index: 'pilotid', name : 'pilotid',sortable : true, align: 'left', search: 'true', searchoptions:{sopt:['in']}},
 		{index: 'firstname', name : 'firstname',sortable : true, align: 'left', search: 'true', searchoptions:{sopt:['in']}},
 		{index: 'lastname', name : 'lastname',  sortable : true, align: 'left', searchoptions:{sopt:['in']}},
 		{index: 'email', name : 'email', sortable : true, align: 'left',searchoptions:{sopt:['li']}},
@@ -28,7 +29,7 @@ $("#grid").jqGrid({
 		{index: '', name : '', sortable : true, align: 'center', search: false}
 	],
     pager: '#pager', rowNum: 25,
-    sortname: 'lastname', sortorder: 'asc',
+    sortname: 'pilotid', sortorder: 'asc',
     viewrecords: true, autowidth: true,
     height: '100%'
 });

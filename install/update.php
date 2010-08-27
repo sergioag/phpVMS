@@ -16,7 +16,7 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
  
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL);
  
 define('ADMIN_PANEL', true);
 
@@ -25,9 +25,24 @@ include dirname(__FILE__).'/Installer.class.php';
  
 # phpVMS Updater 
 $revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
-define('INSTALLER_VERSION', '2.1.'.$revision);
-define('UPDATE_VERSION', '2.1.'.$revision);
+$major = file_get_contents(dirname(__FILE__).'/major');
+
+define('MAJOR_VERSION', $major);
+define('INSTALLER_VERSION', MAJOR_VERSION.$revision);
+define('UPDATE_VERSION', MAJOR_VERSION.$revision);
 define('REVISION', $revision);
+
+$version = SettingsData::getSetting('PHPVMS_VERSION');
+if(!$version)
+{
+	$_GET['force'] = true;
+}
+else
+{
+	$version = $version->value;
+}
+
+$version = str_replace('.', '', $version);
 
 Template::SetTemplatePath(SITE_ROOT.'/install/templates');
 Template::Show('header.tpl');
@@ -38,7 +53,7 @@ echo '<h3 align="left">phpVMS Updater</h3>';
 # Check versions for mismatch, unless ?force is passed
 if(!isset($_GET['force']) && !isset($_GET['test']))
 {
-	if(PHPVMS_VERSION == UPDATE_VERSION)
+	if($version == UPDATE_VERSION)
 	{
 		echo '<p>You already have updated! Please delete this /install folder.<br /><br />
 				To force the update to run again, click: <a href="update.php?force">update.php?force</a></p>';
@@ -193,6 +208,9 @@ echo 'Starting the update...<br />';
 	{
 		PilotGroups::AddUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
 	}
+
+
+	SettingsData::saveSetting('PHPVMS_VERSION', UPDATE_VERSION);
 
 	/* Update expenses */
 	//FinanceData::updateAllExpenses();

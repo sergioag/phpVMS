@@ -261,6 +261,7 @@ CREATE TABLE `phpvms_pilots` (
   `totalflights` int(11) NOT NULL default '0',
   `totalhours` float NOT NULL default '0',
   `totalpay` float NOT NULL default '0',
+  `payadjust` FLOAT NULL DEFAULT '0',
   `transferhours` float NOT NULL default '0',
   `rankid` INT NOT NULL DEFAULT '0',
   `rank` varchar(32) NOT NULL default 'New Hire',
@@ -411,6 +412,7 @@ ALTER TABLE `phpvms_pirepcomments`
 ALTER TABLE `phpvms_schedules`
   ADD CONSTRAINT `phpvms_schedules_ibfk_1` FOREIGN KEY (`code`) REFERENCES `phpvms_airlines` (`code`) ON UPDATE CASCADE;
 
+INSERT INTO `phpvms_settings` VALUES(NULL , 'phpVMS Version', 'PHPVMS_VERSION', '0', 'phpVMS Version', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Virtual Airline Name', 'SITE_NAME', 'PHPVMS', 'The name of your site. This will show up in the browser title bar.', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Webmaster Email Address', 'ADMIN_EMAIL', '', 'This is the email address that email will get sent to/from', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Date Format', 'DATE_FORMAT', 'm/d/Y', 'This is the date format to be used around the site.', 1);

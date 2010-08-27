@@ -132,7 +132,8 @@ class PilotAdmin extends CodonModule
 					'retired' => $retired,
 					'totalhours' => $this->post->totalhours,
 					'totalflights' => $this->post->totalflights,
-					'totalpay' => $this->post->totalpay,
+					'totalpay' => floatval($this->post->totalpay),
+					'payadjust' => floatval($this->post->payadjust),
 					'transferhours' => $this->post->transferhours,
 					'comment' => $this->post->comment,
 				);
@@ -350,6 +351,7 @@ class PilotAdmin extends CodonModule
 		# Add each row to the above array
 		foreach($allpilots as $row)
 		{
+			$pilotid = PilotData::getPilotCode($row->code, $row->pilotid);
 			$status = ($row->retired==0) ? 'Active' : 'Retired';
 			$location = '<img src="'.Countries::getCountryImage($row->location).'" alt="'.$row->location.'" />';
 			$edit = '<a href="'.adminurl('/pilotadmin/viewpilots?action=viewoptions&pilotid='.$row->pilotid).'">Edit</a>';
@@ -359,6 +361,7 @@ class PilotAdmin extends CodonModule
 				'cell' => array(
 					# Each column, in order
 					$row->id,
+					$pilotid, 
 					$row->firstname,
 					$row->lastname,
 					$row->email,

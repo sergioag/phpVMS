@@ -27,6 +27,7 @@ ALTER TABLE `phpvms_pilots` ADD `lastip` VARCHAR( 25 ) NULL DEFAULT '';
 ALTER TABLE `phpvms_pilots` ADD `rankid` INT NOT NULL DEFAULT '0' AFTER `transferhours` ;
 ALTER TABLE `phpvms_pilots` ADD `ranklevel` INT NOT NULL DEFAULT '0' AFTER `rank` ;
 ALTER TABLE `phpvms_pilots` ADD `comment` TEXT NULL;
+ALTER TABLE `phpvms_pilots` ADD `payadjust` FLOAT NULL DEFAULT '0' AFTER `totalpay` ;
 UPDATE `phpvms_pilots` p SET `rankid` =  ( SELECT `rankid` FROM `phpvms_ranks` WHERE rank = p.rank ) ;
 
 ALTER TABLE `phpvms_pireps` ADD `gross` FLOAT NOT NULL AFTER `flighttype`;
@@ -44,8 +45,8 @@ ALTER TABLE `phpvms_aircraft` ADD `ranklevel` INT NOT NULL DEFAULT '0' AFTER `mi
 
 -- It's sometimes missing
 INSERT INTO `phpvms_settings` VALUES(NULL , 'Total VA Hours', 'TOTAL_HOURS', '0', 'Your total hours', 0);
+INSERT INTO `phpvms_settings` VALUES(NULL , 'phpVMS Version', 'PHPVMS_VERSION', '0', 'phpVMS Version', 1);
 
 -- Remove deprecated settings;
-DELETE FROM `phpvms_settings` WHERE `name`='PHPVMS_VERSION';
 DELETE FROM `phpvms_settings` WHERE `name`='NOTIFY_UPDATE';
 DELETE FROM `phpvms_settings` WHERE `name`='GOOGLE_KEY';

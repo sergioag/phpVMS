@@ -337,10 +337,10 @@ class PilotData extends CodonData
 			'retired' => false,
 		);*/
 		
-		if(empty($pilotid))
+		/*if(empty(trim($pilotid)))
 		{
 			return false;
-		}
+		}*/
 		
 		if(!is_array($params))
 		{
@@ -978,7 +978,7 @@ class PilotData extends CodonData
 		
 		if(Config::Get('SIGNATURE_SHOW_EARNINGS') == true)
 		{
-			$output[] = 'Total Earnings: ' . $pilot->totalpay;
+			$output[] = 'Total Earnings: ' . (floatval($pilot->totalpay) + floatval($pilot->payadjust));
 		}
 		
 		# Load up our image
@@ -1092,10 +1092,16 @@ class PilotData extends CodonData
 		}
 							
 		# Add the Rank image
-		if(Config::Get('SIGNATURE_SHOW_RANK_IMAGE') == true && $pilot->rankimage!=''
-				&& file_exists($pilot->rankimage))
+		
+		if(Config::Get('SIGNATURE_SHOW_RANK_IMAGE') == true && $pilot->rankimage != ''
+				/* && file_exists($pilot->rankimage)*/
+			)
 		{
-			$ext = substr($pilot->rankimage, strlen($pilot->rankimage)-3, 3);
+			$cws = new CodonWebService();
+			$rankimg = @$cws->get($pilot->rankimage);
+			$rankimg = imagecreatefromstring($rankimg);
+			
+			/*$ext = substr($pilot->rankimage, strlen($pilot->rankimage)-3, 3);
 		
 			# Get the rank image type, just jpg, gif or png
 			if($ext == 'png')
@@ -1103,7 +1109,7 @@ class PilotData extends CodonData
 			elseif($ext == 'gif')
 				$rankimg = @imagecreatefromgif($pilot->rankimage);
 			else	
-				$rankimg = @imagecreatefromjpg($pilot->rankimage);
+				$rankimg = @imagecreatefromjpg($pilot->rankimage);*/
 				
 			if(!$rankimg) { echo '';}
 			else 
