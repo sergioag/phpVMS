@@ -370,7 +370,7 @@ class Operations extends CodonModule
 		$this->set('title', 'Add Schedule');
 		$this->set('action', 'addschedule');
 
-        $this->set('allairlines', OperationsData::GetAllAirlines());
+		$this->set('allairlines', OperationsData::GetAllAirlines());
 		$this->set('allaircraft', OperationsData::GetAllAircraft());
 		$this->set('allairports', OperationsData::GetAllAirports());
 		//$this->set('airport_json_list', OperationsData::getAllAirportsJSON());
@@ -388,7 +388,7 @@ class Operations extends CodonModule
 		
 		$this->set('action', 'editschedule');
 
-        $this->set('allairlines', OperationsData::GetAllAirlines());
+		$this->set('allairlines', OperationsData::GetAllAirlines());
 		$this->set('allaircraft', OperationsData::GetAllAircraft());
 		$this->set('allairports', OperationsData::GetAllAirports());
 		$this->set('flighttypes', Config::Get('FLIGHT_TYPES'));
@@ -442,8 +442,8 @@ class Operations extends CodonModule
 			$total_pages = 0;
 		}
 		
-        if ($page > $total_pages) 
-        {
+		if ($page > $total_pages) 
+		{
 			$page = $total_pages;
 		}
 		
@@ -637,7 +637,7 @@ class Operations extends CodonModule
 			else
 				$this->set('message', 'There was an error adding the airline');
 
-            $this->render('core_error.tpl');
+			$this->render('core_error.tpl');
 			return;
 		}
 
@@ -798,7 +798,7 @@ class Operations extends CodonModule
 		if(DB::errno() != 0)
 		{
 			$this->set('message', 'There was an error editing the aircraft');
-            $this->render('core_error.tpl');
+			$this->render('core_error.tpl');
 			return;
 		}
 		
@@ -960,12 +960,12 @@ class Operations extends CodonModule
 			
 		if(DB::errno() != 0 && $ret == false)
 		{
-            $this->set('message', 'There was an error adding the schedule, already exists DB error: '.DB::error());
+			$this->set('message', 'There was an error adding the schedule, already exists DB error: '.DB::error());
 			$this->render('core_error.tpl');
 			return;
 		}
 		
-        $this->set('message', 'The schedule "'.$this->post->code.$this->post->flightnum.'" has been added');
+		$this->set('message', 'The schedule "'.$this->post->code.$this->post->flightnum.'" has been added');
 		$this->render('core_success.tpl');
 		
 		LogData::addLog(Auth::$userinfo->pilotid, 'Added schedule "'.$this->post->code.$this->post->flightnum.'"');
@@ -996,6 +996,10 @@ class Operations extends CodonModule
 		$this->post->route = str_replace($this->post->arricao, '', $this->post->route);
 		$this->post->route = str_replace('SID', '', $this->post->route);
 		$this->post->route = str_replace('STAR', '', $this->post->route);
+
+		if(!is_array($_POST['daysofweek'])){
+			$_POST['daysofweek'] = array();
+		}
 		
 		$data = array(	'code'=>$this->post->code,
 						'flightnum'=>$this->post->flightnum,
@@ -1037,7 +1041,7 @@ class Operations extends CodonModule
 		SchedulesData::DeleteSchedule($this->post->id);
 		
 		$params = array();
-        if(DB::errno() != 0)
+		if(DB::errno() != 0)
 		{
 			$params['status'] = 'There was an error deleting the schedule';
 			$params['error'] = DB::error();
