@@ -320,15 +320,11 @@ else
 	
 	define('CODON_MODULES_PATH', SITE_ROOT.'/core/modules');
 	define('CODON_DEFAULT_MODULE', 'Frontpage');
-	
-	/*Config::Set('MODULES_PATH', SITE_ROOT.'/core/modules');
-	Config::Set('DEFAULT_MODULE', 'Frontpage');
-	Config::Set('MODULES_AUTOLOAD', true);*/
 }
 
 /* Cache settings */
 $cache_settings = array(
-	'active' => true,
+	'active' => false,
 	'engine' => 'file',					/* "file" or "apc" */
 	'location' => CACHE_PATH,	/* For the "file" engine type */
 	'prefix' => 'phpvms_',				/* Specify a prefix for any entries */
@@ -379,7 +375,6 @@ Config::Set('CACHE_KEY_LIST', array(
 	'all_ranks',
 	)
 );
-
 
 Config::Set('TABLE_LIST', array(
 	'acarsdata', 
@@ -500,7 +495,8 @@ $permission_set = array
 	  'EDIT_PROFILE_FIELDS'		=> 0x80000,
 	  'EDIT_VACENTRAL'			=> 0x100000,
 	  'ACCESS_ADMIN'			=> 0x2000000,
-	  'FULL_ADMIN'				=> 35651519);
+	  'FULL_ADMIN'				=> 35651519
+);
 
 Config::Set('permission_set', $permission_set);  
 define('NO_ADMIN_ACCESS', 0);

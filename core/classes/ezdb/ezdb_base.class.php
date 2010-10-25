@@ -24,6 +24,9 @@
  * @copyright Copyright (c) 2008-2010, Nabeel Shahzad
  * @link http://github.com/nshahzad/ezdb
  * @license MIT License
+ * 
+ * 
+ * Based on ezSQL by Justin Vincent: http://justinvincent.com/docs/ezsql/ez_sql_help.htm
  */
 
 /**********************************************************************
@@ -97,10 +100,10 @@ class ezDB_Base
 	
 	public $table_prefix = '';
 	
-	public $dbuser = false;
-	public $dbpassword = false;
-	public $dbname = false;
-	public $dbhost = false;
+	protected $dbuser = false;
+	protected $dbpassword = false;
+	protected $dbname = false;
+	protected $dbhost = false;
 	public $result;
 	
 	public $default_type = OBJECT;
@@ -370,6 +373,12 @@ class ezDB_Base
 		$this->from_disk_cache = false;
 		
 		return true;
+	}
+
+
+	public function num_queries()
+	{
+		return $this->num_queries;
 	}
 			
 	/**
@@ -920,7 +929,7 @@ class ezDB_Base
 	 */
 	public function store_cache($query,$is_insert)
 	{
-		if($this->cache_queries === false || $is_insert)
+		if($this->cache_query === false || $is_insert)
 			return false;
 			
 		$result_cache = array('col_info' => $this->col_info,
@@ -930,7 +939,7 @@ class ezDB_Base
 		
 		if($this->cache_type == 'memcache')
 		{
-			
+			// @TODO: memcache 
 		}
 		elseif($this->cache_type == 'apc')
 		{
@@ -940,13 +949,20 @@ class ezDB_Base
 		{
 			$cache_file = $this->cache_dir.'/'.md5($query);
 
-			if ( ! is_dir($this->cache_dir) )
+			if (!is_dir($this->cache_dir) )
 			{
 				$this->register_error("Could not open cache dir: $this->cache_dir");
 				return false;
 			}
-																			
-			error_log ( serialize($result_cache), 3, $cache_file);
+			
+			$ttl = strtotime('+'.$this->cache_timeout.' seconds');
+			$value = $ttl.PHP_EOL.serialize($result_cache);
+
+			$fp = fopen($cache_file, 'w');
+			flock($fp);
+			fwrite($fp, $value);
+			fclose($fp);
+
 		}
 		
 		return true;		
@@ -962,13 +978,13 @@ class ezDB_Base
 	 */
 	public function get_cache($query)
 	{
-		if($this->cache_queries === false || $is_insert)
+		if($this->cache_query === false || $is_insert)
 			return false;
 		
 		# Check if we want to us memcache, and whether it's available
 		if($this->cache_type == 'memcache')
 		{
-			
+			// @TODO: memcache 
 		}
 		elseif($this->cache_type == 'apc')
 		{
@@ -983,15 +999,16 @@ class ezDB_Base
 			// Try to get previously cached version
 			if (file_exists($cache_file) )
 			{
-				// Only use this cache file if less than 'cache_timeout' (hours)
-				if (time() - filemtime($cache_file) > $this->cache_timeout )
+				$contents = file($cache_file);
+			
+				# See if the current time is greater than that cutoff
+				if(time() > $contents[0])
 				{
-					unlink($cache_file);
+					return false;
 				}
-				else
-				{
-					$result_cache = unserialize(file_get_contents($cache_file));
-				}
+			
+				# Then return the unserialized version of the store
+				$result_cache = unserialize($contents[1]);
 			}
 		}	
 		

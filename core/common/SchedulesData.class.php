@@ -866,6 +866,19 @@ class SchedulesData extends CodonData
 			return;
 		}
 	
+		/* Make sure the schedule bidids */
+		$sql = 'SELECT * FROM '.TABLE_PREFIX."bids
+				WHERE `dateadded` + INTERVAL {$cache_time} HOUR < NOW()";
+				
+		$results = DB::get_results($sql);
+		foreach($results as $row)
+		{
+			$sql = 'UPDATE '.TABLE_PREFIX."schedules
+					SET `bidid`=0 WHERE `id`={$row->routeid}";
+			
+			DB::query($sql);
+		}
+		
 		$sql = 'DELETE FROM '.TABLE_PREFIX."bids
 				WHERE `dateadded` + INTERVAL {$cache_time} HOUR < NOW()";
 				

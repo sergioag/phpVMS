@@ -24,6 +24,8 @@
  * @copyright Copyright (c) 2008-2010, Nabeel Shahzad
  * @link http://github.com/nshahzad/ezdb
  * @license MIT License
+ * 
+ * Based on ezSQL by Justin Vincent: http://justinvincent.com/docs/ezsql/ez_sql_help.htm
  */
 
 /**
@@ -220,6 +222,14 @@ class DB
 		self::$connected = true;
 		return true;
 	}
+
+	public static function num_queries()
+	{
+		
+		return self::$DB->num_queries();
+
+	}
+
 	
 	/**
 	 * Select/Change the active database. It's called from
