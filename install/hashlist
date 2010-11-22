@@ -18,7 +18,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 0e366f4d9910ffc37ecb4051a93cf7df  *./install/dbtest.php
 2b32ddc5d53c6c3ab149405692aa98a9  *./install/install.sql
 1ee77934d1a602e9c74861c9391a55d9  *./install/update_628.sql
-7abb942e032a4d6ec172fb87e3177a70  *./install/loader.inc.php
+c28888163765862207ff5f8bad5a00b7  *./install/loader.inc.php
 20aed0ce417ba947f254459309b4ac1f  *./install/Installer.class.php
 b14725236bf842cb511bdd573357448a  *./install/update.php
 6b8d1dc1b006ef2a88e8130ce7bb157a  *./install/update_441.sql
@@ -176,7 +176,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/modules/index.php
 c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 4745bff609adac50676f834dbf25f46c  *./core/modules/ACARS/fsacars.php
 6b946047c6c072b85d88792409097feb  *./core/modules/ACARS/fspax.php
-9d32f566f481fa76b876521efb0679d6  *./core/modules/ACARS/ACARS.php
+453759d7d7df9787757062bc85ce6589  *./core/modules/ACARS/ACARS.php
 52d9eb7db618baf62c63b03a24e6ecad  *./core/modules/ACARS/xacars.php
 66bd67b4963e9d270986ba68768fd4d8  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
@@ -305,7 +305,7 @@ c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php
 fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
-aa91dd2a98afefec3e3cfabb18d2913f  *./admin/modules/Operations/Operations.php
+ddf30b2c180d2a265c9c8d70a31d0595  *./admin/modules/Operations/Operations.php
 60a55242a1e64b00f3bd4dcda8e7ea75  *./admin/modules/Import/Import.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
@@ -325,7 +325,7 @@ eaa5417940c71f441b016b12c534665d  *./lib/js/ofc/js/swfobject.js
 6dbd016b3b0424b02c9390eeb1d83175  *./lib/js/jquery-front.js
 a73cd5d722a7390595c51e0ccf6fa82f  *./lib/js/jquery.colorbox.js
 1e49c1238d696a8c092260a72e63e081  *./lib/js/jqModal.js
-7c6967f5c1ddbb9d61f69e7b19d88056  *./lib/js/acarsmap.js
+a178f0dc339b52d9a98ba07bd1d581fd  *./lib/js/acarsmap.js
 168c89d09d780812785edabdcc649b2e  *./lib/js/jquery.bigiframe.js
 fdf811e16f70717f1082e279a1cc52cc  *./lib/js/jquery.colorbox-min.js
 7dc490169b91b9f7365c6dc5113dcc6c  *./lib/js/phpvms.js

@@ -32,10 +32,10 @@ if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.con
 	/* Include just some basic files to get the install going */
 	include CLASS_PATH . '/ezdb/ezdb.class.php';
 	include CLASS_PATH . '/CodonCache.class.php';
+	include CLASS_PATH . '/CodonData.class.php';
 	include CLASS_PATH . '/Config.class.php';
 	include CLASS_PATH . '/Debug.class.php';
 	include CLASS_PATH . '/Template.class.php';
-	include CLASS_PATH . '/TemplateSet.class.php';
 	include CLASS_PATH . '/TemplateSet.class.php';
 	include CORE_PATH . '/common/SettingsData.class.php';
 }

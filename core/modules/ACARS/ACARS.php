@@ -60,13 +60,14 @@ class ACARS extends CodonModule
 		$this->acarsflights = array();
 		foreach($flights as $flight)
 		{	
-			if($flight->route == '')
-			{
+			if($flight->route == '') {
 				$flight->route_details = array();
-			}
-			else
-			{
-				$flight->route_details = NavData::parseRoute($flight->route);
+			} else {
+				# Jeff's fix for ACARS
+				$params->deplat = $flight->deplat;
+				$params->deplng = $flight->deplng;
+				$params->route = $flight->route;
+				$flight->route_details = NavData::parseRoute($params); 
 			}
 			
 			$c = (array) $flight; // Convert the object to an array
@@ -74,13 +75,11 @@ class ACARS extends CodonModule
 			$c['pilotid'] = PilotData::GetPilotCode($c['code'], $c['pilotid']);
 			
 			// Normalize the data
-			if($c['timeremaining'] == '')
-			{
+			if($c['timeremaining'] == '') {
 				$c['timeremaining'] ==  '-';
 			}
 			
-			if(trim($c['phasedetail']) == '')
-			{
+			if(trim($c['phasedetail']) == '') {
 				$c['phasedetail'] = 'Enroute';
 			}
 			
@@ -88,21 +87,19 @@ class ACARS extends CodonModule
 				This should probably move to inside the ACARSData function, so then
 				 the heading is always there for no matter what the calcuation is
 				*/
-			if($flight->heading == '')
-			{
+			if($flight->heading == '') {
+				
 				/* Calculate an angle based on current coords and the
 					destination coordinates */
 				
 				$flight->heading = intval(atan2(($flight->lat - $flight->arrlat), ($flight->lng - $flight->arrlng)) * 180 / 3.14);
 				//$flight->heading *= intval(180/3.14159);
 				
-				if(($flight->lng - $flight->arrlng) < 0)
-				{
+				if(($flight->lng - $flight->arrlng) < 0) {
 					$flight->heading += 180;
 				}
 				
-				if($flight->heading < 0)
-				{
+				if($flight->heading < 0) {
 					$flight->heading += 360;
 				}
 			}
