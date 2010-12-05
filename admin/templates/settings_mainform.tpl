@@ -11,22 +11,18 @@
 </thead>
 <tbody>
 <?php
-	if(!$allsettings)
-	{
+	if(!$allsettings) {
 		echo '<p>No settings have been added</p>';
-	}
-	else
-	{
-		foreach($allsettings as $setting)
-		{
+	} else {
+		
+		foreach($allsettings as $setting) {
 			
 			echo '<tr>
 					<td width="15%" nowrap>
 						<strong>'.$setting->friendlyname.'</strong></td>
 						<td>';
 			
-			switch($setting->name)
-			{
+			switch($setting->name) {
 
 				case 'PHPVMS_VERSION':
 					echo PHPVMS_VERSION;
@@ -46,8 +42,7 @@
 					echo '<SELECT name="CURRENT_SKIN">';
 						
 						$tot = count($skins);
-						for($i=0;$i<$tot;$i++)
-						{
+						for($i=0;$i<$tot;$i++) {
 							$sel = ($skin->value == $skins[$i])? 'selected' : '';
 							echo '<option value="'.$skins[$i].'" '. $sel . '>'.$skins[$i].'</option>';
 						}
@@ -62,8 +57,7 @@
 					
 					echo '<SELECT name="DEFAULT_GROUP">';
 						
-						foreach($allgroups as $group)
-						{
+						foreach($allgroups as $group) {
 							$sel = ($current == $group->groupid)? 'selected' : '';
 							echo '<option value="'.$group->groupid.'" '. $sel . '>'.$group->name.'</option>';
 						}
@@ -75,15 +69,11 @@
 					
 				default:
 					
-					if($setting->value == 'true' || $setting->value == 'false')
-					{
-						if($setting->value == 'true')
-						{
+					if($setting->value == 'true' || $setting->value == 'false') {
+						if($setting->value == 'true') {
 							$sel_true = 'selected';
 							$sel_false = '';
-						}
-						else
-						{
+						} else {
 							$sel_true = '';
 							$sel_false = 'selected';
 						}
@@ -93,9 +83,7 @@
 								<option value="true" '. $sel_true . '>Enabled</option>
 								<option value="false" ' . $sel_false . '>Disabled</option>
 							  </SELECT>';
-					}
-					else
-					{
+					} else {
 						echo '<input type="text" name="'.$setting->name.'" value="'.$setting->value.'" />';
 					}
 					

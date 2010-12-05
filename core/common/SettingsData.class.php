@@ -22,8 +22,7 @@ class SettingsData extends CodonData
 	public static function getAllSettings()
 	{
 		$all_settings = CodonCache::read('site_settings');
-		if($all_settings === false)
-		{
+		if($all_settings === false) {
 			$sql = 'SELECT * FROM ' . TABLE_PREFIX . 'settings';
 			$all_settings = DB::get_results($sql);
 			
