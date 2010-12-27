@@ -562,52 +562,42 @@ class SchedulesData extends CodonData
 	 */
 	public static function editScheduleFields($scheduleid, $fields)
 	{
-		if(!is_array($fields))
-		{
+		if(!is_array($fields)) {
 			return false;
 		}
 		
-		if(isset($fields['depicao']) && isset($fields['arricao']))
-		{
-			if($fields['depicao'] == $fields['arricao'])
-			{
+		if(isset($fields['depicao']) && isset($fields['arricao'])) {
+			if($fields['depicao'] == $fields['arricao']) {
 				return false;
 			}
 		}
 		
 		/* Ensure data is ok and formatted properly */
-		if(isset($fields['code']))
-		{
+		if(isset($fields['code'])) {
 			$fields['code'] = strtoupper($fields['code']);
 		}
 		
-		if(isset($fields['flightnum']))
-		{
+		if(isset($fields['flightnum'])) {
 			$fields['flightnum'] = strtoupper($fields['flightnum']);
 		}
 		
-		if(isset($fields['depicao']))
-		{
+		if(isset($fields['depicao'])) {
 			$fields['depicao'] = strtoupper($fields['depicao']);
 		}
 		
-		if(isset($fields['arricao']))
-		{
+		if(isset($fields['arricao'])) {
 			$fields['arricao'] = strtoupper($fields['arricao']);
 		}
 	
-		if(isset($fields['deptime']))
-		{
+		if(isset($fields['deptime'])) {
 			$fields['deptime'] = strtoupper($fields['deptime']);
 		}
 		
-		if(isset($fields['arrtime']))
-		{
+		if(isset($fields['arrtime'])) {
 			$fields['arrtime'] = strtoupper($fields['arrtime']);
 		}
 		
-		if(isset($fields['enabled']))
-		{
+		if(isset($fields['enabled'])) {
 			if($fields['enabled'] == true)
 				$fields['enabled'] = 1;
 			else
@@ -618,32 +608,27 @@ class SchedulesData extends CodonData
 		if(isset($fields['flighttype']))
 		{
 			$fields['flighttype'] = strtoupper($fields['flighttype']);
-			if($fields['flighttype'] == '')
-			{
+			if($fields['flighttype'] == '') {
 				$fields['flighttype'] = 'P';
 			}
 		}
 		
-		if(isset($fields['flightlevel']))
-		{
+		if(isset($fields['flightlevel'])) {
 			$fields['flightlevel'] = str_replace(',', '', $fields['flightlevel']);
 		}
 
 		
-		if(isset($fields['flighttime']))
-		{
+		if(isset($fields['flighttime'])) {
 			$fields['flighttime'] = str_replace(':', '.', $fields['flighttime']);
 		}
 		
-		if(isset($fields['route']))
-		{
+		if(isset($fields['route'])) {
 			$fields['route'] = str_replace('SID', '', $fields['route']);
 			$fields['route'] = str_replace('STAR', '', $fields['route']);
 			$fields['route'] = trim($fields['route']);
 		}
 		
-		foreach($fields as $key=>$value)
-		{
+		foreach($fields as $key=>$value) {
 			$fields[$key] = DB::escape($value);
 		}
 		
@@ -653,8 +638,7 @@ class SchedulesData extends CodonData
 		
 		$res = DB::query($sql);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			return false;
 		}
 		
@@ -837,8 +821,7 @@ class SchedulesData extends CodonData
 		$routeid = DB::escape($routeid);
 		
 		if(DB::get_row('SELECT bidid FROM '.TABLE_PREFIX.'bids
-						WHERE pilotid='.$pilotid.' AND routeid='.$routeid))
-		{
+						WHERE pilotid='.$pilotid.' AND routeid='.$routeid)) {
 			return false;
 		}
 			
@@ -858,11 +841,10 @@ class SchedulesData extends CodonData
 		return true;
 	}
 	
-	public static function deleteExpiredBids()
-	{		
+	public static function deleteExpiredBids() {
+		
 		$cache_time = Config::Get('BID_EXPIRE_TIME');
-		if($cache_time == '')
-		{
+		if($cache_time == '') {
 			return;
 		}
 	
@@ -871,12 +853,13 @@ class SchedulesData extends CodonData
 				WHERE `dateadded` + INTERVAL {$cache_time} HOUR < NOW()";
 				
 		$results = DB::get_results($sql);
-		foreach($results as $row)
-		{
-			$sql = 'UPDATE '.TABLE_PREFIX."schedules
-					SET `bidid`=0 WHERE `id`={$row->routeid}";
+		if(count($results) > 0) {
+			foreach($results as $row) {
+				$sql = 'UPDATE '.TABLE_PREFIX."schedules
+						SET `bidid`=0 WHERE `id`={$row->routeid}";
 			
-			DB::query($sql);
+				DB::query($sql);
+			}
 		}
 		
 		$sql = 'DELETE FROM '.TABLE_PREFIX."bids
@@ -923,7 +906,6 @@ class SchedulesData extends CodonData
 	{
 		$max = 0;
 		
-		
 		$code = strtoupper($code);
 		$flightnum = strtoupper($flightnum);
 		
@@ -934,8 +916,7 @@ class SchedulesData extends CodonData
 		# Turn on caching:		
 		DB::enableCache();
 		
-		do 
-		{	
+		do  {	
 			$count = PIREPData::getReportCountForRoute($code, $flightnum, $start);
 			$date = date('m-d', $start);
 			
@@ -979,102 +960,4 @@ class SchedulesData extends CodonData
 			
 		return $data;
 	}
-	
-	/* Below here, these are all deprecated. In your code, you should use
-		the query structure, defined within the functions
-		
-	/**
-	 * @deprecated
-	 */
-	/*public static function getSchedulesWithCode($code, $onlyenabled=true, $limit='', $start='')
-	{
-		$params = array('s.code' => strtoupper($code));
-		if($onlyenabled)
-			$params['s.enabled'] = '1';
-		
-		return self::findSchedules($params, $limit, $start);
-	}*/
-	
-	/**
-	 * @deprecated
-	 */
-	/*public static function getSchedulesWithFlightNum($flightnum, $onlyenabled=true, $limit='', $start='')
-	{
-		$params = array('s.flightnum' => $flightnum);
-		if($onlyenabled)
-			$params['s.enabled'] = '1';
-		
-		return self::findSchedules($params, $limit, $start);
-	}*/
-	
-	/**
-	 * Return all of the routes give the departure airport
-	 * 
-	 * @deprecated
-	 */
-	/*public static function getSchedulesWithDeparture($depicao, $onlyenabled = true, $limit = '', $start='')
-	{
-		self::getRoutesWithDeparture($depicao, $onlyenabled, $limit);
-	}*/
-
-	/**
-	 * @deprecated
-	 */
-	/*public static function getRoutesWithDeparture($depicao, $onlyenabled=true, $limit='', $start='')
-	{
-		$params = array('s.depicao' => strtoupper($depicao));
-		if($onlyenabled)
-			$params['s.enabled'] = '1';
-		
-		return self::findSchedules($params, $limit, $start);
-	}*/
-	
-	/**
-	 * @deprecated
-	 */
-	/*public static function getRoutesWithArrival($arricao, $onlyenabled=true, $start='', $limit='')
-	{
-		return self::getSchedulesWithArrival($arricao, $onlyenabled, $limit);
-	}*/
-	
-	/**
-	 * @deprecated
-	 */
-	/*public static function getSchedulesWithArrival($arricao, $onlyenabled=true, $start='', $limit='')
-	{
-		$params = array('s.arricao' => strtoupper($arricao));
-		if($onlyenabled)
-			$params['s.enabled'] = '1';
-		
-		return self::findSchedules($params, $limit, $start);
-	}*/
-	
-	/**
-	 * @deprecated
-	 */
-	/*public static function getSchedulesByDistance($distance, $type, $onlyenabled=true, $start='', $limit='')
-	{
-		if($type == '')
-			$type = '>';
-			
-		$params = array('s.distance' => trim($type).' '.$distance);
-		if($onlyenabled)
-			$params['s.enabled'] = '1';
-		
-		return self::findSchedules($params, $limit, $start);
-	}*/
-	
-	/**
-	 * Search schedules by the equipment type
-	 * 
-	 * @deprecated
-	 */
-	/*public static function getSchedulesByEquip($ac, $onlyenabled = true, $start='', $limit='')
-	{
-		$params = array('a.name' => $ac);
-		if($onlyenabled)
-			$params['s.enabled'] = '1';
-		
-		return self::findSchedules($params, $limit, $start);
-	}*/
 }

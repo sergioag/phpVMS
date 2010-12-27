@@ -22,11 +22,10 @@
  */
 
 define('SITE_ROOT', dirname(dirname(__FILE__)));
-define('CORE_PATH', SITE_ROOT . 'core/');
-define('CLASS_PATH', CORE_PATH . 'classes/');
+define('CORE_PATH', SITE_ROOT . '/core');
+define('CLASS_PATH', CORE_PATH . '/classes');
 
-if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0)
-{
+if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
 	define('DS', DIRECTORY_SEPARATOR);
 	
 	/* Include just some basic files to get the install going */
@@ -38,9 +37,7 @@ if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.con
 	include CLASS_PATH . '/Template.class.php';
 	include CLASS_PATH . '/TemplateSet.class.php';
 	include CORE_PATH . '/common/SettingsData.class.php';
-}
-else
-{
+} else {
 	include CORE_PATH . '/codon.config.php';
 }
 

@@ -13,12 +13,9 @@
 		<?php
 		$pilotcode = PilotData::GetPilotCode($pilotinfo->code, $pilotinfo->pilotid);
 
-		if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png'))
-		{
+		if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png')) {
 			echo 'None selected';
-		}
-		else
-		{
+		} else {
 		?>
 			<img src="<?php	echo SITE_URL.AVATAR_PATH.'/'.$pilotcode.'.png';?>" />
 		<?php
@@ -52,8 +49,7 @@
 		<select name="code">
 		<?php
 		$allairlines = OperationsData::GetAllAirlines();
-		foreach($allairlines as $airline)
-		{
+		foreach($allairlines as $airline) {
 			if($pilotinfo->code == $airline->code)
 				$sel =  ' selected';
 			else
@@ -70,8 +66,7 @@
 	<td>Location</td>
 	<td><select name="location">
 			<?php
-			foreach($countries as $countryCode=>$countryName)
-			{
+			foreach($countries as $countryCode=>$countryName) {
 				if($pilotinfo->location == $countryCode)
 					$sel = 'selected="selected"';
 				else	
@@ -89,8 +84,7 @@
 		<select name="hub">
 		<?php
 		$allhubs = OperationsData::GetAllHubs();
-		foreach($allhubs as $hub)
-		{
+		foreach($allhubs as $hub) {
 			if($pilotinfo->hub == $hub->icao)
 				$sel = ' selected';
 			else
@@ -106,19 +100,22 @@
 	<td>Current Rank</td>
 	<td>
 	<?php
-	if(Config::Get('RANKS_AUTOCALCULATE') == false)
-	{
+	if(Config::Get('RANKS_AUTOCALCULATE') == false) {
 		$allranks = RanksData::GetAllRanks();
 		echo '<select name="rank">';
 		
-		foreach($allranks as $rank)
-		{
-			echo "<option value=\"{$rank->rankid}\">{$rank->rank}</option>";
+		foreach($allranks as $rank) {
+			
+			if($pilotinfo->rank == $rank->rank) {
+				$selected = "selected=\"selected\"";
+			} else {
+				$selected = '';
+			}
+
+			echo "<option value=\"{$rank->rankid}\" {$selected}>{$rank->rank}</option>";
 		}
 		echo '</select>';
-	}
-	else
-	{
+	} else {
 		echo $pilotinfo->rank;
 	}
 	?></td>
@@ -160,13 +157,10 @@
 <tr>
 	<td>Pilot active?</td>
 	<td><?php 
-		if(intval($pilotinfo->retired) == 1) 
-		{  
+		if(intval($pilotinfo->retired) == 1)  {  
 			$retsel='selected'; 
 			$activesel = ''; 
-		}
-		else
-		{
+		} else {
 			$activesel = 'selected'; 
 			$retsel = '';
 		}
@@ -184,24 +178,20 @@
 </tr>
 <tr>
 <?php
-if($customfields)
-{
-	foreach($customfields as $field)
-	{
+if($customfields) {
+	foreach($customfields as $field) {
 ?>
 	<tr>
 		<td><?php echo $field->title;?></td>
 		<td>
 		<?php
-		if($field->type == 'dropdown')
-		{
+		if($field->type == 'dropdown') {
+			
 			echo "<select name=\"{$field->fieldname}\">";
 			$values = explode(',', $field->fieldvalues);
 		
-			if(is_array($values))
-			{						
-				foreach($values as $val)
-				{
+			if(is_array($values)) {						
+				foreach($values as $val) {
 					$sel = ($field->value === $val) ? 'sel="selected"' : '';
 					
 					$val = trim($val);
@@ -210,13 +200,9 @@ if($customfields)
 			}
 			
 			echo '</select>';
-		}
-		elseif($field->type == 'textarea')
-		{
+		} elseif($field->type == 'textarea') {
 			echo '<textarea name="'.$field->fieldname.'" style="width: 400px; height: 100px" class="customfield_textarea">'.$field->value.'</textarea>';
-		}
-		else
-		{
+		} else {
 			echo '<input type="text" name="'.$field->fieldname.'" value="'.$field->value.'" />';
 		}
 		?>

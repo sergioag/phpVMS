@@ -57,18 +57,12 @@ class Operations extends CodonModule
 
 	public function viewmap()
 	{
-		if($this->get->type === 'pirep')
-		{
+		if($this->get->type === 'pirep') {
 			$data = PIREPData::getReportDetails($this->get->id);
-		}
-		
-		elseif($this->get->type === 'schedule')
-		{
+		} elseif($this->get->type === 'schedule') {
 			$data = SchedulesData::getScheduleDetailed($this->get->id);
-		}
-		
-		elseif($this->get->type === 'preview')
-		{
+		} elseif($this->get->type === 'preview') {
+			
 			$data = new stdClass();
 			
 			$depicao = OperationsData::getAirportInfo($this->get->depicao);
@@ -142,8 +136,7 @@ class Operations extends CodonModule
 	
 	public function getfuelprice()
 	{
-		if(Config::Get('FUEL_GET_LIVE_PRICE') == false)
-		{
+		if(Config::Get('FUEL_GET_LIVE_PRICE') == false) {
 			echo '<span style="color: red">Live fuel pricing is disabled!</span>';
 			return;
 		}
@@ -151,8 +144,7 @@ class Operations extends CodonModule
 		$icao = $_GET['icao'];
 		$price = FuelData::get_from_server($icao);
 		
-		if(is_bool($price) && $price === false)
-		{
+		if(is_bool($price) && $price === false) {
 			echo '<span style="color: red">Live fuel pricing is not available for this airport</span>';
 			return;
 		}
@@ -164,12 +156,10 @@ class Operations extends CodonModule
 	{
 		$results = OperationsData::searchAirport($this->get->term);
 		
-		if(count($results) > 0)
-		{
+		if(count($results) > 0) {
 			$return = array();
 			
-			foreach($results as $row)
-			{
+			foreach($results as $row) {
 				$tmp = array(
 					'label' => "{$row->icao} ({$row->name})",
 					'value' => $row->icao,
@@ -185,14 +175,10 @@ class Operations extends CodonModule
 	
 	public function airlines()
 	{
-		if(isset($this->post->action))
-		{
-			if($this->post->action == 'addairline')
-			{
+		if(isset($this->post->action)) {
+			if($this->post->action == 'addairline') {
 				$this->add_airline_post();
-			}
-			elseif($this->post->action == 'editairline')
-			{
+			} elseif($this->post->action == 'editairline') {
 				$this->edit_airline_post();
 			}
 		}
@@ -205,8 +191,7 @@ class Operations extends CodonModule
 	{
 		/* If they're adding an aircraft, go through this pain
 		*/
-		switch($this->post->action)
-		{
+		switch($this->post->action) {
 			case 'addaircraft':
 				
 				$this->add_aircraft_post();
@@ -245,10 +230,8 @@ class Operations extends CodonModule
 	{
 		/* If they're adding an airport, go through this pain
 		*/
-		if(isset($this->post->action))
-		{
-			switch($this->post->action)
-			{
+		if(isset($this->post->action)) {
+			switch($this->post->action) {
 				case 'addairport':
 					$this->add_airport_post();
 					break;
@@ -277,8 +260,8 @@ class Operations extends CodonModule
 		
 		/* Do the search using jqGrid */
 		$where = array();
-		if($this->get->_search == 'true') 
-		{
+		if($this->get->_search == 'true')  {
+			
 			$searchstr = jqgrid::strip($this->get->filters);
 			$where_string = jqgrid::constructWhere($searchstr);
 			
@@ -290,30 +273,24 @@ class Operations extends CodonModule
 		# Do a search without the limits so we can find how many records
 		$count = count(OperationsData::findAirport($where));
 		
-		if($count > 0) 
-		{
+		if($count > 0)  {
 			$total_pages = ceil($count/$limit);
-		} 
-		else 
-		{
+		} else {
 			$total_pages = 0;
 		}
 		
-		if ($page > $total_pages) 
-		{
+		if ($page > $total_pages)  {
 			$page = $total_pages;
 		}
 		
 		$start = $limit * $page - $limit; // do not put $limit*($page - 1)
-		if ($start < 0) 
-		{
+		if ($start < 0)  {
 			$start = 0;
 		}
 		
 		# And finally do a search with the limits
 		$airports = OperationsData::findAirport($where, $limit, $start, "{$sidx} {$sord}");
-		if(!$airports)
-		{
+		if(!$airports) {
 			$airports = array();
 		}
 
@@ -323,22 +300,17 @@ class Operations extends CodonModule
 			'total' => $total_pages,
 			'records' => $count,
 			'rows' => array()
-			);
+		);
 		
 		# Add each row to the above array
-		foreach($airports as $row)
-		{
-			if($row->fuelprice == 0)
-			{
+		foreach($airports as $row) {
+			if($row->fuelprice == 0) {
 				$row->fuelprice = 'Live';
 			}
 			
-			if($row->hub == 1)
-			{
+			if($row->hub == 1) {
 				$name = "<b>{$row->name}</b>";
-			}
-			else
-			{
+			} else {
 				$name = $row->name;
 			}
 
@@ -419,8 +391,7 @@ class Operations extends CodonModule
 		
 		/* Do the search using jqGrid */
 		$where = array();
-		if($this->get->_search == 'true') 
-		{
+		if($this->get->_search == 'true')  {
 			$searchstr = jqgrid::strip($this->get->filters);
 			$where_string = jqgrid::constructWhere($searchstr);
 			
@@ -433,30 +404,24 @@ class Operations extends CodonModule
 		
 		# Do a search without the limits so we can find how many records
 		$count = SchedulesData::countSchedules($where);
-		if($count > 0) 
-		{
+		if($count > 0)  {
 			$total_pages = ceil($count/$limit);
-		} 
-		else 
-		{
+		} else  {
 			$total_pages = 0;
 		}
 		
-		if ($page > $total_pages) 
-		{
+		if ($page > $total_pages) {
 			$page = $total_pages;
 		}
 		
 		$start = $limit * $page - $limit; // do not put $limit*($page - 1)
-		if ($start < 0) 
-		{
+		if ($start < 0) {
 			$start = 0;
 		}
 		
 		# And finally do a search with the limits
 		$schedules = SchedulesData::findSchedules($where, $limit, $start);
-		if(!$schedules)
-		{
+		if(!$schedules) {
 			$schedules = array();
 		}
 		
@@ -469,14 +434,11 @@ class Operations extends CodonModule
 		);
 		
 		# Add each row to the above array
-		foreach($schedules as $row)
-		{
-			if($row->route != '')
-			{
+		foreach($schedules as $row) {
+			
+			if($row->route != '') {
 				$route = '<a href="#" onclick="showroute(\''.$row->id.'\'); return false;">View</a>';
-			}
-			else
-			{
+			} else {
 				$route = '-';
 			}
 			
@@ -513,39 +475,30 @@ class Operations extends CodonModule
 	public function schedules($type='activeschedules')
 	{
 		/* These are loaded in popup box */
-		if($this->get->action == 'viewroute')
-		{
+		if($this->get->action == 'viewroute') {
 			$id = $this->get->id;
 			return;
 		}
-		if($this->get->action == 'filter')
-		{
+
+
+		if($this->get->action == 'filter') {
+			
 			$this->set('title', 'Filtered Schedules');
 			
-			if($this->get->type == 'flightnum')
-			{
+			if($this->get->type == 'flightnum') {
 				$params = array('s.flightnum' => $this->get->query);
-			}
-			elseif($this->get->type == 'code')
-			{
+			} elseif($this->get->type == 'code') {
 				$params = array('s.code' => $this->get->query);
-			}
-			elseif($this->get->type == 'aircraft')
-			{
+			} elseif($this->get->type == 'aircraft') {
 				$params = array('a.name' => $this->get->query);
-			}
-			elseif($this->get->type == 'depapt')
-			{
+			} elseif($this->get->type == 'depapt') {
 				$params = array('s.depicao' => $this->get->query);
-			}
-			elseif($this->get->type == 'arrapt')
-			{
+			} elseif($this->get->type == 'arrapt') {
 				$params = array('s.arricao' => $this->get->query);
 			}
 			
 			// Filter or don't filter enabled/disabled flights
-			if(isset($this->get->enabled) && $this->get->enabled != 'all')
-			{
+			if(isset($this->get->enabled) && $this->get->enabled != 'all') {
 				$params['s.enabled'] = $this->get->enabled;
 			}
 			
@@ -554,8 +507,7 @@ class Operations extends CodonModule
 			return;
 		}
 		
-		switch($this->post->action)
-		{
+		switch($this->post->action) {
 			case 'addschedule':
 				$this->add_schedule_post();
 				break;
@@ -570,29 +522,27 @@ class Operations extends CodonModule
 				break;			
 		}
 	
-		if(!isset($this->get->start) || $this->get->start == '')
-		{
+		if(!isset($this->get->start) || $this->get->start == '') {
 			$this->get->start = 0;
 		}
 		
 		$num_per_page = 20;
 		$start = $num_per_page * $this->get->start;
 		
-		if($type == 'schedules' || $type == 'activeschedules')
-		{
+		if($type == 'schedules' || $type == 'activeschedules') {
 			$params = array('s.enabled' => 1);
 			$schedules = SchedulesData::findSchedules($params, $num_per_page, $start);
 			
 			$this->set('title', 'Viewing Active Schedules');
 			$this->set('schedules', $schedules);
 			
-			if(count($schedules) >= $num_per_page)
-			{
+			if(count($schedules) >= $num_per_page) {
+				
 				$this->set('paginate', true);
 				$this->set('start', $this->get->start+1);
 				
-				if($this->get->start - 1 > 0)
-				{
+				if($this->get->start - 1 > 0) {
+					
 					$prev = $this->get->start - 1;
 					if($prev == '')
 						$prev = 0;
@@ -600,9 +550,7 @@ class Operations extends CodonModule
 					$this->set('prev', intval($prev));
 				}
 			}
-		}
-		else
-		{
+		} else {
 			$this->set('title', 'Viewing Inactive Schedules');
 			$this->set('schedules', SchedulesData::findSchedules(array('s.enabled'=>0)));
 		}
@@ -614,15 +562,13 @@ class Operations extends CodonModule
 	{
 		$this->post->code = strtoupper($this->post->code);
 	
-		if($this->post->code == '' || $this->post->name == '')
-		{
+		if($this->post->code == '' || $this->post->name == '') {
 			$this->set('message', 'You must fill out all of the fields');
 			$this->render('core_error.tpl');
 			return;
 		}
 		
-		if(OperationsData::GetAirlineByCode($this->post->code))
-		{
+		if(OperationsData::GetAirlineByCode($this->post->code)) {
 			$this->set('message', 'An airline with this code already exists!');
 			$this->render('core_error.tpl');
 			return;
@@ -630,8 +576,7 @@ class Operations extends CodonModule
 		
 		OperationsData::AddAirline($this->post->code, $this->post->name);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			if(DB::errno() == 1062) // Duplicate entry
 				$this->set('message', 'This airline has already been added');
 			else
@@ -651,15 +596,13 @@ class Operations extends CodonModule
 	{
 		$this->post->code = strtoupper($this->post->code);
 		
-		if($this->post->code == '' || $this->post->name == '')
-		{
+		if($this->post->code == '' || $this->post->name == '') {
 			$this->set('message', 'Code and name cannot be blank');
 			$this->render('core_error.tpl');
 		}
 		
 		$prevairline = OperationsData::GetAirlineByCode($this->post->code);
-		if($prevairline && $prevairline->id != $this->post->id)
-		{
+		if($prevairline && $prevairline->id != $this->post->id) {
 			$this->set('message', 'This airline with this code already exists!');
 			$this->render('core_error.tpl');
 			return;
@@ -672,8 +615,7 @@ class Operations extends CodonModule
 			
 		OperationsData::EditAirline($this->post->id, $this->post->code, $this->post->name, $enabled);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$this->set('message', 'There was an error editing the airline');
 			$this->render('core_error.tpl');
 			return false;
@@ -704,8 +646,7 @@ class Operations extends CodonModule
 		# Check aircraft registration, make sure it's not a duplicate
 		
 		$ac = OperationsData::GetAircraftByReg($this->post->registration);
-		if($ac)
-		{
+		if($ac) {
 			$this->set('message', 'The aircraft registration must be unique');
 			$this->render('core_error.tpl');
 			return;
@@ -729,8 +670,7 @@ class Operations extends CodonModule
 			
 		OperationsData::AddAircraft($data);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			if(DB::$errno == 1062) // Duplicate entry
 				$this->set('message', 'This aircraft already exists');
 			else
@@ -938,28 +878,33 @@ class Operations extends CodonModule
 		$this->post->route = str_replace('SID', '', $this->post->route);
 		$this->post->route = str_replace('STAR', '', $this->post->route);
 	
-		$data = array(	'code'=>$this->post->code,
-						'flightnum'=>$this->post->flightnum,
-						'depicao'=>$this->post->depicao,
-						'arricao'=>$this->post->arricao,
-						'route'=>$this->post->route,
-						'aircraft'=>$this->post->aircraft,
-						'flightlevel'=>$this->post->flightlevel,
-						'distance'=>$this->post->distance,
-						'deptime'=>$this->post->deptime,
-						'arrtime'=>$this->post->arrtime,
-						'flighttime'=>$this->post->flighttime,
-						'daysofweek'=>implode('', $_POST['daysofweek']),
-						'price'=>$this->post->price,
-						'flighttype'=>$this->post->flighttype,
-						'notes'=>$this->post->notes,
-						'enabled'=>$enabled);
+		$data = array(	
+			'code'=>$this->post->code,
+			'flightnum'=>$this->post->flightnum,
+			'depicao'=>$this->post->depicao,
+			'arricao'=>$this->post->arricao,
+			'route'=>$this->post->route,
+			'aircraft'=>$this->post->aircraft,
+			'flightlevel'=>$this->post->flightlevel,
+			'distance'=>$this->post->distance,
+			'deptime'=>$this->post->deptime,
+			'arrtime'=>$this->post->arrtime,
+			'flighttime'=>$this->post->flighttime,
+			'daysofweek'=>implode('', $_POST['daysofweek']),
+			'week1' => implode('', $_POST['week1']),
+			'week2' => implode('', $_POST['week2']),
+			'week3' => implode('', $_POST['week3']),
+			'week4' => implode('', $_POST['week4']),
+			'price'=>$this->post->price,
+			'flighttype'=>$this->post->flighttype,
+			'notes'=>$this->post->notes,
+			'enabled'=>$enabled
+		);
 				
 		# Add it in
 		$ret = SchedulesData::AddSchedule($data);
 			
-		if(DB::errno() != 0 && $ret == false)
-		{
+		if(DB::errno() != 0 && $ret == false) {
 			$this->set('message', 'There was an error adding the schedule, already exists DB error: '.DB::error());
 			$this->render('core_error.tpl');
 			return;
@@ -975,8 +920,7 @@ class Operations extends CodonModule
 	{
 		if($this->post->code == '' || $this->post->flightnum == '' 
 			|| $this->post->deptime == '' || $this->post->arrtime == ''
-			|| $this->post->depicao == '' || $this->post->arricao == '')
-		{
+			|| $this->post->depicao == '' || $this->post->arricao == '') {
 			$this->set('message', 'All of the fields must be filled out');
 			$this->render('core_error.tpl');
 			
@@ -1001,26 +945,31 @@ class Operations extends CodonModule
 			$_POST['daysofweek'] = array();
 		}
 		
-		$data = array(	'code'=>$this->post->code,
-						'flightnum'=>$this->post->flightnum,
-						'depicao'=>$this->post->depicao,
-						'arricao'=>$this->post->arricao,
-						'route'=>$this->post->route,
-						'aircraft'=>$this->post->aircraft,
-						'flightlevel'=>$this->post->flightlevel,
-						'distance'=>$this->post->distance,
-						'deptime'=>$this->post->deptime,
-						'arrtime'=>$this->post->arrtime,
-						'flighttime'=>$this->post->flighttime,
-						'daysofweek'=>implode('', $_POST['daysofweek']),
-						'price'=>$this->post->price,
-						'flighttype'=>$this->post->flighttype,
-						'notes'=>$this->post->notes,
-						'enabled'=>$enabled);
+		$data = array(	
+			'code'=>$this->post->code,
+			'flightnum'=>$this->post->flightnum,
+			'depicao'=>$this->post->depicao,
+			'arricao'=>$this->post->arricao,
+			'route'=>$this->post->route,
+			'aircraft'=>$this->post->aircraft,
+			'flightlevel'=>$this->post->flightlevel,
+			'distance'=>$this->post->distance,
+			'deptime'=>$this->post->deptime,
+			'arrtime'=>$this->post->arrtime,
+			'flighttime'=>$this->post->flighttime,
+			'daysofweek'=>implode('', $_POST['daysofweek']),
+			'week1' => implode('', $_POST['week1']),
+			'week2' => implode('', $_POST['week2']),
+			'week3' => implode('', $_POST['week3']),
+			'week4' => implode('', $_POST['week4']),
+			'price'=>$this->post->price,
+			'flighttype'=>$this->post->flighttype,
+			'notes'=>$this->post->notes,
+			'enabled'=>$enabled
+		);
 		
 		$val = SchedulesData::editScheduleFields($this->post->id, $data);
-		if(!$val)
-		{
+		if(!$val) {
 			$this->set('message', 'There was an error editing the schedule: '.DB::error());
 			$this->render('core_error.tpl');
 			return;
@@ -1035,14 +984,13 @@ class Operations extends CodonModule
 		LogData::addLog(Auth::$userinfo->pilotid, 'Edited schedule "'.$this->post->code.$this->post->flightnum.'"');
 	}
 
-	protected function delete_schedule_post()
-	{
+	protected function delete_schedule_post() {
+		
 		$schedule = SchedulesData::findSchedules(array('s.id'=>$this->post->id));
 		SchedulesData::DeleteSchedule($this->post->id);
 		
 		$params = array();
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$params['status'] = 'There was an error deleting the schedule';
 			$params['error'] = DB::error();
 			echo json_encode($params);
