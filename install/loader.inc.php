@@ -26,6 +26,7 @@ define('CORE_PATH', SITE_ROOT . '/core');
 define('CLASS_PATH', CORE_PATH . '/classes');
 
 if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
+	
 	define('DS', DIRECTORY_SEPARATOR);
 	
 	/* Include just some basic files to get the install going */

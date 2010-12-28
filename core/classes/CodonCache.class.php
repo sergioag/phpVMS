@@ -46,7 +46,7 @@ class CodonCache
 		/*	These are the default settings, which will get merged with
 			the incoming settings passed to this function */
 		self::$settings = array(
-			'active' => true,					/* enabled by default, self::setStatus() */
+			'active' => false,					/* enabled by default, self::setStatus() */
 			'engine' => 'file',					/* "file" or "apc" */
 			'location' => dirname(__FILE__),	/* For the "file" engine type */
 			'prefix' => __CLASS__,				/* Specify a prefix for any entries */
@@ -76,16 +76,13 @@ class CodonCache
 			),
 		);
 		
-		if(is_array($settings))
-		{
+		if(is_array($settings)) {
 			self::$settings = array_merge(self::$settings, $settings);
 		}
 		
-		if(self::$settings['engine'] == 'file')
-		{
+		if(self::$settings['engine'] == 'file') {
 			# Add a trailing slash
-			if(substr(self::$settings['location'], -1, 1) != '/')
-			{
+			if(substr(self::$settings['location'], -1, 1) != '/') {
 				self::$settings['location'] .= '/';
 			}
 		}

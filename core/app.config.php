@@ -307,15 +307,12 @@ Config::Set('CACHE_PATH', SITE_ROOT . '/core/cache');
 Config::Set('TPL_EXTENSION', '.tpl');
 Config::Set('BASE_TEMPLATE_PATH', SITE_ROOT.'/core/templates');
 
-if(defined('ADMIN_PANEL') && ADMIN_PANEL === true)
-{	
+if(defined('ADMIN_PANEL') && ADMIN_PANEL === true) {	
 	Template::SetTemplatePath(SITE_ROOT.'/admin/templates');
 	
 	define('CODON_MODULES_PATH', SITE_ROOT.'/admin/modules');
 	define('CODON_DEFAULT_MODULE', 'Dashboard');
-}
-else 
-{	
+} else {	
 	Template::SetTemplatePath(Config::Get('BASE_TEMPLATE_PATH'));
 	
 	define('CODON_MODULES_PATH', SITE_ROOT.'/core/modules');
@@ -325,9 +322,9 @@ else
 /* Cache settings */
 $cache_settings = array(
 	'active' => false,
-	'engine' => 'file',					/* "file" or "apc" */
+	'engine' => 'file',			/* "file" or "apc" */
 	'location' => CACHE_PATH,	/* For the "file" engine type */
-	'prefix' => 'phpvms_',				/* Specify a prefix for any entries */
+	'prefix' => 'phpvms_',		/* Specify a prefix for any entries */
 	'profiles' => array(
 		'default' => array(
 			'duration' => '+10 minutes',
@@ -472,35 +469,34 @@ define('VMS_AUTH_COOKIE', 'VMSAUTH');
  */
 
 # Bit-masks for permission sets
-$permission_set = array
-	 (/*'NO_ADMIN_ACCESS'			=> 0,*/
-	  'EDIT_NEWS'				=> 0x1, 
-	  'EDIT_PAGES'				=> 0x2, 
-	  'EDIT_DOWNLOADS'			=> 0x4,
-	  'EMAIL_PILOTS'			=> 0x8, 
-	  'EDIT_AIRLINES'			=> 0x10,
-	  'EDIT_FLEET'				=> 0x20,
-	  'EDIT_SCHEDULES'			=> 0x80,
-	  'IMPORT_SCHEDULES'		=> 0x100,
-	  'MODERATE_REGISTRATIONS'	=> 0x200,
-	  'EDIT_PILOTS'				=> 0x400,
-	  'EDIT_GROUPS'				=> 0x800,
-	  'EDIT_RANKS'				=> 0x1000,
-	  'EDIT_AWARDS'				=> 0x2000,
-	  'MODERATE_PIREPS'			=> 0x4000,
-	  'VIEW_FINANCES'			=> 0x8000,
-	  'EDIT_EXPENSES'			=> 0x10000,
-	  'EDIT_SETTINGS'			=> 0x20000,
-	  'EDIT_PIREPS_FIELDS'		=> 0x40000,
-	  'EDIT_PROFILE_FIELDS'		=> 0x80000,
-	  'EDIT_VACENTRAL'			=> 0x100000,
-	  'ACCESS_ADMIN'			=> 0x2000000,
-	  'FULL_ADMIN'				=> 35651519
+$permission_set = array(
+	/*'NO_ADMIN_ACCESS'			=> 0,*/
+	'EDIT_NEWS'				=> 0x1, 
+	'EDIT_PAGES'				=> 0x2, 
+	'EDIT_DOWNLOADS'			=> 0x4,
+	'EMAIL_PILOTS'			=> 0x8, 
+	'EDIT_AIRLINES'			=> 0x10,
+	'EDIT_FLEET'				=> 0x20,
+	'EDIT_SCHEDULES'			=> 0x80,
+	'IMPORT_SCHEDULES'		=> 0x100,
+	'MODERATE_REGISTRATIONS'	=> 0x200,
+	'EDIT_PILOTS'				=> 0x400,
+	'EDIT_GROUPS'				=> 0x800,
+	'EDIT_RANKS'				=> 0x1000,
+	'EDIT_AWARDS'				=> 0x2000,
+	'MODERATE_PIREPS'			=> 0x4000,
+	'VIEW_FINANCES'			=> 0x8000,
+	'EDIT_EXPENSES'			=> 0x10000,
+	'EDIT_SETTINGS'			=> 0x20000,
+	'EDIT_PIREPS_FIELDS'		=> 0x40000,
+	'EDIT_PROFILE_FIELDS'		=> 0x80000,
+	'EDIT_VACENTRAL'			=> 0x100000,
+	'ACCESS_ADMIN'			=> 0x2000000,
+	'FULL_ADMIN'				=> 35651519
 );
 
 Config::Set('permission_set', $permission_set);  
 define('NO_ADMIN_ACCESS', 0);
-foreach($permission_set as $key=>$value)
-{
+foreach($permission_set as $key=>$value) {
 	define($key, $value);
 }
