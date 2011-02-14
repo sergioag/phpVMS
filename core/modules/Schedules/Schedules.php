@@ -141,7 +141,9 @@ class Schedules extends CodonModule {
         
         $depapts = OperationsData::GetAllAirports();
         $equip = OperationsData::GetAllAircraftSearchList(true);
-
+        $airlines = OperationsData::GetAllAirlines();
+        
+        $this->set('airlines', $airlines);
         $this->set('depairports', $depapts);
         $this->set('equipment', $equip);
 
@@ -210,7 +212,8 @@ class Schedules extends CodonModule {
         			}
         		}
             }
-        }
+            
+        } // end foreach schedules
         
         $this->set('allroutes', $schedules);
         $this->render('schedule_list.tpl');
