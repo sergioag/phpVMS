@@ -150,13 +150,11 @@ class Schedules extends CodonModule {
         
         $schedules = SchedulesData::GetSchedules();
         
-        
         # Do some filtering and whatnots, take it out of the template...      
         $today = getdate();
         $week_number = intval(($today['mday'] - 1) / 7) + 1;
         $current_day == date('w');
         $var_name = 'week'.$week_number;
-        
         
         # query once, save for later
         if(Config::get('SCHEDULES_ONLY_LAST_PIREP') === true && Auth::LoggedIn() == true) {
@@ -174,7 +172,6 @@ class Schedules extends CodonModule {
                 if(isset($s->{$var_name}) && !empty($s->{$var_name})) {
                     # check if today is in the active list for this week
                     if(@substr_count($s->{$var_name}, $current_day) == 0) {
-                        #echo "skipping {$s->code}{$s->flightnum} (week mismatch) <br>";
                         unset($schedules[$key]);
                         continue;
                     }
@@ -188,7 +185,6 @@ class Schedules extends CodonModule {
             
             # remove this schedule from the list if there's a bid on it
         	if(Config::get('DISABLE_SCHED_ON_BID') === true && $route->bidid != 0) {
-                    
         		unset($schedules[$key]);
                 continue;
         	}
@@ -198,7 +194,6 @@ class Schedules extends CodonModule {
         		what the pilot's ranklevel, so just do "continue"
        			and move onto the next route in the list  */
             if(Config::get('RESTRICT_AIRCRAFT_RANKS') === true && Auth::LoggedIn()) {
-                    
         		if($route->aircraftlevel > Auth::$userinfo->ranklevel) {
         			unset($schedules[$key]);
                     continue;
