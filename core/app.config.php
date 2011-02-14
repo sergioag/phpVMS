@@ -67,7 +67,7 @@ Config::Set('RANKS_AUTOCALCULATE', true);
 Config::Set('CHECK_SCHEDULE_DAY_OF_WEEK', true);
 
 # Schedules - only show schedules from the last filed PIREP
-Config::Set('SCHEDULES_ONLY_LAST_PIREP', true);
+Config::Set('SCHEDULES_ONLY_LAST_PIREP', false);
 
 # For how many hours a pilot can edit their submitted PIREP (custom fields only)
 Config::Set('PIREP_CUSTOM_FIELD_EDIT', '48');
