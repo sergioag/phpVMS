@@ -133,41 +133,36 @@ class CodonCache
 	 */
 	public static function read($key)
 	{
-		if(self::$settings['active'] === false || $key == '')
-		{
+		if(self::$settings['active'] === false || $key == '') {
 			return false;
 		}
 		
 		$key = self::$settings['prefix'].$key.self::$settings['suffix'];
-		if(self::$settings['engine'] == 'file')
-		{
-			if(!file_exists(self::$settings['location'].$key))
-			{
+		if(self::$settings['engine'] == 'file') {
+			
+			if(!file_exists(self::$settings['location'].$key)) {
 				return false;
 			}
 			
 			$contents = file(self::$settings['location'].$key);
 			
 			# See if the current time is greater than that cutoff
-			if(time() > $contents[0])
-			{
+			if(time() > $contents[0]) {
 				return false;
 			}
 			
 			# Then return the unserialized version of the store
 			return unserialize($contents[1]);
-		}
-		elseif(self::$settings['engine'] == 'apc')
-		{
+
+		} elseif(self::$settings['engine'] == 'apc') {
+			
 			/*$expire = apc_fetch($key.'_expire');
-			if(time() > $expire)
-			{
+			if(time() > $expire) {
 				return false;
 			}*/
 			
 			$value = apc_fetch($key, $success);
-			if($success == false)
-			{
+			if($success == false) {
 				return false;
 			}
 					
@@ -189,8 +184,7 @@ class CodonCache
 	 */
 	public static function write($key, $value, $profile = 'default')
 	{
-		if(self::$settings['active'] === false || $key == '')
-		{
+		if(self::$settings['active'] === false || $key == '') {
 			return false;
 		}
 		
@@ -199,15 +193,14 @@ class CodonCache
 		$value = serialize($value);
 		
 		// Now actually save it
-		if(self::$settings['engine'] == 'file')
-		{
+		if(self::$settings['engine'] == 'file') {
+			
 			/*	Save the expire time on one line, and then the serialized
 				value on the second line. For the check in read() */
 			$value = $ttl.PHP_EOL.$value;
 			file_put_contents(self::$settings['location'].$key, $value);
-		}
-		elseif(self::$settings['engine'] == 'apc')
-		{
+		
+		} elseif(self::$settings['engine'] == 'apc') {
 			$seconds = $ttl - time();
 			/*apc_store($key.'_expire', $ttl, 0);
 			apc_store($key, $ttl, $seconds);*/
@@ -227,21 +220,18 @@ class CodonCache
 	 */
 	public static function delete($key)
 	{
-		if(self::$settings['active'] === false || $key == '')
-		{
+		if(self::$settings['active'] === false || $key == '') {
 			return false;
 		}
 		
 		$key = self::$settings['prefix'].$key.self::$settings['suffix'];
-		if(self::$settings['engine'] == 'file')
-		{
-			if(file_exists(self::$settings['location'].$key))
-			{
+		if(self::$settings['engine'] == 'file') {
+			
+			if(file_exists(self::$settings['location'].$key)) {
 				unlink(self::$settings['location'].$key);
 			}
-		}
-		elseif(self::$settings['engine'] == 'apc')
-		{
+
+		} elseif(self::$settings['engine'] == 'apc') {
 			// Simple :)
 			apc_delete($key);
 		}

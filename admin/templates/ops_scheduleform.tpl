@@ -52,16 +52,10 @@
 <tr>
 	<td valign="top"><strong>Days of Week: </strong></td>
 	<td>
-		<?php
-		/*$days = array('Sunday', 'Monday', 'Tuesday',
-					  'Wednesday', 'Thursday', 'Friday',
-					  'Saturday');
-		*/
-		
+    <?php		
 		$days = Config::Get('DAYS_LONG');
 		
-		for($i=0; $i<=6; $i++)
-		{
+		for($i=0; $i<=6; $i++){
 			# Add blank string to typecast from int to string, otherwise it won't search
 			if(strpos($schedule->daysofweek, $i.'') === false)
 				$checked = '';
@@ -71,6 +65,35 @@
 			echo '<input type="checkbox" name="daysofweek[]" value="'.$i.'" '.$checked.'>'.$days[$i].'  ';			
 		}
 		?>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><strong>Per Week Schedule: </strong></td>
+	<td>
+    <?php
+        $days = Config::Get('DAYS_LONG');
+        
+        
+        for($week=1; $week<=4; $week++) {
+            
+            echo '<strong>Week ' . $week . ':</strong> ';
+            $var_name = 'week'.$week;
+            
+    		for($i=0; $i<=6; $i++){
+    			# Add blank string to typecast from int to string, otherwise it won't search
+                
+                if(substr_count($schedule->$var_name, $i) == 0)
+    				$checked = '';
+    			else
+    				$checked = 'checked';
+    			
+    			echo '<input type="checkbox" name="week'.$week.'[]" value="'.$i.'" '.$checked.'>'.$days[$i].' ';			
+    		}
+            
+            echo '<br />';
+        }
+		?>
+        <p>If you select a day in a week above, it will take precedence. For instance, if you select Mon/Tues for Week 2, then in the week two of the month, that flight will only be active on the Monday/Tuesday. If a month switches in the middle of the week, it will go by that day (new month on Tuesday, it will follow a week 1 Tuesday), since it's a four week schedule cycle.
 	</td>
 </tr>
 <tr>

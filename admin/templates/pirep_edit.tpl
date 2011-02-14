@@ -53,16 +53,14 @@ if(isset($message))
 			<option value="">Select the aircraft of this flight</option>
 		<?php
 		
-		foreach($allaircraft as $aircraft)
-		{
+		foreach($allaircraft as $aircraft) {
 			$sel = ($pirep->aircraftid == $aircraft->id) ? 'selected':'';
 			echo '<option value="'.$aircraft->id.'" '.$sel.'>'.$aircraft->name.' - '.$aircraft->registration.'</option>';
 		}
 		?>
 		</select>
 		<?php
-		if($pirep->aircraftid == '')
-		{
+		if($pirep->aircraftid == '') {
 			Template::Set('message', 'You must set an aircraft');
 			Template::Show('core_error.tpl');
 		}
@@ -96,34 +94,26 @@ foreach($pirepfields as $field)
 	// Determine field by the type
 	$value = PIREPData::GetFieldValue($field->fieldid, $pirep->pirepid);
 
-	if($field->type == '' || $field->type == 'text')
-	{
+	if($field->type == '' || $field->type == 'text') {
 	?>
 		<input type="text" name="<?php echo $field->name ?>" value="<?php echo $value ?>" />
 	<?php
-	} 
-	elseif($field->type == 'textarea')
-	{
+	} elseif($field->type == 'textarea') {
 		echo '<textarea name="'.$field->name.'">'.$value.'</textarea>';
-	}
-	elseif($field->type == 'dropdown')
-	{
+	} elseif($field->type == 'dropdown') {
+	   
 		$values = explode(',', $field->options);
 		
 		echo '<select name="'.$field->name.'">';
-		foreach($values as $fvalue)
-		{
-			if($value == $fvalue)
-			{
+		foreach($values as $fvalue) {
+			if(trim(strtolower($value)) == trim(strtolower($fvalue))) {
 				$sel = 'selected="selected"';
-			}
-			else	
-			{
+			} else {
 				$sel = '';
 			}
 			
 			$value = trim($fvalue);
-			echo '<option value="'.$fvalue.'" '.$sel.'>'.$fvalue.'</option>';
+			echo "<option value='{$fvalue}' {$sel}>{$fvalue}</option>';
 		}
 		echo '</select>';		
 	}
