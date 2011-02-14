@@ -138,6 +138,7 @@ class Schedules extends CodonModule {
     }
 
     public function showSchedules() {
+        
         $depapts = OperationsData::GetAllAirports();
         $equip = OperationsData::GetAllAircraftSearchList(true);
 
@@ -201,7 +202,6 @@ class Schedules extends CodonModule {
         	}
             
             if(Config::get('SCHEDULES_ONLY_LAST_PIREP') === true && Auth::LoggedIn() == true) {
-       		   
         		if(count($reports) > 0) {
         			# IF the arrival airport doesn't match the departure airport
         			if($reports[0]->arricao != $s->depicao) {
@@ -217,17 +217,23 @@ class Schedules extends CodonModule {
     }
 
     public function findFlight() {
+        
+        
+        $params = array();
+        if($this->post->airlines != '') {
+            $params['s.code'] = $this->post->airlines;
+        }
 
         if ($this->post->depicao != '') {
-            $params = array('s.depicao' => $this->post->depicao);
+            $params['s.depicao'] = $this->post->depicao;
         }
 
         if ($this->post->arricao != '') {
-            $params = array('s.arricao' => $this->post->arricao);
+            $params['s.arricao'] = $this->post->arricao;
         }
 
         if ($this->post->equipment != '') {
-            $params = array('a.name' => $this->post->equipment);
+            $params['a.name'] = $this->post->equipment;
         }
 
         if ($this->post->distance != '') {
@@ -238,10 +244,11 @@ class Schedules extends CodonModule {
 
             $value .= $this->post->distance;
 
-            $params = array('s.distance' => $value);
+            $params['s.distance'] = $value;
         }
 
         $params['s.enabled'] = 1;
+        
         $this->set('allroutes', SchedulesData::findSchedules($params));
         $this->render('schedule_results.tpl');
     }
