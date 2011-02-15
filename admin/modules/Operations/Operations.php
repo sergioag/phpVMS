@@ -328,6 +328,8 @@ class Operations extends CodonModule {
                 }
             }
             
+            $schedule->distance = OperationsData::getAirportDistance($schedule->depicao, $schedule->arricao);
+            
             $this->set('schedule', $schedule);
         }
 
