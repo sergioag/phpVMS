@@ -105,13 +105,7 @@
 		echo '<select name="rank">';
 		
 		foreach($allranks as $rank) {
-			
-			if($pilotinfo->rank == $rank->rank) {
-				$selected = "selected=\"selected\"";
-			} else {
-				$selected = '';
-			}
-
+            $selected = ($pilotinfo->rank == $rank->rank) ? "selected=\"selected\"": '';
 			echo "<option value=\"{$rank->rankid}\" {$selected}>{$rank->rank}</option>";
 		}
 		echo '</select>';

@@ -331,12 +331,12 @@ class PIREPAdmin extends CodonModule
         if ($pirepid == '' || $comment == '')
             return;
 
-        PIREPData::ChangePIREPStatus($pirepid, PIREP_REJECTED); // 2 is rejected
-        $pirep_details = PIREPData::GetReportDetails($pirepid);
+        PIREPData::changePIREPStatus($pirepid, PIREP_REJECTED); // 2 is rejected
+        $pirep_details = PIREPData::getReportDetails($pirepid);
 
         // If it was previously accepted, subtract the flight data
         if (intval($pirep_details->accepted) == PIREP_ACCEPTED) {
-            PilotData::UpdateFlightData($pirep_details->pilotid, -1 * floatval($pirep->flighttime), -1);
+            PilotData::updateFlightData($pirep_details->pilotid, -1 * floatval($pirep->flighttime), -1);
         }
 
         //PilotData::UpdatePilotStats($pirep_details->pilotid);
