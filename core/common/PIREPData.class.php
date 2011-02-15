@@ -734,20 +734,20 @@ class PIREPData extends CodonData {
 
     public static function updateFlightReport($pirepid, $pirepdata) {
         /*$pirepdata = array('pirepid'=>$this->post->pirepid,
-            'code'=>$this->post->code,
-            'flightnum'=>$this->post->flightnum,
-            'leg'=>$this->post->leg,
-            'depicao'=>$this->post->depicao,
-            'arricao'=>$this->post->arricao,
-            'aircraft'=>$this->post->aircraft,
-            'flighttime'=>$this->post->flighttime,
-            'load'=>$this->post->load,
-            'price'=>$this->post->price,
-            'pilotpay' => $this->post->pilotpay,
-            'fuelused'=>$this->post->fuelused,
-            'fuelunitcost'=>$this->post->fuelunitcost,
-            'fuelprice'=>$fuelcost,
-            'expenses'=>$this->post->expenses
+        'code'=>$this->post->code,
+        'flightnum'=>$this->post->flightnum,
+        'leg'=>$this->post->leg,
+        'depicao'=>$this->post->depicao,
+        'arricao'=>$this->post->arricao,
+        'aircraft'=>$this->post->aircraft,
+        'flighttime'=>$this->post->flighttime,
+        'load'=>$this->post->load,
+        'price'=>$this->post->price,
+        'pilotpay' => $this->post->pilotpay,
+        'fuelused'=>$this->post->fuelused,
+        'fuelunitcost'=>$this->post->fuelunitcost,
+        'fuelprice'=>$fuelcost,
+        'expenses'=>$this->post->expenses
         );
         */
 

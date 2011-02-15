@@ -18,7 +18,7 @@
  */
 
 class ACARSData extends CodonData {
-    
+
     public static $lasterror;
     public static $pirepid;
 
@@ -172,7 +172,7 @@ class ACARSData extends CodonData {
 
             DB::query($query);
         } else {
-            
+
             // form array with $ins[column]=value and then
             //	give it to quick_insert to finish
             $ins = array();
@@ -181,8 +181,7 @@ class ACARSData extends CodonData {
             foreach ($data as $field => $value) {
                 $ins[] = "`{$field}`";
                 if ($field === 'deptime' || $field === 'arrtime') {
-                    if (empty($value))
-                        $value = time();
+                    if (empty($value)) $value = time();
                     $vals[] = "FROM_UNIXTIME({$value})";
                 } elseif ($field === 'lastupdate') {
                     $vals[] = 'NOW()';
@@ -283,8 +282,7 @@ class ACARSData extends CodonData {
         # Set them as non-retired
         PilotData::setPilotRetired($pilotid, 0);
 
-        if (!$ret)
-            return false;
+        if (!$ret) return false;
 
         self::$pirepid = DB::$insert_id;
 

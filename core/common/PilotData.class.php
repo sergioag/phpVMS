@@ -506,10 +506,8 @@ class PilotData extends CodonData {
 
         if ($numflights == '') $numflights = 1;
 
-        $params = array(
-            'totalhours' => $flighttime, 
-            'totalflights' => ($pilotdata->totalflights + $numflights), 
-        );
+        $params = array('totalhours' => $flighttime, 'totalflights' => ($pilotdata->
+            totalflights + $numflights), );
 
         return self::updateProfile($pilotid, $params);
     }
@@ -521,7 +519,7 @@ class PilotData extends CodonData {
      * @return
      */
     public static function updatePilotStats($pilotid) {
-        
+
         $pireps = PIREPData::findPIREPS(array('p.pilotid' => $pilotid));
 
         $totalpireps = 0;
@@ -603,7 +601,7 @@ class PilotData extends CodonData {
 
         $sql = "SELECT `pirepid`, `flighttime`, `pilotpay`
 				FROM " . TABLE_PREFIX . "pireps
-				WHERE `pilotid`={$pilotid} AND `accepted`=".PIREP_REJECTED;
+				WHERE `pilotid`={$pilotid} AND `accepted`=" . PIREP_REJECTED;
 
         $results = DB::get_results($sql);
 
@@ -845,7 +843,7 @@ class PilotData extends CodonData {
      * @return bool Success
      */
     public function generateSignature($pilotid) {
-        
+
         $pilot = self::getPilotData($pilotid);
         $pilotcode = self::getPilotCode($pilot->code, $pilot->pilotid);
 

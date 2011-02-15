@@ -140,8 +140,7 @@ class SchedulesData extends CodonData {
      * Ensures that the code and number are properly split
      */
     public static function getProperFlightNum($flightnum) {
-        if ($flightnum == '')
-            return false;
+        if ($flightnum == '') return false;
 
         $ret = array();
         $flightnum = strtoupper($flightnum);
@@ -187,8 +186,7 @@ class SchedulesData extends CodonData {
 
         $res = DB::query($sql);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -203,8 +201,7 @@ class SchedulesData extends CodonData {
      */
     public static function getScheduleDetailed($id) {
         $schedules = self::findSchedules(array('s.id' => $id));
-        if (!$schedules)
-            return false;
+        if (!$schedules) return false;
 
         $schedule = $schedules[0];
         unset($schedules);
@@ -230,17 +227,14 @@ class SchedulesData extends CodonData {
     public static function getDepartureAirports($airlinecode = '', $onlyenabled = false) {
         $airlinecode = DB::escape($airlinecode);
 
-        if ($onlyenabled)
-            $enabled = 'AND s.enabled=1';
-        else
-            $enabled = '';
+        if ($onlyenabled) $enabled = 'AND s.enabled=1';
+        else  $enabled = '';
 
         $sql = 'SELECT DISTINCT s.depicao AS icao, a.name
 				FROM ' . TABLE_PREFIX . 'schedules s, ' . TABLE_PREFIX . 'airports a
 				WHERE s.depicao = a.icao ' . $enabled;
 
-        if ($airlinecode != '')
-            $sql .= " AND s.code='{$airlinecode}' ";
+        if ($airlinecode != '') $sql .= " AND s.code='{$airlinecode}' ";
 
         $sql .= ' ORDER BY depicao ASC';
 
@@ -259,17 +253,14 @@ class SchedulesData extends CodonData {
         $airlinecode = strtoupper($airlinecode);
         $depicao = DB::escape($depicao);
 
-        if ($onlyenabled)
-            $enabled = 'AND s.enabled=1';
-        else
-            $enabled = '';
+        if ($onlyenabled) $enabled = 'AND s.enabled=1';
+        else  $enabled = '';
 
         $sql = 'SELECT DISTINCT s.arricao AS icao, a.name
 				FROM ' . TABLE_PREFIX . 'schedules s, ' . TABLE_PREFIX . 'airports a
 				WHERE s.arricao = a.icao ' . $enabled;
 
-        if ($airlinecode != '')
-            $sql .= " AND s.code='{$airlinecode}' ";
+        if ($airlinecode != '') $sql .= " AND s.code='{$airlinecode}' ";
 
         $sql .= ' ORDER BY depicao ASC';
 
@@ -282,8 +273,7 @@ class SchedulesData extends CodonData {
     public static function getSchedules($onlyenabled = true, $limit = '', $start =
         '') {
         $params = array();
-        if ($onlyenabled)
-            $params['s.enabled'] = '1';
+        if ($onlyenabled) $params['s.enabled'] = '1';
 
         return self::findSchedules($params, $limit, $start);
     }
@@ -310,13 +300,12 @@ class SchedulesData extends CodonData {
         New formula, from http://jan.ucc.nau.edu/~cvm/latlon_formula.html
         */
         if (strtolower(Config::Get('UNITS')) === 'mi') # miles
-
+ 
             $radius = 3963.192;
         elseif (strtolower(Config::Get('UNITS')) === 'km') # Convert to km
-
+ 
             $radius = 6378.14;
-        else
-            $radius = 3443.92;
+        else  $radius = 3443.92;
 
         /*
         $distance = ($radius * 3.1415926 * sqrt(($lat2-$lat1) * ($lat2-$lat1)
@@ -395,8 +384,7 @@ class SchedulesData extends CodonData {
      * 'flighttype'=>'');
      */
     public static function addSchedule($data) {
-        if (!is_array($data))
-            return false;
+        if (!is_array($data)) return false;
 
         # Commented out to allow flights to/from the same airport
         #if($data['depicao'] == $data['arricao'])
@@ -409,15 +397,12 @@ class SchedulesData extends CodonData {
         $data['depicao'] = strtoupper($data['depicao']);
         $data['arricao'] = strtoupper($data['arricao']);
 
-        if ($data['enabled'] == true)
-            $data['enabled'] = 1;
-        else
-            $data['enabled'] = 0;
+        if ($data['enabled'] == true) $data['enabled'] = 1;
+        else  $data['enabled'] = 0;
 
         # If they didn't specify
         $data['flighttype'] = strtoupper($data['flighttype']);
-        if ($data['flighttype'] == '')
-            $data['flighttype'] = 'P';
+        if ($data['flighttype'] == '') $data['flighttype'] = 'P';
 
         $data['flightlevel'] = str_replace(',', '', $data['flightlevel']);
 
@@ -466,8 +451,7 @@ class SchedulesData extends CodonData {
             self::getRouteDetails(DB::$insert_id, $data['route']);
         }
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -478,8 +462,7 @@ class SchedulesData extends CodonData {
      */
 
     public static function editSchedule($data) {
-        if (!is_array($data))
-            return false;
+        if (!is_array($data)) return false;
 
         $id = $data['id'];
         unset($data['id']);
@@ -571,10 +554,8 @@ class SchedulesData extends CodonData {
         }
 
         if (isset($fields['enabled'])) {
-            if ($fields['enabled'] == true)
-                $fields['enabled'] = 1;
-            else
-                $fields['enabled'] = 0;
+            if ($fields['enabled'] == true) $fields['enabled'] = 1;
+            else  $fields['enabled'] = 0;
         }
 
         # If they didn't specify a flight type, just default to pax
@@ -627,8 +608,7 @@ class SchedulesData extends CodonData {
 
         $res = DB::query($sql);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -638,8 +618,7 @@ class SchedulesData extends CodonData {
 
         $res = DB::query($sql);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -650,8 +629,7 @@ class SchedulesData extends CodonData {
 
         $res = DB::query($sql);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -745,8 +723,7 @@ class SchedulesData extends CodonData {
      *	the airline code for the flight, and the flight number
      */
     public static function getBidWithRoute($pilotid, $code, $flightnum) {
-        if ($pilotid == '')
-            return;
+        if ($pilotid == '') return;
 
         $sql = 'SELECT b.bidid 
 				FROM ' . TABLE_PREFIX . 'bids b, ' . TABLE_PREFIX . 'schedules s
@@ -768,8 +745,7 @@ class SchedulesData extends CodonData {
 
         DB::query($sql);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -796,8 +772,7 @@ class SchedulesData extends CodonData {
 
         self::setBidOnSchedule($routeid, DB::$insert_id);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -850,8 +825,7 @@ class SchedulesData extends CodonData {
 
         self::SetBidOnSchedule($bid_info->routeid, 0);
 
-        if (DB::errno() != 0)
-            return false;
+        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -909,8 +883,7 @@ class SchedulesData extends CodonData {
 
             $data[] = $count;
 
-            if ($count > $max)
-                $max = $count;
+            if ($count > $max) $max = $count;
 
             $time_start += SECONDS_PER_DAY;
         } while ($time_start < $time_end);

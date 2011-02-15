@@ -1,4 +1,5 @@
 <?php
+
 /**
  * phpVMS - Virtual Airline Administration Software
  * Copyright (c) 2008 Nabeel Shahzad
@@ -16,18 +17,16 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
 
-class AircraftStats extends CodonData
-{
-	
-	
-	/**
-	 * Return summary/detailed information about all aircraft
-	 *
-	 * @return array Array of objects with the flight data
-	 *
-	 */
-	public static function getAircraftDetails()
-	{
-		return StatsData::AircraftUsage();
+class AircraftStats extends CodonData {
+
+
+    /**
+     * Return summary/detailed information about all aircraft
+     *
+     * @return array Array of objects with the flight data
+     *
+     */
+    public static function getAircraftDetails() {
+        return StatsData::AircraftUsage();
     }
 }

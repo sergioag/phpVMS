@@ -1,4 +1,5 @@
 <?php
+
 /**
  * phpVMS - Virtual Airline Administration Software
  * Copyright (c) 2008 Nabeel Shahzad
@@ -16,41 +17,37 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
 
-class LogData extends CodonData
-{
-	
-	public static function findLogs($params,  $count = '', $start = '')
-	{
-		$sql = 'SELECT l.*, p.* 
-				FROM '.TABLE_PREFIX.'adminlog l
-				INNER JOIN '.TABLE_PREFIX.'pilots p ON l.pilotid = p.pilotid ';
-		
-		/* Build the select "WHERE" based on the columns passed */		
-		$sql .= DB::build_where($params);
-		
-		$sql .= ' ORDER BY l.datestamp DESC';
-		
-		if(strlen($count) != 0)
-		{
-			$sql .= ' LIMIT '.$count;
-		}
-		
-		if(strlen($start) != 0)
-		{
-			$sql .= ' OFFSET '. $start;
-		}
-		
-		$ret = DB::get_results($sql);
-		return $ret;
-	}
-	
-	public static function addLog($pilotid, $message)
-	{
-		$message = DB::escape($message);
-	
-		$sql = 'INSERT INTO '.TABLE_PREFIX."adminlog (`pilotid`, `datestamp`, `message`)
+class LogData extends CodonData {
+
+    public static function findLogs($params, $count = '', $start = '') {
+        $sql = 'SELECT l.*, p.* 
+				FROM ' . TABLE_PREFIX . 'adminlog l
+				INNER JOIN ' . TABLE_PREFIX . 'pilots p ON l.pilotid = p.pilotid ';
+
+        /* Build the select "WHERE" based on the columns passed */
+        $sql .= DB::build_where($params);
+
+        $sql .= ' ORDER BY l.datestamp DESC';
+
+        if (strlen($count) != 0) {
+            $sql .= ' LIMIT ' . $count;
+        }
+
+        if (strlen($start) != 0) {
+            $sql .= ' OFFSET ' . $start;
+        }
+
+        $ret = DB::get_results($sql);
+        return $ret;
+    }
+
+    public static function addLog($pilotid, $message) {
+        $message = DB::escape($message);
+
+        $sql = 'INSERT INTO ' . TABLE_PREFIX .
+            "adminlog (`pilotid`, `datestamp`, `message`)
 				VALUES ('{$pilotid}', NOW(), '{$message}')";
-		
-		DB::query($sql);
-	}
+
+        DB::query($sql);
+    }
 }

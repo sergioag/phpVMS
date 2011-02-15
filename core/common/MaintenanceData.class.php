@@ -1,4 +1,5 @@
 <?php
+
 /**
  * phpVMS - Virtual Airline Administration Software
  * Copyright (c) 2008 Nabeel Shahzad
@@ -15,27 +16,23 @@
  * @link http://www.phpvms.net
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
- 
-class MaintenanceData extends CodonData
-{
-	
-	public static function optimizeTables()
-	{
-		$tables = Config::Get('TABLE_LIST');
-		
-		foreach($tables as $key => $name)
-		{
-			$tables[$key] = '`'.TABLE_PREFIX.$name.'`';
-		}
-		
-		$tables = implode(', ', $tables);
-		$sql = 'OPTIMIZE TABLE '.$tables;
-		return DB::get_results($sql);
-	}
-	
-	public static function resetPIREPCount()
-	{
-		
-	}
-	
+
+class MaintenanceData extends CodonData {
+
+    public static function optimizeTables() {
+        $tables = Config::Get('TABLE_LIST');
+
+        foreach ($tables as $key => $name) {
+            $tables[$key] = '`' . TABLE_PREFIX . $name . '`';
+        }
+
+        $tables = implode(', ', $tables);
+        $sql = 'OPTIMIZE TABLE ' . $tables;
+        return DB::get_results($sql);
+    }
+
+    public static function resetPIREPCount() {
+
+    }
+
 }
