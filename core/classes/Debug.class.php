@@ -74,13 +74,19 @@ class Debug
 	
 	protected static $fp;
 	
-	public static function db_error($debug_info)
-	{
+	/**
+	 * Write out any DB errors to a log
+	 * 
+	 * @param mixed $debug_info
+	 * @return void
+	 */
+	public static function db_error($debug_info) {
+	   
 		$call_list = array();
-		foreach($debug_info['backtrace'] as $caller)
-		{
+		foreach($debug_info['backtrace'] as $caller) {
 			$call_list[] = $caller['class'].$caller['type'].$caller['function'];
 		}
+        
 		$callers = implode(' > ', $call_list);
 		unset($call_list);
 		
@@ -97,8 +103,8 @@ class Debug
 		self::log($log_text);
 	}
 	
-	public static function log($string, $filename = 'log')
-	{
+	public static function log($string, $filename = 'log') {
+	   
 		if(Config::Get('DEBUG_MODE') === false){
 			return;
 		}

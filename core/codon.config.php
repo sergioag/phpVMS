@@ -47,6 +47,7 @@ define('SITE_ROOT', str_replace('core', '', dirname(__FILE__)));
 define('CORE_PATH', dirname(__FILE__) );
 define('CORE_LIB_PATH', CORE_PATH.DS.'lib');
 define('CLASS_PATH', CORE_PATH.DS.'classes');
+define('LOGS_PATH', CORE_PATH.DS.'logs');
 define('TEMPLATES_PATH', CORE_PATH.DS.'templates');
 define('MODULES_PATH', CORE_PATH.DS.'modules');
 define('CACHE_PATH', CORE_PATH.DS.'cache');
@@ -75,10 +76,17 @@ Lang::set_language(Config::Get('SITE_LANGUAGE'));
 error_reporting(Config::Get('ERROR_LEVEL'));
 Debug::$debug_enabled = Config::Get('DEBUG_MODE');
 
+if(Debug::$debug_enabled == true) {
+    ini_set('log_errors','On');
+    ini_set('display_errors', 'Off');
+    ini_set('error_log', LOGS_PATH.'/errors.txt');
+}
+
 /* Init caching engine */
 CodonCache::init($cache_settings);
 
 if(DBASE_NAME != '' && DBASE_SERVER != '' && DBASE_NAME != 'DBASE_NAME') {
+    
 	require CLASS_PATH.DS.'ezdb/ezdb.class.php';
 	
 	DB::$show_errors = Config::Get('DEBUG_MODE');
@@ -94,10 +102,11 @@ if(DBASE_NAME != '' && DBASE_SERVER != '' && DBASE_NAME != 'DBASE_NAME') {
 	DB::set_cache_dir(CACHE_PATH);
 	DB::$DB->debug_all = false;
 	
-	if(Config::Get('DEBUG_MODE') == true)
-		DB::show_errors();
-	else
-		DB::hide_errors();
+	if(Config::Get('DEBUG_MODE') == true) {
+	   DB::show_errors();
+	} else {
+	   DB::hide_errors();
+	}		
 		
 	if(!DB::connect(DBASE_USER, DBASE_PASS, DBASE_NAME, DBASE_SERVER)) {	
 		Debug::showCritical(Lang::gs('database.connection.failed').' ('.DB::$errno.': '.DB::$error.')');
@@ -112,8 +121,7 @@ if(DBASE_NAME != '' && DBASE_SERVER != '' && DBASE_NAME != 'DBASE_NAME') {
 
 include CORE_PATH.DS.'bootstrap.inc.php';
 
-if(function_exists('pre_module_load'))
-{
+if(function_exists('pre_module_load')) {
 	pre_module_load();
 }
 

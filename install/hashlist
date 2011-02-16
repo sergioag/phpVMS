@@ -41,7 +41,7 @@ e45ee0c21e2f6cec822252e59a5adaad  *./core/common/Countries.class.php
 1fce5c4da633e4004ccf04e055f9a389  *./core/common/PilotData.class.php
 9daa436be5011122490d123c00326ff9  *./core/common/GoogleChart.class.php
 c0c3bdb82e34dcb69589cd77e169a383  *./core/common/SettingsData.class.php
-4e522c3947dbaa4fe347d7211e0e40ad  *./core/common/NavData.class.php
+0b1afcfae4793133402aeea081826f3e  *./core/common/NavData.class.php
 73b8a220942a90144894b3e23456c28f  *./core/common/RanksData.class.php
 ff07ceeccb1bf12167daec3dfbcdd072  *./core/common/FuelData.class.php
 b1d50334ddd6f2bce7a5fb2f4eefe9be  *./core/common/SiteData.class.php
@@ -132,11 +132,11 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 03a4e232571398c5b90714904a668178  *./core/templates/login_passwordreset.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
-0409c73200af1b2bffa9387a35404ec1  *./core/bootstrap.inc.php
-ba8293dd86b752fb6a949c8809fcbc09  *./core/codon.config.php
+e72bc1ba04d51a5882b4d18e1b1f57e7  *./core/bootstrap.inc.php
+c632a11265dcd1b4747112b12b89959f  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 c1e6bb7c33856c0723f1139ccf20ad9f  *./core/classes/CodonData.class.php
-b23f32e4f6adef4849275b4922c455ae  *./core/classes/Debug.class.php
+2ffa40e385f75f2020b6ec3b6ea7c0ae  *./core/classes/Debug.class.php
 5fc9915e310b99c58b2c389a942c3681  *./core/classes/Vars.class.php
 957e4ee1ab6724dd1a768f207cd2b5d3  *./core/classes/CodonEvent.class.php
 c8a22eae5b17b5d8b7deed4aae2e0e5a  *./core/classes/CodonCache.class.php
@@ -305,7 +305,7 @@ c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php
 fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
-b4a8681d2e593974f31c8575a95d54ab  *./admin/modules/Operations/Operations.php
+94d202fcd64d5e74d88d6abb4e4e4f7a  *./admin/modules/Operations/Operations.php
 58be86122e37b9cd875b7d306a4425e8  *./admin/modules/Import/Import.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
