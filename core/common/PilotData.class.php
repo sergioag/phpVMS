@@ -601,7 +601,7 @@ class PilotData extends CodonData {
 
         $sql = "SELECT `pirepid`, `flighttime`, `pilotpay`
 				FROM " . TABLE_PREFIX . "pireps
-				WHERE `pilotid`={$pilotid} AND `accepted`=" . PIREP_REJECTED;
+				WHERE `pilotid`={$pilotid} AND `accepted`=".PIREP_ACCEPTED;
 
         $results = DB::get_results($sql);
 
@@ -631,17 +631,17 @@ class PilotData extends CodonData {
     public static function updatePilotPay($pilotid, $flighthours) {
         
         $sql = 'SELECT payrate 
-					FROM ' . TABLE_PREFIX . 'ranks r, ' . TABLE_PREFIX . 'pilots p 
-					WHERE p.rank=r.rank 
-						AND p.pilotid=' . $pilotid;
+				FROM ' . TABLE_PREFIX . 'ranks r, ' . TABLE_PREFIX . 'pilots p 
+				WHERE p.rank=r.rank 
+					AND p.pilotid=' . $pilotid;
 
         $payrate = DB::get_row($sql);
 
         $payupdate = self::getPilotPay($flighthours, $payrate->payrate);
 
         $sql = 'UPDATE ' . TABLE_PREFIX . 'pilots 
-					SET totalpay=totalpay+' . $payupdate . '
-					WHERE pilotid=' . $pilotid;
+				SET totalpay=totalpay+' . $payupdate . '
+				WHERE pilotid=' . $pilotid;
 
         DB::query($sql);
 
