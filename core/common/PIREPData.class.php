@@ -293,8 +293,7 @@ class PIREPData extends CodonData {
 					LEFT JOIN ' . TABLE_PREFIX . 'airports AS dep ON dep.icao = p.depicao
 					LEFT JOIN ' . TABLE_PREFIX . 'airports AS arr ON arr.icao = p.arricao
 					LEFT JOIN ' . TABLE_PREFIX . 'aircraft a ON a.id = p.aircraft
-					LEFT JOIN ' . TABLE_PREFIX .
-            'schedules s ON s.code = p.code AND s.flightnum = p.flightnum
+					LEFT JOIN ' . TABLE_PREFIX . 'schedules s ON s.code = p.code AND s.flightnum = p.flightnum
 				WHERE p.pilotid=u.pilotid AND p.pirepid=' . $pirepid;
 
         $row = DB::get_row($sql);
@@ -1064,14 +1063,68 @@ class PIREPData extends CodonData {
     }
 
     /**
-     * Change the status of a PIREP. For the status, use the
-     * constants:
+     * Change the status of a PIREP. For the status, use the constants:
      * PIREP_PENDING, PIREP_ACCEPTED, PIREP_REJECTED,PIREP_INPROGRESS
+     * 
+     * Also handle paying the pilot, and handle PIREP rejection, etc
      * 
      * @deprecated Use editPIREPFields instead
      */
-    public static function ChangePIREPStatus($pirepid, $status) {
-        return self::editPIREPFields($pirepid, array('accepted' => $status));
+    public static function changePIREPStatus($pirepid, $status) {
+        
+        # Look up the status of the PIREP of previous
+        $pirep_details = PIREPData::getReportDetails($pirepid);
+        
+        if(!$pirep_details)) {
+            return false;
+        }
+        
+        if($pirep_details->accepted == $status) {
+            return true;
+        }
+        
+        $ret = self::editPIREPFields($pirepid, array('accepted' => $status));
+        
+        # Do something if the PIREP was previously marked as pending
+        if($pirep_details->accepted == PIREP_PENDING) {
+            
+            if($status == PIREP_ACCEPTED) {
+                                
+                PilotData::updateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
+                               
+                # Handle pilot pay
+                if(!(empty($pirep_details->payforflight))) {
+                    
+                    # Pay by schedule
+                    $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 
+            				SET totalpay=totalpay+{$pirep_details->payforflight} 
+            				WHERE pilotid={$pirep_details->pilotid}";
+            
+                    DB::query($sql);
+                    
+                } else {
+                    # Pay by hour
+                    PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime);
+                }
+                
+                SchedulesData::incrementFlownCount($pirep_details->code, $pirep_details->flightnum);
+                
+            } elseif($status == PIREP_REJECTED) {
+                // Do nothing, since nothing in the PIREP was actually counted                
+            }
+            
+        } elseif($pirep_details->accepted == PIREP_ACCEPTED) { # If already accepted
+        
+            if($status == PIREP_REJECTED) {
+                PilotData::updateFlightData($pirep_details->pilotid, -1 * floatval($pirep->flighttime), -1);
+            }
+        }
+        
+        RanksData::calculateUpdatePilotRank($pirep_details->pilotid);
+        PilotData::generateSignature($pirep_details->pilotid);
+        StatsData::updateTotalHours();       
+        
+        return $ret;
     }
 
     /**

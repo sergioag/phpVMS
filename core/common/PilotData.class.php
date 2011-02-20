@@ -629,6 +629,7 @@ class PilotData extends CodonData {
      *
      */
     public static function updatePilotPay($pilotid, $flighthours) {
+        
         $sql = 'SELECT payrate 
 					FROM ' . TABLE_PREFIX . 'ranks r, ' . TABLE_PREFIX . 'pilots p 
 					WHERE p.rank=r.rank 

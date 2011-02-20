@@ -17,10 +17,8 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
 
-class PIREPAdmin extends CodonModule
-{
-    public function HTMLHead()
-    {
+class PIREPAdmin extends CodonModule {
+    public function HTMLHead() {
         switch ($this->controller->function) {
             case 'viewpending':
             case 'viewrecent':
@@ -30,13 +28,11 @@ class PIREPAdmin extends CodonModule
         }
     }
 
-    public function index()
-    {
+    public function index() {
         $this->viewpending();
     }
 
-    protected function post_action()
-    {
+    protected function post_action() {
         if (isset($this->post->action)) {
             switch ($this->post->action) {
                 case 'addcomment':
@@ -63,8 +59,7 @@ class PIREPAdmin extends CodonModule
         }
     }
 
-    public function viewpending()
-    {
+    public function viewpending() {
         $this->post_action();
 
         $this->set('title', 'Pending Reports');
@@ -82,27 +77,23 @@ class PIREPAdmin extends CodonModule
     }
 
 
-    public function pilotpireps()
-    {
+    public function pilotpireps() {
         $this->post_action();
 
         $this->set('pending', false);
         $this->set('load', 'pilotpireps');
 
-        $this->set('pireps', PIREPData::findPIREPS(array('p.pilotid' => $this->get->
-            pilotid)));
+        $this->set('pireps', PIREPData::findPIREPS(array('p.pilotid' => $this->get->pilotid)));
         $this->render('pireps_list.tpl');
     }
 
 
-    public function rejectpirep()
-    {
+    public function rejectpirep() {
         $this->set('pirepid', $this->get->pirepid);
         $this->render('pirep_reject.tpl');
     }
 
-    public function viewrecent()
-    {
+    public function viewrecent() {
         $this->set('title', Lang::gs('pireps.view.recent'));
         $this->set('pireps', PIREPData::GetRecentReports());
         $this->set('descrip', 'These pilot reports are from the past 48 hours');
@@ -113,21 +104,22 @@ class PIREPAdmin extends CodonModule
         $this->render('pireps_list.tpl');
     }
 
-    public function approveall()
-    {
+    public function approveall() {
+        
         echo '<h3>Approve All</h3>';
 
         $allpireps = PIREPData::findPIREPS(array('p.accepted' => PIREP_PENDING));
+        
         $total = count($allpireps);
         $count = 0;
         foreach ($allpireps as $pirep_details) {
+            
             if ($pirep_details->aircraft == '') {
                 continue;
             }
 
             # Update pilot stats
-            SchedulesData::IncrementFlownCount($pirep_details->code, $pirep_details->
-                flightnum);
+            SchedulesData::IncrementFlownCount($pirep_details->code, $pirep_details->flightnum);
             PIREPData::ChangePIREPStatus($pirep_details->pirepid, PIREP_ACCEPTED); // 1 is accepted
             //PilotData::UpdateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
             PilotData::UpdatePilotStats($pirep_details->pilotid);
@@ -145,8 +137,7 @@ class PIREPAdmin extends CodonModule
         echo "$count of $total were approved ({$skipped} has errors)";
     }
 
-    public function viewall()
-    {
+    public function viewall() {
         $this->post_action();
 
         if (!isset($this->get->start) || $this->get->start == '')
@@ -192,8 +183,7 @@ class PIREPAdmin extends CodonModule
         $this->render('pireps_list.tpl');
     }
 
-    public function editpirep()
-    {
+    public function editpirep() {
         $this->set('pirep', PIREPData::GetReportDetails($this->get->pirepid));
         $this->set('allairlines', OperationsData::GetAllAirlines());
         $this->set('allairports', OperationsData::GetAllAirports());
@@ -205,14 +195,12 @@ class PIREPAdmin extends CodonModule
         $this->render('pirep_edit.tpl');
     }
 
-    public function viewcomments()
-    {
+    public function viewcomments() {
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
         $this->render('pireps_comments.tpl');
     }
 
-    public function deletecomment()
-    {
+    public function deletecomment() {
         if (!isset($this->post)) {
             return;
         }
@@ -225,14 +213,12 @@ class PIREPAdmin extends CodonModule
         $this->render('core_success.tpl');
     }
 
-    public function viewlog()
-    {
+    public function viewlog() {
         $this->set('report', PIREPData::GetReportDetails($this->get->pirepid));
         $this->render('pirep_log.tpl');
     }
 
-    public function addcomment()
-    {
+    public function addcomment() {
         if (isset($this->post->submit)) {
             $this->add_comment_post();
 
@@ -248,8 +234,7 @@ class PIREPAdmin extends CodonModule
 
     /* Utility functions */
 
-    protected function add_comment_post()
-    {
+    protected function add_comment_post() {
         $comment = $this->post->comment;
         $commenter = Auth::$userinfo->pilotid;
         $pirepid = $this->post->pirepid;
@@ -273,29 +258,21 @@ class PIREPAdmin extends CodonModule
      * Approve the PIREP, and then update
      * the pilot's data
      */
-    protected function approve_pirep_post()
-    {
+    protected function approve_pirep_post() {
         $pirepid = $this->post->id;
 
         if ($pirepid == '')
             return;
 
-        $pirep_details = PIREPData::GetReportDetails($pirepid);
+        $pirep_details = PIREPData::getReportDetails($pirepid);
 
         # See if it's already been accepted
         if (intval($pirep_details->accepted) == PIREP_ACCEPTED)
             return;
 
         # Update pilot stats
-        SchedulesData::IncrementFlownCount($pirep_details->code, $pirep_details->flightnum);
+        
         PIREPData::ChangePIREPStatus($pirepid, PIREP_ACCEPTED); // 1 is accepted
-        PilotData::UpdateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
-        PilotData::UpdatePilotPay($pirep_details->pilotid, $pirep_details->flighttime);
-
-        RanksData::CalculateUpdatePilotRank($pirep_details->pilotid);
-        PilotData::GenerateSignature($pirep_details->pilotid);
-        StatsData::UpdateTotalHours();
-
         LogData::addLog(Auth::$userinfo->pilotid, 'Approved PIREP #' . $pirepid);
 
         # Call the event
@@ -306,8 +283,7 @@ class PIREPAdmin extends CodonModule
      * Delete a PIREP
      */
 
-    protected function delete_pirep_post()
-    {
+    protected function delete_pirep_post() {
         $pirepid = $this->post->id;
         if ($pirepid == '')
             return;
@@ -323,8 +299,7 @@ class PIREPAdmin extends CodonModule
      * Reject the report, and then send them the comment
      * that was entered into the report
      */
-    protected function reject_pirep_post()
-    {
+    protected function reject_pirep_post() {
         $pirepid = $this->post->pirepid;
         $comment = $this->post->comment;
 
@@ -333,16 +308,6 @@ class PIREPAdmin extends CodonModule
 
         PIREPData::changePIREPStatus($pirepid, PIREP_REJECTED); // 2 is rejected
         $pirep_details = PIREPData::getReportDetails($pirepid);
-
-        // If it was previously accepted, subtract the flight data
-        if (intval($pirep_details->accepted) == PIREP_ACCEPTED) {
-            PilotData::updateFlightData($pirep_details->pilotid, -1 * floatval($pirep->flighttime), -1);
-        }
-
-        //PilotData::UpdatePilotStats($pirep_details->pilotid);
-        RanksData::CalculateUpdatePilotRank($pirep_details->pilotid);
-        PilotData::resetPilotPay($pirep_details->pilotid);
-        StatsData::UpdateTotalHours();
 
         // Send comment for rejection
         if ($comment != '') {
@@ -364,11 +329,8 @@ class PIREPAdmin extends CodonModule
         CodonEvent::Dispatch('pirep_rejected', 'PIREPAdmin', $pirep_details);
     }
 
-    protected function edit_pirep_post()
-    {
-        if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->
-            depicao == '' || $this->post->arricao == '' || $this->post->aircraft == '' || $this->
-            post->flighttime == '') {
+    protected function edit_pirep_post() {
+        if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->depicao == '' || $this->post->arricao == '' || $this->post->aircraft == '' || $this->post->flighttime == '') {
             $this->set('message', 'You must fill out all of the required fields!');
             $this->render('core_error.tpl');
             return false;
@@ -386,13 +348,7 @@ class PIREPAdmin extends CodonModule
         $fuelcost = $this->post->fuelused * $this->post->fuelunitcost;
 
         # form the fields to submit
-        $data = array('pirepid' => $this->post->pirepid, 'code' => $this->post->code,
-            'flightnum' => $this->post->flightnum, 'depicao' => $this->post->depicao,
-            'arricao' => $this->post->arricao, 'aircraft' => $this->post->aircraft,
-            'flighttime' => $this->post->flighttime, 'load' => $this->post->load, 'price' =>
-            $this->post->price, 'pilotpay' => $this->post->pilotpay, 'fuelused' => $this->
-            post->fuelused, 'fuelunitcost' => $this->post->fuelunitcost, 'fuelprice' => $fuelcost,
-            'expenses' => $this->post->expenses);
+        $data = array('pirepid' => $this->post->pirepid, 'code' => $this->post->code, 'flightnum' => $this->post->flightnum, 'depicao' => $this->post->depicao, 'arricao' => $this->post->arricao, 'aircraft' => $this->post->aircraft, 'flighttime' => $this->post->flighttime, 'load' => $this->post->load, 'price' => $this->post->price, 'pilotpay' => $this->post->pilotpay, 'fuelused' => $this->post->fuelused, 'fuelunitcost' => $this->post->fuelunitcost, 'fuelprice' => $fuelcost, 'expenses' => $this->post->expenses);
 
         if (!PIREPData::updateFlightReport($this->post->pirepid, $data)) {
             $this->set('message', 'There was an error editing your PIREP');
@@ -408,8 +364,7 @@ class PIREPAdmin extends CodonModule
 
         // Add a comment
         if (trim($this->post->comment) != '' && $submit != 'reject pirep') {
-            PIREPData::AddComment($this->post->pirepid, Auth::$userinfo->pilotid, $this->
-                post->comment);
+            PIREPData::AddComment($this->post->pirepid, Auth::$userinfo->pilotid, $this->post->comment);
         }
 
         if ($submit == 'accept pirep') {
