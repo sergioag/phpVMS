@@ -38,6 +38,7 @@ ALTER TABLE `phpvms_acarsdata` ADD `route` TEXT NOT NULL AFTER `arrtime`, ADD `r
 
 ALTER TABLE `phpvms_schedules` DROP `maxload` ;
 ALTER TABLE `phpvms_schedules` ADD `route_details` TEXT NOT NULL AFTER `route`;
+ALTER TABLE `phpvms_schedules` ADD `payforflight` FLOAT NOT NULL DEFAULT '0';
 
 ALTER TABLE `phpvms_schedules` ADD `week1` VARCHAR( 7 ) NOT NULL AFTER `daysofweek`, ADD `week2` VARCHAR( 7 ) NOT NULL AFTER `week1`, ADD `week3` VARCHAR( 7 ) NOT NULL AFTER `week2`, ADD `week4` VARCHAR( 7 ) NOT NULL AFTER `week3`;
 

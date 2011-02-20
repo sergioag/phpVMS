@@ -7,14 +7,8 @@
 	<td>
 		<select name="code">
 		<?php
-		
-		foreach($allairlines as $airline)
-		{
-			if($airline->code == $schedule->code)
-				$sel = 'selected';
-			else
-				$sel = '';
-	
+		foreach($allairlines as $airline) {
+            $sel = ($airline->code == $schedule->code) ? 'selected' : '';
 			echo '<option value="'.$airline->code.'" '.$sel.'>'.$airline->code.' - '.$airline->name.'</option>';
 		}
 		?>
@@ -160,6 +154,12 @@
 	<td><input type="text" name="price" value="<?php echo $schedule->price?>" />
 		<p>This is the ticket price, or price per <?php echo Config::Get('CARGO_UNITS'); ?>
 			for a cargo flight.</p>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><strong>Pay for Flight</strong> </td>
+	<td><input type="text" name="payforflight" value="<?php echo $schedule->price?>" />
+		<p>If a price is entered here, a pilot will be paid this amount, instead of the hourly pay.</p>
 	</td>
 </tr>
 <tr>

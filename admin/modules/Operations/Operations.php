@@ -277,8 +277,12 @@ class Operations extends CodonModule {
         }
 
         # Form the json header
-        $json = array('page' => $page, 'total' => $total_pages, 'records' => $count,
-            'rows' => array());
+        $json = array(
+            'page' => $page, 
+            'total' => $total_pages, 
+            'records' => $count,
+            'rows' => array()
+        );
 
         # Add each row to the above array
         foreach ($airports as $row) {
@@ -840,7 +844,7 @@ class Operations extends CodonModule {
             'arrtime' => $this->post->arrtime, 'flighttime' => $this->post->flighttime,
             'daysofweek' => $daysofweek, 
             'week1' => $week1, 'week2' => $week2, 'week3' => $week3, 'week4' => $week4, 
-            'price' => $this->post->price,
+            'price' => $this->post->price, 'payforflight' => $this->post->payforflight,
             'flighttype' => $this->post->flighttype, 'notes' => $this->post->notes,
             'enabled' => $enabled);
 
@@ -924,7 +928,8 @@ class Operations extends CodonModule {
             'arrtime' => $this->post->arrtime, 'flighttime' => $this->post->flighttime,
             'daysofweek' => $daysofweek, 
             'week1' => $week1, 'week2' => $week2, 'week3' => $week3, 'week4' => $week4, 
-            'price' => $this->post->price, 'flighttype' => $this->post->flighttype, 'notes' => $this->post->notes,
+            'price' => $this->post->price, 'payforflight' => $this->post->payforflight,
+            'flighttype' => $this->post->flighttype, 'notes' => $this->post->notes,
             'enabled' => $enabled);
 
         $val = SchedulesData::editScheduleFields($this->post->id, $data);

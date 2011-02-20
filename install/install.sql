@@ -193,6 +193,7 @@ CREATE TABLE `phpvms_schedules` (
   `week3` VARCHAR( 7 ) NOT NULL DEFAULT '0123456',
   `week4` VARCHAR( 7 ) NOT NULL DEFAULT '0123456',
   `price` FLOAT NOT NULL,
+  `payforflight` FLOAT NOT NULL DEFAULT '0',
   `flighttype` VARCHAR( 1 ) NOT NULL DEFAULT 'P',
   `timesflown` int(11) NOT NULL default '0',
   `notes` text NOT NULL,
