@@ -136,7 +136,7 @@ e72bc1ba04d51a5882b4d18e1b1f57e7  *./core/bootstrap.inc.php
 c632a11265dcd1b4747112b12b89959f  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 c1e6bb7c33856c0723f1139ccf20ad9f  *./core/classes/CodonData.class.php
-2ffa40e385f75f2020b6ec3b6ea7c0ae  *./core/classes/Debug.class.php
+fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
 5fc9915e310b99c58b2c389a942c3681  *./core/classes/Vars.class.php
 957e4ee1ab6724dd1a768f207cd2b5d3  *./core/classes/CodonEvent.class.php
 c8a22eae5b17b5d8b7deed4aae2e0e5a  *./core/classes/CodonCache.class.php
@@ -178,7 +178,7 @@ c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 6b946047c6c072b85d88792409097feb  *./core/modules/ACARS/fspax.php
 453759d7d7df9787757062bc85ce6589  *./core/modules/ACARS/ACARS.php
 52d9eb7db618baf62c63b03a24e6ecad  *./core/modules/ACARS/xacars.php
-66bd67b4963e9d270986ba68768fd4d8  *./core/modules/FSFK/FSFK.php
+205767947163b13e6062aa4ac9f9b8e6  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
 a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
 510f2fb052b23549aa8b769831a6f846  *./core/modules/PIREPS/PIREPS.php
@@ -227,7 +227,7 @@ becefb73aa708db1993bb70e7c0c2027  *./admin/templates/sidebar_pending.tpl
 83ec50eca4e7956a9ce75d8c5a1c7f4e  *./admin/templates/logs_index.tpl
 6a92e88ff594995e6e68836087b40e7e  *./admin/templates/news_additem.tpl
 8d713e47e580563de7940d8919d71b82  *./admin/templates/ops_aircraftlist.tpl
-ddacd7f35fd18c6db3cf8a60694b629c  *./admin/templates/pirep_edit.tpl
+5b9533e9f499f30df8f8872aff34f799  *./admin/templates/pirep_edit.tpl
 d074c0e9c23845e55f9a2b3dcb6063f2  *./admin/templates/settings_addcustomfield.tpl
 9654ff17c3533ab43b5e6ab4bac582c0  *./admin/templates/ops_airportlist.tpl
 713a3b7f8bc9f3976664dfa43aba820a  *./admin/templates/sidebar_pirepfields.tpl

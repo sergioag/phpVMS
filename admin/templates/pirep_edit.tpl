@@ -113,7 +113,7 @@ foreach($pirepfields as $field)
 			}
 			
 			$value = trim($fvalue);
-			echo "<option value='{$fvalue}' {$sel}>{$fvalue}</option>';
+			echo "<option value='{$fvalue}' {$sel}>{$fvalue}</option>";
 		}
 		echo '</select>';		
 	}

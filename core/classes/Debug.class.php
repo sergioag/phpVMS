@@ -121,8 +121,7 @@ class Debug
 		fwrite(self::$fp, $string);
 	}
 	
-	public static function firebug()
-	{
+	public static function firebug() {
 		include_once CORE_PATH.DS.'lib'.DS.'firebug'.DS.'FirePHP.class.php';
 		
 		$instance = FirePHP::getInstance(true);
@@ -130,8 +129,7 @@ class Debug
 		return call_user_func_array(array($instance,'fb'),$args);
 	}
 	
-	public static function showCritical($message, $title='')
-	{
+	public static function showCritical($message, $title='') {
 		if($title == '')
 			$title = 'An Error Was Encountered';
 			
@@ -148,8 +146,7 @@ MESSAGE;
 	 * Show the CSS and JS code for the debug box
 	 * Is set to only show once on the page
 	 */
-	public static function showHeader()
-	{
+	public static function showHeader() {
 		if(self::$heading_shown == true) return;
 		
 		self::$heading_shown = true;
@@ -201,26 +198,23 @@ MESSAGE;
 		
 		$args = func_get_args();
 		
-		foreach($args as $value)
-		{
+		foreach($args as $value) {
+		  
 			$id = mt_rand();
 			
-			if(is_array($value) || is_object($value))
-			{ 	// this runs once, need to get the key and value
+			if(is_array($value) || is_object($value)) { 
 				
 				if(count($value)> 1)
 					self::printArrayObj($value, 'More than 1 value in '.gettype($value).' - ');
-				else
-				{	/*this will run once usually, unless its multiple arrays
+				else {	
+				    
+                    /*this will run once usually, unless its multiple arrays
 						but thats taken care of in the loop */
-					foreach($value as $key=>$val)
-					{
-						if(is_array($val))
-						{
+					foreach($value as $key=>$val) {
+						
+                        if(is_array($val)) {
 							self::printArrayObj($val, $key);
-						}
-						else
-						{
+						} else {
 							if(is_int($key)) $key = '';
 							else $key .= ' - ';
 								
@@ -228,9 +222,7 @@ MESSAGE;
 						}
 					}
 				}
-			}
-			else
-			{
+			} else {
 				echo $value.'<br />';
 			}
 		}
@@ -247,8 +239,8 @@ MESSAGE;
 		echo '</div>';
 	}
 	
-	public static function printArrayObj($array, $title='')
-	{
+	public static function printArrayObj($array, $title='') {
+	   
 		if(count($array) == 0) return;
 		
 		//if($title!='') $title_header = 'Variable name: '.$title;
@@ -263,15 +255,10 @@ MESSAGE;
 				onClick="codon_debug_toggle(\'showdebug'.$id.'\');">'.$title.' (click to expand)</div>
 				<div class="codon_debug_text" id="showdebug'.$id.'" style="display: none;">';
 						
-		foreach($array as $key => $value)
-		{
-			if(is_array($value) || is_object($value))
-			{
+		foreach($array as $key => $value) {
+			if(is_array($value) || is_object($value)) {
 				self::printArrayObj($value, '$'.$key);
-			}
-			else
-			{
-				
+			} else {
 				echo '[<strong>'.$key.'</strong>] = "'.$value.'" <br />';
 			}
 		}
@@ -279,12 +266,11 @@ MESSAGE;
 		echo '</div>';
 	}
 	
-	public static function showBacktrace()
-	{
+	public static function showBacktrace() {
 		$i = 1;
 		
-		foreach(self::$bt as $section)
-		{
+		foreach(self::$bt as $section) {
+		  
 			echo '<strong>'. $i++ . '. '
 					.$section['class'].$section['type'].$section['function']
 					.'</strong>'
@@ -292,16 +278,15 @@ MESSAGE;
 			
 			$args = count($section['args']);
 			
-			if($args > 0)
-			{
+			if($args > 0) {
 				self::printArrayObj($section['args'], $args.' arguments were passed to this function:');
 				echo '<br />';
 			}
 		}
 	}
 	
-	public static function showOrigin()
-	{
+	public static function showOrigin() {
+	   
 		self::$bt = array_reverse(self::$bt, true);
 		$called = array_pop(self::$bt);
 			
