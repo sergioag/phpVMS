@@ -92,7 +92,6 @@ class FSFK extends CodonModule {
             /* Add the map images in */
             if ($key == 'FLIGHTMAPS') {
 
-
                 $img = (string )$xml->FLIGHTMAPS->FlightMapWeatherJPG;
                 if ($img)
                     $rawdata['FLIGHTMAPS']['FlightMapWeather'] = $img;
@@ -120,16 +119,12 @@ class FSFK extends CodonModule {
 
         /* Fuel conversion - kAcars only reports in lbs */
         $fuelused = (string )$xml->BlockFuel;
-        if (Config::Get('LiquidUnit') == '0') {
+        if (intval(Config::Get('LiquidUnit')) == 0) {
             # Convert to KGs, divide by density since d = mass * volume
             $fuelused = ($fuelused * .45359237) / .8075;
-        }
-        # Convert lbs to gallons
-        elseif (Config::Get('LiquidUnit') == '1') {
+        } elseif (intval(Config::Get('LiquidUnit')) == 1) { # Convert lbs to gallons
             $fuelused = $fuelused * 6.84;
-        }
-        # Convert lbs to kgs
-        elseif (Config::Get('LiquidUnit') == '2') {
+        } elseif (intval(Config::Get('LiquidUnit')) == 2) { # Convert lbs to kgs
             $fuelused = $fuelused * .45359237;
         }
 
@@ -141,11 +136,11 @@ class FSFK extends CodonModule {
             'depicao' => $depicao, 
             'arricao' => $arricao, 
             'aircraft' => $aircraft, 
-            'registration' => (string )$xml->AircraftTailNumber, 
+            'registration' => (string) $xml->AircraftTailNumber, 
             'flighttime' => $flighttime, 
-            'landingrate' => (string )$xml->ONVS, 
+            'landingrate' => (string) $xml->ONVS, 
             'submitdate' => 'NOW()', 
-            'comment' => trim((string )$xml->COMMENT), 
+            'comment' => trim((string) $xml->COMMENT), 
             'fuelused' => $fuelused, 
             'source' => 'fsfk', 
             'load' => $load, 
@@ -154,10 +149,7 @@ class FSFK extends CodonModule {
         );
 
         $this->log(print_r($data, true), 'fsfk');
-        $ret = ACARSData::FilePIREP($pilotid, $data);
-
-        $sql1 = "UPDATE phpvms_pilots SET `status`='Active' WHERE pilotid='$pilotid'";
-        mysql_query($sql1);
+        $ret = ACARSData::filePIREP($pilotid, $data);
 
         if (!$ret)
             echo PIREPData::$lasterror;
@@ -170,6 +162,7 @@ class FSFK extends CodonModule {
      * 
      */
     public function acars() {
+        
         if (!isset($_REQUEST['DATA1']))
             die("0|Invalid Data");
         if (!isset($_REQUEST['DATA1']))
@@ -188,18 +181,20 @@ class FSFK extends CodonModule {
         else
             $message = $_REQUEST['DATA4'];
 
-
         $this->log("Method: {$method}", 'fsfk');
 
         $fields = array();
 
         # Go through each method now
         if ($method == 'TEST') {
+            
             $pilotid = $value;
 
             echo '1|30';
             return;
+            
         } elseif ($method == 'BEGINFLIGHT') {
+            
             $flight_data = explode('|', $value);
 
             if (count($flight_data) < 10) {
@@ -254,7 +249,9 @@ class FSFK extends CodonModule {
                 'online' => $online, 
                 'client' => 'fsfk',
             );
+            
         } elseif ($method == 'MESSAGE') {
+            
             $pilotid = $value;
             $flight_data = ACARSData::get_flight_by_pilot($pilotid);
 
@@ -319,8 +316,8 @@ class FSFK extends CodonModule {
 
         # Estimate the time remaining
         if ($gs != 0) {
-            $Minutes = round($dist_remain / $gs * 60);
-            $time_remain = self::ConvertMinutes2Hours($Minutes);
+            $minutes = round($dist_remain / $gs * 60);
+            $time_remain = self::ConvertMinutes2Hours($minutes);
         } else {
             $time_remain = '00:00';
         }
@@ -400,7 +397,14 @@ class FSFK extends CodonModule {
         echo $acars_config;
     }
 
+    /**
+     * FSFK::ConvertMinutes2Hours()
+     * 
+     * @param mixed $Minutes
+     * @return
+     */
     public function ConvertMinutes2Hours($Minutes) {
+        
         if ($Minutes < 0) {
             $Min = Abs($Minutes);
         } else {
