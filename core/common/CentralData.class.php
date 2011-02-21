@@ -18,6 +18,7 @@
  */
 
 class CentralData extends CodonData {
+    
     public static $xml;
     public static $xml_data = '';
     public static $xml_response = '';
@@ -31,16 +32,18 @@ class CentralData extends CodonData {
     you will be penalized or banned. 
     
     These DO NOT AFFECT YOUR SCORE */
-    public static $limits = array('update_vainfo' => 6, 'update_schedules' => 12,
-        'process_airport_list' => 1, 'update_pilots' => 24, 'update_pireps' => 8);
+    public static $limits = array(
+        'update_vainfo' => 6, 
+        'update_schedules' => 12,
+        'process_airport_list' => 1, 
+        'update_pilots' => 24, 
+        'update_pireps' => 8
+    );
 
     private static function central_enabled() {
+        
         /* Cover both, since format changed */
         if (Config::Get('VACENTRAL_ENABLED') && Config::Get('VACENTRAL_API_KEY') != '') {
-            return true;
-        }
-
-        if (Config::Get('PHPVMS_CENTRAL_ENABLED') && Config::Get('PHPVMS_API_KEY') != '') {
             return true;
         }
 
@@ -48,6 +51,7 @@ class CentralData extends CodonData {
     }
 
     private static function send_xml() {
+        
         // Cover old and new format
         $api_server = Config::Get('VACENTRAL_API_SERVER');
         if ($api_server == '') {
@@ -56,8 +60,13 @@ class CentralData extends CodonData {
 
         ob_start();
         $web_service = new CodonWebService();
-        self::$xml_response = $web_service->post($api_server . '/update', self::$xml->
-            asXML());
+        $options = array(
+            CURLOPT_USERAGENT => 'phpVMS ('.PHPVMS_VERSION.')',
+        );
+        
+        $web_service->setOptions($options);
+        
+        self::$xml_response = $web_service->post($api_server . '/update', self::$xml->asXML());
 
         if (!self::$xml_response) {
             if (Config::Get('VACENTRAL_DEBUG_MODE') == true) {
@@ -338,6 +347,7 @@ class CentralData extends CodonData {
     }
 
     public static function send_all_acars() {
+        
         if (!self::central_enabled()) return false;
 
         $acars_flights = ACARSData::GetAllFlights();
@@ -365,6 +375,7 @@ class CentralData extends CodonData {
     }
 
     protected static function create_acars_flight($flight) {
+        
         if (is_object($flight)) {
             $flight = (array )$flight;
         }

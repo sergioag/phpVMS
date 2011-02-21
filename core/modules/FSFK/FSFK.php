@@ -43,9 +43,6 @@ class FSFK extends CodonModule {
         #$this->log(serialize($xml), 'fsfk');
 
         $pilotid = PilotData::parsePilotID($xml->PilotID);
-        /*preg_match('/^([A-Za-z]*)(\d*)/', $xml->PilotID, $matches);
-        $code = $matches[1];
-        $pilotid = intval($matches[2]) - Config::Get('PILOTID_OFFSET');*/
 
         $flightinfo = SchedulesData::getProperFlightNum($xml->FlightNumber);
         $code = $flightinfo['code'];
@@ -63,14 +60,14 @@ class FSFK extends CodonModule {
             OperationsData::RetrieveAirportInfo($arricao);
         }
 
-        $load = (string )$xml->Passenger;
+        $load = (string) $xml->Passenger;
         if ($load == '' || $load == 0)
-            $load = (string )$xml->Cargo;
+            $load = (string) $xml->Cargo;
 
-        $flighttime = str_replace(':', '.', (string )$xml->BlockTime);
+        $flighttime = str_replace(':', '.', (string) $xml->BlockTime);
 
         # Get the proper aircraft
-        $ac = OperationsData::GetAircraftByReg((string )$xml->AircraftTailNumber);
+        $ac = OperationsData::GetAircraftByReg((string) $xml->AircraftTailNumber);
         if (!$ac) {
             $aircraft = 0;
         } else {

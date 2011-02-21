@@ -118,14 +118,15 @@ class Operations extends CodonModule {
     }
 
     public function calculatedistance($depicao = '', $arricao = '') {
+        
         if ($depicao == '') $depicao = $this->get->depicao;
-
         if ($arricao == '') $arricao = $this->get->arricao;
 
         echo OperationsData::getAirportDistance($depicao, $arricao);
     }
 
     public function getfuelprice() {
+        
         if (Config::Get('FUEL_GET_LIVE_PRICE') == false) {
             echo '<span style="color: red">Live fuel pricing is disabled!</span>';
             return;
@@ -144,6 +145,7 @@ class Operations extends CodonModule {
     }
 
     public function findairport() {
+        
         $results = OperationsData::searchAirport($this->get->term);
 
         if (count($results) > 0) {
@@ -162,6 +164,7 @@ class Operations extends CodonModule {
     }
 
     public function airlines() {
+        
         if (isset($this->post->action)) {
             if ($this->post->action == 'addairline') {
                 $this->add_airline_post();
@@ -178,16 +181,13 @@ class Operations extends CodonModule {
         /* If they're adding an aircraft, go through this pain
         */
         switch ($this->post->action) {
+
             case 'addaircraft':
-
                 $this->add_aircraft_post();
-
                 break;
 
             case 'editaircraft':
-
                 $this->edit_aircraft_post();
-
                 break;
         }
 
@@ -211,6 +211,7 @@ class Operations extends CodonModule {
     }
 
     public function airports() {
+        
         /* If they're adding an airport, go through this pain
         */
         if (isset($this->post->action)) {
@@ -231,6 +232,7 @@ class Operations extends CodonModule {
     }
 
     public function airportgrid() {
+        
         $page = $this->get->page; // get the requested page
         $limit = $this->get->rows; // get how many rows we want to have into the grid
         $sidx = $this->get->sidx; // get index row - i.e. user click to sort
@@ -286,6 +288,7 @@ class Operations extends CodonModule {
 
         # Add each row to the above array
         foreach ($airports as $row) {
+            
             if ($row->fuelprice == 0) {
                 $row->fuelprice = 'Live';
             }
