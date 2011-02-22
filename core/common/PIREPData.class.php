@@ -1075,7 +1075,7 @@ class PIREPData extends CodonData {
         # Look up the status of the PIREP of previous
         $pirep_details = PIREPData::getReportDetails($pirepid);
         
-        if(!$pirep_details)) {
+        if(!$pirep_details) {
             return false;
         }
         

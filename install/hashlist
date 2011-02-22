@@ -27,7 +27,7 @@ d4d204c3560c283fa4d7a3a367473740  *./install/navdata.sql
 45dc70edd04ab870c3ba86ebf305ff4c  *./install/install.php
 a177b8656fca431cc0b6d53ac301c537  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
-68ffd88729d99c811891833e1505d886  *./core/common/PIREPData.class.php
+4ac477ff560bc27f61e7a90e980810e2  *./core/common/PIREPData.class.php
 e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 c201a1ea0a656bb46b7766b6f985f010  *./core/common/RegistrationData.class.php
@@ -54,7 +54,7 @@ b1d50334ddd6f2bce7a5fb2f4eefe9be  *./core/common/SiteData.class.php
 b5748afceef098db45049b8cc79170ae  *./core/common/OperationsData.class.php
 a0eaecd33abf5726c36087c1c488e0cd  *./core/common/CronData.class.php
 17f388a37506a1664dd1281f237f2f56  *./core/common/OFCharts.class.php
-916ee1e35ac91b308857ca97361b5010  *./core/common/CentralData.class.php
+03fcc981a38e302576d5827052599215  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
 0600b921789561619e2a4a83385ff5ec  *./core/templates/email_registrationdenied.tpl
 410cbf29e963d07e7be3abd1fcae3069  *./core/templates/schedule_results.tpl
@@ -178,7 +178,7 @@ c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 6b946047c6c072b85d88792409097feb  *./core/modules/ACARS/fspax.php
 453759d7d7df9787757062bc85ce6589  *./core/modules/ACARS/ACARS.php
 52d9eb7db618baf62c63b03a24e6ecad  *./core/modules/ACARS/xacars.php
-205767947163b13e6062aa4ac9f9b8e6  *./core/modules/FSFK/FSFK.php
+f6e138fbaeaa80861bece1e809cf7885  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
 a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
 510f2fb052b23549aa8b769831a6f846  *./core/modules/PIREPS/PIREPS.php
@@ -305,7 +305,7 @@ b801c932759797c3bbf41d7908f23ae7  *./admin/modules/PilotAdmin/PilotAdmin.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php
 fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
-2aa12048937b27e742c5afe0b86e1ed8  *./admin/modules/Operations/Operations.php
+637a291ebfce78b3247ec658b8f4d448  *./admin/modules/Operations/Operations.php
 58be86122e37b9cd875b7d306a4425e8  *./admin/modules/Import/Import.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php

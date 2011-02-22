@@ -79,7 +79,7 @@
 		<field Field="chartlink" Type="text" Null="NO" Key="" Extra="" />
 		<key Table="phpvms_airports" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="553" Null="" Index_type="BTREE" Comment="" />
 		<key Table="phpvms_airports" Non_unique="0" Key_name="icao" Seq_in_index="1" Column_name="icao" Collation="A" Cardinality="553" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_airports" Engine="InnoDB" Version="10" Row_format="Compact" Rows="487" Avg_row_length="134" Data_length="65536" Max_data_length="0" Index_length="16384" Data_free="11534336" Auto_increment="1507" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<options Name="phpvms_airports" Engine="InnoDB" Version="10" Row_format="Compact" Rows="454" Avg_row_length="144" Data_length="65536" Max_data_length="0" Index_length="16384" Data_free="11534336" Auto_increment="1507" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_awards">
 		<field Field="awardid" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -311,7 +311,7 @@
 		<field Field="exported" Type="tinyint(4)" Null="NO" Key="" Extra="" />
 		<field Field="rawdata" Type="blob" Null="NO" Key="" Extra="" />
 		<key Table="phpvms_pireps" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="pirepid" Collation="A" Cardinality="121" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_pireps" Engine="InnoDB" Version="10" Row_format="Compact" Rows="113" Avg_row_length="2029" Data_length="229376" Max_data_length="0" Index_length="0" Data_free="11534336" Auto_increment="518" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<options Name="phpvms_pireps" Engine="InnoDB" Version="10" Row_format="Compact" Rows="127" Avg_row_length="1806" Data_length="229376" Max_data_length="0" Index_length="0" Data_free="11534336" Auto_increment="518" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_pirepvalues">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -371,7 +371,7 @@
 		<field Field="ipaddress" Type="varchar(25)" Null="NO" Key="" Extra="" />
 		<field Field="logintime" Type="datetime" Null="NO" Key="" Extra="" />
 		<key Table="phpvms_sessions" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="26" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_sessions" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="26" Avg_row_length="45" Data_length="42228" Max_data_length="281474976710655" Index_length="15360" Data_free="41056" Auto_increment="5581" Create_time="2009-10-31 20:05:09" Update_time="2011-02-20 21:02:37" Check_time="2010-04-20 19:10:29" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<options Name="phpvms_sessions" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="26" Avg_row_length="45" Data_length="42228" Max_data_length="281474976710655" Index_length="15360" Data_free="41052" Auto_increment="5585" Create_time="2009-10-31 20:05:09" Update_time="2011-02-21 22:01:50" Check_time="2010-04-20 19:10:29" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_settings">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
