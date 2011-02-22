@@ -44,17 +44,13 @@ foreach($allroutes as $route) {
 		
 		<?php 
 		# Don't allow overlapping bids and a bid exists
-		if(Config::Get('DISABLE_SCHED_ON_BID') == true && $route->bidid != 0)
-		{
+		if(Config::Get('DISABLE_SCHED_ON_BID') == true && $route->bidid != 0) {
 		?>
 			<a id="<?php echo $route->id; ?>" class="addbid" 
-				href="<?php echo actionurl('/schedules/addbid');?>">Add to Bid</a>
+				href="<?php echo actionurl('/schedules/addbid/?id='.$route->id);?>">Add to Bid</a>
 		<?php
-		}
-		else
-		{
-			if(Auth::LoggedIn())
-			{
+		} else {
+			if(Auth::LoggedIn()) {
 			 ?>
 				<a id="<?php echo $route->id; ?>" class="addbid" 
 					href="<?php echo url('/schedules/addbid');?>">Add to Bid</a>
