@@ -39,14 +39,20 @@
 <h1>Build ##REVISION## (Version 2.1.##REVISION##)</h1>
 <ul>
 	<li>Added payadjust column/option to pilot</li>
+    <li>Added four week rotating schedule (Mon-Fri for Week 1-4 in a month)</li>
+    <li>Create reverse route from existing schedule</li>
+    <li>Assign a pilot pay per-schedule flown, instead of per-flight hour</li>
 	<li>Rank images fixed in signature</li>
-    <li><a href="http://bugs.phpvms.net/secure/ReleaseNote.jspa?projectId=10030&version=10104" target="_blank">And numerous bug fixes</a></li>
+    <li>Airline added as a search filter (w/ template change)</li>
+    <li><a href="https://github.com/nshahzad/phpVMS/issues/closed" target="_blank">And numerous bug fixes</a></li>
 </ul>
 <br/>
 <strong>Templates Changed</strong>:</p>
 <ul>
 	<li>profile_main.tpl - Included payadjust to total money</li>
     <li>schedule_results.tpl - Added route ID to add bid URL, in case AJAX fails, then bid still gets added</li>
+    <li>schedule_results.tpl - All of the schedule filter code moved to Schedules module</li>
+    <li>schedule_searchform.tpl - Added "Airline" as a search filter</li>
 </ul>
 
 <h1>Build 934 (Version 2.1.934)</h1>
