@@ -52,7 +52,16 @@ class PilotGroups extends CodonData {
         return true;
     }
 
+    /**
+     * Save changes to a group
+     * 
+     * @param mixed $groupid
+     * @param mixed $groupname
+     * @param mixed $permissions
+     * @return
+     */
     public static function EditGroup($groupid, $groupname, $permissions) {
+        
         $groupid = intval($groupid);
         $groupname = DB::escape($groupname);
 
@@ -69,7 +78,14 @@ class PilotGroups extends CodonData {
         return true;
     }
 
+    /**
+     * Get information about a group
+     * 
+     * @param mixed $groupid
+     * @return
+     */
     public static function getGroup($groupid) {
+        
         $groupid = intval($groupid);
 
         $sql = 'SELECT *
@@ -80,11 +96,19 @@ class PilotGroups extends CodonData {
     }
 
     /**
-     * Get a group ID, given the name
+     * PilotGroups::getGroupID()
+     * 
+     * @param mixed $groupname
+     * @return
      */
     public static function getGroupID($groupname) {
-        $sql = 'SELECT groupid FROM ' . TABLE_PREFIX . 'groups
-				WHERE name=\'' . $groupname . '\'';
+        
+        if(is_object($groupname)) {
+            $groupname = $groupname->friendlyname;
+        }
+        
+        $sql = 'SELECT groupid FROM ' . TABLE_PREFIX . "groups
+				WHERE name='{$groupname}'";
 
         $res = DB::get_row($sql);
 
@@ -93,30 +117,40 @@ class PilotGroups extends CodonData {
 
     /**
      * Add a user to a group, either supply the group ID or the name
+     * 
+     * @param mixed $pilotid
+     * @param mixed $groupidorname
+     * @return
      */
     public static function AddUsertoGroup($pilotid, $groupidorname) {
-        if ($groupidorname == '') return false;
+        
+        if ($groupidorname == '') {
+            return false;
+        }
 
         // If group name is given, get the group ID
         if (!is_numeric($groupidorname)) {
             $groupidorname = self::getGroupID($groupidorname);
         }
 
-        if (self::CheckUserInGroup($pilotid, $groupidorname) === true) {
+        if (self::checkUserInGroup($pilotid, $groupidorname) === true) {
             return true;
         }
 
-        $sql = 'INSERT INTO ' . TABLE_PREFIX . 'groupmembers (pilotid, groupid)
+        $sql = 'INSERT INTO '.TABLE_PREFIX.'groupmembers (pilotid, groupid)
 					VALUES (' . $pilotid . ', ' . $groupidorname . ')';
 
         $res = DB::query($sql);
 
-        if (DB::errno() != 0) return false;
+        if (DB::errno() != 0) {
+            return false;
+        }
 
         return true;
     }
 
     public static function group_has_perm($grouplist, $perm) {
+        
         if (!is_array($grouplist) || count($grouplist) == 0) {
             return false;
         }

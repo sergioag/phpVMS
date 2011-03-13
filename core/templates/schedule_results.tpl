@@ -13,9 +13,7 @@ if(!$allroutes)
 </tr>
 </thead>
 <tbody>
-<?php
-foreach($allroutes as $route) {
-?>
+<?php foreach($allroutes as $route) { ?>
 <tr>
 	<td>
 		<a href="<?php echo url('/schedules/details/'.$route->id);?>"><?php echo $route->code . $route->flightnum?>
@@ -32,8 +30,7 @@ foreach($allroutes as $route) {
 		<?php
 		# Note: this will only show if the above code to
 		#	skip the schedule is commented out
-		if($route->bidid != 0)
-		{
+		if($route->bidid != 0) {
 			echo 'This route has been bid on';
 		}
 		?>

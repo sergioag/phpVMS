@@ -1093,7 +1093,7 @@ class PIREPData extends CodonData {
                 PilotData::updateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
                                
                 # Handle pilot pay
-                if(!(empty($pirep_details->payforflight))) {
+                if(!empty($pirep_details->payforflight)) {
                     
                     # Pay by schedule
                     $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 

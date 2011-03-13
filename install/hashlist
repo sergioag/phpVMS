@@ -27,14 +27,14 @@ d4d204c3560c283fa4d7a3a367473740  *./install/navdata.sql
 45dc70edd04ab870c3ba86ebf305ff4c  *./install/install.php
 a177b8656fca431cc0b6d53ac301c537  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
-4ac477ff560bc27f61e7a90e980810e2  *./core/common/PIREPData.class.php
+b205b914412b0f617f06dc66fa2c9964  *./core/common/PIREPData.class.php
 e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 c201a1ea0a656bb46b7766b6f985f010  *./core/common/RegistrationData.class.php
 2685baa6acfcb978a0028c0fa6975c15  *./core/common/StatsData.class.php
 93865ca8aff4f69378af6c6bd2c7b3b2  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
-a2f0d20af9ded067faecc313e40b3e5c  *./core/common/PilotGroups.class.php
+900da76e31a85111fb77374308b4394e  *./core/common/PilotGroups.class.php
 bc52aa6628bc11211e77eb06261f74dd  *./core/common/SchedulesData.class.php
 e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 e45ee0c21e2f6cec822252e59a5adaad  *./core/common/Countries.class.php
@@ -46,7 +46,7 @@ c0c3bdb82e34dcb69589cd77e169a383  *./core/common/SettingsData.class.php
 ff07ceeccb1bf12167daec3dfbcdd072  *./core/common/FuelData.class.php
 b1d50334ddd6f2bce7a5fb2f4eefe9be  *./core/common/SiteData.class.php
 899f9e1eabdc3155c3d7144748595691  *./core/common/AircraftStats.class.php
-2f808e70d5a700391d76c8f816fb485f  *./core/common/FinanceData.class.php
+1bbb5c34aa65257ab44534340d587ede  *./core/common/FinanceData.class.php
 8ed39ab361932f975bbc6d30ef2c34e9  *./core/common/LogData.class.php
 7f5737e62f815d1f0330639bc0976050  *./core/common/ChartGraph.class.php
 0d32a105b469b951f144a104298e24f1  *./core/common/DownloadData.class.php
@@ -57,7 +57,7 @@ a0eaecd33abf5726c36087c1c488e0cd  *./core/common/CronData.class.php
 03fcc981a38e302576d5827052599215  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
 0600b921789561619e2a4a83385ff5ec  *./core/templates/email_registrationdenied.tpl
-410cbf29e963d07e7be3abd1fcae3069  *./core/templates/schedule_results.tpl
+08223291dd07074c31efc018645d8ad5  *./core/templates/schedule_results.tpl
 c931d63eba29c5891bc3d8738b330631  *./core/templates/pireps_viewall.tpl
 22c17523e1759462fdf5ef978b8acd40  *./core/templates/fsfk_log_flightimages.tpl
 6d692049399ca6ac1665b2e81ba3c1a0  *./core/templates/reqlogin.tpl

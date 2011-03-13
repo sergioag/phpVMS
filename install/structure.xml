@@ -77,9 +77,9 @@
 		<field Field="hub" Type="smallint(6)" Null="NO" Key="" Default="0" Extra="" />
 		<field Field="fuelprice" Type="float" Null="NO" Key="" Default="0" Extra="" />
 		<field Field="chartlink" Type="text" Null="NO" Key="" Extra="" />
-		<key Table="phpvms_airports" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="553" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_airports" Non_unique="0" Key_name="icao" Seq_in_index="1" Column_name="icao" Collation="A" Cardinality="553" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_airports" Engine="InnoDB" Version="10" Row_format="Compact" Rows="454" Avg_row_length="144" Data_length="65536" Max_data_length="0" Index_length="16384" Data_free="11534336" Auto_increment="1507" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<key Table="phpvms_airports" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="85" Null="" Index_type="BTREE" Comment="" />
+		<key Table="phpvms_airports" Non_unique="0" Key_name="icao" Seq_in_index="1" Column_name="icao" Collation="A" Cardinality="85" Null="" Index_type="BTREE" Comment="" />
+		<options Name="phpvms_airports" Engine="InnoDB" Version="10" Row_format="Compact" Rows="494" Avg_row_length="132" Data_length="65536" Max_data_length="0" Index_length="16384" Data_free="11534336" Auto_increment="1507" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_awards">
 		<field Field="awardid" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -133,8 +133,8 @@
 		<field Field="name" Type="varchar(25)" Null="NO" Key="" Extra="" />
 		<field Field="type" Type="varchar(2)" Null="NO" Key="" Extra="" />
 		<field Field="cost" Type="float" Null="NO" Key="" Extra="" />
-		<key Table="phpvms_expenselog" Non_unique="1" Key_name="dateadded" Seq_in_index="1" Column_name="dateadded" Collation="A" Cardinality="494" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_expenselog" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="1482" Avg_row_length="21" Data_length="31616" Max_data_length="281474976710655" Index_length="23552" Data_free="0" Create_time="2010-01-18 00:50:49" Update_time="2011-02-01 21:23:05" Check_time="2010-04-20 19:04:10" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<key Table="phpvms_expenselog" Non_unique="1" Key_name="dateadded" Seq_in_index="1" Column_name="dateadded" Collation="A" Cardinality="495" Null="" Index_type="BTREE" Comment="" />
+		<options Name="phpvms_expenselog" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="1485" Avg_row_length="21" Data_length="31680" Max_data_length="281474976710655" Index_length="24576" Data_free="0" Create_time="2010-01-18 00:50:49" Update_time="2011-03-02 19:29:21" Check_time="2010-04-20 19:04:10" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_expenses">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -256,8 +256,8 @@
 		<field Field="lastip" Type="varchar(25)" Null="YES" Key="" Default="" Extra="" />
 		<field Field="comment" Type="text" Null="YES" Key="" Extra="" />
 		<key Table="phpvms_pilots" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="pilotid" Collation="A" Cardinality="77" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_pilots" Non_unique="1" Key_name="code" Seq_in_index="1" Column_name="code" Collation="A" Cardinality="6" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_pilots" Engine="InnoDB" Version="10" Row_format="Compact" Rows="77" Avg_row_length="638" Data_length="49152" Max_data_length="0" Index_length="16384" Data_free="11534336" Auto_increment="151" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<key Table="phpvms_pilots" Non_unique="1" Key_name="code" Seq_in_index="1" Column_name="code" Collation="A" Cardinality="5" Null="" Index_type="BTREE" Comment="" />
+		<options Name="phpvms_pilots" Engine="InnoDB" Version="10" Row_format="Compact" Rows="77" Avg_row_length="638" Data_length="49152" Max_data_length="0" Index_length="16384" Data_free="11534336" Auto_increment="154" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_pirepcomments">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -310,8 +310,8 @@
 		<field Field="source" Type="varchar(25)" Null="NO" Key="" Extra="" />
 		<field Field="exported" Type="tinyint(4)" Null="NO" Key="" Extra="" />
 		<field Field="rawdata" Type="blob" Null="NO" Key="" Extra="" />
-		<key Table="phpvms_pireps" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="pirepid" Collation="A" Cardinality="121" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_pireps" Engine="InnoDB" Version="10" Row_format="Compact" Rows="127" Avg_row_length="1806" Data_length="229376" Max_data_length="0" Index_length="0" Data_free="11534336" Auto_increment="518" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<key Table="phpvms_pireps" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="pirepid" Collation="A" Cardinality="197" Null="" Index_type="BTREE" Comment="" />
+		<options Name="phpvms_pireps" Engine="InnoDB" Version="10" Row_format="Compact" Rows="137" Avg_row_length="1674" Data_length="229376" Max_data_length="0" Index_length="0" Data_free="11534336" Auto_increment="518" Create_time="2011-01-18 00:43:18" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_pirepvalues">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -357,13 +357,13 @@
 		<field Field="notes" Type="text" Null="NO" Key="" Extra="" />
 		<field Field="enabled" Type="int(11)" Null="NO" Key="" Default="1" Extra="" />
 		<field Field="bidid" Type="int(11)" Null="NO" Key="" Default="0" Extra="" />
-		<key Table="phpvms_schedules" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="58" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_schedules" Non_unique="1" Key_name="depicao" Seq_in_index="1" Column_name="depicao" Collation="A" Cardinality="58" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_schedules" Non_unique="1" Key_name="flightnum" Seq_in_index="1" Column_name="flightnum" Collation="A" Cardinality="58" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_schedules" Non_unique="1" Key_name="depicao_arricao" Seq_in_index="1" Column_name="depicao" Collation="A" Cardinality="58" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_schedules" Non_unique="1" Key_name="depicao_arricao" Seq_in_index="2" Column_name="arricao" Collation="A" Cardinality="58" Null="" Index_type="BTREE" Comment="" />
-		<key Table="phpvms_schedules" Non_unique="1" Key_name="code" Seq_in_index="1" Column_name="code" Collation="A" Cardinality="4" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_schedules" Engine="InnoDB" Version="10" Row_format="Compact" Rows="193" Avg_row_length="339" Data_length="65536" Max_data_length="0" Index_length="65536" Data_free="11534336" Auto_increment="117" Create_time="2011-02-20 22:32:25" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<key Table="phpvms_schedules" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="49" Null="" Index_type="BTREE" Comment="" />
+		<key Table="phpvms_schedules" Non_unique="1" Key_name="depicao" Seq_in_index="1" Column_name="depicao" Collation="A" Cardinality="16" Null="" Index_type="BTREE" Comment="" />
+		<key Table="phpvms_schedules" Non_unique="1" Key_name="flightnum" Seq_in_index="1" Column_name="flightnum" Collation="A" Cardinality="49" Null="" Index_type="BTREE" Comment="" />
+		<key Table="phpvms_schedules" Non_unique="1" Key_name="depicao_arricao" Seq_in_index="1" Column_name="depicao" Collation="A" Cardinality="16" Null="" Index_type="BTREE" Comment="" />
+		<key Table="phpvms_schedules" Non_unique="1" Key_name="depicao_arricao" Seq_in_index="2" Column_name="arricao" Collation="A" Cardinality="49" Null="" Index_type="BTREE" Comment="" />
+		<key Table="phpvms_schedules" Non_unique="1" Key_name="code" Seq_in_index="1" Column_name="code" Collation="A" Cardinality="1" Null="" Index_type="BTREE" Comment="" />
+		<options Name="phpvms_schedules" Engine="InnoDB" Version="10" Row_format="Compact" Rows="58" Avg_row_length="1129" Data_length="65536" Max_data_length="0" Index_length="65536" Data_free="11534336" Auto_increment="117" Create_time="2011-02-20 22:32:25" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_sessions">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -371,7 +371,7 @@
 		<field Field="ipaddress" Type="varchar(25)" Null="NO" Key="" Extra="" />
 		<field Field="logintime" Type="datetime" Null="NO" Key="" Extra="" />
 		<key Table="phpvms_sessions" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="26" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_sessions" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="26" Avg_row_length="45" Data_length="42228" Max_data_length="281474976710655" Index_length="15360" Data_free="41052" Auto_increment="5585" Create_time="2009-10-31 20:05:09" Update_time="2011-02-21 22:01:50" Check_time="2010-04-20 19:10:29" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<options Name="phpvms_sessions" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="26" Avg_row_length="45" Data_length="42228" Max_data_length="281474976710655" Index_length="15360" Data_free="41056" Auto_increment="5670" Create_time="2009-10-31 20:05:09" Update_time="2011-03-13 16:18:36" Check_time="2010-04-20 19:10:29" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_structure name="phpvms_settings">
 		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
@@ -390,7 +390,7 @@
 		<field Field="lastupdate" Type="datetime" Null="NO" Key="" Extra="" />
 		<key Table="phpvms_updates" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="9" Null="" Index_type="BTREE" Comment="" />
 		<key Table="phpvms_updates" Non_unique="1" Key_name="name" Seq_in_index="1" Column_name="name" Collation="A" Cardinality="9" Null="" Index_type="BTREE" Comment="" />
-		<options Name="phpvms_updates" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="9" Avg_row_length="33" Data_length="300" Max_data_length="281474976710655" Index_length="3072" Data_free="0" Auto_increment="10" Create_time="2009-12-20 17:51:29" Update_time="2011-02-20 12:24:03" Check_time="2010-04-20 19:10:29" Collation="latin1_swedish_ci" Create_options="" Comment="" />
+		<options Name="phpvms_updates" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="9" Avg_row_length="33" Data_length="300" Max_data_length="281474976710655" Index_length="3072" Data_free="0" Auto_increment="10" Create_time="2009-12-20 17:51:29" Update_time="2011-03-13 16:15:56" Check_time="2010-04-20 19:10:29" Collation="latin1_swedish_ci" Create_options="" Comment="" />
 	</table_structure>
 </database>
 </mysqldump>
