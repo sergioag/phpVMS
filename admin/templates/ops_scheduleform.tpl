@@ -158,7 +158,7 @@
 </tr>
 <tr>
 	<td valign="top"><strong>Pay for Flight</strong> </td>
-	<td><input type="text" name="payforflight" value="<?php echo $schedule->price?>" />
+	<td><input type="text" name="payforflight" value="<?php echo $schedule->payforflight?>" />
 		<p>If a price is entered here, a pilot will be paid this amount, instead of the hourly pay.</p>
 	</td>
 </tr>

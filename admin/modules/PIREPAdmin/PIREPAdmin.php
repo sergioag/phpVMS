@@ -196,11 +196,13 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewcomments() {
+        
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
         $this->render('pireps_comments.tpl');
     }
 
     public function deletecomment() {
+        
         if (!isset($this->post)) {
             return;
         }
@@ -214,11 +216,13 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewlog() {
+        
         $this->set('report', PIREPData::GetReportDetails($this->get->pirepid));
         $this->render('pirep_log.tpl');
     }
 
     public function addcomment() {
+        
         if (isset($this->post->submit)) {
             $this->add_comment_post();
 
@@ -235,6 +239,7 @@ class PIREPAdmin extends CodonModule {
     /* Utility functions */
 
     protected function add_comment_post() {
+        
         $comment = $this->post->comment;
         $commenter = Auth::$userinfo->pilotid;
         $pirepid = $this->post->pirepid;
@@ -259,6 +264,7 @@ class PIREPAdmin extends CodonModule {
      * the pilot's data
      */
     protected function approve_pirep_post() {
+        
         $pirepid = $this->post->id;
 
         if ($pirepid == '')
@@ -330,7 +336,11 @@ class PIREPAdmin extends CodonModule {
     }
 
     protected function edit_pirep_post() {
-        if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->depicao == '' || $this->post->arricao == '' || $this->post->aircraft == '' || $this->post->flighttime == '') {
+        if ($this->post->code == '' || $this->post->flightnum == '' 
+                || $this->post->depicao == '' || $this->post->arricao == '' 
+                || $this->post->aircraft == '' || $this->post->flighttime == ''
+            ) {
+                
             $this->set('message', 'You must fill out all of the required fields!');
             $this->render('core_error.tpl');
             return false;
@@ -348,7 +358,22 @@ class PIREPAdmin extends CodonModule {
         $fuelcost = $this->post->fuelused * $this->post->fuelunitcost;
 
         # form the fields to submit
-        $data = array('pirepid' => $this->post->pirepid, 'code' => $this->post->code, 'flightnum' => $this->post->flightnum, 'depicao' => $this->post->depicao, 'arricao' => $this->post->arricao, 'aircraft' => $this->post->aircraft, 'flighttime' => $this->post->flighttime, 'load' => $this->post->load, 'price' => $this->post->price, 'pilotpay' => $this->post->pilotpay, 'fuelused' => $this->post->fuelused, 'fuelunitcost' => $this->post->fuelunitcost, 'fuelprice' => $fuelcost, 'expenses' => $this->post->expenses);
+        $data = array(
+            'pirepid' => $this->post->pirepid, 
+            'code' => $this->post->code, 
+            'flightnum' => $this->post->flightnum, 
+            'depicao' => $this->post->depicao, 
+            'arricao' => $this->post->arricao, 
+            'aircraft' => $this->post->aircraft, 
+            'flighttime' => $this->post->flighttime, 
+            'load' => $this->post->load, 
+            'price' => $this->post->price, 
+            'pilotpay' => $this->post->pilotpay, 
+            'fuelused' => $this->post->fuelused, 
+            'fuelunitcost' => $this->post->fuelunitcost, 
+            'fuelprice' => $fuelcost, 
+            'expenses' => $this->post->expenses
+        );
 
         if (!PIREPData::updateFlightReport($this->post->pirepid, $data)) {
             $this->set('message', 'There was an error editing your PIREP');

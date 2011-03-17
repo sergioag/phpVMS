@@ -18,6 +18,7 @@
  */
 
 class PIREPData extends CodonData {
+    
     public static $lasterror;
     public static $pirepid;
 
@@ -765,21 +766,36 @@ class PIREPData extends CodonData {
         $flighttime_stamp = str_replace('.', ':', $pirepdata['flighttime']) . ':00';
         $pirepdata['flighttime'] = str_replace(':', ',', $pirepdata['flighttime']);
 
-        $data = array('price' => $pirepdata['price'], 'load' => $pirepdata['load'],
-            'expenses' => $pirepdata['expenses'], 'fuelprice' => $pirepdata['fuelprice'],
-            'pilotpay' => $pirepdata['pilotpay'], 'flighttime' => $pirepdata['flighttime'], );
+        $data = array(
+            'price' => $pirepdata['price'], 
+            'load' => $pirepdata['load'],
+            'expenses' => $pirepdata['expenses'], 
+            'fuelprice' => $pirepdata['fuelprice'],
+            'pilotpay' => $pirepdata['pilotpay'], 
+            'flighttime' => $pirepdata['flighttime'], 
+        );
 
         $gross = floatval($pirepdata['load']) * floatval($pirepdata['price']);
         $revenue = self::getPIREPRevenue($data);
 
-        $fields = array('code' => $pirepdata['code'], 'flightnum' => $pirepdata['flightnum'],
-            'depicao' => $pirepdata['depicao'], 'arricao' => $pirepdata['arricao'],
-            'aircraft' => $pirepdata['aircraft'], 'flighttime' => $pirepdata['flighttime'],
-            'flighttime_stamp' => $flighttime_stamp, 'load' => $pirepdata['load'], 'price' =>
-            $pirepdata['price'], 'gross' => $gross, 'pilotpay' => $pirepdata['pilotpay'],
-            'fuelused' => $pirepdata['fuelused'], 'fuelunitcost' => $pirepdata['fuelunitcost'],
-            'fuelprice' => $pirepdata['fuelprice'], 'expenses' => $pirepdata['expenses'],
-            'revenue' => $revenue, );
+        $fields = array(
+            'code' => $pirepdata['code'], 
+            'flightnum' => $pirepdata['flightnum'],
+            'depicao' => $pirepdata['depicao'], 
+            'arricao' => $pirepdata['arricao'],
+            'aircraft' => $pirepdata['aircraft'], 
+            'flighttime' => $pirepdata['flighttime'],
+            'flighttime_stamp' => $flighttime_stamp, 
+            'load' => $pirepdata['load'], 
+            'price' => $pirepdata['price'], 
+            'gross' => $gross, 
+            'pilotpay' => $pirepdata['pilotpay'],
+            'fuelused' => $pirepdata['fuelused'], 
+            'fuelunitcost' => $pirepdata['fuelunitcost'],
+            'fuelprice' => $pirepdata['fuelprice'], 
+            'expenses' => $pirepdata['expenses'],
+            'revenue' => $revenue, 
+        );
 
         return self::editPIREPFields($pirepid, $fields);
     }

@@ -924,16 +924,24 @@ class Operations extends CodonModule {
             $week4 = '';
         }
 
-        $data = array('code' => $this->post->code, 'flightnum' => $this->post->flightnum,
-            'depicao' => $this->post->depicao, 'arricao' => $this->post->arricao, 'route' =>
-            $this->post->route, 'aircraft' => $this->post->aircraft, 'flightlevel' => $this->post->flightlevel,
-            'distance' => $this->post->distance, 'deptime' => $this->post->deptime,
-            'arrtime' => $this->post->arrtime, 'flighttime' => $this->post->flighttime,
+        $data = array(
+            'code' => $this->post->code, 
+            'flightnum' => $this->post->flightnum,
+            'depicao' => $this->post->depicao, 
+            'arricao' => $this->post->arricao, 
+            'route' => $this->post->route, 
+            'aircraft' => $this->post->aircraft, 
+            'flightlevel' => $this->post->flightlevel,
+            'distance' => $this->post->distance, 
+            'deptime' => $this->post->deptime,
+            'arrtime' => $this->post->arrtime, 
+            'flighttime' => $this->post->flighttime,
             'daysofweek' => $daysofweek, 
             'week1' => $week1, 'week2' => $week2, 'week3' => $week3, 'week4' => $week4, 
             'price' => $this->post->price, 'payforflight' => $this->post->payforflight,
             'flighttype' => $this->post->flighttype, 'notes' => $this->post->notes,
-            'enabled' => $enabled);
+            'enabled' => $enabled
+        );
 
         $val = SchedulesData::editScheduleFields($this->post->id, $data);
         if (!$val) {
