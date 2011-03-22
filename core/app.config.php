@@ -204,6 +204,7 @@ Config::Set('EMAIL_USE_SMTP', false);
 Config::Set('EMAIL_SMTP_SERVERS', '');
 Config::Set('EMAIL_SMTP_PORT', '25');
 Config::Set('EMAIL_SMTP_USE_AUTH', false);
+Config::Set('EMAIL_SMTP_SECURE', ''); # must be "ssl" for Google Apps
 Config::Set('EMAIL_SMTP_USER', '');
 Config::Set('EMAIL_SMTP_PASS', '');
 

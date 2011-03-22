@@ -245,6 +245,8 @@ class Util
 			$mail->Port = Config::Get('EMAIL_SMTP_PORT');
 			
 			if(Config::Get('EMAIL_SMTP_USE_AUTH') == true) {
+                $mail->SMTPAuth = true;
+                $mail->SMTPSecure = Config::get('EMAIL_SMTP_SECURE');
 				$mail->Username = Config::Get('EMAIL_SMTP_USER');
 				$mail->Password = Config::Get('EMAIL_SMTP_PASS');
 			}
