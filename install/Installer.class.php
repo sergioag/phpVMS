@@ -134,24 +134,23 @@ class Installer
 		return true;
 	}
 	
-	public static function AddTables()
-	{
+	/**
+	 * Write all of the SQL tables to the database
+	 * 
+	 * @return
+	 */
+	public static function AddTables() {
 		
-		// Write the SQL Tables, from install.sql
-		
-		// first connect:
-		
-		
-		if(!DB::init($_POST['DBASE_TYPE']))
-		{
+		if(!DB::init($_POST['DBASE_TYPE'])) {
 			self::$error = DB::$error;
 			return false;
 		}
+        
+        DB::set_caching(false);
 		
 		$ret = DB::connect($_POST['DBASE_USER'], $_POST['DBASE_PASS'], $_POST['DBASE_NAME'], $_POST['DBASE_SERVER']);
 		
-		if($ret == false)
-		{
+		if($ret == false) {
 			self::$error = DB::$error;
 			return false;
 		}
@@ -164,68 +163,90 @@ class Installer
 		
 		DB::$throw_exceptions = false;
 		
-		// 1 table at a time - read upto a ; and then
-		//	run the query
+		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/install.sql');				
+		foreach($sqlLines as $tablename => $sql) {
 		
-		$sql = '';
-		$sql_file = file_get_contents(SITE_ROOT.'/install/install.sql');
-		$revision = file_get_contents(SITE_ROOT.'/core/version');
-		
-		for($i=0;$i<strlen($sql_file);$i++)
-		{
-			$str = $sql_file{$i};
+			DB::query($sql);
 			
-			if($str == ';')
-			{
-				$sql.=$str;
-				$sql = str_replace('phpvms_', $_POST['TABLE_PREFIX'], $sql);
-				$sql = trim($sql);
-				
-				preg_match("/({$_POST['TABLE_PREFIX']}.*)` /", $sql, $matches);
-				$tablename = $matches[1];
-				
-				// Skip if it's a comment
-				if($sql[0] == '-' && $sql[1] == '-')
-				{
-					$sql = '';
-					continue;
-				}
-				
-				if($tablename == '')
-				{
-					$sql = '';
-					continue;
-				}
-				
-				$sql = str_replace('##REVISION##', $revision, $sql);
-				
-				DB::query($sql);
-				
-				if(DB::errno() != 0)
-					$divid = 'error';
-				else
-					$divid = 'success';
-					
-				echo '<div id="'.$divid.'" style="text-align: left;">Writing "'.$tablename.'" table... ';
-				
-				if(DB::errno() != 0)
-					echo 'failed - manually run this query: <br /><br />"'.$sql.'"';
-				else
-					echo 'success';
-					
-				echo '</div>';
-					
-				$sql = '';
-			}
+			if(DB::errno() != 0)
+				$divid = 'error';
 			else
-			{
-				$sql.=$str;
-			}
+				$divid = 'success';
+				
+			echo '<div id="'.$divid.'" style="text-align: left;">Writing "'.$tablename.'" table... ';
+			            
+			if(DB::errno() != 0) {
+				#echo 'failed - manually run this query: <br /><br />"'.$sql.'"';
+                echo "<br /><br />".DB::error();
+            } else {
+				echo 'success';
+            }
+				
+			echo '</div>';
+				
+			$sql = '';
 		}
+        
+        $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures.sql');
+        foreach($sqlLines as $sql) {
+            DB::query($sql);
+        }
 		
 		return true;
 	}
 	
+    /**
+     * Return all the SQL Queries from a file, return as array
+     * 
+     * @param mixed $file_name
+     * @return void
+     */
+    public static function readSQLFile($file_name) {
+   	    
+        $sqlLines = array();
+        
+        $sql = '';
+        $sql_file = file_get_contents($file_name);
+        $revision = file_get_contents(SITE_ROOT.'/core/version');
+        
+        for($i=0;$i<strlen($sql_file);$i++) {
+        
+            $str = $sql_file{$i};
+            
+            if($str == ';') {
+             
+            	$sql .= $str;
+            	$sql = str_replace('phpvms_', $_POST['TABLE_PREFIX'], $sql);
+            	$sql = trim($sql);
+            	
+            	preg_match("/({$_POST['TABLE_PREFIX']}.*)` /", $sql, $matches);
+            	$tablename = $matches[1];
+            	
+            	// Skip if it's a comment
+            	if($sql[0] == '-' && $sql[1] == '-') {
+            		$sql = '';
+            		continue;
+            	}
+            	
+            	if($tablename == '') {
+            		$sql = '';
+            		continue;
+            	}
+            	
+                # Any variable replacements
+            	$sql = str_replace('##REVISION##', $revision, $sql);
+                
+                $sqlLines[$tablename] = $sql;
+                $sql = '';
+                
+            } else {
+                $sql .= $str;
+            }
+        }
+        
+        return $sqlLines;
+    }
+    
 	public static function SiteSetup()
 	{
 		/*$_POST['SITE_NAME'] == '' || $_POST['firstname'] == '' || $_POST['lastname'] == ''
@@ -235,8 +256,7 @@ class Installer
 		// first add the airline
 		
 		$_POST['vacode'] = strtoupper($_POST['vacode']);
-		if(!OperationsData::AddAirline($_POST['vacode'], $_POST['vaname']))
-		{
+		if(!OperationsData::AddAirline($_POST['vacode'], $_POST['vaname']))	{
 			self::$error = DB::$error;
 			return false;
 		}
@@ -266,8 +286,7 @@ class Installer
 			'confirm' => true
 		);
 		
-		if(!RegistrationData::AddUser($data))
-		{
+		if(!RegistrationData::AddUser($data)) {
 			self::$error = DB::$error;
 			return false;
 		}
@@ -279,8 +298,7 @@ class Installer
 		# Add to admin group
 		$pilotdata = PilotData::GetPilotByEmail($_POST['email']);
 
-		if(!PilotGroups::AddUsertoGroup($pilotdata->pilotid, 'Administrators'))
-		{
+		if(!PilotGroups::AddUsertoGroup($pilotdata->pilotid, 'Administrators')) {
 			self::$error = DB::$error;
 			return false;
 		}
@@ -300,32 +318,22 @@ class Installer
 			return true;
 			
 		# Table changes, other SQL updates
-		$sql_file = file_get_contents($filename);
-		
-		for($i=0;$i<strlen($sql_file);$i++)
-		{
-			$str = $sql_file[$i];
-			
-			if($str == ';')
-			{
-				$sql.=$str;
-				
-				$sql = str_replace('phpvms_', TABLE_PREFIX, $sql);
-				
-				DB::query($sql);
-				$errno = DB::errno();
-				$sql = '';
-			}
-			else
-			{
-				$sql.=$str;
-			}
-		}
-		
+        $sqlLines = self::readSQLFile($filename);
+        
+        foreach($sqlLines as $table => $sql) {
+            $sql = str_replace('phpvms_', TABLE_PREFIX, $sql);
+            DB::query($sql);
+        }
+        		
 	}
 	
 	/**
 	 * Add an entry into the local.config.php file
+	 * 
+	 * @param mixed $name
+	 * @param mixed $value
+	 * @param string $comment
+	 * @return
 	 */
 	public static function add_to_config($name, $value, $comment='')
 	{
@@ -338,38 +346,31 @@ class Installer
 		$config = str_replace('?>', '', $config);
 		
 		# If it exists, don't add it
-		if(strpos($config, $name) !== false)
-		{
+		if(strpos($config, $name) !== false) {
 			return false;
 		}
 		
-		if($name == 'BLANK')
-		{
+		if($name == 'BLANK') {
 			$config = $config.PHP_EOL;
-		}
-		elseif($name == 'COMMENT')
-		{
+		} elseif($name == 'COMMENT'){
 			// If it already exists don't add it
-			if(strpos($config, '# '.$value) !== false)
-			{
+			if(strpos($config, '# '.$value) !== false) {
 				return false;
 			}
 			
 			$config = $config.PHP_EOL.'#'.$value.PHP_EOL;
-		}
-		else 
-		{
+		} else  {
+		  
 			$config = $config.PHP_EOL."Config::Set('$name', ";
 			
-			if(is_bool($value))
-			{
+			if(is_bool($value)) {
 				if($value === true)
 					$config .= "true";
 				elseif($value === false)
 					$config .= "false";
-			}
-			else
+			} else {
 				$config .="'$value'";
+            }
 			
 			$config .="); ";
 			if($comment!='')
@@ -380,8 +381,14 @@ class Installer
 	}
 	
 	
-	public static function RegisterInstall($version='')
-	{
+	/**
+	 * Send current installation data to phpVMS server
+	 * 
+	 * @param string $version
+	 * @return void
+	 */
+	public static function RegisterInstall($version='') {
+	   
 		if($version == '')
 			$version = PHPVMS_VERSION;
 			
@@ -390,7 +397,7 @@ class Installer
 		$params = new SimpleXMLElement('<registration/>');
 		$params->addChild('name', SITE_NAME);
 		$params->addChild('url', SITE_URL);
-		$params->addChild('email', SettingsData::GetSettingValue('ADMIN_EMAIL'));
+		#$params->addChild('email', SettingsData::GetSettingValue('ADMIN_EMAIL'));
 		$params->addChild('version', $version);
 		$params->addChild('php', phpversion());
 		$params->addChild('mysql', @mysql_get_server_info());
