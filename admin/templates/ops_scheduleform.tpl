@@ -56,9 +56,9 @@
 			else
 				$checked = 'checked';
 			
-			echo '<input type="checkbox" name="daysofweek[]" value="'.$i.'" '.$checked.'>'.$days[$i].'  ';			
+			echo '<input type="checkbox" class="checkweek" name="daysofweek[]" value="'.$i.'" '.$checked.'>'.$days[$i].'  ';			
 		}
-		?>
+		?> <a href='#' id="checkalldayssingle">check all</a> | <a href='#' id="checknodayssingle">check none</a>
 	</td>
 </tr>
 <tr>
@@ -81,12 +81,12 @@
     			else
     				$checked = 'checked';
     			
-    			echo '<input type="checkbox" name="week'.$week.'[]" value="'.$i.'" '.$checked.'>'.$days[$i].' ';			
+    			echo '<input type="checkbox" class="weekcheck" name="week'.$week.'[]" value="'.$i.'" '.$checked.'>'.$days[$i].' ';			
     		}
             
             echo '<br />';
         }
-		?>
+		?> <a href='#' id="checkalldays">check all</a> | <a href='#' id="checknodays">check none</a>
         <p>If you select a day in a week above, it will take precedence. For instance, if you select Mon/Tues for Week 2, then in the week two of the month, that flight will only be active on the Monday/Tuesday. If a month switches in the middle of the week, it will go by that day (new month on Tuesday, it will follow a week 1 Tuesday), since it's a four week schedule cycle.
 	</td>
 </tr>
@@ -128,8 +128,7 @@
 	<td valign="top"><strong>Flight Type</strong></td>
 	<td><select name="flighttype">
 			<?php
-			foreach($flighttypes as $flightkey=>$flighttype)
-			{
+			foreach($flighttypes as $flightkey=>$flighttype) {
 				if($schedule->flighttype == $flightkey)
 					$sel = 'selected';
 				else	
@@ -186,8 +185,7 @@
 </form>
 </div>
 <script type="text/javascript">
-$(".preview").click(function()
-{
+$(".preview").click(function() {
 	depicao=$("#depicao").val();
 	arricao=$("#arricao").val();
 	route=escape($("#route").val());
@@ -202,10 +200,33 @@ $(".preview").click(function()
 	return false;
 });
 
+$("#checkalldayssingle").live('click', function(e) {
+    e.preventDefault();
+    $("input.checkweek").attr('checked', true);
+    return false;
+})
+
+$("#checknodayssingle").live('click', function(e) {
+    e.preventDefault();
+    $("input.checkweek").attr('checked', false);
+    return false;
+})
+
+$("#checkalldays").live('click', function(e) {
+    e.preventDefault();
+    $("input.weekcheck").attr('checked', true);
+    return false;
+})
+
+$("#checknodays").live('click', function(e) {
+    e.preventDefault();
+    $("input.weekcheck").attr('checked', false);
+    return false;
+})
+
 <?php
 $airport_list = array();
-foreach($allairports as $airport)
-{
+foreach($allairports as $airport) {
 	$airport->name = addslashes($airport->name);
 	$airport_list[] = "{label:\"{$airport->icao} ({$airport->name})\", value: \"{$airport->icao}\"}";
 }
