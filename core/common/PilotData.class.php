@@ -453,13 +453,23 @@ class PilotData extends CodonData {
     }
 
     /**
-     * Update the login time
+     * Update the last login time for this pilot
+     * 
+     * @param int $pilotid
+     * @return
      */
     public static function updateLogin($pilotid) {
         return self::updateProfile($pilotid, array('lastlogin' => 'NOW()', 'lastip' => $_SERVER['REMOTE_ADDR'], ));
     }
 
+    /**
+     * Get the total number of hours for the pilot
+     * 
+     * @param int $pilotid
+     * @return
+     */
     public static function getPilotHours($pilotid) {
+        
         $sql = 'SELECT `flighttime` FROM ' . TABLE_PREFIX . 'pireps
 				WHERE `accepted`=' . PIREP_ACCEPTED . '
 					AND `pilotid`=' . $pilotid;
@@ -595,23 +605,32 @@ class PilotData extends CodonData {
      * @return
      */
     public static function resetPilotPay($pilotid) {
+        
         $total = 0;
 
         self::updateProfile($pilotid, array('totalpay' => 0));
 
         $sql = "SELECT `pirepid`, `flighttime`, `pilotpay`
 				FROM " . TABLE_PREFIX . "pireps
-				WHERE `pilotid`={$pilotid} AND `accepted`=".PIREP_ACCEPTED;
+				WHERE `paytype`=".PILOT_PAY_HOURLY."
+                    AND `pilotid`={$pilotid} AND `accepted`=".PIREP_ACCEPTED;
 
         $results = DB::get_results($sql);
-
-        if (!$results) {
-            return $total;
+        if(count($results) > 0) {
+            foreach ($results as $row) {
+                $payupdate = self::getPilotPay($row->flighttime, $row->pilotpay);
+                $total += $payupdate;
+            }
         }
-
-        foreach ($results as $row) {
-            $payupdate = self::getPilotPay($row->flighttime, $row->pilotpay);
-            $total += $payupdate;
+        
+        $sql = 'SELECT SUM(pilotpay) as total 
+                FROM '.TABLE_PREFIX."pireps
+                WHERE `paytype`=".PILOT_PAY_SCHEDULE."
+                    `pilotid`={$pilotid} AND `accepted`=".PIREP_ACCEPTED;
+                
+        $row = DB::get_row($sql);
+        if($row) {
+            $total += $row->total;
         }
 
         self::updateProfile($pilotid, array('totalpay' => $total));
@@ -632,8 +651,7 @@ class PilotData extends CodonData {
         
         $sql = 'SELECT payrate 
 				FROM ' . TABLE_PREFIX . 'ranks r, ' . TABLE_PREFIX . 'pilots p 
-				WHERE p.rank=r.rank 
-					AND p.pilotid=' . $pilotid;
+				WHERE p.rank=r.rank AND p.pilotid=' . $pilotid;
 
         $payrate = DB::get_row($sql);
 

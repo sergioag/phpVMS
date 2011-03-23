@@ -18,6 +18,7 @@
  */
 
 class PIREPS extends CodonModule {
+    
     public $pirep;
     public $pirepdata;
 
@@ -357,12 +358,20 @@ class PIREPS extends CodonModule {
         }
 
         # form the fields to submit
-        $this->pirepdata = array('pilotid' => $pilotid, 'code' => $this->post->code,
-            'flightnum' => $this->post->flightnum, 'depicao' => $this->post->depicao,
-            'arricao' => $this->post->arricao, 'aircraft' => $this->post->aircraft,
-            'flighttime' => $this->post->flighttime, 'route' => $this->post->route,
-            'submitdate' => 'NOW()', 'fuelused' => $this->post->fuelused, 'source' =>
-            'manual', 'comment' => $this->post->comment);
+        $this->pirepdata = array(
+            'pilotid' => $pilotid, 
+            'code' => $this->post->code,
+            'flightnum' => $this->post->flightnum, 
+            'depicao' => $this->post->depicao,
+            'arricao' => $this->post->arricao, 
+            'aircraft' => $this->post->aircraft,
+            'flighttime' => $this->post->flighttime, 
+            'route' => $this->post->route,
+            'submitdate' => 'NOW()', 
+            'fuelused' => $this->post->fuelused, 
+            'source' =>'manual', 
+            'comment' => $this->post->comment
+            );
 
         CodonEvent::Dispatch('pirep_prefile', 'PIREPS');
 

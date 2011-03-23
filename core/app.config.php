@@ -456,6 +456,9 @@ define('PILOT_PENDING', 0);
 define('PILOT_ACCEPTED', 1);
 define('PILOT_REJECTED', 2);
 
+define('PILOT_PAY_HOURLY', 1);
+define('PILOT_PAY_SCHEDULE', 2);
+
 define('NAV_NDB', 2);
 define('NAV_VOR', 3);
 define('NAV_DME', 4);

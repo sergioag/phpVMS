@@ -644,8 +644,7 @@ class PIREPData extends CodonData {
 
         /* Proper timestamp */
         $pirepdata['flighttime'] = str_replace(':', '.', $pirepdata['flighttime']);
-        $pirepdata['flighttime_stamp'] = str_replace('.', ':', $pirepdata['flighttime']) .
-            ':00';
+        $pirepdata['flighttime_stamp'] = str_replace('.', ':', $pirepdata['flighttime']).':00';
 
         /* Export status as 0 */
         $pirepdata['exported'] = 0;
@@ -862,10 +861,13 @@ class PIREPData extends CodonData {
 
     /**
      * Populate the PIREP with the fianancial info needed
-     *  Pass the PIREPID or the PIREP row
+     * 
+     * @param mixed $pirep Either a PIREP ID or the row
+     * @param bool $reset_fuel Reset the fuel costs or not?
+     * @return
      */
-
     public static function populatePIREPFinance($pirep, $reset_fuel = false) {
+        
         if (!is_object($pirep) && is_numeric($pirep)) {
             $pirep = PIREPData::getReportDetails($pirep);
             if (!$pirep) {
@@ -925,26 +927,63 @@ class PIREPData extends CodonData {
                 $total_ex += $total;
             }
         }
+        
+        /*  Set the pilotpay here - if it was a per-schedule payment,
+            then set the pilot pay to that, otherwise, set it to the
+            total amount paid... */
+        # Handle pilot pay
+        if(!empty($sched->payforflight)) {
+            $pilot->payrate = $sched->payforflight;
+            $payment_type = PILOT_PAY_SCHEDULE;
+        } else {
+            $payment_type = PILOT_PAY_HOURLY;
+        }
+        
+        $data = array(
+            'price' => $sched->price, 
+            'load' => $pirep->load, 
+            'fuelprice' => $pirep->fuelprice, 
+            'expenses' => $total_ex, 
+            'pilotpay' => $pilot->payrate, 
+            'flighttime' =>$pirep->flighttime, 
+            );
 
-        $data = array('price' => $sched->price, 'load' => $pirep->load, 'fuelprice' => $pirep->
-            fuelprice, 'expenses' => $total_ex, 'pilotpay' => $pilot->payrate, 'flighttime' =>
-            $pirep->flighttime, );
-
-        $revenue = self::getPIREPRevenue($data);
+        $revenue = self::getPIREPRevenue($data, $payment_type);
 
         /* Now update the PIREP */
-        $fields = array('price' => $sched->price, 'load' => $pirep->load, 'gross' => $gross,
-            'fuelprice' => $pirep->fuelprice, 'fuelunitcost' => $pirep->fuelunitcost,
-            'expenses' => $total_ex, 'pilotpay' => $pilot->payrate, 'revenue' => $revenue);
+        $fields = array(
+            'price' => $sched->price, 
+            'load' => $pirep->load, 
+            'gross' => $gross,
+            'fuelprice' => $pirep->fuelprice, 
+            'fuelunitcost' => $pirep->fuelunitcost,
+            'expenses' => $total_ex, 
+            'pilotpay' => $pilot->payrate,
+            'paytype' => $payment_type, 
+            'revenue' => $revenue
+            );
 
         if (isset($data['load']) && $data['load'] != '') $fields['load'] = $data['load'];
 
         return self::editPIREPFields($pirepid, $fields);
     }
 
-    public static function getPIREPRevenue($data) {
+    /**
+     * Calculate the gross revenue of a PIREP
+     * 
+     * @param array $data Associative array with price, load, pilotpay, flighttime
+     * @param int $payment_type 1 for hourly payment, 2 for per-schedule payment
+     * @return
+     */
+    public static function getPIREPRevenue($data, $payment_type) {
+        
         $gross = $data['price'] * $data['load'];
-        $pilotpay = $data['pilotpay'] * $data['flighttime'];
+        
+        if($payment_type == PILOT_PAY_HOURLY) {
+            $pilotpay = $data['pilotpay'] * $data['flighttime'];   
+        } else {
+            $pilot = $data['pilotpay'];
+        }
 
         if ($data['expenses'] == '') $data['expenses'] = 0;
 

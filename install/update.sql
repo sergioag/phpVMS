@@ -33,6 +33,7 @@ UPDATE `phpvms_pilots` p SET `rankid` =  ( SELECT `rankid` FROM `phpvms_ranks` W
 ALTER TABLE `phpvms_pireps` ADD `gross` FLOAT NOT NULL AFTER `flighttype`;
 ALTER TABLE `phpvms_pireps` ADD `route` TEXT NOT NULL AFTER `arricao`, ADD `route_details` TEXT NOT NULL AFTER `route`;
 ALTER TABLE `phpvms_pireps` CHANGE `gross` `gross` FLOAT NOT NULL DEFAULT '0';
+ALTER TABLE `phpvms_pireps` ADD `paytype` TINYINT( 1 ) NOT NULL DEFAULT '1' AFTER `pilotpay`;
 
 ALTER TABLE `phpvms_acarsdata` ADD `route` TEXT NOT NULL AFTER `arrtime`, ADD `route_details` TEXT NOT NULL AFTER `route`;
 

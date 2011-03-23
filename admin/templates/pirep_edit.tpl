@@ -163,7 +163,7 @@ foreach($pirepfields as $field)
 <tr>		
 	<td style="font-weight: bold;">Pilot Pay</td>
 	<td><input type="text" name="pilotpay" value="<?php echo $pirep->pilotpay;?>" />
-		<p>This is what the pilot will be paid, per hour, for this flight</p></td>
+		<p>This is the amount this pilot has been paid for this flight</p></td>
 </tr>
 <tr>		
 	<td style="font-weight: bold;">Total Revenue for flight:</td>
