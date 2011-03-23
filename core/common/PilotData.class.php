@@ -622,6 +622,8 @@ class PilotData extends CodonData {
 
         self::updateProfile($pilotid, array('totalpay' => 0));
 
+        /* Get the sum for flights which are pay-per-hour
+         */
         $sql = "SELECT `pirepid`, `flighttime`, `pilotpay`
 				FROM " . TABLE_PREFIX . "pireps
 				WHERE `paytype`=".PILOT_PAY_HOURLY."
@@ -635,6 +637,8 @@ class PilotData extends CodonData {
             }
         }
         
+        /* Get the sum for flights which are pay-per-schedule
+         */
         $sql = 'SELECT SUM(pilotpay) as total 
                 FROM '.TABLE_PREFIX."pireps
                 WHERE `paytype`=".PILOT_PAY_SCHEDULE."
@@ -807,10 +811,10 @@ class PilotData extends CodonData {
      */
     public static function getFieldData($pilotid, $inclprivate = false) {
         $sql = 'SELECT f.fieldid, f.title, f.type, f.fieldname, f.value as fieldvalues, v.value, f.public
-					FROM ' . TABLE_PREFIX . 'customfields f
-					LEFT JOIN ' . TABLE_PREFIX . 'fieldvalues v
-						ON f.fieldid=v.fieldid
-						AND v.pilotid=' . $pilotid;
+				FROM ' . TABLE_PREFIX . 'customfields f
+				LEFT JOIN ' . TABLE_PREFIX . 'fieldvalues v
+					ON f.fieldid=v.fieldid
+					AND v.pilotid=' . $pilotid;
 
         if ($inclprivate == false) $sql .= ' WHERE f.public=1 ';
 

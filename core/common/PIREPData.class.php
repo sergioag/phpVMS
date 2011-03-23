@@ -270,11 +270,12 @@ class PIREPData extends CodonData {
      * reports per day
      */
     public static function getCountsForDays($days = 7) {
+        
         $sql = 'SELECT DISTINCT(DATE(submitdate)) AS submitdate,
-					(SELECT COUNT(*) FROM ' . TABLE_PREFIX .
-            'pireps WHERE DATE(submitdate)=DATE(p.submitdate)) AS count
-				FROM ' . TABLE_PREFIX .
-            'pireps p WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= p.submitdate';
+					(SELECT COUNT(*) FROM '.TABLE_PREFIX.'pireps 
+                        WHERE DATE(submitdate)=DATE(p.submitdate)) AS count
+				FROM '.TABLE_PREFIX.'pireps p 
+                WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= p.submitdate';
 
         return DB::get_results($sql);
     }
@@ -302,14 +303,15 @@ class PIREPData extends CodonData {
 
         /* Do any specific replacements here */
         if ($row) {
+            
             /* If it's FSFlightKeeper, process the `rawdata` column, which contains
-            array()'d copied of extra data that was sent by the ACARS. Run that
-            through some templates which we've got. This can probably be generic-ized
-            but it's fine now for FSFK. This can probably move through an outside 
-            function, but seems OK to stay in getReportDetails() for now, since this
-            is semi-intensive code here (the most expensive is populating the templates,
-            and I wouldn't want to run it for EVERY PIREP which is called by the system.
-            */
+                array()'d copied of extra data that was sent by the ACARS. Run that
+                through some templates which we've got. This can probably be generic-ized
+                but it's fine now for FSFK. This can probably move through an outside 
+                function, but seems OK to stay in getReportDetails() for now, since this
+                is semi-intensive code here (the most expensive is populating the templates,
+                and I wouldn't want to run it for EVERY PIREP which is called by the system.
+                */
             if ($row->source == 'fsfk') {
                 /* Do data stuff in the logs */
                 $data = $row->rawdata;
@@ -394,15 +396,17 @@ class PIREPData extends CodonData {
     }
 
     /**
-     * Get a pilot's reports by the status.  Use the
-     * constants:
-     * PIREP_PENDING, PIREP_ACCEPTED, PIREP_REJECTED, PIREP_INPROGRESS
+     * Get all of a pilot's reports by status
+     * 
+     * @param int  $pilotid
+     * @param integer $accept PIREP_PENDING, PIREP_ACCEPTED, PIREP_REJECTED, PIREP_INPROGRESS
+     * @return
      */
     public static function getReportsByAcceptStatus($pilotid, $accept = 0) {
-        $sql = 'SELECT * 
-					FROM ' . TABLE_PREFIX . 'pireps
-					WHERE pilotid=' . intval($pilotid) . ' 
-						AND accepted=' . intval($accept);
+        
+        $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps
+				WHERE pilotid=' . intval($pilotid) . ' 
+					AND accepted=' . intval($accept);
 
         return DB::get_results($sql);
     }
@@ -410,7 +414,6 @@ class PIREPData extends CodonData {
     /**
      * Get the count of comments
      */
-
     public static function getCommentCount($pirepid) {
         $sql = 'SELECT COUNT(*) AS total FROM ' . TABLE_PREFIX . 'pirepcomments
 					WHERE pirepid=' . $pirepid . '
@@ -423,7 +426,14 @@ class PIREPData extends CodonData {
         return $total->total;
     }
 
-    public static function setAllExportStatus($status) {
+    /**
+     * Set the export status of PIREPs (vaCentral)
+     * 
+     * @param bool $status
+     * @return
+     */
+    public static function setAllExportStatus($status = true) {
+        
         if ($status === true) $status = 1;
         else  $status = 0;
 
@@ -439,6 +449,13 @@ class PIREPData extends CodonData {
         return true;
     }
 
+    /**
+     * Set the exported status of a specific PIREP
+     * 
+     * @param int $pirepid
+     * @param bool $status
+     * @return
+     */
     public static function setExportedStatus($pirepid, $status) {
         if ($status === true) $status = 1;
         else  $status = 0;
@@ -1147,18 +1164,16 @@ class PIREPData extends CodonData {
                                 
                 PilotData::updateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
                                
-                # Handle pilot pay
+                # Pay per-schedule
                 if(!empty($pirep_details->payforflight)) {
                     
-                    # Pay by schedule
                     $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 
             				SET totalpay=totalpay+{$pirep_details->payforflight} 
             				WHERE pilotid={$pirep_details->pilotid}";
             
                     DB::query($sql);
                     
-                } else {
-                    # Pay by hour
+                } else { # Pay by hour
                     PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime);
                 }
                 
