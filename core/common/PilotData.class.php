@@ -470,7 +470,19 @@ class PilotData extends CodonData {
      */
     public static function getPilotHours($pilotid) {
         
-        $sql = 'SELECT `flighttime` FROM ' . TABLE_PREFIX . 'pireps
+         $sql= 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) AS total_time
+                FROM '.TABLE_PREFIX.'pireps
+                WHERE `accepted`=' . PIREP_ACCEPTED.'
+                	AND `pilotid`=' . $pilotid;
+                    
+        $result = DB::get_row($sql);
+        if(!$result) {
+            return '0.0';
+        }
+        
+        return $result->total_time;
+        
+        /*$sql = 'SELECT `flighttime` FROM ' . TABLE_PREFIX . 'pireps
 				WHERE `accepted`=' . PIREP_ACCEPTED . '
 					AND `pilotid`=' . $pilotid;
 
@@ -483,7 +495,7 @@ class PilotData extends CodonData {
             $total = Util::AddTime($total, $report->flighttime);
         }
 
-        return $total;
+        return $total;*/
     }
 
     /**
