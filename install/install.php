@@ -32,17 +32,14 @@ include dirname(__FILE__).'/loader.inc.php';
 Template::Show('header.tpl');
 
 // Controller
-switch($_GET['page'])
-{
+switch($_GET['page']) {
+    
 	case 'dbsetup':
 	case '':
 		
-		if(!Installer::CheckServer())
-		{
+		if(!Installer::CheckServer()) {
 			Template::Show('s0_config_check.tpl');
-		}
-		else
-		{
+		} else {
 			Template::Show('s1_db_setup.tpl');
 		}
 		
@@ -50,24 +47,20 @@ switch($_GET['page'])
 		
 	case 'installdb':
 	
-		if($_POST['action'] == 'submitdb')
-		{
-			echo '<h2>Installing the tables...</h2>';
+		if($_POST['action'] == 'submitdb') {
+		  
 			if($_POST['DBASE_NAME'] == '' || $_POST['DBASE_USER'] == '' || $_POST['DBASE_TYPE'] == ''
-				|| $_POST['DBASE_SERVER'] == '' || $_POST['SITE_URL'] == '')
-			{
+				|| $_POST['DBASE_SERVER'] == '' || $_POST['SITE_URL'] == '') {
 				echo '<div id="error">You must fill out all the required fields</div>';
 				break;
 			}
 		
-			if(!Installer::AddTables())
-			{
+			if(!Installer::AddTables())	{
 				echo '<div id="error">'.Installer::$error.'</div>';
 				break;
 			}
 			
-			if(!Installer::WriteConfig())
-			{
+			if(!Installer::WriteConfig()) {
 				echo '<div id="error">'.Installer::$error.'</div>';
 				break;
 			}
@@ -88,12 +81,12 @@ switch($_GET['page'])
 		
 	case 'complete':
 		
-		if($_POST['action'] == 'submitsetup')
-		{
+		if($_POST['action'] == 'submitsetup') {
+		  
 			if($_POST['firstname'] == '' || $_POST['lastname'] == '' 
-					|| $_POST['email'] == '' ||  $_POST['password'] == '' || $_POST['vaname'] == '' 
-					|| $_POST['vacode'] == '')
-			{
+				|| $_POST['email'] == '' ||  $_POST['password'] == '' || $_POST['vaname'] == '' 
+				|| $_POST['vacode'] == '') {
+				    
 				Template::Set('message', 'You must fill out all of the fields');
 				Template::Show('s2_site_setup.tpl');
 				break;
@@ -101,13 +94,10 @@ switch($_GET['page'])
 			
 			$_POST['SITE_NAME'] = $_POST['vaname'];
 				
-			if(!Installer::SiteSetup())
-			{
+			if(!Installer::SiteSetup()) {
 				Template::Set('message', Installer::$error);
 				Template::Show('s2_site_setup.tpl');
-			}
-			else
-			{
+			} else {
 				Installer::RegisterInstall(INSTALLER_VERSION);
 				Template::Show('s3_setup_finished.tpl');
 			}

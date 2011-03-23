@@ -155,41 +155,40 @@ class Installer
 			return false;
 		}
 	
-		if(!DB::select($_POST['DBASE_NAME']))
-		{
+		if(!DB::select($_POST['DBASE_NAME'])) {
 			self::$error = DB::$error;
 			return false;
 		}
 		
 		DB::$throw_exceptions = false;
 		
+        echo '<h2>Writing Tables...</h2>';
+        
 		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/install.sql');				
-		foreach($sqlLines as $tablename => $sql) {
+		foreach($sqlLines as $sql) {
 		
-			DB::query($sql);
-			
-			if(DB::errno() != 0)
-				$divid = 'error';
-			else
-				$divid = 'success';
-				
-			echo '<div id="'.$divid.'" style="text-align: left;">Writing "'.$tablename.'" table... ';
-			            
+			DB::query($sql['sql']);
+						            
 			if(DB::errno() != 0) {
 				#echo 'failed - manually run this query: <br /><br />"'.$sql.'"';
+                echo '<div id="error" style="text-align: left;">Writing "'.$sql['table'].'" table... ';
                 echo "<br /><br />".DB::error();
-            } else {
-				echo 'success';
+                echo '</div>';
             }
-				
-			echo '</div>';
-				
+            
 			$sql = '';
 		}
         
+        
+        echo '<h2>Populating Initial Data...</h2>';
         $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures.sql');
         foreach($sqlLines as $sql) {
-            DB::query($sql);
+            DB::query($sql['sql']);
+            if(DB::errno() != 0) {
+                echo '<div id="error" style="text-align: left;">Writing to "'.$sql['table'].'" table... ';
+                echo "<br /><br />".DB::error();
+                echo '</div>';
+            }
         }
 		
 		return true;
@@ -236,7 +235,11 @@ class Installer
                 # Any variable replacements
             	$sql = str_replace('##REVISION##', $revision, $sql);
                 
-                $sqlLines[$tablename] = $sql;
+                $sqlLines[] = array(
+                    'table' => $tablename,
+                    'sql' => $sql
+                );
+                
                 $sql = '';
                 
             } else {
@@ -247,8 +250,13 @@ class Installer
         return $sqlLines;
     }
     
-	public static function SiteSetup()
-	{
+	/**
+	 * Installer::SiteSetup()
+	 * 
+	 * @return
+	 */
+	public static function SiteSetup() {
+	   
 		/*$_POST['SITE_NAME'] == '' || $_POST['firstname'] == '' || $_POST['lastname'] == ''
 					|| $_POST['email'] == '' ||  $_POST['password'] == '' || $_POST['vaname'] == ''
 					|| $_POST['vacode'] == ''*/
@@ -256,24 +264,11 @@ class Installer
 		// first add the airline
 		
 		$_POST['vacode'] = strtoupper($_POST['vacode']);
-		if(!OperationsData::AddAirline($_POST['vacode'], $_POST['vaname']))	{
-			self::$error = DB::$error;
+		if(!OperationsData::addAirline($_POST['vacode'], $_POST['vaname']))	{
+			self::$error = __FILE__.' '.__LINE__.' '.DB::$error;
 			return false;
 		}
-		
-		// Add an initial airport/hub, because I love KJFK so much
-		$data = array(
-			'icao' => 'KJFK',
-			'name' => 'Kennedy International',
-			'country' => 'USA',
-			'lat' => '40.6398',
-			'lng' => '-73.7787',
-			'hub' => false,
-			'fuelprice' => 0
-		);
-		
-		$ret = OperationsData::AddAirport($data);
-			
+					
 		// Add the user
 		$data = array(
 			'firstname' => $_POST['firstname'],
@@ -286,20 +281,17 @@ class Installer
 			'confirm' => true
 		);
 		
-		if(!RegistrationData::AddUser($data)) {
-			self::$error = DB::$error;
+		if(!RegistrationData::addUser($data)) {
+			self::$error = __FILE__.' '.__LINE__.' '.DB::$error;
 			return false;
 		}
 		
-		
-		// Add a rank
-		RanksData::updateRank(1, 'New Hire', 0, fileurl('/lib/images/ranks/newhire.jpg'), 18.00);
+		RanksData::calculatePilotRanks();
 		
 		# Add to admin group
-		$pilotdata = PilotData::GetPilotByEmail($_POST['email']);
-
-		if(!PilotGroups::AddUsertoGroup($pilotdata->pilotid, 'Administrators')) {
-			self::$error = DB::$error;
+		$pilotdata = PilotData::getPilotByEmail($_POST['email']);
+		if(!PilotGroups::addUsertoGroup($pilotdata->pilotid, 'Administrators')) {
+			self::$error = __FILE__.' '.__LINE__.' '.DB::$error;
 			return false;
 		}
 		
@@ -312,8 +304,14 @@ class Installer
 		
 	}
 	
-	public static function sql_file_update($filename)
-	{
+	/**
+	 * Installer::sql_file_update()
+	 * 
+	 * @param mixed $filename
+	 * @return
+	 */
+	public static function sql_file_update($filename) {
+	   
 		if(isset($_GET['test']))
 			return true;
 			

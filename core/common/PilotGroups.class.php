@@ -18,6 +18,7 @@
  */
 
 class PilotGroups extends CodonData {
+    
     /**
      * Get all of the groups
      */
@@ -39,7 +40,8 @@ class PilotGroups extends CodonData {
     /**
      * Add a group
      */
-    public static function AddGroup($groupname, $permissions) {
+    public static function addGroup($groupname, $permissions) {
+        
         $sql = "INSERT INTO " . TABLE_PREFIX . "groups 
 				(`name`, `permissions`) VALUES ('$groupname', $permissions)";
 
@@ -60,7 +62,7 @@ class PilotGroups extends CodonData {
      * @param mixed $permissions
      * @return
      */
-    public static function EditGroup($groupid, $groupname, $permissions) {
+    public static function editGroup($groupid, $groupname, $permissions) {
         
         $groupid = intval($groupid);
         $groupname = DB::escape($groupname);
@@ -122,7 +124,7 @@ class PilotGroups extends CodonData {
      * @param mixed $groupidorname
      * @return
      */
-    public static function AddUsertoGroup($pilotid, $groupidorname) {
+    public static function addUsertoGroup($pilotid, $groupidorname) {
         
         if ($groupidorname == '') {
             return false;
@@ -138,9 +140,10 @@ class PilotGroups extends CodonData {
         }
 
         $sql = 'INSERT INTO '.TABLE_PREFIX.'groupmembers (pilotid, groupid)
-					VALUES (' . $pilotid . ', ' . $groupidorname . ')';
+					VALUES ('.$pilotid.', '.$groupidorname.')';
 
         $res = DB::query($sql);
+        DB::debug();
 
         if (DB::errno() != 0) {
             return false;
@@ -149,7 +152,25 @@ class PilotGroups extends CodonData {
         return true;
     }
 
+    /**
+     * See if any group in the list has a certain permission
+     * 
+     * @param array $grouplist
+     * @param int $perm
+     * @return bool
+     */
     public static function group_has_perm($grouplist, $perm) {
+        return self::groupHasPermission($grouplist, $perm);
+    }
+    
+    /**
+     * See if any group in the list has a certain permission
+     * 
+     * @param array $grouplist
+     * @param int $perm
+     * @return bool
+     */
+    public static function groupHasPermission($grouplist, $perm) {
         
         if (!is_array($grouplist) || count($grouplist) == 0) {
             return false;
@@ -183,6 +204,19 @@ class PilotGroups extends CodonData {
      *
      */
     public static function check_permission($set, $perm) {
+        return self::checkPermission($set, $perm);        
+    }
+    
+    /**
+     * Check permissions against integer set 
+     * (bit compare, ($set & $perm) === $perm)
+     *
+     * @param int $set Permission set &
+     * @param int $perm Permission (intval)
+     * @return bool Whether it's set or not
+     *
+     */
+    public static function checkPermission($set, $perm) {
         if (($perm & $set) === $perm) {
             return true;
         }

@@ -44,8 +44,7 @@ span { font-weight: bold; }
 <?php
 
 
-function heading($header)
-{
+function heading($header) {
 	echo "<strong>{$header}</strong><br />";
 }
 

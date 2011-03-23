@@ -43,11 +43,12 @@ class RanksData extends CodonData {
      * on each rank
      */
     public static function getAllRanks() {
+        
         $allranks = CodonCache::read('all_ranks');
 
         if ($allranks === false) {
-            $sql = 'SELECT r.*, (SELECT COUNT(*) FROM ' . TABLE_PREFIX .
-                'pilots WHERE rank=r.rank) as totalpilots
+            $sql = 'SELECT r.*, 
+                        (SELECT COUNT(*) FROM ' . TABLE_PREFIX .'pilots WHERE rank=r.rank) as totalpilots
 					FROM ' . TABLE_PREFIX . 'ranks r
 					ORDER BY r.minhours ASC';
 
@@ -68,13 +69,16 @@ class RanksData extends CodonData {
      * Get the level the passed rank is in the list
      */
     public static function getRankLevel($rankid) {
+        
         if ($rankid == 0) {
             return 0;
         }
+        
         $all_ranks = self::getAllRanks();
 
         $i = 0;
         foreach ($all_ranks as $rank) {
+            
             $i++;
 
             if ($rank->rankid == $rankid) {
@@ -100,11 +104,12 @@ class RanksData extends CodonData {
      * CalculatePilotRanks() at the end
      */
     public static function addRank($title, $minhours, $imageurl, $payrate) {
+        
         $minhours = intval($minhours);
         $payrate = floatval($payrate);
 
         $sql = "INSERT INTO " . TABLE_PREFIX .
-            "ranks (rank, rankimage, minhours, payrate)
+                "ranks (rank, rankimage, minhours, payrate)
 					VALUES('$title', '$imageurl', '$minhours', $payrate)";
 
         $ret = DB::query($sql);
@@ -115,7 +120,7 @@ class RanksData extends CodonData {
         }
 
         CodonCache::delete('all_ranks');
-        self::CalculatePilotRanks();
+        self::calculatePilotRanks();
 
         return true;
     }
@@ -124,6 +129,7 @@ class RanksData extends CodonData {
      * Update a certain rank
      */
     public static function updateRank($rankid, $title, $minhours, $imageurl, $payrate) {
+        
         $minhours = intval($minhours);
         $payrate = floatval($payrate);
 
@@ -137,7 +143,7 @@ class RanksData extends CodonData {
 
         CodonCache::delete('all_ranks');
 
-        self::CalculatePilotRanks();
+        self::calculatePilotRanks();
         return true;
     }
 
@@ -146,8 +152,8 @@ class RanksData extends CodonData {
      */
 
     public static function deleteRank($rankid) {
-        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'ranks 
-					WHERE rankid=' . $rankid;
+        
+        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'ranks WHERE rankid=' . $rankid;
 
         DB::query($sql);
 
@@ -165,6 +171,7 @@ class RanksData extends CodonData {
      *  end, update that
      */
     public static function calculatePilotRanks() {
+        
         /* Don't calculate a pilot's rank if this is set */
         if (Config::Get('RANKS_AUTOCALCULATE') === false) {
             return;
@@ -202,6 +209,7 @@ class RanksData extends CodonData {
     }
 
     public static function calculateUpdatePilotRank($pilotid) {
+        
         /* Don't calculate a pilot's rank if this is set */
         if (Config::Get('RANKS_AUTOCALCULATE') == false) {
             return;
@@ -227,7 +235,11 @@ class RanksData extends CodonData {
             }
         }
 
-        $update = array('rankid' => $last_rankid, 'rank' => $last_rank, 'ranklevel' => $rank_level, );
+        $update = array(
+            'rankid' => $last_rankid, 
+            'rank' => $last_rank, 
+            'ranklevel' => $rank_level, 
+            );
 
         PilotData::updateProfile($pilot->pilotid, $update);
     }
