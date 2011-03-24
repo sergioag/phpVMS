@@ -502,17 +502,18 @@ class PIREPData extends CodonData {
     public static function fileReport($pirepdata) {
 
         /*$pirepdata = array('pilotid'=>'',
-        'code'=>'',
-        'flightnum'=>'',
-        'depicao'=>'',
-        'arricao'=>'',
-        'aircraft'=>'',
-        'flighttime'=>'',
-        'submitdate'=>'',
-        'comment'=>'',
-        'fuelused'=>'',
-        'source'=>''
-        'log'=>'');*/
+            'code'=>'',
+            'flightnum'=>'',
+            'depicao'=>'',
+            'arricao'=>'',
+            'aircraft'=>'',
+            'flighttime'=>'',
+            'submitdate'=>'',
+            'comment'=>'',
+            'fuelused'=>'',
+            'source'=>''
+            'log'=>''
+            );*/
 
         if (!is_array($pirepdata)) return false;
 
@@ -591,6 +592,7 @@ class PIREPData extends CodonData {
 
             $pirepdata['route'] = str_replace('SID', '', $pirepdata['route']);
             $pirepdata['route'] = str_replace('STAR', '', $pirepdata['route']);
+            $pirepdata['route'] = str_replace('DCT', '', $pirepdata['route']);
             $pirepdata['route'] = trim($pirepdata['route']);
 
             $tmp = new stdClass();
@@ -607,15 +609,15 @@ class PIREPData extends CodonData {
             $pirepdata['route'] = $sched->route;
             $pirepdata['route'] = str_replace('SID', '', $pirepdata['route']);
             $pirepdata['route'] = str_replace('STAR', '', $pirepdata['route']);
+            $pirepdata['route'] = str_replace('DCT', '', $pirepdata['route']);
             $pirepdata['route'] = trim($pirepdata['route']);
 
             /*	The schedule doesn't have any route_details, so let's populate
-            the schedule while we're here. Then we'll use that same info
-            to populate our details information 
-            */
+                the schedule while we're here. Then we'll use that same info
+                to populate our details information 
+             */
             if (empty($sched->route_details)) {
-                $pirepdata['route_details'] = serialize(SchedulesData::getRouteDetails($sched->
-                    id));
+                $pirepdata['route_details'] = serialize(SchedulesData::getRouteDetails($sched->id));
             } else {
                 /*	The schedule does have route information, and it's already been cached */
                 $pirepdata['route_details'] = $sched->route_details;
@@ -631,8 +633,7 @@ class PIREPData extends CodonData {
         # Check the load, if it's blank then look it up
         #	Based on the aircraft that was flown
         if (!isset($pirepdata['load']) || empty($pirepdata['load'])) {
-            $pirepdata['load'] = FinanceData::getLoadCount($pirepdata['aircraft'], $sched->
-                flighttype);
+            $pirepdata['load'] = FinanceData::getLoadCount($pirepdata['aircraft'], $sched->flighttype);
         }
 
         /* If the distance isn't supplied, then calculate it */
@@ -673,23 +674,16 @@ class PIREPData extends CodonData {
         $cols = array();
         $col_values = array();
         foreach ($pirepdata as $key => $value) {
-            switch ($key) {
-                case 'submitdate':
-                    $cols[] = "`{$key}`";
-                    $col_values[] = 'NOW()';
-
-                    break;
-                case 'comment':
-                    continue;
-
-                    break;
-                default:
-                    $cols[] = "`{$key}`";
-                    $value = DB::escape($value);
-                    $col_values[] = "'{$value}'";
-
-                    break;
+            if($key == 'submitdate') {
+                $value = 'NOW()';
+            } elseif ($key == 'comment') {
+                continue;
+            } else {
+                $value = "'".DB::escape($value)."'";
             }
+            
+            $cols[] = "`{$key}`";        
+            $col_values[] = $value;
         }
 
         $cols = implode(', ', $cols);

@@ -21,6 +21,11 @@
 
 class Operations extends CodonModule {
 
+    /**
+     * Operations::HTMLHead()
+     * 
+     * @return
+     */
     public function HTMLHead() {
         switch ($this->controller->function) {
             case 'airlines':
@@ -46,11 +51,21 @@ class Operations extends CodonModule {
         }
     }
 
+    /**
+     * Operations::index()
+     * 
+     * @return
+     */
     public function index() {
         $this->schedules();
     }
 
 
+    /**
+     * Operations::viewmap()
+     * 
+     * @return
+     */
     public function viewmap() {
         
         if ($this->get->type === 'pirep') {
@@ -84,6 +99,11 @@ class Operations extends CodonModule {
         $this->render('route_map.tpl');
     }
 
+    /**
+     * Operations::addaircraft()
+     * 
+     * @return
+     */
     public function addaircraft() {
         
         $this->set('title', 'Add Aircraft');
@@ -92,6 +112,11 @@ class Operations extends CodonModule {
         $this->render('ops_aircraftform.tpl');
     }
 
+    /**
+     * Operations::editaircraft()
+     * 
+     * @return
+     */
     public function editaircraft() {
         
         $id = $this->get->id;
@@ -103,12 +128,22 @@ class Operations extends CodonModule {
         $this->render('ops_aircraftform.tpl');
     }
 
+    /**
+     * Operations::addairline()
+     * 
+     * @return
+     */
     public function addairline() {
         $this->set('title', 'Add Airline');
         $this->set('action', 'addairline');
         $this->render('ops_airlineform.tpl');
     }
 
+    /**
+     * Operations::editairline()
+     * 
+     * @return
+     */
     public function editairline() {
         $this->set('title', 'Edit Airline');
         $this->set('action', 'editairline');
@@ -117,6 +152,13 @@ class Operations extends CodonModule {
         $this->render('ops_airlineform.tpl');
     }
 
+    /**
+     * Operations::calculatedistance()
+     * 
+     * @param string $depicao
+     * @param string $arricao
+     * @return
+     */
     public function calculatedistance($depicao = '', $arricao = '') {
         
         if ($depicao == '') $depicao = $this->get->depicao;
@@ -125,6 +167,11 @@ class Operations extends CodonModule {
         echo OperationsData::getAirportDistance($depicao, $arricao);
     }
 
+    /**
+     * Operations::getfuelprice()
+     * 
+     * @return
+     */
     public function getfuelprice() {
         
         if (Config::Get('FUEL_GET_LIVE_PRICE') == false) {
@@ -144,6 +191,11 @@ class Operations extends CodonModule {
             '</strong></span>';
     }
 
+    /**
+     * Operations::findairport()
+     * 
+     * @return
+     */
     public function findairport() {
         
         $results = OperationsData::searchAirport($this->get->term);
@@ -163,6 +215,11 @@ class Operations extends CodonModule {
         }
     }
 
+    /**
+     * Operations::airlines()
+     * 
+     * @return
+     */
     public function airlines() {
         
         if (isset($this->post->action)) {
@@ -177,6 +234,11 @@ class Operations extends CodonModule {
         $this->render('ops_airlineslist.tpl');
     }
 
+    /**
+     * Operations::aircraft()
+     * 
+     * @return
+     */
     public function aircraft() {
         /* If they're adding an aircraft, go through this pain
         */
@@ -195,6 +257,11 @@ class Operations extends CodonModule {
         $this->render('ops_aircraftlist.tpl');
     }
 
+    /**
+     * Operations::addairport()
+     * 
+     * @return
+     */
     public function addairport() {
         $this->set('title', 'Add Airport');
         $this->set('action', 'addairport');
@@ -202,6 +269,11 @@ class Operations extends CodonModule {
         $this->render('ops_airportform.tpl');
     }
 
+    /**
+     * Operations::editairport()
+     * 
+     * @return
+     */
     public function editairport() {
         $this->set('title', 'Edit Airport');
         $this->set('action', 'editairport');
@@ -210,6 +282,11 @@ class Operations extends CodonModule {
         $this->render('ops_airportform.tpl');
     }
 
+    /**
+     * Operations::airports()
+     * 
+     * @return
+     */
     public function airports() {
         
         /* If they're adding an airport, go through this pain
@@ -231,6 +308,11 @@ class Operations extends CodonModule {
         $this->render('ops_airportlist.tpl');
     }
 
+    /**
+     * Operations::airportgrid()
+     * 
+     * @return
+     */
     public function airportgrid() {
         
         $page = $this->get->page; // get the requested page
@@ -311,6 +393,11 @@ class Operations extends CodonModule {
         echo json_encode($json);
     }
 
+    /**
+     * Operations::addschedule()
+     * 
+     * @return
+     */
     public function addschedule() {
         $this->set('title', 'Add Schedule');
         $this->set('action', 'addschedule');
@@ -349,6 +436,11 @@ class Operations extends CodonModule {
         $this->render('ops_scheduleform.tpl');
     }
 
+    /**
+     * Operations::editschedule()
+     * 
+     * @return
+     */
     public function editschedule() {
         $id = $this->get->id;
 
@@ -365,14 +457,29 @@ class Operations extends CodonModule {
         $this->render('ops_scheduleform.tpl');
     }
 
+    /**
+     * Operations::activeschedules()
+     * 
+     * @return
+     */
     public function activeschedules() {
         $this->schedules('activeschedules');
     }
 
+    /**
+     * Operations::inactiveschedules()
+     * 
+     * @return
+     */
     public function inactiveschedules() {
         $this->schedules('inactiveschedules');
     }
 
+    /**
+     * Operations::schedulegrid()
+     * 
+     * @return
+     */
     public function schedulegrid() {
         $page = $this->get->page; // get the requested page
         $limit = $this->get->rows; // get how many rows we want to have into the grid
@@ -451,6 +558,12 @@ class Operations extends CodonModule {
         echo json_encode($json);
     }
 
+    /**
+     * Operations::schedules()
+     * 
+     * @param string $type
+     * @return
+     */
     public function schedules($type = 'activeschedules') {
         /* These are loaded in popup box */
         if ($this->get->action == 'viewroute') {
@@ -535,6 +648,11 @@ class Operations extends CodonModule {
         $this->render('ops_schedules.tpl');
     }
 
+    /**
+     * Operations::add_airline_post()
+     * 
+     * @return
+     */
     protected function add_airline_post() {
         $this->post->code = strtoupper($this->post->code);
 
@@ -570,6 +688,11 @@ class Operations extends CodonModule {
             ' - ' . $this->post->name . '"');
     }
 
+    /**
+     * Operations::edit_airline_post()
+     * 
+     * @return
+     */
     protected function edit_airline_post() {
         $this->post->code = strtoupper($this->post->code);
 
@@ -605,6 +728,11 @@ class Operations extends CodonModule {
             ' - ' . $this->post->name . '"');
     }
 
+    /**
+     * Operations::add_aircraft_post()
+     * 
+     * @return
+     */
     protected function add_aircraft_post() {
         
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->fullname ==
@@ -627,12 +755,21 @@ class Operations extends CodonModule {
             return;
         }
 
-        $data = array('icao' => $this->post->icao, 'name' => $this->post->name,
-            'fullname' => $this->post->fullname, 'registration' => $this->post->registration,
-            'downloadlink' => $this->post->downloadlink, 'imagelink' => $this->post->imagelink,
-            'range' => $this->post->range, 'weight' => $this->post->weight, 'cruise' => $this->post->cruise,
-            'maxpax' => $this->post->maxpax, 'maxcargo' => $this->post->maxcargo, 'minrank' =>
-            $this->post->minrank, 'enabled' => $this->post->enabled);
+        $data = array(
+            'icao' => $this->post->icao, 
+            'name' => $this->post->name,
+            'fullname' => $this->post->fullname, 
+            'registration' => $this->post->registration,
+            'downloadlink' => $this->post->downloadlink, 
+            'imagelink' => $this->post->imagelink,
+            'range' => $this->post->range, 
+            'weight' => $this->post->weight, 
+            'cruise' => $this->post->cruise,
+            'maxpax' => $this->post->maxpax, 
+            'maxcargo' => $this->post->maxcargo, 
+            'minrank' => $this->post->minrank, 
+            'enabled' => $this->post->enabled
+            );
 
         OperationsData::AddAircraft($data);
 
@@ -653,6 +790,11 @@ class Operations extends CodonModule {
             ' - ' . $this->post->registration . '"');
     }
 
+    /**
+     * Operations::edit_aircraft_post()
+     * 
+     * @return
+     */
     protected function edit_aircraft_post() {
         if ($this->post->id == '') {
             $this->set('message', 'Invalid ID specified');
@@ -702,6 +844,11 @@ class Operations extends CodonModule {
         $this->render('core_success.tpl');
     }
 
+    /**
+     * Operations::add_airport_post()
+     * 
+     * @return
+     */
     protected function add_airport_post() {
 
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->country ==
@@ -738,6 +885,11 @@ class Operations extends CodonModule {
             ' - ' . $this->post->name . '"');
     }
 
+    /**
+     * Operations::edit_airport_post()
+     * 
+     * @return
+     */
     protected function edit_airport_post() {
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->country ==
             '' || $this->post->lat == '' || $this->post->lng == '') {
@@ -771,6 +923,11 @@ class Operations extends CodonModule {
             ' - ' . $this->post->name . '"');
     }
 
+    /**
+     * Operations::add_schedule_post()
+     * 
+     * @return
+     */
     protected function add_schedule_post() {
         
         if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->deptime ==
@@ -840,16 +997,25 @@ class Operations extends CodonModule {
         }
         
         $data = array(
-            'code' => $this->post->code, 'flightnum' => $this->post->flightnum,
-            'depicao' => $this->post->depicao, 'arricao' => $this->post->arricao, 'route' =>
-            $this->post->route, 'aircraft' => $this->post->aircraft, 'flightlevel' => $this->post->flightlevel,
-            'distance' => $this->post->distance, 'deptime' => $this->post->deptime,
-            'arrtime' => $this->post->arrtime, 'flighttime' => $this->post->flighttime,
+            'code' => $this->post->code, 
+            'flightnum' => $this->post->flightnum,
+            'depicao' => $this->post->depicao, 
+            'arricao' => $this->post->arricao, 
+            'route' => $this->post->route, 
+            'aircraft' => $this->post->aircraft, 
+            'flightlevel' => $this->post->flightlevel,
+            'distance' => $this->post->distance, 
+            'deptime' => $this->post->deptime,
+            'arrtime' => $this->post->arrtime, 
+            'flighttime' => $this->post->flighttime,
             'daysofweek' => $daysofweek, 
             'week1' => $week1, 'week2' => $week2, 'week3' => $week3, 'week4' => $week4, 
-            'price' => $this->post->price, 'payforflight' => $this->post->payforflight,
-            'flighttype' => $this->post->flighttype, 'notes' => $this->post->notes,
-            'enabled' => $enabled);
+            'price' => $this->post->price, 
+            'payforflight' => $this->post->payforflight,
+            'flighttype' => $this->post->flighttype, 
+            'notes' => $this->post->notes,
+            'enabled' => $enabled
+        );
 
         # Add it in
         $ret = SchedulesData::AddSchedule($data);
@@ -870,6 +1036,11 @@ class Operations extends CodonModule {
             $this->post->flightnum . '"');
     }
 
+    /**
+     * Operations::edit_schedule_post()
+     * 
+     * @return
+     */
     protected function edit_schedule_post() {
         if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->deptime ==
             '' || $this->post->arrtime == '' || $this->post->depicao == '' || $this->post->arricao ==
@@ -961,6 +1132,11 @@ class Operations extends CodonModule {
             $this->post->flightnum . '"');
     }
 
+    /**
+     * Operations::delete_schedule_post()
+     * 
+     * @return
+     */
     protected function delete_schedule_post() {
 
         $schedule = SchedulesData::findSchedules(array('s.id' => $this->post->id));

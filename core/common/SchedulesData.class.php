@@ -346,25 +346,6 @@ class SchedulesData extends CodonData {
     }
 
     /**
-     * Update a distance
-     * 
-     * @deprecated
-     */
-    /*public static function UpdateDistance($scheduleid, $distance)
-    {
-    $sql = 'UPDATE '.TABLE_PREFIX."schedules 
-    SET distance='{$distance}'
-    WHERE id={$scheduleid}";
-    
-    $res = DB::query($sql);
-    
-    if(DB::errno() != 0)
-    return false;
-    
-    return true;
-    }*/
-
-    /**
      * Add a schedule
      * 
      * Pass in the following:
@@ -384,6 +365,7 @@ class SchedulesData extends CodonData {
      * 'flighttype'=>'');
      */
     public static function addSchedule($data) {
+        
         if (!is_array($data)) return false;
 
         # Commented out to allow flights to/from the same airport
@@ -405,10 +387,15 @@ class SchedulesData extends CodonData {
         if ($data['flighttype'] == '') $data['flighttype'] = 'P';
 
         $data['flightlevel'] = str_replace(',', '', $data['flightlevel']);
+        
+        if(isset($data['week1'])) {
+            
+        }
 
         if (isset($fields['route'])) {
             $fields['route'] = str_replace('SID', '', $fields['route']);
             $fields['route'] = str_replace('STAR', '', $fields['route']);
+            $fields['route'] = str_replace('DCT', '', $fields['route']);
             $fields['route'] = trim($fields['route']);
             $fields['route_details'] = '';
         }
@@ -418,32 +405,28 @@ class SchedulesData extends CodonData {
         }
 
         $data['flighttime'] = str_replace(':', '.', $data['flighttime']);
+        
+        
+        # Do the insert based on the columns here
+        $cols = array();
+        $col_values = array();
+        
+        foreach ($data as $key => $value) {
+            
+            if($key == 'daysofweek' || $key == 'week1' || $key == 'week2' || $key == 'week3' || $key == 'week4') {        
+                $value = str_replace('7', '0', $value);
+            } else {
+                $value = DB::escape($value);
+            }
+            
+            
+            $cols[] = "`{$key}`";
+            $col_values[] = "'{$value}'";
+        }
 
-        $sql = "INSERT INTO " . TABLE_PREFIX . "schedules
-					(`code`, `flightnum`, 
-					 `depicao`, `arricao`, 
-					 `route`, `route_details`,
-					 `aircraft`, `flightlevel`, `distance`, 
-					 `deptime`, `arrtime`, 
-					 `flighttime`, `daysofweek`, `price`, 
-					 `flighttype`, `notes`, `enabled`)
-				VALUES ('{$data['code']}', 
-						'{$data['flightnum']}',
-						'{$data['depicao']}', 
-						'{$data['arricao']}', 
-						'{$data['route']}',
-						'{$data['route_details']}',
-						'{$data['aircraft']}', 
-						'{$data['flightlevel']}',
-						'{$data['distance']}',
-						'{$data['deptime']}', 
-						'{$data['arrtime']}',
-						'{$data['flighttime']}',
-						'{$data['daysofweek']}',
-						'{$data['price']}', 
-						'{$data['flighttype']}',
-						'{$data['notes']}', 
-						{$data['enabled']})";
+        $cols = implode(', ', $cols);
+        $col_values = implode(', ', $col_values);
+        $sql = 'INSERT INTO ' . TABLE_PREFIX . "schedules ({$cols}) VALUES ({$col_values});";
 
         $res = DB::query($sql);
 
@@ -482,6 +465,7 @@ class SchedulesData extends CodonData {
      *
      */
     public static function getRouteDetails($schedule_id, $route = '') {
+        
         $schedule = self::findSchedules(array('s.id' => $schedule_id), 1);
         $schedule = $schedule[0];
 
@@ -578,6 +562,7 @@ class SchedulesData extends CodonData {
         if (isset($fields['route'])) {
             $fields['route'] = str_replace('SID', '', $fields['route']);
             $fields['route'] = str_replace('STAR', '', $fields['route']);
+            $fields['route'] = str_replace('DCT', '', $fields['route']);
             $fields['route'] = trim($fields['route']);
         }
 
@@ -602,6 +587,7 @@ class SchedulesData extends CodonData {
      * Delete a schedule
      */
     public static function deleteSchedule($scheduleid) {
+        
         $scheduleid = DB::escape($scheduleid);
         $sql = 'DELETE FROM ' . TABLE_PREFIX . 'schedules 
 				WHERE id=' . $scheduleid;
@@ -624,6 +610,7 @@ class SchedulesData extends CodonData {
     }
 
     public static function deleteAllScheduleDetails() {
+        
         $sql = 'UPDATE ' . TABLE_PREFIX . "schedules 
 				SET `route_details` = ''";
 

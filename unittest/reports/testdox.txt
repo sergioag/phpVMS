@@ -5,3 +5,10 @@ User
  [x] P i r e p file
  [x] Delete user
 
+SchedulePIREP
+ [x] Add schedule
+ [x] Schedule integrity
+ [x] Edit schedule
+ [x] Nav data
+ [ ] P i r e p file
+

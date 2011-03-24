@@ -11,6 +11,7 @@
         <testsuite name="phpVMS">
             <!--<file>Tests/TimesTest.php</file>-->
             <file>Tests/UserTest.php</file>
+            <file>Tests/SchedulePIREPTest.php</file>
         </testsuite>
       </testsuites>
   
