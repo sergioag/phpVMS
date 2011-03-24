@@ -1,8 +1,26 @@
-<phpunit>
-  <testsuites>
-    <testsuite name="phpVMS">
-      <!--<file>Tests/TimesTest.php</file>-->
-      <file>Tests/UserTest.php</file>
-    </testsuite>
-  </testsuites>
+<phpunit 
+  colors="true"
+  bootstrap="bootstrap.php"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  verbose="true"
+  >
+    
+      <testsuites>
+        <testsuite name="phpVMS">
+            <!--<file>Tests/TimesTest.php</file>-->
+            <file>Tests/UserTest.php</file>
+        </testsuite>
+      </testsuites>
+  
+    <logging>
+      <log type="coverage-html" target="reports/coverage_report" charset="UTF-8"
+           yui="true" highlight="true"/>
+      <log type="coverage-clover" target="reports/coverage.xml"/>
+      <log type="json" target="reports/logfile.json"/>
+      <log type="testdox-html" target="reports/testdox.html"/>
+      <log type="testdox-text" target="reports/testdox.txt"/>
+    </logging>
+
 </phpunit>

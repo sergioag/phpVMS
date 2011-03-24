@@ -112,6 +112,18 @@ class UserTest extends PHPUnit_Framework_TestCase   {
 		
 		unset($data);
 	}
+    
+    
+    /**
+     * UserTest::testPIREPFile()
+     * 
+     * @return void
+     */
+    public function testPIREPFile() {
+        
+        
+    }
+    
 	
 	/**
 	 * UserTest::testDeleteUser()
