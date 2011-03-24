@@ -1,0 +1,8 @@
+<phpunit>
+  <testsuites>
+    <testsuite name="phpVMS">
+      <!--<file>Tests/TimesTest.php</file>-->
+      <file>Tests/UserTest.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>

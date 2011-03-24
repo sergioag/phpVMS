@@ -21,7 +21,6 @@ class PilotData extends CodonData {
 
     public static $pilot_data = array();
 
-
     /**
      * Find any pilots based on the parameters passed in
      *
@@ -32,6 +31,7 @@ class PilotData extends CodonData {
      *
      */
     public static function findPilots($params, $limit = '', $start = '') {
+        
         $sql = "SELECT p.*, r.`rankimage`, r.`payrate`
 				FROM " . TABLE_PREFIX . "pilots p
 				LEFT JOIN " . TABLE_PREFIX . "ranks r ON r.rank=p.rank ";
@@ -97,30 +97,49 @@ class PilotData extends CodonData {
 
     /**
      * Get all the pilots on a certain hub
+     * 
+     * @param string $hub
+     * @return
      */
-    public static function getAllPilotsByHub($hub) {
+    public static function getAllPilotsByHub($hub = '') {
+        
+        if(empty($hub)) { return false; }
+        
         return self::findPilots(array('p.hub' => $hub));
     }
 
     /**
      * Return the pilot's code (ie DVA1031), using
      * the code and their DB ID
+     * 
+     * @param mixed $code
+     * @param mixed $pilotid
+     * @return
      */
     public static function getPilotCode($code, $pilotid) {
+        
         # Make sure values are entered
-        if (Config::Get('PILOTID_LENGTH') == '') Config::Set('PILOTID_LENGTH', 4);
+        if (Config::Get('PILOTID_LENGTH') == '') {
+            Config::Set('PILOTID_LENGTH', 4);
+        }
 
-        if (Config::Get('PILOTID_OFFSET') == '') Config::Set('PILOTID_OFFSET', 0);
+        if (Config::Get('PILOTID_OFFSET') == '') {
+            Config::Set('PILOTID_OFFSET', 0);
+        }
 
         $pilotid = $pilotid + Config::Get('PILOTID_OFFSET');
-        return $code . str_pad($pilotid, Config::Get('PILOTID_LENGTH'), '0',
-            STR_PAD_LEFT);
+        $pilotid = str_pad($pilotid, Config::Get('PILOTID_LENGTH'), '0', STR_PAD_LEFT);
+        
+        return $code . $pilotid;
     }
 
     /**
      * The the basic pilot information
      * Quasi 'cached' in case it's called multiple times
      * for the same pilot in one script
+     * 
+     * @param mixed $pilotid
+     * @return
      */
     public static function getPilotData($pilotid) {
         $pilot = self::findPilots(array('p.pilotid' => $pilotid), 1);
@@ -184,6 +203,9 @@ class PilotData extends CodonData {
 
     /**
      * Get the list of all the pending pilots
+     * 
+     * @param string $count
+     * @return
      */
     public static function getPendingPilots($count = '') {
         $params = array('p.confirmed' => PILOT_PENDING);
@@ -191,6 +213,12 @@ class PilotData extends CodonData {
         return self::findPilots($params, $count);
     }
 
+    /**
+     * PilotData::getLatestPilots()
+     * 
+     * @param integer $count
+     * @return
+     */
     public static function getLatestPilots($count = 10) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pilots
 				ORDER BY `pilotid` DESC
@@ -217,16 +245,28 @@ class PilotData extends CodonData {
         return self::updateProfile($pilotid, $params);
     }
 
+    /**
+     * PilotData::changePilotID()
+     * 
+     * @param mixed $old_pilotid
+     * @param mixed $new_pilotid
+     * @return
+     */
     public static function changePilotID($old_pilotid, $new_pilotid) {
+        
         $pilot_exists = self::getPilotData($new_pilotid);
         if (is_object($pilot_exists)) {
             return false;
         }
 
         DB::query('SET foreign_key_checks = 0;');
+        
         // List of all the tables which need to update
-        $table_list = array('groupmembers', 'pilots', 'adminlog', 'awardsgranted',
-            'acarsdata', 'sessions', 'pireps', 'pirepcomments', 'fieldvalues', 'bids', );
+        $table_list = array(
+            'groupmembers', 'pilots', 'adminlog', 'awardsgranted',
+            'acarsdata', 'sessions', 'pireps', 'pirepcomments', 
+            'fieldvalues', 'bids', 
+            );
 
         foreach ($table_list as $table) {
             $sql = 'UPDATE `' . TABLE_PREFIX . $table . '`
@@ -234,13 +274,20 @@ class PilotData extends CodonData {
 					WHERE `pilotid`=' . $old_pilotid;
 
             DB::query($sql);
-            //DB::debug();
         }
 
         return true;
     }
 
+    /**
+     * PilotData::changePilotRank()
+     * 
+     * @param mixed $pilotid
+     * @param mixed $rankid
+     * @return
+     */
     public static function changePilotRank($pilotid, $rankid) {
+        
         $rank = RanksData::getRankInfo($rankid);
         $rank_level = RanksData::getRankLevel($rankid);
         if (!$rank) {
@@ -253,21 +300,6 @@ class PilotData extends CodonData {
     }
 
     /**
-     * Save any changes to a pilot's profile, calls updateProfile()
-     * 
-     * @deprecated Use updateProfile() instead!!
-     * 
-     */
-    /*public static function saveProfile($params)
-    {
-    $pilotid = $params['pilotid'];
-    unset($params['pilotid']);
-    
-    return self::updateProfile($pilotid, $params);
-    }*/
-
-
-    /**
      * Update a pilot, $params is an array of column_name=>value
      *
      * @param mixed $pilotid This is a description
@@ -276,21 +308,22 @@ class PilotData extends CodonData {
      *
      */
     public static function updateProfile($pilotid, $params) {
+    
         /*$params = array(
-        'pilotid' => '',
-        'code' => '',
-        'email' => '',
-        'location' => '',
-        'hub' => '',
-        'bgimage' => '',
-        'retired' => false,
-        );*/
+            'pilotid' => '',
+            'code' => '',
+            'email' => '',
+            'location' => '',
+            'hub' => '',
+            'bgimage' => '',
+            'retired' => false,
+            );
+         */
 
-        /*if(empty(trim($pilotid)))
-        {
-        return false;
-        }*/
-
+        if(empty($pilotid)) {
+            return false;
+        }
+        
         if (!is_array($params)) {
             return false;
         }
@@ -319,7 +352,7 @@ class PilotData extends CodonData {
         $sql .= " WHERE `pilotid`={$pilotid}";
 
         $res = DB::query($sql);
-
+        
         if (DB::errno() != 0) {
             return false;
         }
@@ -327,6 +360,11 @@ class PilotData extends CodonData {
         return true;
     }
 
+    /**
+     * PilotData::updatePilotRankLevels()
+     * 
+     * @return void
+     */
     public static function updatePilotRankLevels() {
         $all_pilots = self::findPilots(array());
 
@@ -336,6 +374,13 @@ class PilotData extends CodonData {
         }
     }
 
+    /**
+     * PilotData::setPilotRetired()
+     * 
+     * @param mixed $pilotid
+     * @param mixed $retired
+     * @return
+     */
     public static function setPilotRetired($pilotid, $retired) {
         if ($retired === true || $retired == '1') {
             $retired = 1;
@@ -366,15 +411,21 @@ class PilotData extends CodonData {
         return $list;
     }
 
+    
     /**
      * Save avatars
+     * 
+     * @param mixed $code
+     * @param mixed $pilotid
+     * @param mixed $_FILES
+     * @return
      */
     public static function saveAvatar($code, $pilotid, $_FILES) {
+        
         # Check the proper file size
         #  Ignored for now since there is a resize
-        /*if ($_FILES['avatar']['size'] > Config::Get('AVATAR_FILE_SIZE'))
-        {
-        return false;
+        /*if ($_FILES['avatar']['size'] > Config::Get('AVATAR_FILE_SIZE')) {
+            return false;
         }*/
 
         if (!$_FILES['avatar']['type']) return false;
@@ -397,8 +448,9 @@ class PilotData extends CodonData {
         $new_height = floor($height * (Config::Get('AVATAR_MAX_HEIGHT') / $width));
 
         $avatarimg = imagecreatetruecolor($new_width, $new_height);
-        imagecopyresized($avatarimg, $img, 0, 0, 0, 0, $new_width, $new_height, $width,
-            $height);
+        imagecopyresized($avatarimg, $img, 0, 0, 0, 0, $new_width, $new_height, 
+                            $width, $height /* original */
+            );
 
         # Output the file, to /lib/avatar/pilotcode.png
         $pilotCode = self::getPilotCode($code, $pilotid);
@@ -430,6 +482,7 @@ class PilotData extends CodonData {
      *
      */
     public static function deletePilot($pilotid) {
+        
         $sql = array();
         unset(self::$pilot_data[$pilotid]);
 

@@ -125,11 +125,12 @@ class PilotGroups extends CodonData {
      * @return
      */
     public static function addUsertoGroup($pilotid, $groupidorname) {
-        
+               
         if ($groupidorname == '') {
             return false;
         }
 
+       
         // If group name is given, get the group ID
         if (!is_numeric($groupidorname)) {
             $groupidorname = self::getGroupID($groupidorname);
@@ -143,7 +144,6 @@ class PilotGroups extends CodonData {
 					VALUES ('.$pilotid.', '.$groupidorname.')';
 
         $res = DB::query($sql);
-        DB::debug();
 
         if (DB::errno() != 0) {
             return false;
@@ -267,6 +267,7 @@ class PilotGroups extends CodonData {
     }
 
     public static function getUsersInGroup($groupid) {
+        
         if (!is_numeric($groupid)) {
             $groupid = self::getGroupID($groupid);
         }

@@ -36,6 +36,12 @@ class RegistrationData extends CodonData {
         return DB::get_results($sql);
     }
 
+    /**
+     * RegistrationData::CheckUserEmail()
+     * 
+     * @param mixed $email
+     * @return
+     */
     public static function CheckUserEmail($email) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pilots
 					WHERE email=\'' . $email . '\'';
@@ -56,7 +62,7 @@ class RegistrationData extends CodonData {
      * 'hub' => '',
      * 'confirm' => false);
      */
-    public static function AddUser($data) {
+    public static function addUser($data) {
 
         /*$data = array(
         'firstname' => '',
@@ -113,8 +119,8 @@ class RegistrationData extends CodonData {
         PilotData::GenerateSignature($pilotid);
 
         /* Add them to the default group */
-        $defaultGroup = SettingsData::getSetting('DEFAULT_GROUP');
-        PilotGroups::AddUsertoGroup($pilotid, $defaultGroup);
+        $defaultGroup = SettingsData::getSettingValue('DEFAULT_GROUP');
+        PilotGroups::addUsertoGroup($pilotid, $defaultGroup);
 
         // For later
         self::$pilotid = $pilotid;

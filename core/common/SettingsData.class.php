@@ -19,6 +19,11 @@
 
 class SettingsData extends CodonData {
 
+    /**
+     * Return all settings
+     * 
+     * @return
+     */
     public static function getAllSettings() {
         $all_settings = CodonCache::read('site_settings');
         if ($all_settings === false) {
@@ -31,6 +36,12 @@ class SettingsData extends CodonData {
         return $all_settings;
     }
 
+    /**
+     * Get a specific setting
+     * 
+     * @param mixed $name
+     * @return
+     */
     public static function getSetting($name) {
         return DB::get_row('SELECT * FROM ' . TABLE_PREFIX . 'settings 
 					WHERE name=\'' . $name . '\'');

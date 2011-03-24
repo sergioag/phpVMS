@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+phpunit --syntax-check --colors --bootstrap bootstrap.php -c phpunit.xml
