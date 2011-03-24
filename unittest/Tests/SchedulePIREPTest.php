@@ -16,10 +16,33 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
 
-class SchedulePIREPTest extends PHPUnit_Framework_TestCase   {
+class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
     
-    public $CODE = 'VMS';
-    public $FLIGHTNUM = '9999';
+    protected $CODE = 'VMS';
+    protected $FLIGHTNUM = '9998';
+    
+    protected $samplePilotID = 1;
+    
+    protected $sample_schedule = array(
+        'code' => '', 
+        'flightnum' => '',
+        'depicao' => 'KJFK', 
+        'arricao' => 'KBOS', 
+        'route' => 'BDR V229 HFD V3 WOONS', 
+        'aircraft' => '1', 
+        'flightlevel' => '300',
+        'distance' => '', 
+        'deptime' => '1PM EST',
+        'arrtime' => '3PM EST', 
+        'flighttime' => '2',
+        'daysofweek' => '1234567', 
+        'week1' => '1234567', 'week2' => '01234', 'week3' => '1234567', 'week4' => '1234567', 
+        'price' => '300', 
+        'payforflight' => '3000',
+        'flighttype' => 'P', 
+        'notes' => 'This is a test flight',
+        'enabled' => true,
+    );
     
     /**
      * ScheduleTest::testAddSchedule()
@@ -28,28 +51,10 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase   {
      */
     public function testAddSchedule() {
         
-        $data = array(
-            'code' => $this->CODE, 
-            'flightnum' => $this->FLIGHTNUM,
-            'depicao' => 'KJFK', 
-            'arricao' => 'KBOS', 
-            'route' => 'BDR V229 HFD V3 WOONS', 
-            'aircraft' => '1', 
-            'flightlevel' => '300',
-            'distance' => '', 
-            'deptime' => '1PM EST',
-            'arrtime' => '3PM EST', 
-            'flighttime' => '2',
-            'daysofweek' => '1234567', 
-            'week1' => '1234567', 'week2' => '01234', 'week3' => '1234567', 'week4' => '1234567', 
-            'price' => '300', 
-            'payforflight' => '',
-            'flighttype' => 'P', 
-            'notes' => 'This is a test flight',
-            'enabled' => true,
-        );
+        $this->sample_schedule['code'] = $this->CODE;
+        $this->sample_schedule['flightnum'] = $this->FLIGHTNUM;        
         
-        $ret = SchedulesData::addSchedule($data);
+        $ret = SchedulesData::addSchedule($this->sample_schedule);
         $this->assertTrue($ret, DB::error());
     }
     
@@ -130,7 +135,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase   {
         Config::Set('EMAIL_SEND_PIREP', false);
         
         $pirep_test = array(
-        	'pilotid' => 1,
+        	'pilotid' => $this->samplePilotID,
         	'code' => $sched->code,
         	'flightnum' => $sched->flightnum,
         	'route' => $sched->route,
@@ -144,14 +149,38 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase   {
         	'comment' => 'Test Flight',
         );
         
+        # Update Pilot Pay to be set to zero
+        PilotData::updateProfile($this->samplePilotID, array('totalpay' => 0));
+        $pilot_data = PilotData::getPilotData($this->samplePilotID);
+        $this->assertEquals($pilot_data->totalpay, 0, 'Reset Pilot Pay to 0');
+        
+        # File the flight report
         $pirepid = PIREPData::fileReport($pirep_test);
 		$this->assertGreaterThan(0, $pirepid, PIREPData::$lasterror);
         
-        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));        
+        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));     
+        $this->assertGreaterThan(0, count($pirepdata), 'No PIREPs returned');   
+        
+        # Work on one...
+        $pirepdata = $pirepdata[0];
         
         # Verify the little bits of this PIREP....
+        $this->assertEquals(PILOT_PAY_SCHEDULE, $pirepdata->paytype , 'PIREP Pay Type');
+        $this->assertEquals($this->sample_schedule['payforflight'], $pirepdata->pilotpay, 'PIREP Pay Amount');
         
+        # Check the pilot pay        
+        $pilot_data = PilotData::getPilotData($this->samplePilotID);
+        $this->assertEquals($pilot_data->totalpay, 0, 'Check pilot pay after PIREP FILE');
         
+        # Change PIREP Status
+        $status = PIREPData::changePIREPStatus($pirepdata->pirepid, PIREP_ACCEPTED);
+        
+        $pilot_data = PilotData::getPilotData($this->samplePilotID);
+        $this->assertEquals($pilot_data->totalpay, $this->sample_schedule['payforflight'], 
+                'Check pilot pay after PIREP ACCEPT');
+        
+        # Was this PIREP found...
+        $lastPIREPS = PIREPData::getLastReports($this->samplePilotID);
         
         # Delete the PIREP
         PIREPData::deletePIREP($pirepid);

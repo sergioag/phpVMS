@@ -10,5 +10,5 @@ SchedulePIREP
  [x] Schedule integrity
  [x] Edit schedule
  [x] Nav data
- [ ] P i r e p file
+ [x] P i r e p file
 

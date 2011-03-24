@@ -43,6 +43,7 @@ class PIREPData extends CodonData {
      * @tutorial http://docs.phpvms.net/media/development/searching_and_retriving_schedules
      */
     public static function findPIREPS($params, $count = '', $start = '') {
+        
         $sql = 'SELECT p.*, UNIX_TIMESTAMP(p.submitdate) as submitdate, 
 					u.pilotid, u.firstname, u.lastname, u.email, u.rank,
 					a.id AS aircraftid, a.name as aircraft, a.registration,
@@ -83,6 +84,7 @@ class PIREPData extends CodonData {
      *
      */
     public static function getIntervalDataByMonth($where_params, $interval = '6') {
+        
         $date_clause = "DATE_SUB(NOW(), INTERVAL {$interval} MONTH) <= p.submitdate";
 
         /* See if this array already exists */
@@ -380,6 +382,7 @@ class PIREPData extends CodonData {
      * Get the latest reports for a pilot
      */
     public static function getLastReports($pilotid, $count = 1, $status = '') {
+        
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps
 					WHERE pilotid=' . intval($pilotid);
 
@@ -488,17 +491,13 @@ class PIREPData extends CodonData {
         return true;
     }
 
+    
     /**
-     * File a PIREP
+     * PIREPData::fileReport()
+     * 
+     * @param mixed $pirepdata
+     * @return
      */
-    public static function newPIREP($pirepdata) {
-        self::fileReport($pirepdata);
-    }
-
-    public static function filePIREP($pirepdata) {
-        self::fileReport($pirepdata);
-    }
-
     public static function fileReport($pirepdata) {
 
         /*$pirepdata = array('pilotid'=>'',
@@ -934,7 +933,6 @@ class PIREPData extends CodonData {
 
         /* Account for any per-flight %age expenses */
         $all_percent_expenses = FinanceData::getFlightPercentExpenses();
-
         $gross = floatval($sched->price) * floatval($pirep->load);
         if (is_array($all_percent_expenses)) {
             foreach ($all_percent_expenses as $ex) {

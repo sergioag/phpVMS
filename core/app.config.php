@@ -220,7 +220,6 @@ Config::Set('EMAIL_SEND_PIREP', true);
 # If blank, it'll default to the "from" email that's specified
 Config::Set('EMAIL_RETURN_PATH', '');
 
-
 /* Can be 'geonames' or 'phpvms'.
 	Geonames will use the geonames.org server to look up the airport info
 	phpvms will use the phpVMS API server
