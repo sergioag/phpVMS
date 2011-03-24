@@ -734,30 +734,30 @@ class PIREPData extends CodonData {
         return $pirepid;
     }
 
-    public static function updateReport($pirepid, $pirepdata) {
-        self::updateFlightReport($pirepid, $pirepdata);
-    }
-
-    public static function updatePIREP($pirepid, $pirepdata) {
-        self::updateFlightReport($pirepid, $pirepdata);
-    }
-
+    /**
+     * PIREPData::updateFlightReport()
+     * 
+     * @param mixed $pirepid
+     * @param mixed $pirepdata
+     * @return
+     */
     public static function updateFlightReport($pirepid, $pirepdata) {
+
         /*$pirepdata = array('pirepid'=>$this->post->pirepid,
-        'code'=>$this->post->code,
-        'flightnum'=>$this->post->flightnum,
-        'leg'=>$this->post->leg,
-        'depicao'=>$this->post->depicao,
-        'arricao'=>$this->post->arricao,
-        'aircraft'=>$this->post->aircraft,
-        'flighttime'=>$this->post->flighttime,
-        'load'=>$this->post->load,
-        'price'=>$this->post->price,
-        'pilotpay' => $this->post->pilotpay,
-        'fuelused'=>$this->post->fuelused,
-        'fuelunitcost'=>$this->post->fuelunitcost,
-        'fuelprice'=>$fuelcost,
-        'expenses'=>$this->post->expenses
+            'code'=>$this->post->code,
+            'flightnum'=>$this->post->flightnum,
+            'leg'=>$this->post->leg,
+            'depicao'=>$this->post->depicao,
+            'arricao'=>$this->post->arricao,
+            'aircraft'=>$this->post->aircraft,
+            'flighttime'=>$this->post->flighttime,
+            'load'=>$this->post->load,
+            'price'=>$this->post->price,
+            'pilotpay' => $this->post->pilotpay,
+            'fuelused'=>$this->post->fuelused,
+            'fuelunitcost'=>$this->post->fuelunitcost,
+            'fuelprice'=>$fuelcost,
+            'expenses'=>$this->post->expenses
         );
         */
 
@@ -786,9 +786,16 @@ class PIREPData extends CodonData {
         );
 
         $gross = floatval($pirepdata['load']) * floatval($pirepdata['price']);
-        $revenue = self::getPIREPRevenue($data);
+        $revenue = self::getPIREPRevenue($data, $pirepinfo->paytype);
 
-        $fields = array(
+        $fields = array_merge($pirepdata, array(
+            'flighttime_stamp' => $flighttime_stamp,
+            'gross' => $gross,
+            'revenue' => $revenue,
+            )
+        );
+        
+        /*$fields = array(
             'code' => $pirepdata['code'], 
             'flightnum' => $pirepdata['flightnum'],
             'depicao' => $pirepdata['depicao'], 
@@ -805,7 +812,7 @@ class PIREPData extends CodonData {
             'fuelprice' => $pirepdata['fuelprice'], 
             'expenses' => $pirepdata['expenses'],
             'revenue' => $revenue, 
-        );
+        );*/
 
         return self::editPIREPFields($pirepid, $fields);
     }
@@ -986,7 +993,7 @@ class PIREPData extends CodonData {
      * @param int $payment_type 1 for hourly payment, 2 for per-schedule payment
      * @return
      */
-    public static function getPIREPRevenue($data, $payment_type) {
+    public static function getPIREPRevenue($data, $payment_type = PILOT_PAY_HOURLY) {
         
         $gross = $data['price'] * $data['load'];
         

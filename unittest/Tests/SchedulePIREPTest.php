@@ -147,9 +147,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase   {
         $pirepid = PIREPData::fileReport($pirep_test);
 		$this->assertGreaterThan(0, $pirepid, PIREPData::$lasterror);
         
-        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));
-        var_dump($pirepdata);
-        
+        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));        
         
         # Verify the little bits of this PIREP....
         
