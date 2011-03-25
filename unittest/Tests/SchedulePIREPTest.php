@@ -265,7 +265,6 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         $sched = $this->findSchedule();
         $this->assertEquals(0, $sched->payforflight, 'Pay per-flight set to 0');
         
-        
         $pirep_test = array(
         	'pilotid' => $this->samplePilotID,
         	'code' => $sched->code,
