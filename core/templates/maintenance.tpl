@@ -1,3 +1,6 @@
+<?php
+    /* This page should be a complete HTML page */
+?>
 <html>
 <head>
 <title>Down for maintenance - phpVMS Virtual Airline</title>

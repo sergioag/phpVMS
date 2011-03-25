@@ -81,12 +81,23 @@ function post_module_load() {
     return true;
 }
 
+/**
+ * Return the full URL to an admin path
+ * 
+ * @param mixed $path
+ * @return
+ */
 function adminurl($path) {
     if ($path[0] != '/') $path = '/' . $path;
-
     return SITE_URL . '/admin/index.php' . $path;
 }
 
+/**
+ * Return the full URL to a path
+ * 
+ * @param mixed $path
+ * @return
+ */
 function url($path) {
     if ($path[0] != '/') $path = '/' . $path;
 

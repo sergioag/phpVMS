@@ -384,6 +384,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         
         # Update Pilot Pay to be set to zero
         PilotData::updateProfile($this->samplePilotID, array('totalpay' => 0));
+        
         $pilot_data = PilotData::getPilotData($this->samplePilotID);
         $this->assertEquals($pilot_data->totalpay, 0, 'Reset Pilot Pay to 0');
                 

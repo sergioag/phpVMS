@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1301072443">
-  <project timestamp="1301072443">
+<coverage generated="1301074751">
+  <project timestamp="1301074751">
     <file name="/var/projects/phpvms/app/core/bootstrap.inc.php">
       <line num="22" type="stmt" count="0"/>
       <line num="23" type="stmt" count="0"/>
@@ -36,31 +36,28 @@
       <line num="70" type="stmt" count="0"/>
       <line num="73" type="stmt" count="0"/>
       <line num="74" type="stmt" count="0"/>
-      <line num="75" type="stmt" count="0"/>
       <line num="76" type="stmt" count="0"/>
-      <line num="77" type="stmt" count="0"/>
       <line num="78" type="stmt" count="0"/>
-      <line num="79" type="stmt" count="0"/>
-      <line num="82" type="stmt" count="0"/>
-      <line num="86" type="stmt" count="0"/>
-      <line num="88" type="stmt" count="0"/>
+      <line num="81" type="stmt" count="0"/>
+      <line num="91" type="stmt" count="0"/>
       <line num="92" type="stmt" count="0"/>
-      <line num="94" type="stmt" count="0"/>
-      <line num="95" type="stmt" count="0"/>
-      <line num="98" type="stmt" count="0"/>
       <line num="102" type="stmt" count="0"/>
-      <line num="103" type="stmt" count="0"/>
-      <line num="106" type="stmt" count="0"/>
+      <line num="104" type="stmt" count="0"/>
+      <line num="105" type="stmt" count="0"/>
       <line num="108" type="stmt" count="0"/>
       <line num="112" type="stmt" count="0"/>
-      <line num="114" type="stmt" count="0"/>
-      <line num="115" type="stmt" count="0"/>
+      <line num="113" type="stmt" count="0"/>
+      <line num="116" type="stmt" count="0"/>
       <line num="118" type="stmt" count="0"/>
       <line num="122" type="stmt" count="0"/>
       <line num="124" type="stmt" count="0"/>
-      <line num="126" type="stmt" count="0"/>
-      <line num="131" type="stmt" count="0"/>
-      <metrics loc="132" ncloc="108" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="58" coveredstatements="0" elements="58" coveredelements="0"/>
+      <line num="125" type="stmt" count="0"/>
+      <line num="128" type="stmt" count="0"/>
+      <line num="132" type="stmt" count="0"/>
+      <line num="134" type="stmt" count="0"/>
+      <line num="136" type="stmt" count="0"/>
+      <line num="141" type="stmt" count="0"/>
+      <metrics loc="142" ncloc="106" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="0" elements="55" coveredelements="0"/>
     </file>
     <file name="/var/projects/phpvms/app/core/classes/CodonCache.class.php">
       <class name="CodonCache" namespace="global" fullPackage="codon_core" package="codon_core">
@@ -7068,6 +7065,6 @@
       <line num="11" type="stmt" count="0"/>
       <metrics loc="12" ncloc="12" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
     </file>
-    <metrics files="55" loc="15843" ncloc="11066" classes="54" methods="355" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="6385" coveredstatements="1041" elements="6740" coveredelements="1090"/>
+    <metrics files="55" loc="15853" ncloc="11064" classes="54" methods="355" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="6382" coveredstatements="1041" elements="6737" coveredelements="1090"/>
   </project>
 </coverage>
