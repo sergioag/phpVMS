@@ -1,6 +1,6 @@
 <?php
 /*	Test registration functionality
- */
+
 
 class PIREPTester extends UnitTestCase  
 {
@@ -88,3 +88,4 @@ class PIREPTester extends UnitTestCase
 		echo '<br />';
 	}
 }
+*/

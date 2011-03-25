@@ -31,6 +31,11 @@ class TimesTest extends PHPUnit_Framework_TestCase  {
 			  WHERE `accepted`='.PIREP_ACCEPTED;
 			  
 		$results = DB::get_results($sql);
+        
+        if(!$results) {
+            $this->markTestSkipped('No PIREPs to test against');
+        }
+        
 		$this->added_time = 0;
         
 		foreach($results as $row) {

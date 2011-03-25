@@ -255,7 +255,7 @@ class FinanceData extends CodonData {
     /**
      * Add an expense
      */
-    public static function AddExpense($name, $cost, $type) {
+    public static function addExpense($name, $cost, $type) {
 
         if ($name == '' || $cost == '') {
             self::$lasterror = 'Name and cost must be entered';
@@ -281,7 +281,8 @@ class FinanceData extends CodonData {
     /**
      * Edit a certain expense
      */
-    public static function EditExpense($id, $name, $cost, $type) {
+    public static function editExpense($id, $name, $cost, $type) {
+        
         if ($name == '' || $cost == '') {
             self::$lasterror = 'Name and cost must be entered';
             return false;
@@ -306,7 +307,7 @@ class FinanceData extends CodonData {
     /**
      * Delete an expense
      */
-    public static function RemoveExpense($id) {
+    public static function removeExpense($id) {
         $sql = 'DELETE FROM ' . TABLE_PREFIX . 'expenses
 					WHERE `id`=' . $id;
 

@@ -461,7 +461,7 @@ class PilotData extends CodonData {
     /**
      * Accept the pilot (allow them into the system)
      */
-    public static function AcceptPilot($pilotid) {
+    public static function acceptPilot($pilotid) {
         return self::updateProfile($pilotid, array('confirmed' => PILOT_ACCEPTED,
             'retired' => '0'));
     }
@@ -469,7 +469,7 @@ class PilotData extends CodonData {
     /**
      * Reject a pilot
      */
-    public static function RejectPilot($pilotid) {
+    public static function rejectPilot($pilotid) {
         return self::DeletePilot($pilotid);
     }
 
@@ -573,18 +573,24 @@ class PilotData extends CodonData {
      * @return bool Success
      *
      */
-    public static function updateFlightData($pilotid, $flighttime, $numflights = 1) {
+    public static function updateFlightData($pilotid) {
 
+        return self::updatePilotStats($pilotid);
+
+        /*
         # Update the flighttime
         $pilotdata = PilotData::getPilotData($pilotid);
-        $flighttime = Util::AddTime($pilotdata->totalhours, $flighttime);
+        $flighttime = Util::addTime($pilotdata->totalhours, $flighttime);
 
         if ($numflights == '') $numflights = 1;
 
-        $params = array('totalhours' => $flighttime, 'totalflights' => ($pilotdata->
-            totalflights + $numflights), );
+        $params = array(
+            'totalhours' => $flighttime, 
+            'totalflights' => ($pilotdata->totalflights + $numflights), 
+        );
 
         return self::updateProfile($pilotid, $params);
+        */
     }
 
     /**
@@ -595,24 +601,26 @@ class PilotData extends CodonData {
      */
     public static function updatePilotStats($pilotid) {
 
-        $pireps = PIREPData::findPIREPS(array('p.pilotid' => $pilotid));
+        $pireps = PIREPData::findPIREPS(array(
+            'p.pilotid' => $pilotid,
+            'p.accepted' => PIREP_ACCEPTED
+            )
+        );
 
         $totalpireps = 0;
         $totalhours = 0;
 
-        if (is_array($pireps)) {
+        if(is_array($pireps) && count($pireps) > 0) {
             foreach ($pireps as $p) {
-                if ($p->accepted != PIREP_ACCEPTED) {
-                    continue;
-                }
-
                 $totalpireps++;
                 $totalhours = Util::addTime($p->flighttime, $totalhours);
             }
         }
 
-
-        $params = array('totalhours' => $totalhours, 'totalflights' => $totalpireps, );
+        $params = array(
+            'totalhours' => $totalhours, 
+            'totalflights' => $totalpireps, 
+        );
 
         return self::updateProfile($pilotid, $params);
     }
@@ -713,10 +721,13 @@ class PilotData extends CodonData {
      *
      * @param int $pilotid The pilot ID
      * @param int $flighthours Number of hours to pay the pilot for
+     * @param bool $add If true, add the amount, otherwise, subtract it
      * @return bool Success
      *
      */
-    public static function updatePilotPay($pilotid, $flighthours) {
+    public static function updatePilotPay($pilotid, $flighthours, $add = true) {
+        
+        $pilotid=intval($pilotid);
         
         $sql = 'SELECT payrate 
 				FROM ' . TABLE_PREFIX . 'ranks r, ' . TABLE_PREFIX . 'pilots p 
@@ -725,10 +736,16 @@ class PilotData extends CodonData {
         $payrate = DB::get_row($sql);
 
         $payupdate = self::getPilotPay($flighthours, $payrate->payrate);
+        
+        if($add === false) {
+            $add = '-';
+        } else {
+            $add = '+';
+        }
 
-        $sql = 'UPDATE ' . TABLE_PREFIX . 'pilots 
-				SET totalpay=totalpay+' . $payupdate . '
-				WHERE pilotid=' . $pilotid;
+        $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 
+				SET totalpay=totalpay {$add} {$payupdate}
+				WHERE pilotid=".$pilotid;
 
         DB::query($sql);
 
@@ -820,7 +837,8 @@ class PilotData extends CodonData {
      * @return bool Success value
      *
      */
-    public static function SaveFields($pilotid, $list) {
+    public static function saveFields($pilotid, $list) {
+        
         $allfields = RegistrationData::getCustomFields(true);
 
         if (!$allfields) return true;

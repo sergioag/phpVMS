@@ -181,7 +181,7 @@ class PIREPS extends CodonModule {
             return;
         }
 
-        if (PIREPData::PIREPUnderAge($pirep->pirepid, Config::Get('PIREP_CUSTOM_FIELD_EDIT')) == false) {
+        if (PIREPData::isPIREPUnderAge($pirep->pirepid, Config::Get('PIREP_CUSTOM_FIELD_EDIT')) == false) {
             $this->set('message', 'You cannot edit a PIREP after the cutoff time of ' .
                 Config::Get('PIREP_CUSTOM_FIELD_EDIT') . ' hours');
             $this->render('core_error.tpl');

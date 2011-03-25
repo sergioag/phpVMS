@@ -1,3 +1,7 @@
+Install
+ [x] Database tables
+ [x] Install files
+
 User
  [x] Register user
  [x] User data integrity
@@ -10,5 +14,7 @@ SchedulePIREP
  [x] Schedule integrity
  [x] Edit schedule
  [x] Nav data
- [x] P i r e p file
+ [x] P i r e p per flight pay
+ [x] P i r e p per hour pay
+ [x] P i r e p rejected
 

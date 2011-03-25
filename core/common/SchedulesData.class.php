@@ -174,21 +174,40 @@ class SchedulesData extends CodonData {
      * @return bool 
      *
      */
-    public static function IncrementFlownCount($code, $flightnum) {
+    public static function incrementFlownCount($code, $flightnum) {
+        return self::changeFlownCount($code, $flightnum, '+1');
+    }
+
+    
+    /**
+     * SchedulesData::changeFlownCount()
+     * 
+     * @param mixed $code
+     * @param mixed $flightnum
+     * @param mixed $amount
+     * @return void
+     */
+    public static function changeFlownCount($code, $flightnum, $amount) {
+        
         $schedid = intval($schedid);
 
         $code = strtoupper($code);
         $flightnum = strtoupper($flightnum);
+        
+        if(substr_count($amount, '+') == 0) {
+            $amount = '+'.$amount;
+        }
 
         $sql = 'UPDATE ' . TABLE_PREFIX . "schedules 
-					SET timesflown=timesflown+1
-					WHERE code='{$code}' AND flightnum='{$flightnum}'";
+				SET timesflown=timesflown {$amount}
+				WHERE code='{$code}' AND flightnum='{$flightnum}'";
 
         $res = DB::query($sql);
 
         if (DB::errno() != 0) return false;
 
         return true;
+        
     }
 
 
@@ -502,6 +521,7 @@ class SchedulesData extends CodonData {
      *
      */
     public static function editScheduleFields($scheduleid, $fields) {
+        
         if (!is_array($fields)) {
             return false;
         }

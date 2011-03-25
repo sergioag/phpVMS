@@ -28,7 +28,7 @@ d4d204c3560c283fa4d7a3a367473740  *./install/navdata.sql
 0c8fcb2879131d2856938f212e2a578c  *./install/install.php
 a177b8656fca431cc0b6d53ac301c537  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
-713c0ba173a32a7c24e126a84d96f9b6  *./core/common/PIREPData.class.php
+72a690efb085a477f3eb922d4342eca4  *./core/common/PIREPData.class.php
 e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 be3826eab064935f32bbd498df3c7253  *./core/common/RegistrationData.class.php
@@ -36,10 +36,10 @@ be3826eab064935f32bbd498df3c7253  *./core/common/RegistrationData.class.php
 93865ca8aff4f69378af6c6bd2c7b3b2  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
 5c6782c2b03950257c5b3cfb7498f753  *./core/common/PilotGroups.class.php
-0ead05eeba6ed526433b2c1a6270af39  *./core/common/SchedulesData.class.php
+54f5d17dad817c645e9ab646371ffb39  *./core/common/SchedulesData.class.php
 e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 e45ee0c21e2f6cec822252e59a5adaad  *./core/common/Countries.class.php
-9632d23bd42e172261bc989a4080f4bf  *./core/common/PilotData.class.php
+df76beb1260ad6afbfddce817fc00400  *./core/common/PilotData.class.php
 9daa436be5011122490d123c00326ff9  *./core/common/GoogleChart.class.php
 78ccd18aafeebb9813811a99fd58af22  *./core/common/SettingsData.class.php
 0b1afcfae4793133402aeea081826f3e  *./core/common/NavData.class.php
@@ -47,7 +47,7 @@ b55102f5cfc7e0629665fe917435e07b  *./core/common/RanksData.class.php
 ff07ceeccb1bf12167daec3dfbcdd072  *./core/common/FuelData.class.php
 b1d50334ddd6f2bce7a5fb2f4eefe9be  *./core/common/SiteData.class.php
 899f9e1eabdc3155c3d7144748595691  *./core/common/AircraftStats.class.php
-1bbb5c34aa65257ab44534340d587ede  *./core/common/FinanceData.class.php
+512c936ff7102e1ed7e4683ae0ef0e47  *./core/common/FinanceData.class.php
 8ed39ab361932f975bbc6d30ef2c34e9  *./core/common/LogData.class.php
 7f5737e62f815d1f0330639bc0976050  *./core/common/ChartGraph.class.php
 0d32a105b469b951f144a104298e24f1  *./core/common/DownloadData.class.php
@@ -182,7 +182,7 @@ c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 f6e138fbaeaa80861bece1e809cf7885  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
 a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
-8aaabec585890b2cc941ba139de91178  *./core/modules/PIREPS/PIREPS.php
+3662c8cdfd037e17fdf00358face7399  *./core/modules/PIREPS/PIREPS.php
 11ac1fae888d5cfdd25eef39b4037749  *./core/modules/Finances/Finances.php
 713228773df8c23688125f98e9cb8f17  *./core/modules/Pages/Pages.php
 925c6ea3907403895286aff5d9838916  *./core/modules/Login/Login.php

@@ -1,5 +1,6 @@
 <?php
 
+/*
 class RouteTester extends UnitTestCase  
 {
 	
@@ -30,3 +31,4 @@ class RouteTester extends UnitTestCase
 		echo "<br />";
 	}
 }
+*/

@@ -1047,6 +1047,11 @@ class PIREPData extends CodonData {
         self::UpdatePIREPFeed();
     }
 
+    /**
+     * PIREPData::deleteAllRouteDetails()
+     * 
+     * @return
+     */
     public static function deleteAllRouteDetails() {
         $sql = "UPDATE " . TABLE_PREFIX . "pireps
 				SET `route_details` = ''";
@@ -1060,7 +1065,13 @@ class PIREPData extends CodonData {
         return true;
     }
 
-    public static function UpdatePIREPFeed() {
+    /**
+     * PIREPData::updatePIREPFeed()
+     * 
+     * @return
+     */
+    public static function updatePIREPFeed() {
+        
         # Load PIREP into RSS feed
         $reports = PIREPData::findPIREPS(array(), 10);
         $rss = new RSSFeed('Latest Pilot Reports', SITE_URL, 'The latest pilot reports');
@@ -1081,7 +1092,15 @@ class PIREPData extends CodonData {
         $rss->BuildFeed(LIB_PATH . '/rss/latestpireps.rss');
     }
 
-
+    /**
+     *
+     * @deprecated Use isPIREPUnderAge()
+     *
+     */
+    public static function PIREPUnderAge($pirepid, $age_hours) {
+        return self::isPIREPUnderAge($pirepid, $age_hours);
+    }
+    
     /**
      * Return true if a PIREP if under $age_hours old	
      *
@@ -1090,7 +1109,8 @@ class PIREPData extends CodonData {
      * @return bool True/false
      *
      */
-    public static function PIREPUnderAge($pirepid, $age_hours) {
+    public static function isPIREPUnderAge($pirepid, $age_hours) {
+        
         $pirepid = intval($pirepid);
 
         $sql = "SELECT pirepid
@@ -1104,7 +1124,7 @@ class PIREPData extends CodonData {
             return false;
         }
 
-        return true;
+        return true;        
     }
 
     /**
@@ -1161,8 +1181,6 @@ class PIREPData extends CodonData {
             
             if($status == PIREP_ACCEPTED) {
                                 
-                PilotData::updateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
-                               
                 # Pay per-schedule
                 if(!empty($pirep_details->payforflight)) {
                     
@@ -1173,10 +1191,10 @@ class PIREPData extends CodonData {
                     DB::query($sql);
                     
                 } else { # Pay by hour
-                    PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime);
+                    PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime, true);
                 }
                 
-                SchedulesData::incrementFlownCount($pirep_details->code, $pirep_details->flightnum);
+                SchedulesData::changeFlownCount($pirep_details->code, $pirep_details->flightnum, '+1');
                 
             } elseif($status == PIREP_REJECTED) {
                 // Do nothing, since nothing in the PIREP was actually counted                
@@ -1185,10 +1203,23 @@ class PIREPData extends CodonData {
         } elseif($pirep_details->accepted == PIREP_ACCEPTED) { # If already accepted
         
             if($status == PIREP_REJECTED) {
-                PilotData::updateFlightData($pirep_details->pilotid, -1 * floatval($pirep->flighttime), -1);
+                                
+                # Subtract their pay for the rejected flight
+                if(!empty($pirep_details->payforflight)) {
+                    $sql = 'UPDATE '.TABLE_PREFIX."pilots 
+            				SET totalpay=totalpay-{$pirep_details->payforflight} 
+            				WHERE pilotid={$pirep_details->pilotid}";
+            
+                    DB::query($sql);
+                } else {
+                    PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime, false);
+                }
+                
+                SchedulesData::changeFlownCount($pirep_details->code, $pirep_details->flightnum, '-1');
             }
         }
         
+        PilotData::updatePilotStats($pirep_details->pilotid);
         RanksData::calculateUpdatePilotRank($pirep_details->pilotid);
         PilotData::generateSignature($pirep_details->pilotid);
         StatsData::updateTotalHours();       
@@ -1213,6 +1244,11 @@ class PIREPData extends CodonData {
     }
 
 
+    /**
+     * PIREPData::getAllFields()
+     * 
+     * @return
+     */
     public static function getAllFields() {
         return DB::get_results('SELECT * FROM ' . TABLE_PREFIX . 'pirepfields');
     }
@@ -1247,7 +1283,7 @@ class PIREPData extends CodonData {
     /**
      * Add a custom field to be used in a PIREP
      */
-    public static function AddField($title, $type = '', $values = '') {
+    public static function addField($title, $type = '', $values = '') {
         $fieldname = strtoupper(str_replace(' ', '_', $title));
         //$values = DB::escape($values);
 
@@ -1266,7 +1302,8 @@ class PIREPData extends CodonData {
     /**
      * Edit the field
      */
-    public static function EditField($id, $title, $type, $values = '') {
+    public static function editField($id, $title, $type, $values = '') {
+        
         $fieldname = strtoupper(str_replace(' ', '_', $title));
 
         $sql = "UPDATE " . TABLE_PREFIX . "pirepfields
@@ -1283,7 +1320,8 @@ class PIREPData extends CodonData {
     /**
      * Save PIREP fields
      */
-    public static function SaveFields($pirepid, $list) {
+    public static function saveFields($pirepid, $list) {
+        
         if (!is_array($list) || $pirepid == '') return false;
 
         $allfields = self::getAllFields();
@@ -1291,9 +1329,12 @@ class PIREPData extends CodonData {
         if (!$allfields) return true;
 
         foreach ($allfields as $field) {
+            
             // See if that value already exists
-            $sql = 'SELECT id FROM ' . TABLE_PREFIX . 'pirepvalues
-						WHERE fieldid=' . $field->fieldid . ' AND pirepid=' . $pirepid;
+            $sql = 'SELECT id FROM '.TABLE_PREFIX.'pirepvalues
+					WHERE fieldid='.$field->fieldid.
+                        ' AND pirepid=' . $pirepid;
+                    
             $res = DB::get_row($sql);
 
             $fieldname = str_replace(' ', '_', $field->name);
@@ -1316,7 +1357,14 @@ class PIREPData extends CodonData {
         return true;
     }
 
-    public static function DeleteField($id) {
+    /**
+     * PIREPData::deleteField()
+     * 
+     * @param mixed $id
+     * @return
+     */
+    public static function deleteField($id) {
+        
         $sql = 'DELETE FROM ' . TABLE_PREFIX . 'pirepfields WHERE fieldid=' . $id;
 
         $res = DB::query($sql);
@@ -1336,7 +1384,8 @@ class PIREPData extends CodonData {
      * 
      * @deprecated
      */
-    public static function ShowReportCounts($ret = false) {
+    public static function showReportCounts($ret = false) {
+        
         // Recent PIREP #'s
         $max = 0;
         $data = array();

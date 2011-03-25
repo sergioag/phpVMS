@@ -1,6 +1,6 @@
 <?php
 /*	Test registration functionality
- */
+
 
 class FinanceTester extends UnitTestCase  
 {
@@ -26,3 +26,4 @@ class FinanceTester extends UnitTestCase
 		}
 	}
 }
+*/
