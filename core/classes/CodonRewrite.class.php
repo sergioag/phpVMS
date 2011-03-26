@@ -38,8 +38,8 @@
  */
  
  
-class CodonRewrite 
-{
+class CodonRewrite {
+    
 	public static $rewrite_rules = array();
 	public static $get;	
 	public static $controller;
@@ -51,29 +51,38 @@ class CodonRewrite
 	public static $peices;
 	public static $run=false;
 	
-	
 	/**
 	 * Process the rewrite rules, store the results 
 	 * into self::$get
+     * 
+	 * @return void
 	 */
-	public static function ProcessRewrite()
-	{
+	public static function ProcessRewrite()	{
+	   
 		$URL = $_SERVER['REQUEST_URI'];
 		
-		# Get everything after the .php/ and before the ?
-		$params = explode('.php/', $URL);
-		$preg_match = $params[1];
-			
-		$params = explode('?', $preg_match);
-		$split_parameters = $params[0];
+        # Use the ?q= parameter if that's supplied
+        if(isset($_GET['q'])) {
+            $split_parameters = $_GET['q'];
+            if($split_parameters[0] == '/') {
+                $split_parameters[0] = '';
+            }
+            
+            $split_parameters = trim($split_parameters);
+        } else { # Get everything after the .php/ and before the ?
+    		$params = explode('.php/', $URL);
+    		$preg_match = $params[1];
+    			
+    		$params = explode('?', $preg_match);
+    		$split_parameters = $params[0];
+        }
 				
 		# Now check if there's anything there (we didn't just have
 		#	index.php?query_string=...
 		# If that's all, then we grab a configuration setting that
 		#	specifies the default rewrite, ie: news/showall
 		#	Which would eq. passing index.php/news/showall
-		if($split_parameters == '')
-		{
+		if($split_parameters == '') {
 			$split_parameters = CODON_DEFAULT_MODULE;
 		}		
 		
@@ -81,8 +90,7 @@ class CodonRewrite
 		self::$peices = explode('/', $split_parameters);
 		$module_name = strtolower(self::$peices[0]);
 		
-		if($module_name == '') # If it's blank, check $_GET
-		{
+		if($module_name == '') { # If it's blank, check $_GET
 			$module_name = $_GET['module'];
 		}
 		
@@ -103,8 +111,7 @@ class CodonRewrite
 		self::$controller->page = self::$current_action;
 		
 		self::$params = array();
-		foreach(self::$peices as $peice)
-		{
+		foreach(self::$peices as $peice) {
 			self::$params[] = $peice;
 		}
 		
@@ -114,8 +121,7 @@ class CodonRewrite
 					
 		# If we haven't specified specific rules for a module,
 		#	Then we use the rules we made for "default"
-		if(!array_key_exists($module_name, self::$rewrite_rules))
-		{
+		if(!array_key_exists($module_name, self::$rewrite_rules)) {
 			$module_name = 'default';
 		}
 		
@@ -127,97 +133,10 @@ class CodonRewrite
 		$_GET = array_merge($_GET, $get_extra);
 			
 		# Add the $_GET to our object
-		foreach($_GET as $key=>$value)
-		{
+		foreach($_GET as $key=>$value) {
 			self::$get->$key = $value;
 		}
 		
 		self::$run = true;	
 	}
-	
-	/**
-	 * Add a rewrite rule for the module
-	 * 
-	 * @deprecated
-	 *
-	 * @param string $module Module name
-	 * @param array $params The rewrite rules in order array('parameter1'=>'type', 'parameter2')
-	 *			Type can be 'string', 'int', 'float', optional, blank defaults to string
-	 * @return mixed This is the return value description
-	 */
-	/*public static function AddRule($module, $params)
-	{	
-		# Clean
-		$set_params=array();
-		$module = strtolower($module);
-		
-		# Format the rules, make sure we arrange
-		foreach($params as $key=>$value)
-		{
-			# If it wasn't done as $key=>$value, just $key,
-			#	set the default value type as a string
-			if(is_numeric($key))
-				$set_params[$value]='string';
-			else
-				$set_params[$key]=$value;
-		}	
-		
-		
-		self::$rewrite_rules[$module] = $set_params;
-		
-		# This is for if we've already processed the rules 
-		#	once. This will allow the rules to be changed
-		#	"on the fly", for example, inside a controller
-		if(self::$run == true)
-		{
-			# Reprocess the rules
-			#self::ProcessModuleRewrite($module);
-		}
-	}*/
-	
-	/**
-	 * Process an individual module based on the latest rules	
-	 * DEPRECATED
-	 * 
-	 * @deprecated
-	 *
-	 * @param string $module_name Name of the module to re-process
-	 * @return mixed This is the return value description
-	 *
-	 */
-	/*public static function ProcessModuleRewrite($module_name)
-	{
-		$i=1;
-		
-		# Make sure it's valid
-		if(is_array(self::$rewrite_rules[$module_name]))
-		{
-			# Walk through every peice of the array, $key is the 
-			#	index name, and $type is well, the type
-			
-			foreach(self::$rewrite_rules[$module_name] as $key=>$type)
-			{
-				if(!isset(self::$peices[$i]))
-				{
-					continue;
-				}
-				
-				$val = self::$peices[$i];
-				$i++;
-				
-				# Convert to type specified
-				if($type == 'int')
-					$val = intval($val);
-				elseif($type == 'float')
-					$val = floatval($val);
-					
-				# We can do any other processing we want here
-				
-				# Add it both into the $_GET array, and into
-				#	our object
-				self::$get->$key = $val;	
-				$_GET[$key] = $val;
-			}
-		}
-	}*/
 }
