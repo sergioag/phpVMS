@@ -234,7 +234,7 @@ class Installer
                 
                 $sqlLines[] = array(
                     'table' => $tablename,
-                    'sql' => $sql
+                    'sql' => trim($sql),
                 );
                 
                 $sql = '';
@@ -314,10 +314,10 @@ class Installer
 			
 		# Table changes, other SQL updates
         $sqlLines = self::readSQLFile($filename);
-        
+                
         foreach($sqlLines as $table => $sql) {
             $sql = str_replace('phpvms_', TABLE_PREFIX, $sql);
-            DB::query($sql);
+            DB::query($sql['sql']);
         }
         		
 	}
