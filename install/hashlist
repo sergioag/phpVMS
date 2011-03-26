@@ -20,7 +20,7 @@ feca187733f80495d66720e114a1daae  *./install/install.sql
 98645f25a6917b5922becfd8181eaef4  *./install/fixtures.sql
 1ee77934d1a602e9c74861c9391a55d9  *./install/update_628.sql
 3633b4a1fd8529f443138e3a556dd3b5  *./install/loader.inc.php
-d698de2392422b259e78415720a1532f  *./install/Installer.class.php
+5e2778c5586fa09d4d59c27099482af6  *./install/Installer.class.php
 037f0688e951921ee77f8634603816b8  *./install/update.php
 6b8d1dc1b006ef2a88e8130ce7bb157a  *./install/update_441.sql
 87a5365aeff06351424ae56fdb561909  *./install/checkdb.php
