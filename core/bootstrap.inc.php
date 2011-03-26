@@ -99,6 +99,7 @@ function adminurl($path) {
  * @return
  */
 function url($path) {
+    
     if ($path[0] != '/') $path = '/' . $path;
 
     if (Config::Get('URL_REWRITE') == true) {
@@ -119,11 +120,12 @@ function adminaction($path) {
 }
 
 function actionurl($path) {
+    
     if ($path[0] != '/') $path = '/' . $path;
 
-    if (Config::Get('URL_REWRITE') == true) {
+    /*if (Config::Get('URL_REWRITE') == true) {
         return SITE_URL . $path;
-    }
+    }*/
 
     return SITE_URL . '/action.php' . $path;
 }
