@@ -21,29 +21,31 @@ class Installer
 	
 	static $error;
 	
-	public static function CheckServer()
-	{
+	/**
+	 * Installer::CheckServer()
+	 * 
+	 * @return
+	 */
+	public static function CheckServer() {
+	   
 		$noerror = true;
 		$version = phpversion();
 		$wf = array();
 		
 		// These needa be writable
-		$wf[] = 'core/pages';
-		$wf[] = 'core/cache';
+        $wf[] = 'core/cache';
 		$wf[] = 'core/logs';
-		$wf[] = 'lib/rss';
+		$wf[] = 'core/pages';
 		$wf[] = 'lib/avatars';
+		$wf[] = 'lib/rss';
 		$wf[] = 'lib/signatures';
 		
 		// Check the PHP version
-		if($version[0] != '5')
-		{
+		if($version[0] != '5') {
 			$noerror = false;
 			$type = 'error';
 			$message = 'You need PHP 5 (your version: '.$version.')';
-		}
-		else
-		{
+		} else {
 			$type = 'success';
 			$message = 'OK! (your version:'.$version.')';
 		}
@@ -51,30 +53,24 @@ class Installer
 		Template::Set('phpversion', '<div id="'.$type.'">'.$message.'</div>');
 		
 		// Check if core/site_config.inc.php is writeable
-		if(!file_exists(CORE_PATH .'/local.config.php'))
-		{
-			if(!$fp = fopen(CORE_PATH .'/local.config.php', 'w'))
-			{
+		if(!file_exists(CORE_PATH .'/local.config.php')) {
+		  
+			if(!$fp = fopen(CORE_PATH .'/local.config.php', 'w')) {
 				$noerror = false;
 				$type = 'error';
 				$message = 'Could not create core/local.config.php. Create this file, blank, with write permissions.';
-			}
-			else
-			{
+			} else {
 				$type = 'success';
 				$message = 'core/local.config.php is writeable!';
 			}
-		}
-		else
-		{
-			if(!is_writeable(CORE_PATH .'/local.config.php'))
-			{
+            
+		} else {
+		  
+			if(!is_writeable(CORE_PATH .'/local.config.php')) {
 				$noerror = false;
 				$type = 'error';
 				$message = 'core/local.config.php is not writeable';
-			}
-			else
-			{
+			} else {
 				$type = 'success';
 				$message = 'core/local.config.php is writeable!';
 			}
@@ -84,16 +80,13 @@ class Installer
 		
 		// Check all of the folders for writable permissions
 		$status = '';
-		foreach($wf as $folder)
-		{
-			if(!is_writeable(SITE_ROOT.'/'.$folder))
-			{
+		foreach($wf as $folder)	{
+		  
+			if(!is_writeable(SITE_ROOT.'/'.$folder)) {
 				$noerror = false;
 				$type = 'error';
 				$message = $folder.' is not writeable';
-			}
-			else
-			{
+			} else {
 				$type = 'success';
 				$message = $folder.' is writeable!';
 			}
@@ -107,8 +100,13 @@ class Installer
 		return $noerror;
 	}
 	
-	public static function WriteConfig()
-	{
+	/**
+	 * Installer::WriteConfig()
+	 * 
+	 * @return
+	 */
+	public static function WriteConfig() {
+	   
 		$tpl = file_get_contents(SITE_ROOT . '/install/templates/config.tpl');
 		
 		$tpl = str_replace('$DBASE_USER', $_POST['DBASE_USER'], $tpl);
@@ -121,8 +119,7 @@ class Installer
 		
 		$fp = fopen(CORE_PATH .'/local.config.php', 'w');
 		
-		if(!$fp)
-		{
+		if(!$fp) {
 			self::$error = 'There was an error opening local.config.php. Please check your permissions';
 			return false;
 		}
@@ -333,8 +330,8 @@ class Installer
 	 * @param string $comment
 	 * @return
 	 */
-	public static function add_to_config($name, $value, $comment='')
-	{
+	public static function add_to_config($name, $value, $comment='') {
+	   
 		if(isset($_GET['test']))
 			return true;
 			
@@ -395,17 +392,13 @@ class Installer
 		$params = new SimpleXMLElement('<registration/>');
 		$params->addChild('name', SITE_NAME);
 		$params->addChild('url', SITE_URL);
-		#$params->addChild('email', SettingsData::GetSettingValue('ADMIN_EMAIL'));
 		$params->addChild('version', $version);
 		$params->addChild('php', phpversion());
 		$params->addChild('mysql', @mysql_get_server_info());
 		$params->addChild('ext', $ext);
 							  
 		$url = 'http://api.phpvms.net/register';
-					
-		# Do fopen(), if that fails then it'll default to 
-		#	curl
-		
+							
 		error_reporting(0);
 		
 		$file = new CodonWebService();

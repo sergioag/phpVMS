@@ -25,24 +25,26 @@ include dirname(__FILE__).'/Installer.class.php';
  
 # phpVMS Updater 
 $revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
-$major = file_get_contents(dirname(__FILE__).'/major');
 
-define('MAJOR_VERSION', $major);
-define('INSTALLER_VERSION', MAJOR_VERSION.$revision);
-define('UPDATE_VERSION', MAJOR_VERSION.$revision);
+preg_match('/^v(.*)-([0-9]*)-(.*)/', $revision, $matches);
+list($full, $CURRENT_VERSION, $revision_count, $hash) = $matches;
+
+preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $CURRENT_VERSION, $matches);
+list($full, $major, $minor, $revision) = $matches;
+
+define('MAJOR_VERSION', $major.'.'.$minor);
+define('INSTALLER_VERSION', $CURRENT_VERSION);
+define('UPDATE_VERSION', $CURRENT_VERSION);
 define('REVISION', $revision);
 
-$version = SettingsData::getSetting('PHPVMS_VERSION');
-if(!$version)
-{
+$CURRENT_VERSION = SettingsData::getSetting('PHPVMS_VERSION');
+if(!$CURRENT_VERSION) {
 	$_GET['force'] = true;
-}
-else
-{
-	$version = $version->value;
+} else {
+	$CURRENT_VERSION = $CURRENT_VERSION->value;
 }
 
-$version = str_replace('.', '', $version);
+$CURRENT_VERSION = str_replace('.', '', $CURRENT_VERSION);
 
 Template::SetTemplatePath(SITE_ROOT.'/install/templates');
 Template::Show('header.tpl');
@@ -51,10 +53,8 @@ Template::Show('header.tpl');
 echo '<h3 align="left">phpVMS Updater</h3>';
 
 # Check versions for mismatch, unless ?force is passed
-if(!isset($_GET['force']) && !isset($_GET['test']))
-{
-	if($version == UPDATE_VERSION)
-	{
+if(!isset($_GET['force']) && !isset($_GET['test'])) {
+	if($CURRENT_VERSION == UPDATE_VERSION) {
 		echo '<p>You already have updated! Please delete this /install folder.<br /><br />
 				To force the update to run again, click: <a href="update.php?force">update.php?force</a></p>';
 		
@@ -72,17 +72,17 @@ echo 'Starting the update...<br />';
 	# Do updates based on version
 	#	But cascade the updates
 
-	$version = intval(str_replace('.', '', PHPVMS_VERSION));
+	$CURRENT_VERSION = intval(str_replace('.', '', PHPVMS_VERSION));
 	$latestversion = intval(str_replace('.', '', UPDATE_VERSION));
 	
-	if($version  < 11400)
+	/*if($CURRENT_VERSION  < 11400)
 	{
 		Installer::sql_file_update(SITE_ROOT . '/install/update_400.sql');
 		Installer::add_to_config('UNITS', 'mi');
-		$version = 11400;
+		$CURRENT_VERSION = 11400;
 	}
 	
-	if($version <  11428)
+	if($CURRENT_VERSION <  11428)
 	{
 		Installer::sql_file_update(SITE_ROOT . '/install/update_437.sql');
 		
@@ -98,18 +98,18 @@ echo 'Starting the update...<br />';
 		Installer::add_to_config('AVATAR_MAX_WIDTH', 80);
 		Installer::add_to_config('AVATAR_MAX_HEIGHT', 80);
 		
-		$version = 11428;
+		$CURRENT_VERSION = 11428;
 		
 	}
 	
-	if($version < 11441)
+	if($CURRENT_VERSION < 11441)
 	{
 		Installer::sql_file_update(SITE_ROOT . '/install/update_441.sql');
 		
-		$version = 11441;
+		$CURRENT_VERSION = 11441;
 	}
 	
-	if($version < 11458)
+	if($CURRENT_VERSION < 11458)
 	{
 		
 		Installer::add_to_config('PAGE_ENCODING', 'ISO-8859-1', 'This is the page encoding');
@@ -126,10 +126,10 @@ echo 'Starting the update...<br />';
 			PilotData::GenerateSignature($pilot->pilotid);
 		}
 		
-		$version = 11458;
+		$CURRENT_VERSION = 11458;
 	}
 	
-	if($version < 11628)
+	if($CURRENT_VERSION < 11628)
 	{
 		echo '<p>Adding new options to the core/local.config.php...</p>';
 		Installer::add_to_config('LOAD_FACTOR', '72'); 
@@ -151,7 +151,7 @@ echo 'Starting the update...<br />';
 		
 	}
 	
-	if($version < 11700)
+	if($CURRENT_VERSION < 11700)
 	{
 	
 		echo '<p>Updating your database...</p>';
@@ -178,8 +178,7 @@ echo 'Starting the update...<br />';
 		
 		$allpilots = PilotData::GetAllPilots();
 
-		foreach($allpilots as $pilot)
-		{
+		foreach($allpilots as $pilot) {
 			$hours = PilotData::UpdateFlightHours($pilot->pilotid);
 			$total = Util::AddTime($total, $hours);
 		}
@@ -192,23 +191,23 @@ echo 'Starting the update...<br />';
 		echo 'Found '.StatsData::TotalHours().' total hours, updated<br />';	
 	}
 
-	if($version < 20854)
-	{
+	if($CURRENT_VERSION < 20854) {
 		Installer::add_to_config('USERS_ONLINE_TIME', 20, 'The StatsData::UserOnline() function - how many minutes to check');
 		Installer::sql_file_update(SITE_ROOT . '/install/update_854.sql');
-	}
+	}*/
+    
+    
+    
 	
 	Installer::sql_file_update(SITE_ROOT . '/install/update.sql');
 	
 	OperationsData::updateAircraftRankLevels();
 	
 	/* Add them to the default group */
-	$allpilots = PilotData::GetAllPilots();
-	foreach($allpilots as $pilot)
-	{
-		PilotGroups::AddUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
+	$allpilots = PilotData::getAllPilots();
+	foreach($allpilots as $pilot) {
+		PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
 	}
-
 
 	SettingsData::saveSetting('PHPVMS_VERSION', UPDATE_VERSION);
 
