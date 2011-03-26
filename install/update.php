@@ -26,22 +26,34 @@ include dirname(__FILE__).'/Installer.class.php';
 # phpVMS Updater 
 $revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
 
-preg_match('/^v(.*)-([0-9]*)-(.*)/', $revision, $matches);
-list($full, $CURRENT_VERSION, $revision_count, $hash) = $matches;
+preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $revision, $matches);
+list($FULL_VERSION_STRING, $full_version, $revision_count, $hash) = $matches;
 
-preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $CURRENT_VERSION, $matches);
+preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
 list($full, $major, $minor, $revision) = $matches;
 
 define('MAJOR_VERSION', $major.'.'.$minor);
-define('INSTALLER_VERSION', $CURRENT_VERSION);
-define('UPDATE_VERSION', $CURRENT_VERSION);
+define('INSTALLER_FULL_VERSION', $FULL_VERSION_STRING);
+define('INSTALLER_VERSION', $full_version);
+define('UPDATE_VERSION', $full_version);
 define('REVISION', $revision);
 
 $CURRENT_VERSION = SettingsData::getSetting('PHPVMS_VERSION');
 if(!$CURRENT_VERSION) {
 	$_GET['force'] = true;
 } else {
+    
 	$CURRENT_VERSION = $CURRENT_VERSION->value;
+    
+    if(substr_count($CURRENT_VERSION, '-')) {
+        preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $revision, $matches);
+        list($CURR_FULL_VERSION_STRING, $curr_full_version, $curr_revision_count, $curr_hash) = $matches;
+        
+        preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
+        list($CURR_FULL_VERSION, $curr_major, $curr_minor, $curr_revision) = $matches;
+        
+        $CURRENT_VERSION = $curr_major.'.'.$curr_minor.'.'.$curr_revision;
+    }
 }
 
 $CURRENT_VERSION = str_replace('.', '', $CURRENT_VERSION);
@@ -72,7 +84,7 @@ echo 'Starting the update...<br />';
 	# Do updates based on version
 	#	But cascade the updates
 
-	$CURRENT_VERSION = intval(str_replace('.', '', PHPVMS_VERSION));
+	$CURRENT_VERSION = intval(str_replace('.', '', $CURRENT_VERSION));
 	$latestversion = intval(str_replace('.', '', UPDATE_VERSION));
 	
 	/*if($CURRENT_VERSION  < 11400)
@@ -196,8 +208,6 @@ echo 'Starting the update...<br />';
 		Installer::sql_file_update(SITE_ROOT . '/install/update_854.sql');
 	}*/
     
-    
-    
 	
 	Installer::sql_file_update(SITE_ROOT . '/install/update.sql');
 	
@@ -209,63 +219,7 @@ echo 'Starting the update...<br />';
 		PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
 	}
 
-	SettingsData::saveSetting('PHPVMS_VERSION', UPDATE_VERSION);
-
-	/* Update expenses */
-	//FinanceData::updateAllExpenses();
-
-	/* Manually specify a revenue value for all PIREPs */
-	/*$allpireps = PIREPData::findPIREPS(array());
-	if(is_array($allpireps))
-	{
-		foreach($allpireps as $pirep)
-		{	
-			$data = array(
-				'price' => $pirep->price,
-				'load' => $pirep->load,
-				'fuelprice' => $pirep->fuelprice,
-				'pilotpay' => $pirep->pilotpay,
-				'flighttime' => $pirep->flighttime,
-			);
-
-			$gross = floatval($pirep->load) * floatval($pirep->price);
-			$revenue = PIREPData::getPIREPRevenue($data);
-			
-			$update = "UPDATE ".TABLE_PREFIX."pireps 
-						SET `revenue`={$revenue}, gross={$gross}
-						WHERE `pirepid`={$pirep->pirepid}";
-						
-			DB::query($update);
-		}
-	}*/
-	
-	
-	/* Update times */
-	/*$sql = "SELECT pirepid, flighttime FROM ".TABLE_PREFIX."pireps";
-	$results = DB::get_results($sql);
-	if(is_array($results))
-	{
-		foreach($results as $row)
-		{
-			$flighttime = str_replace('.', ':', $row->flighttime);
-			$flighttime .= ':00';
-			$sql = "UPDATE ".TABLE_PREFIX."pireps 
-					SET `flighttime_stamp`='{$flighttime}'
-					WHERE `pirepid`={$row->pirepid}";
-
-			DB::query($sql);
-		}
-	}*/
-
-	# Final version update
-	/*if(!isset($_GET['test']))
-	{
-		$sql = 'UPDATE `'.TABLE_PREFIX.'settings` 
-					SET value=\''.UPDATE_VERSION.'\' 
-					WHERE name=\'PHPVMS_VERSION\'';
-					
-		DB::query($sql);
-	}*/
+	SettingsData::saveSetting('PHPVMS_VERSION', $FULL_VERSION_STRING);
 
 echo '<p><strong>Update completed!</strong></p>
 		<hr>
@@ -275,9 +229,8 @@ echo '<p><strong>Update completed!</strong></p>
 	  <p>Click here to <a href="'.SITE_URL.'">goto your site</a>, or <a href="'.SITE_URL.'/admin">your admin panel</a></p>  ';
 
 # Don't count forced updates
-if(!isset($_GET['force']))
-{
-	Installer::RegisterInstall(UPDATE_VERSION);
+if(!isset($_GET['force'])) {
+	Installer::RegisterInstall($FULL_VERSION_STRING);
 }
 
 Template::Show('footer.tpl');

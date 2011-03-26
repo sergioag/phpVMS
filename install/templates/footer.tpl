@@ -13,9 +13,9 @@
 		Version <?php 
 		
 		if(defined('INSTALLER_VERSION'))
-			echo INSTALLER_VERSION;
+			echo INSTALLER_FULL_VERSION;
 		else
-			echo UPDATE_VERSION;
+			echo INSTALLER_FULL_VERSION;
 		?>
 	</div>
 	</td>

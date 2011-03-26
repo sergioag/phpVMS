@@ -176,7 +176,6 @@ class Installer
 			$sql = '';
 		}
         
-        
         echo '<h2>Populating Initial Data...</h2>';
         $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures.sql');
         foreach($sqlLines as $sql) {

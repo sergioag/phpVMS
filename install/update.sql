@@ -28,7 +28,7 @@ ALTER TABLE `phpvms_pilots` ADD `rankid` INT NOT NULL DEFAULT '0' AFTER `transfe
 ALTER TABLE `phpvms_pilots` ADD `ranklevel` INT NOT NULL DEFAULT '0' AFTER `rank` ;
 ALTER TABLE `phpvms_pilots` ADD `comment` TEXT NULL;
 ALTER TABLE `phpvms_pilots` ADD `payadjust` FLOAT NULL DEFAULT '0' AFTER `totalpay` ;
-UPDATE `phpvms_pilots` p SET `rankid` =  ( SELECT `rankid` FROM `phpvms_ranks` WHERE rank = p.rank ) ;
+--UPDATE `phpvms_pilots` p SET `rankid` =  ( SELECT `rankid` FROM `phpvms_ranks` WHERE rank = p.rank ) ;;
 
 ALTER TABLE `phpvms_pireps` ADD `gross` FLOAT NOT NULL AFTER `flighttype`;
 ALTER TABLE `phpvms_pireps` ADD `route` TEXT NOT NULL AFTER `arricao`, ADD `route_details` TEXT NOT NULL AFTER `route`;
@@ -47,7 +47,7 @@ ALTER TABLE `phpvms_schedules` ADD `week1` VARCHAR( 7 ) NOT NULL AFTER `daysofwe
 ALTER TABLE `phpvms_aircraft` ADD `minrank` INT NOT NULL DEFAULT '0' AFTER `maxcargo`;
 ALTER TABLE `phpvms_aircraft` ADD `ranklevel` INT NOT NULL DEFAULT '0' AFTER `minrank` ;
 
--- It's sometimes missing
+-- It's sometimes missing;
 INSERT INTO `phpvms_settings` VALUES(NULL , 'Total VA Hours', 'TOTAL_HOURS', '0', 'Your total hours', 0);
 INSERT INTO `phpvms_settings` VALUES(NULL , 'phpVMS Version', 'PHPVMS_VERSION', '0', 'phpVMS Version', 1);
 
