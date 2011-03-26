@@ -196,6 +196,8 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         # Work on one...
         $pirepdata = $pirepdata[0];
         
+        $this->checkPIREPFinances($pirep_test, $pirepdata);        
+        
         # Verify the little bits of this PIREP....
         $this->assertEquals(PILOT_PAY_SCHEDULE, $pirepdata->paytype , 'PIREP Pay Type');
         $this->assertEquals($this->sample_schedule['payforflight'], $pirepdata->pilotpay, 'PIREP Pay Amount');
@@ -295,6 +297,8 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         # Work on one...
         $pirepdata = $pirepdata[0];
         
+        $this->checkPIREPFinances($pirep_test, $pirepdata);        
+        
         # Verify the little bits of this PIREP....
         $this->assertEquals(PILOT_PAY_HOURLY, $pirepdata->paytype , 'PIREP Pay Type');
         $this->assertEquals($pilot_data->payrate, $pirepdata->pilotpay, 'PIREP Pay Amount');
@@ -342,6 +346,30 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
 		# Verify delete
 		$data = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));
 		$this->assertEmpty($data, 'PIREPDdata::deletePIREP()');
+    }
+    
+    
+    /**
+     * Check the finances for a PIREP
+     * 
+     * @return void
+     */
+    protected function checkPIREPFinances($pirep_test, $pirepdata) {
+        
+        # Fuel prices
+        $fuelCost = FuelData::getFuelPrice($pirep_test['depicao']);
+        
+        $this->assertEquals($fuelCost, $pirepdata->fuelunitcost, 'FUEL UNIT COST');       
+        $this->assertEquals($pirep_test['fuelused'], $pirepdata->fuelused, 'FUEL USED');
+        
+        # Figure out what fuel should cost, + the surcharge amount
+        $fuelShouldCost = $pirep_test['fuelused'] * $fuelCost;
+        $fuelShouldCost += ((Config::Get('FUEL_SURCHARGE') / 100) * $pirep_test['fuelused']) * $fuelCost;
+        $this->assertEquals($fuelShouldCost, $pirepdata->fuelprice, 'FUEL SHOULD COST');
+        
+        # Check revenue...
+        $revenue = $pirepdata->load * $pirepdata->price;
+        $this->assertEquals($revenue, $pirepdata->gross, 'GROSS REVENUE');
     }
     
     

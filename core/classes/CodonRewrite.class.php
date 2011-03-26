@@ -63,12 +63,14 @@ class CodonRewrite {
 		
         # Use the ?q= parameter if that's supplied
         if(isset($_GET['q'])) {
+            
             $split_parameters = $_GET['q'];
             if($split_parameters[0] == '/') {
                 $split_parameters[0] = '';
             }
             
             $split_parameters = trim($split_parameters);
+            
         } else { # Get everything after the .php/ and before the ?
     		$params = explode('.php/', $URL);
     		$preg_match = $params[1];

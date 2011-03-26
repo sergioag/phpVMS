@@ -19,8 +19,7 @@
 
 class OperationsData extends CodonData {
 
-    public static function findAirport($params, $count = '', $start = '', $order_by =
-        '') {
+    public static function findAirport($params, $count = '', $start = '', $order_by = '') {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'airports ';
 
         /* Build the select "WHERE" based on the columns passed, this is a generic function */

@@ -24,6 +24,10 @@ define('SITE_URL', '$SITE_URL');
 # Page encoding options
 Config::Set('PAGE_ENCODING', 'ISO-8859-1');
 
+# Clean URLs - set this to true, and then uncomment
+# the lines indicated in the .htaccess file 
+Config::Set('URL_REWRITE', false);
+
 # Maintenance mode - this disables the site to non-admins
 Config::Set('MAINTENANCE_MODE', false);
 Config::Set('MAINTENANCE_MESSAGE', 'We are currently down for maintenance, please check back soon.');
@@ -140,21 +144,3 @@ Config::Set('DEBUG_MODE', false);
 Config::Set('ERROR_LEVEL', E_ALL ^ E_NOTICE);
 
 Config::Set('SESSION_LOGIN_TIME', (60*60*24*30)); # Expire after 30 days, in seconds
-
-/* Days of the Week
-	The compacted view, and the full text
-	DON'T CHANGE THE ORDER!! And yes, Sunday is in there twice
- */
-Config::Set('DAYS_COMPACT',  array('Su', 'M', 'T', 'W', 'Th', 'F', 'S', 'Su'));
-
-Config::Set('DAYS_LONG', 
-		array('Sunday',
-			  'Monday',
-			  'Tuesday',
-			  'Wednesday',
-			  'Thursday',
-			  'Friday',
-			  'Saturday',
-			  'Sunday'
-		)
-	);

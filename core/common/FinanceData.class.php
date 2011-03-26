@@ -57,7 +57,10 @@ class FinanceData extends CodonData {
             $price = Config::Get('FUEL_DEFAULT_PRICE');
         }
 
-        $total = ($fuel_amount * $price) + ((Config::Get('FUEL_SURCHARGE') / 100) * $fuel_amount);
+        $total = ($fuel_amount * $price);
+        
+        # Surcharge amount
+         $total += ((Config::Get('FUEL_SURCHARGE') / 100) * $fuel_amount) * $price;
 
         return $total;
     }
