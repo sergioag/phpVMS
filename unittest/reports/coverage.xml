@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1301170752">
-  <project timestamp="1301170752">
+<coverage generated="1301171141">
+  <project timestamp="1301171141">
     <file name="/var/projects/phpvms/app/core/bootstrap.inc.php">
       <line num="22" type="stmt" count="0"/>
       <line num="23" type="stmt" count="0"/>
