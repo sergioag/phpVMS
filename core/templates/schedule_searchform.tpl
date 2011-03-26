@@ -3,9 +3,11 @@
 
 <div id="tabcontainer">
 	<ul>
+        
 		<li><a href="#depapttab"><span>By Departure Airport</span></a></li>
 		<li><a href="#arrapttab"><span>By Arrival Airport</span></a></li>
-		<li><a href="#aircrafttab"><span>By Aircraft Type</span></a></li>
+		<li><a href="#airlinetab"><span>By Airline</span></a></li>
+        <li><a href="#aircrafttab"><span>By Aircraft Type</span></a></li>
 		<li><a href="#distance"><span>By Distance</span></a></li>
 	</ul>
 	<div id="depapttab">
@@ -54,7 +56,7 @@
 		</select>
 		<input type="submit" name="submit" value="Find Flights" />
 	</div>
-    <div id="code">
+    <div id="airlinetab">
         <p>Select An Airline</p>
         <select id="airlines" name="airlines">
         <option value="">Select Airline</option>
