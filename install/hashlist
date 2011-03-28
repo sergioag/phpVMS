@@ -1,3 +1,4 @@
+6da673fd3effc3f534aa0579dfc41c12  *./install/mysqldiff/MySQLDiff.class.php
 c8262018a5d7da2e092f09bc9a92b011  *./install/navdata.sql.gz
 c53987a61354c3460fdac8e07f5c2cd2  *./install/templates/s0_config_check.tpl
 07f182be09dde3f18f6d7f9a3fccdccb  *./install/templates/s3_setup_finished.tpl
@@ -6,12 +7,12 @@ cc03311e935549a5d652466a28aa5692  *./install/templates/error.tpl
 64b95b8baf1a11526b62c0a0772975d4  *./install/templates/config.tpl
 756864311737259fe15c45612e10ae33  *./install/templates/s1_db_setup.tpl
 fac7c09a2f7b3c46a3c4d20ccb0eb2fb  *./install/templates/s2_site_setup.tpl
-07f3cdbc917e3438e893995298471387  *./install/templates/footer.tpl
+c71a06e57c737f51aa48054808a597f5  *./install/templates/footer.tpl
 92d18b918b25652b7380ea65ca651ac9  *./install/templates/success.tpl
 98159de4e2de83127db1931eb35f818c  *./install/update_437.sql
 bf00b0a3b459a481cb1e0df47682e8d2  *./install/checkinstall.php
 c6384626328e54dd77c534d04ff65a44  *./install/update_700.sql
-f179876f94cb2b59aebed715457a8fa6  *./install/update.sql
+19afe971b6c6d3cbb322bc421e927494  *./install/update.sql
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 55c3722f079209f61fcfce707f077548  *./install/update_400.sql
 56522f3521444add8835afbba7375a11  *./install/update_854.sql
@@ -20,8 +21,8 @@ feca187733f80495d66720e114a1daae  *./install/install.sql
 98645f25a6917b5922becfd8181eaef4  *./install/fixtures.sql
 1ee77934d1a602e9c74861c9391a55d9  *./install/update_628.sql
 3633b4a1fd8529f443138e3a556dd3b5  *./install/loader.inc.php
-5e2778c5586fa09d4d59c27099482af6  *./install/Installer.class.php
-037f0688e951921ee77f8634603816b8  *./install/update.php
+6e782060d2a82c5bcbc66a6aa8921181  *./install/Installer.class.php
+321c109203c795fe868bbcad64a319a7  *./install/update.php
 6b8d1dc1b006ef2a88e8130ce7bb157a  *./install/update_441.sql
 87a5365aeff06351424ae56fdb561909  *./install/checkdb.php
 d4d204c3560c283fa4d7a3a367473740  *./install/navdata.sql

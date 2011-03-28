@@ -22,6 +22,7 @@ define('ADMIN_PANEL', true);
 
 include '../core/codon.config.php';
 include dirname(__FILE__).'/Installer.class.php';
+include dirname(__FILE__).'/mysqldiff/MySQLDiff.class.php';
  
 # phpVMS Updater 
 $revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
@@ -209,7 +210,19 @@ echo 'Starting the update...<br />';
 	}*/
     
 	
-	Installer::sql_file_update(SITE_ROOT . '/install/update.sql');
+	#Installer::sql_file_update(SITE_ROOT . '/install/update.sql');
+    $mysqlDiff = new MySQLDiff(array(
+        'dbuser' => DBASE_USER,
+        'dbpass' => DBASE_PASS,
+        'dbname' => DBASE_NAME,
+        'dbhost' => DBASE_SERVER,
+        'dumpxml' => 'structure.xml',
+        )
+    );
+    
+    $diffs_done = $mysqlDiff->runSQLDiff();
+    
+    echo '<pre>'; print_r($diffs_done); echo '</pre>';
 	
 	OperationsData::updateAircraftRankLevels();
 	
