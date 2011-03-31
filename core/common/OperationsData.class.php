@@ -20,6 +20,7 @@
 class OperationsData extends CodonData {
 
     public static function findAirport($params, $count = '', $start = '', $order_by = '') {
+        
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'airports ';
 
         /* Build the select "WHERE" based on the columns passed, this is a generic function */
@@ -46,6 +47,7 @@ class OperationsData extends CodonData {
      */
 
     public static function getAllAirlines($onlyenabled = false) {
+        
         if ($onlyenabled == true) {
             $key = 'all_airlines_active';
             $where = 'WHERE `enabled`=1';
@@ -256,19 +258,10 @@ class OperationsData extends CodonData {
     }
 
     public static function getAirlineByCode($code) {
+        
         $code = strtoupper($code);
-        /*$key = 'airline_'.$code;
-        
-        $airline = CodonCache::read($key);
-        
-        if($airline === false)
-        {*/
         $airline = DB::get_row('SELECT * FROM ' . TABLE_PREFIX . 'airlines 
-							WHERE `code`=\'' . $code . '\'');
-
-        /*CodonCache::write($key, $airline, 'long');
-        }*/
-
+							     WHERE `code`=\'' . $code . '\'');
         return $airline;
     }
 
@@ -298,7 +291,19 @@ class OperationsData extends CodonData {
         return true;
     }
 
+    /**
+     * OperationsData::editAirline()
+     * 
+     * @param mixed $id
+     * @param mixed $code
+     * @param mixed $name
+     * @param bool $enabled
+     * @return
+     */
     public static function editAirline($id, $code, $name, $enabled = true) {
+        
+        $old_airline = self::getAirlineByID($id);
+        
         $code = DB::escape($code);
         $name = DB::escape($name);
 
@@ -310,8 +315,18 @@ class OperationsData extends CodonData {
 				WHERE id=$id";
 
         $res = DB::query($sql);
-
         if (DB::errno() != 0) return false;
+        
+        // Update tables to reflect new values
+        $tables = array('pilots', 'pireps', 'schedules');
+        foreach($tables as $t) {
+            
+            $sql = 'UPDATE '.TABLE_PREFIX.$t.' 
+                    SET `code`=\''.$code.'\' 
+                    WHERE `code`='.$old_airline->code;
+        
+            DB::query($sql);
+        }
 
         CodonCache::delete('airline_' . $code);
         CodonCache::delete('all_airlines');
@@ -337,6 +352,7 @@ class OperationsData extends CodonData {
      * 'enabled'=>$this->post->enabled);
      */
     public static function addAircraft($data) {
+        
         /*$data = array('icao'=>$this->post->icao,
         'name'=>$this->post->name,
         'fullname'=>$this->post->fullname,
@@ -405,6 +421,7 @@ class OperationsData extends CodonData {
      * Edit an aircraft
      */
     public static function editAircraft($data) {
+        
         $data['icao'] = DB::escape(strtoupper($data['icao']));
         $data['name'] = DB::escape(strtoupper($data['name']));
         $data['registration'] = DB::escape(strtoupper($data['registration']));

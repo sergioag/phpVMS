@@ -161,7 +161,7 @@ class Installer
 		
         echo '<h2>Writing Tables...</h2>';
         
-		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/install.sql');				
+		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/sql/install.sql');				
 		foreach($sqlLines as $sql) {
 		
 			DB::query($sql['sql']);
@@ -177,7 +177,7 @@ class Installer
 		}
         
         echo '<h2>Populating Initial Data...</h2>';
-        $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures.sql');
+        $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures/install.sql');
         foreach($sqlLines as $sql) {
             DB::query($sql['sql']);
             if(DB::errno() != 0) {

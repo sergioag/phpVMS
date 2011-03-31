@@ -139,6 +139,7 @@ class CodonRewrite {
 			self::$get->$key = $value;
 		}
 		
+        #echo '<pre>'; print_r(self::$get); echo '</pre>';
 		self::$run = true;	
 	}
 }

@@ -22,7 +22,7 @@ define('ADMIN_PANEL', true);
 
 include '../core/codon.config.php';
 include dirname(__FILE__).'/Installer.class.php';
-include dirname(__FILE__).'/mysqldiff/MySQLDiff.class.php';
+include SITE_ROOT.'/core/lib/mysqldiff/MySQLDiff.class.php';
  
 # phpVMS Updater 
 $revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
@@ -87,142 +87,25 @@ echo 'Starting the update...<br />';
 
 	$CURRENT_VERSION = intval(str_replace('.', '', $CURRENT_VERSION));
 	$latestversion = intval(str_replace('.', '', UPDATE_VERSION));
-	
-	/*if($CURRENT_VERSION  < 11400)
-	{
-		Installer::sql_file_update(SITE_ROOT . '/install/update_400.sql');
-		Installer::add_to_config('UNITS', 'mi');
-		$CURRENT_VERSION = 11400;
-	}
-	
-	if($CURRENT_VERSION <  11428)
-	{
-		Installer::sql_file_update(SITE_ROOT . '/install/update_437.sql');
-		
-		echo 'Adding some options to your config file...';
-		
-		Installer::add_to_config('MAP_CENTER_LAT', '45.484400');
-		Installer::add_to_config('MAP_CENTER_LNG', '-62.334821');
-		Installer::add_to_config('ACARS_DEBUG', false);
-		Installer::add_to_config('SIGNATURE_SHOW_EARNINGS', true);
-		Installer::add_to_config('SIGNATURE_SHOW_RANK_IMAGE', true);
-		Installer::add_to_config('BLANK', '');
-		Installer::add_to_config('AVATAR_FILE_SIZE', 50000);
-		Installer::add_to_config('AVATAR_MAX_WIDTH', 80);
-		Installer::add_to_config('AVATAR_MAX_HEIGHT', 80);
-		
-		$CURRENT_VERSION = 11428;
-		
-	}
-	
-	if($CURRENT_VERSION < 11441)
-	{
-		Installer::sql_file_update(SITE_ROOT . '/install/update_441.sql');
-		
-		$CURRENT_VERSION = 11441;
-	}
-	
-	if($CURRENT_VERSION < 11458)
-	{
-		
-		Installer::add_to_config('PAGE_ENCODING', 'ISO-8859-1', 'This is the page encoding');
-		Installer::add_to_config('PILOTID_LENGTH', 4, 'This is the length of the pilot ID. including leading zeros');
-		Installer::add_to_config('SIGNATURE_TEXT_COLOR', '#FFF');
-		Installer::add_to_config('SIGNATURE_SHOW_COPYRIGHT', true);
-		
-		# Update signatures for everyone
-		$allpilots = PilotData::GetAllPilots();		
-		echo "Generating signatures<br />";		
-		foreach($allpilots as $pilot)
-		{
-			echo "Generating signature for $pilot->firstname $pilot->lastname<br />";
-			PilotData::GenerateSignature($pilot->pilotid);
-		}
-		
-		$CURRENT_VERSION = 11458;
-	}
-	
-	if($CURRENT_VERSION < 11628)
-	{
-		echo '<p>Adding new options to the core/local.config.php...</p>';
-		Installer::add_to_config('LOAD_FACTOR', '72'); 
-		Installer::add_to_config('CARGO_UNITS', 'lbs');
-		
-		Installer::add_to_config('COMMENT', 'FSPassengers Settings');
-		Installer::add_to_config('COMMENT', 'Units settings');
-		Installer::add_to_config('WeightUnit', '1', '0=Kg 1=lbs');
-		Installer::add_to_config('DistanceUnit', '2', '0=KM 1= Miles 2=NMiles');
-		Installer::add_to_config('SpeedUnit', '1', '0=Km/H 1=Kts');
-		Installer::add_to_config('AltUnit', '1', '0=Meter 1=Feet');
-		Installer::add_to_config('LiquidUnit', '2', '0=liter 1=gal 2=kg 3=lbs');
-		Installer::add_to_config('WelcomeMessage', SITE_NAME.' ACARS', 'Welcome Message');
-		
-		Installer::add_to_config('COMMENT', 'Monetary Units');
-		Installer::add_to_config('MONEY_UNIT', '$', '$, €, etc');
-		
-		Installer::sql_file_update(dirname(__FILE__). '/update_628.sql');
-		
-	}
-	
-	if($CURRENT_VERSION < 11700)
-	{
-	
-		echo '<p>Updating your database...</p>';
-		
-		Installer::add_to_config('TRANSFER_HOURS_IN_RANKS', false, 'Include the transfer hours in ranks');
-		
-		Installer::sql_file_update(SITE_ROOT . '/install/update_700.sql');
-		
-		# Specific Checks
-		$sql = 'SELECT * 
-					FROM '.TABLE_PREFIX."settings
-					WHERE name='TOTAL_HOURS'";
-					
-		$res = DB::get_row($sql);
-		
-		if(!$res)
-		{
-			$sql = "INSERT INTO `phpvms_settings` (`friendlyname`, `name`, `value`,`descrip`,`core`)
-			VALUES ('Total Hours', 'TOTAL_HOURS', '', 'These are the total hours your VA has flown', '0')";
-			DB::query($sql);
-		}	
-		
-		echo '<strong>Updating hours</strong><br />';
-		
-		$allpilots = PilotData::GetAllPilots();
-
-		foreach($allpilots as $pilot) {
-			$hours = PilotData::UpdateFlightHours($pilot->pilotid);
-			$total = Util::AddTime($total, $hours);
-		}
-
-		echo "Pilots have a total of <strong>$total hours</strong><br /><br />";
-		echo "<strong>Updating PIREPS  Hours</strong><br />";
-
-		StatsData::UpdateTotalHours();
-		
-		echo 'Found '.StatsData::TotalHours().' total hours, updated<br />';	
-	}
-
-	if($CURRENT_VERSION < 20854) {
-		Installer::add_to_config('USERS_ONLINE_TIME', 20, 'The StatsData::UserOnline() function - how many minutes to check');
-		Installer::sql_file_update(SITE_ROOT . '/install/update_854.sql');
-	}*/
-    
-	
-	#Installer::sql_file_update(SITE_ROOT . '/install/update.sql');
+	    
     $mysqlDiff = new MySQLDiff(array(
         'dbuser' => DBASE_USER,
         'dbpass' => DBASE_PASS,
         'dbname' => DBASE_NAME,
         'dbhost' => DBASE_SERVER,
-        'dumpxml' => 'structure.xml',
+        'dumpxml' => 'sql/structure.xml',
         )
     );
     
-    $diffs_done = $mysqlDiff->runSQLDiff();
+    $diffs_done = $mysqlDiff->getSQLDiffs();
+    if(!is_array($diffs_done)) {
+        $diffs_done = array();
+    }
     
-    echo '<pre>'; print_r($diffs_done); echo '</pre>';
+    # Run it local so it's logged
+    foreach($diffs_done as $sql) {
+        DB::query($sql);
+    }
 	
 	OperationsData::updateAircraftRankLevels();
 	
