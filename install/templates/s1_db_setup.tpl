@@ -54,10 +54,20 @@
 		<td align="right" valign="top"><strong>Database Type: * </strong></td>
 		<td>
 			<select id="DBASE_TYPE" name="DBASE_TYPE">
-				<option value="mysql">MySQL</option>
-				<option value="mysqli">MySQLi (Extended)</option>
+                <?php
+                if(function_exists('mysqli_connect') == true) {
+                    $mysql_connect = '';
+                    $mysqli_connect = 'selected';
+                } else {
+                    $mysql_connect = 'selected';
+                    $mysqli_connect = '';
+                }
+                
+                ?>
+				<option value="mysql" <?php echo $mysql_connect;?>>MySQL</option>
+				<option value="mysqli" <?php echo $mysqli_connect;?>>MySQLi (Extended)</option>
 			</select>
-			<p>Select the database connect ("MySQL" is your best bet).</p>
+			<p>Select the database connector. The best default for your install is pre-selected.</p>
 		</td>	
 	</tr>
 	<tr>

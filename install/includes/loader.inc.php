@@ -24,14 +24,13 @@
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 'on');
 
+define('DS', DIRECTORY_SEPARATOR);
 define('SITE_ROOT', dirname(dirname(dirname(__FILE__))));
 define('CORE_PATH', SITE_ROOT . '/core');
 define('CLASS_PATH', CORE_PATH . '/classes');
 define('INSTALL_ROOT', SITE_ROOT.'/install');
 
 if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
-	
-	define('DS', DIRECTORY_SEPARATOR);
 	
 	/* Include just some basic files to get the install going */
 	include CLASS_PATH . '/ezdb/ezdb.class.php';
@@ -42,6 +41,7 @@ if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.con
 	include CLASS_PATH . '/Template.class.php';
 	include CLASS_PATH . '/TemplateSet.class.php';
 	include CORE_PATH . '/common/SettingsData.class.php';
+    
 } else {
 	include CORE_PATH . '/codon.config.php';
 }
