@@ -16,18 +16,9 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
  
-error_reporting(E_ALL ^ E_NOTICE);
-ini_set('display_errors', 'on');
-
-# Get the version info from the version file
-$revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
-$major = file_get_contents(dirname(__FILE__).'/major');
-
 define('ADMIN_PANEL', true);
-define('MAJOR_VERSION', $major);
-define('INSTALLER_VERSION', MAJOR_VERSION.$revision);
+include dirname(__FILE__).'/includes/loader.inc.php';
 
-include dirname(__FILE__).'/loader.inc.php';
 
 Template::Show('header.tpl');
 

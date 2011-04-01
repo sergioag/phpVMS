@@ -16,28 +16,8 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
  
-error_reporting(E_ALL);
- 
 define('ADMIN_PANEL', true);
-
-include '../core/codon.config.php';
-include dirname(__FILE__).'/Installer.class.php';
-include SITE_ROOT.'/core/lib/mysqldiff/MySQLDiff.class.php';
- 
-# phpVMS Updater 
-$revision = file_get_contents(dirname(dirname(__FILE__)).'/core/version');
-
-preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $revision, $matches);
-list($FULL_VERSION_STRING, $full_version, $revision_count, $hash) = $matches;
-
-preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
-list($full, $major, $minor, $revision) = $matches;
-
-define('MAJOR_VERSION', $major.'.'.$minor);
-define('INSTALLER_FULL_VERSION', $FULL_VERSION_STRING);
-define('INSTALLER_VERSION', $full_version);
-define('UPDATE_VERSION', $full_version);
-define('REVISION', $revision);
+include dirname(__FILE__).'/includes/loader.inc.php';
 
 $CURRENT_VERSION = SettingsData::getSetting('PHPVMS_VERSION');
 if(!$CURRENT_VERSION) {

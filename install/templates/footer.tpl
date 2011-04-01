@@ -10,13 +10,7 @@
 		<a href="http://www.nsslive.net" target="_new">nsslive.net</a>
 		<br />
 		<a href="http://www.phpvms.net/docs/license">License & About</a> | 
-		Version <?php 
-		
-		if(defined('INSTALLER_VERSION'))
-			echo INSTALLER_FULL_VERSION;
-		else
-			echo INSTALLER_FULL_VERSION;
-		?>
+		Version <?php echo INSTALLER_FULL_VERSION; ?>
 	</div>
 	</td>
 	</tr>

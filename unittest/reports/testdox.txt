@@ -1,5 +1,5 @@
 Install
- [x] Database tables
+ [ ] Database tables
  [x] Install files
 
 User

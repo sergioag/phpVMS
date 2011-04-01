@@ -20,10 +20,14 @@
  * phpVMS Installer File
  *  "Boot" file includes our basic "needs" for the installer
  */
+ 
+error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors', 'on');
 
-define('SITE_ROOT', dirname(dirname(__FILE__)));
+define('SITE_ROOT', dirname(dirname(dirname(__FILE__))));
 define('CORE_PATH', SITE_ROOT . '/core');
 define('CLASS_PATH', CORE_PATH . '/classes');
+define('INSTALL_ROOT', SITE_ROOT.'/install');
 
 if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
 	
@@ -42,6 +46,30 @@ if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.con
 	include CORE_PATH . '/codon.config.php';
 }
 
-include 'Installer.class.php';
+include CORE_PATH.'/lib/mysqldiff/MySQLDiff.class.php';
+include INSTALL_ROOT.'/includes/Installer.class.php';
 
-Template::SetTemplatePath(SITE_ROOT.'/install/templates');
+Template::SetTemplatePath(INSTALL_ROOT.'/templates');
+
+# Get the version info from the version file
+$revision = file_get_contents(CORE_PATH.'/version');
+
+preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $revision, $matches);
+list($FULL_VERSION_STRING, $full_version, $revision_count, $hash) = $matches;
+
+preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
+list($full, $major, $minor, $revision) = $matches;
+
+define('MAJOR_VERSION', $major.'.'.$minor);
+define('INSTALLER_FULL_VERSION', $FULL_VERSION_STRING);
+define('INSTALLER_VERSION', $full_version);
+define('UPDATE_VERSION', $full_version);
+define('REVISION', $revision);
+
+
+
+
+
+
+
+
