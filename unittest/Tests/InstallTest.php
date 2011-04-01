@@ -25,11 +25,11 @@ class InstallTest extends PHPUnit_Framework_TestCase {
      */
     public function testDatabaseTables() {
         
-        if (!file_exists(SITE_ROOT.'/install/structure.xml')) {
+        if (!file_exists(SITE_ROOT.'/install/sql/structure.xml')) {
             $this->markTestSkipped('The install folder is unavailable, can\'t run this test.');
         }
         
-        $db = simplexml_load_file(SITE_ROOT.'/install/structure.xml');
+        $db = simplexml_load_file(SITE_ROOT.'/install/sql/structure.xml');
         
         foreach($db->database->table_structure as $table) {
             

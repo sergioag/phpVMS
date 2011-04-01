@@ -12,6 +12,5 @@ core/modules/test
 core/modules/test/**
 mobile
 lib/rss/latestpireps.rss
-unittest/reports/coverage.xml
-unittest/reports/logfile.json
+unittest/reports/**
 unittest/web
