@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1301618749">
-  <project timestamp="1301618749">
+<coverage generated="1301620773">
+  <project timestamp="1301620773">
     <file name="/var/projects/phpvms/app/core/classes/CodonCache.class.php">
       <class name="CodonCache" namespace="global" fullPackage="codon_core" package="codon_core">
         <metrics methods="7" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="13" coveredelements="9"/>
