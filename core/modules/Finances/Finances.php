@@ -41,14 +41,14 @@ class Finances extends CodonModule
 		OFCharts::add_data_set('Fuel Costs', floatval($finance_data->fuelprice));
 		OFCharts::add_data_set('Pilot Pay', floatval($finance_data->pilotpay));
 		
-		// Now expenses
-		if(is_array($finances_data->expenses))
-		{
-			foreach($finance_data->expenses as $expense)
-			{
-				OFCharts::add_data_set($expense->name, floatval($expense->total));
-			}
-		}
+	   // Now expenses
+        if (!is_array($finance_data->expenses)) {
+            $finance_data->expenses = array();
+        }
+
+        foreach ($finance_data->expenses as $expense) {
+            OFCharts::add_data_set($expense->name, floatval($expense->total));
+        }
 		
 		echo OFCharts::create_pie_graph('Expenses breakdown');
 	}
@@ -63,16 +63,13 @@ class Finances extends CodonModule
 		 * No type indicates to view the 'overall'
 		 */
 		$type = $this->get->type;
-		if($type[0] == 'y')
-		{
+		if($type[0] == 'y') {
 			$type = str_replace('y', '', $type);
 			$year = date('Y', $type);
 			
 			$finance_data = $this->getyearly($year);
 			$title = 'Activity for '.$year;
-		}
-		else
-		{
+		} else {
 			// This should be the last 3 months overview
 			# Get the last 3 months
 			$months = 3;
@@ -86,13 +83,11 @@ class Finances extends CodonModule
 		$fuel_data = array();
 		$expense_data = array();
 		
-		if(!$finance_data)
-		{
+		if(!$finance_data) {
 			$finance_data = array();
 		}
 		
-		foreach($finance_data as $month)
-		{
+		foreach($finance_data as $month) {
 			$titles[] = $month->ym;
 			$gross_data[] = intval($month->revenue);
 			$fuel_data[] = intval($month->fuelprice); 
@@ -199,9 +194,7 @@ class Finances extends CodonModule
 				$data->price = 0;
 				$data->expenses = 0;
 				$data->pilotpay = 0;
-			}
-			else
-			{
+			} else {
 				$data = FinanceData::calculateFinances($data[0]);
 			}
 			

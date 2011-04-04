@@ -246,6 +246,7 @@ class CentralData extends CodonData {
      * @return
      */
     public static function send_schedules() {
+        
         if (!self::central_enabled()) return false;
 
         if (self::$debug === false) {
