@@ -18,6 +18,12 @@
  */
 
 class SiteData extends CodonData {
+    
+    /**
+     * SiteData::loadSiteSettings()
+     * 
+     * @return
+     */
     public static function loadSiteSettings() {
         $all_settings = SettingsData::getAllSettings();
 
@@ -41,17 +47,36 @@ class SiteData extends CodonData {
         /*define('PHPVMS_VERSION',file_get_contents(SITE_ROOT.'/core/version'));*/
     }
 
-    public static function GetNewsItem($id) {
+    /**
+     * SiteData::getNewsItem()
+     * 
+     * @param mixed $id
+     * @return
+     */
+    public static function getNewsItem($id) {
         return DB::get_row('SELECT *, UNIX_TIMESTAMP(postdate) AS postdate 
 									FROM ' . TABLE_PREFIX . 'news WHERE id=' . $id);
     }
 
-    public static function GetAllNews() {
+    /**
+     * SiteData::getAllNews()
+     * 
+     * @return
+     */
+    public static function getAllNews() {
         return DB::get_results('SELECT id, subject, body, UNIX_TIMESTAMP(postdate) as postdate, postedby
 									FROM ' . TABLE_PREFIX . 'news ORDER BY postdate DESC');
     }
 
+    /**
+     * SiteData::AddNewsItem()
+     * 
+     * @param mixed $subject
+     * @param mixed $body
+     * @return
+     */
     public static function AddNewsItem($subject, $body) {
+        
         $subject = DB::escape($subject);
         $body = DB::escape($body);
         $postedby = Auth::$userinfo->firstname . ' ' . Auth::$userinfo->lastname;
@@ -66,6 +91,14 @@ class SiteData extends CodonData {
         return true;
     }
 
+    /**
+     * SiteData::EditNewsItem()
+     * 
+     * @param mixed $id
+     * @param mixed $subject
+     * @param mixed $body
+     * @return
+     */
     public static function EditNewsItem($id, $subject, $body) {
         $subject = DB::escape($subject);
         $body = DB::escape($body);
@@ -81,6 +114,12 @@ class SiteData extends CodonData {
         return true;
     }
 
+    /**
+     * SiteData::DeleteItem()
+     * 
+     * @param mixed $id
+     * @return
+     */
     public static function DeleteItem($id) {
         $sql = 'DELETE FROM ' . TABLE_PREFIX . 'news WHERE id=' . $id;
 
@@ -91,6 +130,13 @@ class SiteData extends CodonData {
         return true;
     }
 
+    /**
+     * SiteData::GetAllPages()
+     * 
+     * @param bool $onlyenabled
+     * @param bool $loggedin
+     * @return
+     */
     public static function GetAllPages($onlyenabled = false, $loggedin = false) {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "pages";
 
@@ -106,12 +152,24 @@ class SiteData extends CodonData {
         return DB::get_results($sql);
     }
 
+    /**
+     * SiteData::GetPageData()
+     * 
+     * @param mixed $pageid
+     * @return
+     */
     public static function GetPageData($pageid) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pages WHERE pageid=' . $pageid;
 
         return DB::get_row($sql);
     }
 
+    /**
+     * SiteData::GetPageDataByName()
+     * 
+     * @param mixed $pagename
+     * @return
+     */
     public static function GetPageDataByName($pagename) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pages WHERE filename=\'' . $pagename .
             '\'';
@@ -119,6 +177,15 @@ class SiteData extends CodonData {
         return DB::get_row($sql);
     }
 
+    /**
+     * SiteData::AddPage()
+     * 
+     * @param mixed $title
+     * @param mixed $content
+     * @param bool $public
+     * @param bool $enabled
+     * @return
+     */
     public static function AddPage($title, $content, $public = true, $enabled = true) {
         $filename = strtolower($title);
 
@@ -161,6 +228,12 @@ class SiteData extends CodonData {
         return self::EditPageFile($filename, $content);
     }
 
+    /**
+     * SiteData::DeletePage()
+     * 
+     * @param mixed $pageid
+     * @return
+     */
     public static function DeletePage($pageid) {
 
         $info = self::GetPageData($pageid);
@@ -176,6 +249,13 @@ class SiteData extends CodonData {
         return true;
     }
 
+
+    /**
+     * SiteData::GetPageContent()
+     * 
+     * @param mixed $filename
+     * @return
+     */
     public static function GetPageContent($filename) {
         // Round-about way, I know. But it's in the name of security. If they're giving a
         //	bogus name, then it won't find it.
@@ -201,6 +281,15 @@ class SiteData extends CodonData {
         return $row;
     }
 
+    /**
+     * SiteData::EditFile()
+     * 
+     * @param mixed $pageid
+     * @param mixed $content
+     * @param mixed $public
+     * @param mixed $enabled
+     * @return
+     */
     public static function EditFile($pageid, $content, $public, $enabled) {
         $pagedata = SiteData::GetPageData($pageid);
 
@@ -223,6 +312,13 @@ class SiteData extends CodonData {
         }
     }
 
+    /**
+     * SiteData::EditPageFile()
+     * 
+     * @param mixed $filename
+     * @param mixed $content
+     * @return
+     */
     public static function EditPageFile($filename, $content) {
         //create the file
         $filename = PAGES_PATH . '/' . $filename . PAGE_EXT;
@@ -239,6 +335,11 @@ class SiteData extends CodonData {
         }
     }
 
+    /**
+     * SiteData::GetAvailableSkins()
+     * 
+     * @return
+     */
     public static function GetAvailableSkins() {
         $skins = array();
         $skins_dir = SITE_ROOT . '/lib/skins';

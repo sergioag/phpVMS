@@ -40,6 +40,11 @@ class CentralData extends CodonData {
         'update_pireps' => 8
     );
 
+    /**
+     * CentralData::central_enabled()
+     * 
+     * @return
+     */
     private static function central_enabled() {
         
         /* Cover both, since format changed */
@@ -50,6 +55,11 @@ class CentralData extends CodonData {
         return false;
     }
 
+    /**
+     * CentralData::send_xml()
+     * 
+     * @return
+     */
     private static function send_xml() {
         
         // Cover old and new format
@@ -121,6 +131,12 @@ class CentralData extends CodonData {
         return true;
     }
 
+    /**
+     * CentralData::set_xml()
+     * 
+     * @param mixed $method
+     * @return
+     */
     public static function set_xml($method) {
         self::$xml = new SimpleXMLElement('<vacentral/>');
 
@@ -141,7 +157,13 @@ class CentralData extends CodonData {
         self::$xml->addChild('method', $method);
     }
 
+    /**
+     * CentralData::send_vastats()
+     * 
+     * @return
+     */
     public static function send_vastats() {
+        
         if (!self::central_enabled()) return false;
 
         if (self::$debug === false) {
@@ -151,17 +173,31 @@ class CentralData extends CodonData {
             }
         }
 
-        self::set_xml('update_vainfo');
+        $vainfo = self::set_xml('update_vainfo');
         self::$xml->addChild('pilotcount', StatsData::PilotCount());
         self::$xml->addChild('totalhours', StatsData::TotalHours());
         self::$xml->addChild('totalflights', StatsData::TotalFlights());
         self::$xml->addChild('totalschedules', StatsData::TotalSchedules());
-
-        # Expenses stuff
-        /*$exp_data = FinanceData::getExpensesForMonth(time());
-        self::$xml->addChild('expenses', $exp_data->total);
-        self::$xml->addChild('expensescost', $exp_data->cost);*/
-
+        
+        $all_news = SiteData::getAllNews();
+        if(count($all_news) > 0) {
+            
+            $news_parent = self::$xml->addChild('newsitems');
+            foreach($all_news as $news) {
+                
+                $body = str_ireplace('<br>', "\n", $news->body);
+                $body = str_ireplace('<br />', "\n", $news->body);
+                $body = htmlentities(strip_tags($body));
+                
+                $news_xml = $news_parent->addChild('news');
+                $news_xml->addChild('id', $news->id);
+                $news_xml->addChild('subject', $news->subject);
+                $news_xml->addChild('body', $body);
+                $news_xml->addChild('postdate', $news->postdate);
+                $news_xml->addChild('postedby', $news->postedby);
+            }
+        }
+        
         # Some of the settings
         self::$xml->addChild('livefuel', Config::Get('FUEL_GET_LIVE_PRICE'));
 
@@ -169,7 +205,46 @@ class CentralData extends CodonData {
         CronData::set_lastupdate('update_vainfo');
         return self::send_xml();
     }
+    
+    /**
+     * CentralData::send_news()
+     * 
+     * @return
+     */
+    public static function send_news() {
+        
+        if (!self::central_enabled()) return false;
+        
+        self::set_xml('vanews');
+        
+        $all_news = SiteData::getAllNews();
+        if(!is_array($all_news) && count($all_news) == 0) {
+            return false;
+        }
+        
+        self::$xml->addChild('total', count($all));
+        $news_parent = self::$xml->addChild('newsitems');
+        foreach($all_news as $news) {
+            $news_xml = $news_parent->addChild('news');
+            
+            $news_xml->addChild('id', $news->id);
+            $news_xml->addChild('subject', $news->subject);
+            $news_xml->addChild('body', '<![CDATA['.$news->body.']]>');
+            $news_xml->addChild('postdate', $news->postdate);
+            $news_xml->addChild('postedby', $news->postedby);
+        }
+        
+        CronData::set_lastupdate('vanews');
+        $res = self::send_xml();
 
+        return $res;
+    }
+
+    /**
+     * CentralData::send_schedules()
+     * 
+     * @return
+     */
     public static function send_schedules() {
         if (!self::central_enabled()) return false;
 
@@ -213,7 +288,13 @@ class CentralData extends CodonData {
         return $res;
     }
 
+    /**
+     * CentralData::process_airport_list()
+     * 
+     * @return
+     */
     protected static function process_airport_list() {
+        
         self::set_xml('process_airport_list');
 
         foreach (self::$response->airport as $apt) {
@@ -230,6 +311,11 @@ class CentralData extends CodonData {
         }
     }
 
+    /**
+     * CentralData::send_pilots()
+     * 
+     * @return
+     */
     public static function send_pilots() {
         if (!self::central_enabled()) return false;
 
@@ -257,6 +343,11 @@ class CentralData extends CodonData {
         return self::send_xml();
     }
 
+    /**
+     * CentralData::send_all_pireps()
+     * 
+     * @return
+     */
     public static function send_all_pireps() {
         if (!self::central_enabled()) return false;
 
@@ -297,6 +388,12 @@ class CentralData extends CodonData {
         }
     }
 
+    /**
+     * CentralData::send_pirep()
+     * 
+     * @param mixed $pirep_id
+     * @return
+     */
     public static function send_pirep($pirep_id) {
         if (!self::central_enabled()) return false;
 
@@ -322,7 +419,14 @@ class CentralData extends CodonData {
         }
     }
 
+    /**
+     * CentralData::get_pirep_xml()
+     * 
+     * @param mixed $pirep
+     * @return
+     */
     protected static function get_pirep_xml($pirep) {
+        
         $pilotid = PilotData::GetPilotCode($pirep->code, $pirep->pilotid);
 
         $pirep_xml = self::$xml->addChild('pirep');
@@ -346,6 +450,11 @@ class CentralData extends CodonData {
         $pirep_xml->addChild('revenue', $pirep->revenue);
     }
 
+    /**
+     * CentralData::send_all_acars()
+     * 
+     * @return
+     */
     public static function send_all_acars() {
         
         if (!self::central_enabled()) return false;
@@ -364,6 +473,12 @@ class CentralData extends CodonData {
         return self::send_xml();
     }
 
+    /**
+     * CentralData::send_acars_data()
+     * 
+     * @param mixed $flight
+     * @return
+     */
     public static function send_acars_data($flight) {
         if (!self::central_enabled()) return false;
 
@@ -374,6 +489,12 @@ class CentralData extends CodonData {
         return self::send_xml();
     }
 
+    /**
+     * CentralData::create_acars_flight()
+     * 
+     * @param mixed $flight
+     * @return
+     */
     protected static function create_acars_flight($flight) {
         
         if (is_object($flight)) {

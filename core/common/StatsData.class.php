@@ -453,9 +453,14 @@ class StatsData extends CodonData {
         $total = CodonCache::read($key);
 
         if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'pireps', 'fields' =>
-                'SUM(`load`) as `total`', 'where' => array('accepted' => PIREP_ACCEPTED,
-                'flighttype' => 'P'), );
+            $params = array(
+                'table' => TABLE_PREFIX . 'pireps', 
+                'fields' => 'SUM(`load`) as `total`', 
+                'where' => array(
+                    'accepted' => PIREP_ACCEPTED,
+                    'flighttype' => 'P'
+                    ),
+                );
 
             if (!empty($airline_code)) {
                 $params['where']['code'] = $airline_code;

@@ -1,13 +1,12 @@
 <?php
-if(!file_exists('core/codon.config.php'))
-{
+error_reporting(E_ALL);
+ini_set('display_errors', 'on');
+
+if(!file_exists('../../core/codon.config.php')) {
 	die('This file must be placed in the same directory as index.php');
 }
 
-include 'core/codon.config.php';
-
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
+include '../../core/codon.config.php';
 ?>
 <html>
 <head>

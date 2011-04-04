@@ -46,12 +46,12 @@ switch($_GET['page']) {
 				break;
 			}
 		
-			if(!Installer::AddTables())	{
+			if(!Installer::addTables())	{
 				echo '<div id="error">'.Installer::$error.'</div>';
 				break;
 			}
 			
-			if(!Installer::WriteConfig()) {
+			if(!Installer::writeConfig()) {
 				echo '<div id="error">'.Installer::$error.'</div>';
 				break;
 			}
