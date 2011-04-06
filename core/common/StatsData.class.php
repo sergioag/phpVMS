@@ -34,7 +34,7 @@ class StatsData extends CodonData {
             'airline_code' => '',
             'where' => array(),
             'func' => 'COUNT',
-            )
+            ), $params
         );
         
         if($params['table'] == '' || $params['table'] == '') {
@@ -49,7 +49,6 @@ class StatsData extends CodonData {
             $params['where'] = array();
         }
         
-        $column = trim($column);
         if(!empty($params['airline_code'])) {
             $params['airline_code'] = strtoupper($params['airline_code']);
             $params['where']['code'] = $params['airline_code'];
@@ -62,6 +61,7 @@ class StatsData extends CodonData {
         
         if($total === false) {
             
+            $params['column'] = trim($params['column']);
             if($params['column'] != '*') {
                 $params['column'] = '`'.$params['column'].'`';
             }
