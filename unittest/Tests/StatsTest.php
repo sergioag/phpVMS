@@ -66,8 +66,13 @@ class StatsTest extends PHPUnit_Framework_TestCase {
                                     
             $this->assertEquals($total->total, $pilotCount, 'StatsData::TotalPaxCarried('.$airline->code.')');
         }
-        
     }
+    
+    /*public function testTotalTime() {
+        
+        StatsData::updateTotalHours();
+        
+    }*/
     
 }
 

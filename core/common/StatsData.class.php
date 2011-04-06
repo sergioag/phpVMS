@@ -23,44 +23,53 @@ class StatsData extends CodonData {
      * Return the total from a table given the conditions specified
      * Also handle any caching for said query
      * 
-     * @param string $table Table name
-     * @param string $column Column to total up
-     * @param string $airline_code Optional, the airline code to GROUP BY
-     * @param array $where Dictionary array of column => value
-     * @param string $func MySQL Function to aggregate on (default is COUNT)
+     * @param array $params See function for parameters
      * @return int Total number
      */
-    public static function getTotalForCol($table = '', $column = '', $airline_code = '', $where = array(), $func = 'COUNT') {
+    public static function getTotalForCol($params) {
         
-        if($table == '' || $column == '') {
+        $params = array_merge(array(
+            'table' => '',
+            'column' => '',
+            'airline_code' => '',
+            'where' => array(),
+            'func' => 'COUNT',
+            )
+        );
+        
+        if($params['table'] == '' || $params['table'] == '') {
             return false;
         }
         
-        if(!is_array($where)) {
-            $where = array();
+        if($params['func'] == '') {
+            $params['func'] = 'COUNT';
+        }
+        
+        if(!is_array($params['where'])) {
+            $params['where'] = array();
         }
         
         $column = trim($column);
-        if(!empty($airline_code)) {
-            $airline_code = strtoupper($airline_code);
-            $where['code'] = $airline_code;
+        if(!empty($params['airline_code'])) {
+            $params['airline_code'] = strtoupper($params['airline_code']);
+            $params['where']['code'] = $params['airline_code'];
         }
         
-        $mixed = substr(md5(implode('', $where)), 0, 7);
-        $key = 'total_'.$table.'_'.$column.'_'.$mixed;
+        $mixed = substr(md5(implode('', $params)), 0, 8);
+        $key = 'total_'.$mixed;
         
         $total = CodonCache::read($key);
         
         if($total === false) {
             
-            if($column != '*') {
-                $column = '`'.$column.'`';
+            if($params['column'] != '*') {
+                $params['column'] = '`'.$params['column'].'`';
             }
         
-            $sql="SELECT ".$func."(".$column.") as `total` "
-                ."FROM ".TABLE_PREFIX.$table;
+            $sql="SELECT ".$params['func']."(".$params['column'].") as `total` "
+                ."FROM ".TABLE_PREFIX.$params['table'];
             
-            $sql .= DB::build_where($where);
+            $sql .= DB::build_where($params['where']);
             $total = DB::get_row($sql);
                                     
             if(!$total) {
@@ -82,6 +91,7 @@ class StatsData extends CodonData {
      * @return array, PIREP ID and submit date
      */
     public static function getStartDate() {
+        
         $start_date = CodonCache::read('start_date');
 
         if ($start_date === false) {
@@ -101,6 +111,7 @@ class StatsData extends CodonData {
      * Get all of the months since the VA started
      */
     public static function getMonthsSinceStart() {
+        
         $months_list = CodonCache::read('months_since_start');
 
         if ($months_list === false) {
@@ -120,6 +131,7 @@ class StatsData extends CodonData {
      * Get years since the VA started
      */
     public static function getYearsSinceStart() {
+        
         $key = 'years_since_start';
         $years_start = CodonCache::read($key);
 
@@ -223,6 +235,18 @@ class StatsData extends CodonData {
      */
     public static function updateTotalHours() {
         
+        $sql = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(flighttime_stamp))) AS `total`
+                FROM ".TABLE_PREFIX."pireps
+                WHERE accepted=".PIREP_ACCEPTED;
+        
+        $totaltime = DB::get_row($sql);
+        if(!$totaltime) {
+            $totaltime = '00:00:00';
+        } else {
+            $totaltime = $totaltime->total;
+        }
+        
+        /*
         $pireps = PIREPData::findPIREPS(array('p.accepted' => 1));
 
         if (!$pireps) {
@@ -233,6 +257,7 @@ class StatsData extends CodonData {
         foreach ($pireps as $pirep) {
             $totaltime = Util::AddTime($totaltime, $pirep->flighttime);
         }
+        */
 
         SettingsData::SaveSetting('TOTAL_HOURS', $totaltime);
     }
@@ -242,39 +267,6 @@ class StatsData extends CodonData {
      */
     public static function TotalHours() {
         return SettingsData::GetSettingValue('TOTAL_HOURS');
-    }
-
-    /**
-     * Get the total number of flights flown
-     */
-    public static function TotalFlights($airline_code = '') {
-        
-        $key = 'total_flights';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-        if ($total === false) {
-            $sql = 'SELECT COUNT(*) AS `total`
-					FROM `' . TABLE_PREFIX . 'pireps`
-					WHERE `accepted`=' . PIREP_ACCEPTED;
-
-            if ($airline_code != '') {
-                $sql .= " AND `code`='{$airline_code}' GROUP BY `code`";
-            }
-
-            $result = DB::get_row($sql);
-
-            if (!$result) {
-                return 0;
-            }
-
-            $total = $result->total;
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
     }
 
     /**
@@ -439,10 +431,10 @@ class StatsData extends CodonData {
      * @return
      */
     public static function PilotAircraftFlownCounts($pilotid) {
+        
         $key = 'ac_flown_counts_' . $pilotid;
 
         $counts = CodonCache::read($key);
-
         if ($counts === false) {
             //Select aircraft types
             $sql = 'SELECT a.name AS aircraft, COUNT(p.aircraft) AS count, SUM(p.flighttime) AS hours
@@ -505,9 +497,31 @@ class StatsData extends CodonData {
      * Get the total number of pilots
      */
     public static function PilotCount($airline_code = '') {
-        return self::getTotalForCol('pilots', '*', $airline_code);
+        
+        return self::getTotalForCol(array(
+            'table' => 'pilots',
+            'column' => '*',
+            'airline_code' => $airline_code,
+            )
+        );
+        
     }
 
+    /**
+     * Get the total number of flights flown
+     */
+    public static function TotalFlights($airline_code = '') {
+        
+        return self::getTotalForCol(array(
+            'table' => 'pireps',
+            'column' => 'load',
+            'airline_code' => $airline_code,
+            'where' => array('accepted' => PIREP_ACCEPTED),
+            'func' => 'SUM',
+            )
+        );
+        
+    }
 
     /**
      * Return the total number of passengers carried
@@ -518,11 +532,17 @@ class StatsData extends CodonData {
      */
     public static function TotalPaxCarried($airline_code = '') {
         
-        return self::getTotalForCol('pireps', 'load', $airline_code, array(
-            'accepted' => PIREP_ACCEPTED,
-            'flighttype' => 'P',
-        ), 'SUM');
-        
+        return self::getTotalForCol(array(
+            'table' => 'pireps',
+            'column' => 'load',
+            'airline_code' => $airline_code,
+            'where' => array(
+                'accepted' => PIREP_ACCEPTED,
+                'flighttype' => 'P',
+            ),
+            'func' => 'SUM',
+            )
+        );
     }
 
 
@@ -534,9 +554,13 @@ class StatsData extends CodonData {
      */
     public static function TotalFlightsToday($airline_code = '') {
         
-        return self::getTotalForCol('pireps', 'load', $airline_code, array(
-            'DATE(`submitdate`) = CURDATE()'
-        ));
+        return self::getTotalForCol(array(
+            'table' => 'pireps',
+            'column' => 'load',
+            'airline_code' => $airline_code,
+            'where' => array('DATE(`submitdate`) = CURDATE()')
+            )
+        );
         
     }
 
@@ -548,10 +572,15 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalFuelBurned($airline_code = '') {
-        
-        return self::getTotalForCol('pireps', 'fuelused', $airline_code, array(
-            'accepted' => PIREP_ACCEPTED
-        ), 'SUM');
+    
+        return self::getTotalForCol(array(
+            'table' => 'pireps',
+            'column' => 'fuelused',
+            'airline_code' => $airline_code,
+            'where' => array('accepted' => PIREP_ACCEPTED),
+            'func' => 'SUM',
+            )
+        );
     
     }
 
@@ -564,9 +593,14 @@ class StatsData extends CodonData {
      */
     public static function TotalMilesFlown($airline_code = '') {
         
-        return self::getTotalForCol('pireps', 'distance', $airline_code, array(
-            'accepted' => PIREP_ACCEPTED
-        ), 'SUM');
+        return self::getTotalForCol(array(
+            'table' => 'pireps',
+            'column' => 'distance',
+            'airline_code' => $airline_code,
+            'where' => array('accepted' => PIREP_ACCEPTED),
+            'func' => 'SUM',
+            )
+        );
         
     }
 
@@ -579,7 +613,11 @@ class StatsData extends CodonData {
      */
     public static function TotalAircraftInFleet($airline_code = '') {
         
-        return self::getTotalForCol('aircraft', 'id', $airline_code);
+        return self::getTotalForCol(array(
+            'table' => 'aircraft',
+            'column' => 'id',
+            'airline_code' => $airline_code,
+        ));
         
     }
 
@@ -592,7 +630,11 @@ class StatsData extends CodonData {
      */
     public static function TotalNewsItems() {
         
-        return self::getTotalForCol('news', 'id');
+        return self::getTotalForCol(array(
+            'table' => 'news',
+            'column' => 'id',
+            )
+        );
         
     }
 
@@ -605,7 +647,12 @@ class StatsData extends CodonData {
      */
     public static function TotalSchedules($airline_code = '') {
         
-        return self::getTotalForCol('schedules', 'id', $airline_code);
-        
+        return self::getTotalForCol(array(
+            'table' => 'schedules',
+            'column' => 'id',
+            'airline_code' => $airline_code,
+            )
+        );
+               
     }
 }
