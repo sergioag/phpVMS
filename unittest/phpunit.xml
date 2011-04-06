@@ -8,6 +8,7 @@
             <file>Tests/InstallTest.php</file>
             <file>Tests/UserTest.php</file>
             <file>Tests/SchedulePIREPTest.php</file>
+            <file>Tests/StatsTest.php</file>
         </testsuite>
       </testsuites>
   

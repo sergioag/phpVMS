@@ -114,8 +114,7 @@ class Finances extends CodonModule
 		 * 
 		 * No type indicates to view the 'overall'
 		 */
-		if($type[0] == 'm')
-		{
+		if($type[0] == 'm') {
 			$type = str_replace('m', '', $type);
 			$period = date('F Y', $type);
 			$check = date('Ym', $type);
@@ -126,9 +125,7 @@ class Finances extends CodonModule
 			$this->set('title', 'Balance Sheet for '.$period);
 			$this->set('month_data', $finance_data);
 			$this->render('finance_balancesheet.tpl');
-		}
-		elseif($type[0] == 'y')
-		{
+		} elseif($type[0] == 'y') {
 			$type = str_replace('y', '', $type);
 			$year = date('Y', $type);
 			
@@ -139,9 +136,7 @@ class Finances extends CodonModule
 			$this->set('year', date('Y', $type));
 			
 			$this->render('finance_summarysheet.tpl');
-		}
-		else
-		{
+		} else {
 			// This should be the last 3 months overview
 			# Get the last 3 months
 			$months = 3;
@@ -175,15 +170,13 @@ class Finances extends CodonModule
 		$all_finances = array();
 		
 		$months = StatsData::GetMonthsInRange('January '.$year, 'December '.$year);
-		foreach($months as $month)
-		{
+		foreach($months as $month) {
 			$date_filter = array("DATE_FORMAT(p.submitdate, '%Y%m') = '".date('Ym', $month)."'");
 			//$this_filter = array_merge($date_filter, $params);
 			
 			$data = PIREPData::getIntervalData($date_filter);
 			
-			if(!$data)
-			{
+			if(!$data) {
 				$data = new stdClass();
 				$data->ym = date('Y-m', $month);
 				$data->timestamp = $month;

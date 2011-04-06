@@ -18,6 +18,69 @@
  */
 
 class StatsData extends CodonData {
+    
+    /**
+     * Return the total from a table given the conditions specified
+     * Also handle any caching for said query
+     * 
+     * @param string $table Table name
+     * @param string $column Column to total up
+     * @param string $airline_code Optional, the airline code to GROUP BY
+     * @param array $where Dictionary array of column => value
+     * @param string $func MySQL Function to aggregate on (default is COUNT)
+     * @return int Total number
+     */
+    public static function getTotalForCol($table = '', $column = '', $airline_code = '', $where = array(), $func = 'COUNT') {
+        
+        if($table == '' || $column == '') {
+            return false;
+        }
+        
+        if(!is_array($where)) {
+            $where = array();
+        }
+        
+        $column = trim($column);
+        if(!empty($airline_code)) {
+            $airline_code = strtoupper($airline_code);
+            $where['code'] = $airline_code;
+        }
+        
+        $mixed = substr(md5(implode('', $where)), 0, 7);
+        $key = 'total_'.$table.'_'.$column.'_'.$mixed;
+        
+        $total = CodonCache::read($key);
+        
+        if($total === false) {
+            
+            if($column != '*') {
+                $column = '`'.$column.'`';
+            }
+        
+            $sql="SELECT ".$func."(".$column.") as `total` "
+                ."FROM ".TABLE_PREFIX.$table;
+            
+            $sql .= DB::build_where($where);
+            $total = DB::get_row($sql);
+                                    
+            if(!$total) {
+                $total = 0;
+            } else {
+                $total = $total->total;
+            }
+            
+            CodonCache::write($key, $total, '15minute');
+        }
+        
+        return $total;
+    }
+    
+    /**
+     * Get the date of the very first PIREP, use this as the "start date"
+     * of the VA
+     * 
+     * @return array, PIREP ID and submit date
+     */
     public static function getStartDate() {
         $start_date = CodonCache::read('start_date');
 
@@ -46,7 +109,7 @@ class StatsData extends CodonData {
             if (!$date) $startdate = time();
             else  $startdate = $date->submitdate;
 
-            $months_list = self::GetMonthsSinceDate($startdate);
+            $months_list = self::getMonthsSinceDate($startdate);
             CodonCache::write('months_since_start', $months_list, 'long');
         }
 
@@ -61,7 +124,7 @@ class StatsData extends CodonData {
         $years_start = CodonCache::read($key);
 
         if ($years_start === false) {
-            $date = self::GetStartDate();
+            $date = self::getStartDate();
 
             if (!$date) $startdate = 'Today';
             else  $startdate = $date->submitdate;
@@ -86,6 +149,7 @@ class StatsData extends CodonData {
      * Get all of the months since a certain date
      */
     public static function getMonthsSinceDate($start) {
+        
         $key_month = date('MY', $start);
         $key = 'months_since_' . $key_month;
         $months = CodonCache::read($key);
@@ -119,6 +183,7 @@ class StatsData extends CodonData {
      * Pass timestamp, or textual date
      */
     public static function getMonthsInRange($start, $end) {
+        
         $key = "months_in_{$start}_{$end}";
         $months = CodonCache::read($key);
 
@@ -151,7 +216,13 @@ class StatsData extends CodonData {
         return $months;
     }
 
+    /**
+     * StatsData::updateTotalHours()
+     * 
+     * @return
+     */
     public static function updateTotalHours() {
+        
         $pireps = PIREPData::findPIREPS(array('p.accepted' => 1));
 
         if (!$pireps) {
@@ -177,6 +248,7 @@ class StatsData extends CodonData {
      * Get the total number of flights flown
      */
     public static function TotalFlights($airline_code = '') {
+        
         $key = 'total_flights';
         if ($airline_code != '') {
             $key .= '_' . $airline_code;
@@ -209,6 +281,7 @@ class StatsData extends CodonData {
      * Get the top routes
      */
     public static function TopRoutes($airline_code = '') {
+        
         $key = 'top_routes';
         if ($airline_code != '') {
             $key .= '_' . $airline_code;
@@ -233,7 +306,14 @@ class StatsData extends CodonData {
         return $top_routes;
     }
 
+    /**
+     * StatsData::UsersOnline()
+     * 
+     * @param string $minutes
+     * @return
+     */
     public static function UsersOnline($minutes = '') {
+        
         $key = 'users_online';
         $users_online = CodonCache::read($key);
 
@@ -256,7 +336,14 @@ class StatsData extends CodonData {
         return $users_online;
     }
 
+    /**
+     * StatsData::GuestsOnline()
+     * 
+     * @param string $minutes
+     * @return
+     */
     public static function GuestsOnline($minutes = '') {
+        
         $key = 'guests_online';
         $guests_online = CodonCache::read($key);
 
@@ -282,6 +369,7 @@ class StatsData extends CodonData {
      * Get the current aircraft usage
      */
     public static function AircraftUsage() {
+        
         $key = 'stats_aircraft_usage';
 
         $aircraft_usage = CodonCache::read($key);
@@ -310,6 +398,7 @@ class StatsData extends CodonData {
      * 	then it returns the URL.
      */
     public static function AircraftFlownGraph($ret = false) {
+        
         //Select aircraft types
         $sql = 'SELECT a.name AS aircraft, COUNT(p.aircraft) AS count
 				FROM ' . TABLE_PREFIX . 'pireps p, ' . TABLE_PREFIX . 'aircraft a 
@@ -343,6 +432,12 @@ class StatsData extends CodonData {
         else  echo '<img src="' . $chart->draw(false) . '" />';
     }
 
+    /**
+     * StatsData::PilotAircraftFlownCounts()
+     * 
+     * @param mixed $pilotid
+     * @return
+     */
     public static function PilotAircraftFlownCounts($pilotid) {
         $key = 'ac_flown_counts_' . $pilotid;
 
@@ -366,8 +461,12 @@ class StatsData extends CodonData {
      * Show pie chart for all of the aircraft flown
      *  by a certain pilot. Outputs image, unless $ret == true,
      * 	then it returns the URL.
+     * 
+     * @param int $pilotid The ID of the pilot
+     * @param bool $ret Return the URL, or display it in an IMG tag
      */
     public static function PilotAircraftFlownGraph($pilotid, $ret = false) {
+        
         $stats = self::PilotAircraftFlownCounts($pilotid);
 
         if (!$stats) {
@@ -396,9 +495,8 @@ class StatsData extends CodonData {
         unset($chart);
 
         if ($ret == true) return $url;
-        else  echo '<img src="' . $url . '" />';
+        else  echo '<img src="' . $url . '" alt="" />';
     }
-
 
     /* These contributed by simpilot from phpVMS forums
     */
@@ -407,78 +505,24 @@ class StatsData extends CodonData {
      * Get the total number of pilots
      */
     public static function PilotCount($airline_code = '') {
-        $key = 'pilot_count';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-
-        if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'pilots', 'fields' =>
-                'COUNT(*) as `total`', );
-
-            if (!empty($airline_code)) {
-                $params['where']['code'] = $airline_code;
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        return self::getTotalForCol('pilots', '*', $airline_code);
     }
 
 
     /**
      * Return the total number of passengers carried
      *
-     * @return mixed This is the return value description
+     * @param string $airline_code Airline code specifically to call for, optional
+     * @return int
      *
      */
     public static function TotalPaxCarried($airline_code = '') {
-        $key = 'total_pax_carried';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-
-        if ($total === false) {
-            $params = array(
-                'table' => TABLE_PREFIX . 'pireps', 
-                'fields' => 'SUM(`load`) as `total`', 
-                'where' => array(
-                    'accepted' => PIREP_ACCEPTED,
-                    'flighttype' => 'P'
-                    ),
-                );
-
-            if (!empty($airline_code)) {
-                $params['where']['code'] = $airline_code;
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('pireps', 'load', $airline_code, array(
+            'accepted' => PIREP_ACCEPTED,
+            'flighttype' => 'P',
+        ), 'SUM');
+        
     }
 
 
@@ -489,33 +533,11 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalFlightsToday($airline_code = '') {
-        $key = 'flights_today';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-        if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'pireps', 'fields' =>
-                'COUNT(*) AS `total`', 'where' => 'DATE(`submitdate`) = CURDATE()', );
-
-            if (!empty($airline_code)) {
-                $params['where']['code'] = $airline_code;
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('pireps', 'load', $airline_code, array(
+            'DATE(`submitdate`) = CURDATE()'
+        ));
+        
     }
 
 
@@ -526,33 +548,11 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalFuelBurned($airline_code = '') {
-        $key = 'fuel_burned';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-        if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'pireps', 'fields' =>
-                'SUM(`fuelused`) AS `total`', 'where' => array('accepted' => PIREP_ACCEPTED), );
-
-            if (!empty($airline_code)) {
-                $params['where']['code'] = $airline_code;
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('pireps', 'fuelused', $airline_code, array(
+            'accepted' => PIREP_ACCEPTED
+        ), 'SUM');
+    
     }
 
 
@@ -563,34 +563,11 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalMilesFlown($airline_code = '') {
-        $key = 'miles_flown';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-
-        if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'pireps', 'fields' =>
-                'SUM(`distance`) AS `total`', 'where' => array('accepted' => PIREP_ACCEPTED), );
-
-            if (!empty($airline_code)) {
-                $params['where']['code'] = $airline_code;
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('pireps', 'distance', $airline_code, array(
+            'accepted' => PIREP_ACCEPTED
+        ), 'SUM');
+        
     }
 
 
@@ -601,34 +578,9 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalAircraftInFleet($airline_code = '') {
-        $key = 'aircraft_in_fleet';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-        if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'aircraft', 'fields' =>
-                'COUNT(`id`) as `total`', );
-
-            if (!empty($airline_code)) {
-                $params['where']['code'] = $airline_code;
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('aircraft', 'id', $airline_code);
+        
     }
 
 
@@ -639,29 +591,9 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalNewsItems() {
-        $key = 'total_news_items';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-
-        if ($total === false) {
-            $sql = 'SELECT COUNT(`id`) AS `total` 
-					FROM ' . TABLE_PREFIX . 'news';
-
-            $result = DB::get_row($sql);
-
-            if (!$result) {
-                $total = 0;
-            } else {
-                $total = $result->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('news', 'id');
+        
     }
 
 
@@ -672,34 +604,8 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalSchedules($airline_code = '') {
-        $key = 'total_schedules';
-        if ($airline_code != '') {
-            $key .= '_' . $airline_code;
-        }
-
-        $total = CodonCache::read($key);
-
-        if ($total === false) {
-            $params = array('table' => TABLE_PREFIX . 'schedules', 'fields' =>
-                'COUNT(`id`) as `total`', );
-
-            if (!empty($airline_code)) {
-                $params['where'] = array('code' => $airline_code);
-                $params['group'] = 'code';
-            }
-
-            $sql = DB::build_select($params);
-            $results = DB::get_results($sql);
-
-            if (!$results) {
-                $total = 0;
-            } else {
-                $total = $results[0]->total;
-            }
-
-            CodonCache::write($key, $total, '15minute');
-        }
-
-        return $total;
+        
+        return self::getTotalForCol('schedules', 'id', $airline_code);
+        
     }
 }

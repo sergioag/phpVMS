@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpVMS - Virtual Airline Administration Software
  * Copyright (c) 2008 Nabeel Shahzad
@@ -18,10 +17,21 @@
  */
 
 class Schedules extends CodonModule {
+    
+    /**
+     * Schedules::index()
+     * 
+     * @return
+     */
     public function index() {
         $this->view();
     }
 
+    /**
+     * Schedules::view()
+     * 
+     * @return
+     */
     public function view() {
         if (isset($this->post->action) && $this->post->action == 'findflight') {
             $this->FindFlight();
@@ -31,10 +41,22 @@ class Schedules extends CodonModule {
         $this->showSchedules();
     }
 
+    /**
+     * Schedules::detail()
+     * 
+     * @param string $routeid
+     * @return
+     */
     public function detail($routeid = '') {
         $this->details($routeid);
     }
 
+    /**
+     * Schedules::details()
+     * 
+     * @param string $routeid
+     * @return
+     */
     public function details($routeid = '') {
         //$routeid = $this->get->id;
 
@@ -54,6 +76,12 @@ class Schedules extends CodonModule {
         $this->render('route_map.tpl');
     }
 
+    /**
+     * Schedules::brief()
+     * 
+     * @param string $routeid
+     * @return
+     */
     public function brief($routeid = '') {
         if ($routeid == '') {
             $this->set('message', 'You must be logged in to access this feature!');
@@ -66,6 +94,12 @@ class Schedules extends CodonModule {
         $this->render('schedule_briefing.tpl');
     }
 
+    /**
+     * Schedules::boardingpass()
+     * 
+     * @param mixed $routeid
+     * @return
+     */
     public function boardingpass($routeid) {
         if ($routeid == '') {
             $this->set('message', 'You must be logged in to access this feature!');
@@ -79,6 +113,11 @@ class Schedules extends CodonModule {
         $this->render('schedule_boarding_pass.tpl');
     }
 
+    /**
+     * Schedules::bids()
+     * 
+     * @return
+     */
     public function bids() {
         if (!Auth::LoggedIn())
             return;
@@ -87,6 +126,11 @@ class Schedules extends CodonModule {
         $this->render('schedule_bids.tpl');
     }
 
+    /**
+     * Schedules::addbid()
+     * 
+     * @return
+     */
     public function addbid() {
         if (!Auth::LoggedIn())
             return;
@@ -130,6 +174,11 @@ class Schedules extends CodonModule {
         }
     }
 
+    /**
+     * Schedules::removebid()
+     * 
+     * @return
+     */
     public function removebid() {
         if (!Auth::LoggedIn())
             return;
@@ -137,6 +186,11 @@ class Schedules extends CodonModule {
         SchedulesData::RemoveBid($this->post->id);
     }
 
+    /**
+     * Schedules::showSchedules()
+     * 
+     * @return
+     */
     public function showSchedules() {
         
         $depapts = OperationsData::GetAllAirports();
@@ -219,6 +273,11 @@ class Schedules extends CodonModule {
         $this->render('schedule_list.tpl');
     }
 
+    /**
+     * Schedules::findFlight()
+     * 
+     * @return
+     */
     public function findFlight() {
         
         
@@ -256,18 +315,34 @@ class Schedules extends CodonModule {
         $this->render('schedule_results.tpl');
     }
 
+    /**
+     * Schedules::statsdaysdata()
+     * 
+     * @param mixed $routeid
+     * @return
+     */
     public function statsdaysdata($routeid) {
         $routeinfo = SchedulesData::findSchedules(array('s.id' => $routeid));
         $routeinfo = $routeinfo[0];
 
         // Last 30 days stats
-        $data = PIREPData::getIntervalDataByDays(array('p.code' => $routeinfo->code,
-            'p.flightnum' => $routeinfo->flightnum, ), 30);
+        $data = PIREPData::getIntervalDataByDays(array(
+            'p.code' => $routeinfo->code,
+            'p.flightnum' => $routeinfo->flightnum, 
+            ), 30);
 
         $this->create_line_graph('Schedule Flown Counts', $data);
     }
 
+    /**
+     * Schedules::create_line_graph()
+     * 
+     * @param mixed $title
+     * @param mixed $data
+     * @return
+     */
     protected function create_line_graph($title, $data) {
+        
         if (!$data) {
             $data = array();
         }

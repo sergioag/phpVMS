@@ -27,7 +27,7 @@ a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
 e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 be3826eab064935f32bbd498df3c7253  *./core/common/RegistrationData.class.php
-ada4acb66b597eeb2efcf5a9816aebd5  *./core/common/StatsData.class.php
+b62f6cad5b9a53ad1b5b0d4b4c026297  *./core/common/StatsData.class.php
 93865ca8aff4f69378af6c6bd2c7b3b2  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
 5c6782c2b03950257c5b3cfb7498f753  *./core/common/PilotGroups.class.php
@@ -160,7 +160,7 @@ c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
 a39a56f601cd86786e2c2ec1f57bc141  *./core/app.config.php
-b1326f13ba5f9c292bfff9881ba61a55  *./core/modules/Schedules/Schedules.php
+c26d9878cab6959c8e58a14fc31fb614  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 935862c6f2d8c067c49c4af2797abebd  *./core/modules/XML/XML.php
 b29f26b4ddb98f0f2eeba802855a7872  *./core/modules/Contact/Contact.php
@@ -179,7 +179,7 @@ f6e138fbaeaa80861bece1e809cf7885  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
 a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
 3662c8cdfd037e17fdf00358face7399  *./core/modules/PIREPS/PIREPS.php
-bf13ac69d85baebd15a55b1f446e6811  *./core/modules/Finances/Finances.php
+1a015897585ff97e49e76c9ef771ba69  *./core/modules/Finances/Finances.php
 713228773df8c23688125f98e9cb8f17  *./core/modules/Pages/Pages.php
 925c6ea3907403895286aff5d9838916  *./core/modules/Login/Login.php
 ad702069274d2c2fcafebc86806fc55f  *./core/modules/RouteMap/RouteMap.php
