@@ -1,6 +1,5 @@
 <?php
-if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)) 
-{
+if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)) {
 $pilotid = $_GET['pilotid'];
 ?>
 <h3>Reset Pilot Password</h3>
@@ -20,8 +19,14 @@ $pilotid = $_GET['pilotid'];
 </dl>
 </form>
 <?php
-if($pilotid != Auth::$userinfo->pilotid)
-{?>
+}
+
+
+if($pilotid != Auth::$userinfo->pilotid 
+    && PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN))
+{
+    
+?>
 <h3>Delete Pilot</h3>
 <p><strong>Warning!</strong> This is NOT reversible. This removes all of this pilot's information and data,
 	including PIREPS and their registration.</p>
@@ -34,7 +39,6 @@ if($pilotid != Auth::$userinfo->pilotid)
 </dl>
 </form>
 <?php
-}
 }
 ?>
 <script type="text/javascript">

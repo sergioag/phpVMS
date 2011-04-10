@@ -31,9 +31,9 @@ class StatsData extends CodonData {
         $params = array_merge(array(
             'table' => '',
             'column' => '',
-            'airline_code' => '',
-            'where' => array(),
-            'func' => 'COUNT',
+            'airline_code' => '', // optional
+            'where' => array(),  // optional
+            'func' => 'COUNT', //optional
             ), $params
         );
         
