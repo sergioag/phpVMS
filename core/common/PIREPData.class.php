@@ -145,6 +145,7 @@ class PIREPData extends CodonData {
      *
      */
     public static function getIntervalData($where_params, $grouping = 'M') {
+        
         $grouping = strtolower($grouping);
 
         if ($grouping == 'y') {
@@ -668,6 +669,7 @@ class PIREPData extends CodonData {
         $pirepdata['submitdate'] = 'NOW()';
         $pirepdata['accepted'] = PIREP_PENDING;
         $pirepdata['expenselist'] = '0';
+        $pirepdata['flighttype'] = $sched->flighttype;
 
         # Do the insert based on the columns here
         $cols = array();
@@ -734,31 +736,14 @@ class PIREPData extends CodonData {
     }
 
     /**
-     * PIREPData::updateFlightReport()
+     * Update a specific PIREP
      * 
-     * @param mixed $pirepid
-     * @param mixed $pirepdata
+     * @param int $pirepid ID of PIREP to update
+     * @param array $pirepdata Dictionary array of fields to update
+     * @param bool $recalc_finances Recalculate finances or not (fields must be passed!)
      * @return
      */
-    public static function updateFlightReport($pirepid, $pirepdata) {
-
-        /*$pirepdata = array('pirepid'=>$this->post->pirepid,
-            'code'=>$this->post->code,
-            'flightnum'=>$this->post->flightnum,
-            'leg'=>$this->post->leg,
-            'depicao'=>$this->post->depicao,
-            'arricao'=>$this->post->arricao,
-            'aircraft'=>$this->post->aircraft,
-            'flighttime'=>$this->post->flighttime,
-            'load'=>$this->post->load,
-            'price'=>$this->post->price,
-            'pilotpay' => $this->post->pilotpay,
-            'fuelused'=>$this->post->fuelused,
-            'fuelunitcost'=>$this->post->fuelunitcost,
-            'fuelprice'=>$fuelcost,
-            'expenses'=>$this->post->expenses
-        );
-        */
+    public static function updateFlightReport($pirepid, $pirepdata, $recalc_finances = true) {
 
         if (!is_array($pirepdata)) {
             return false;
@@ -770,50 +755,39 @@ class PIREPData extends CodonData {
 
         $pirepinfo = self::getReportDetails($pirepid);
 
-        $pirepdata['fuelprice'] = $pirepdata['fuelused'] * $pirepdata['fuelunitcost'];
+        if(isset($pirepdata['fuelused']) && isset($pirepdata['fuelunitcost'])) {
+            $pirepdata['fuelprice'] = $pirepdata['fuelused'] * $pirepdata['fuelunitcost'];
+        }
 
-        $flighttime_stamp = str_replace('.', ':', $pirepdata['flighttime']) . ':00';
-        $pirepdata['flighttime'] = str_replace(':', ',', $pirepdata['flighttime']);
+        if(isset($pirepdata['flighttime'])) {
+            $flighttime_stamp = str_replace('.', ':', $pirepdata['flighttime']) . ':00';
+            $pirepdata['flighttime'] = str_replace(':', ',', $pirepdata['flighttime']);
+        }
 
-        $data = array(
-            'price' => $pirepdata['price'], 
-            'load' => $pirepdata['load'],
-            'expenses' => $pirepdata['expenses'], 
-            'fuelprice' => $pirepdata['fuelprice'],
-            'pilotpay' => $pirepdata['pilotpay'], 
-            'flighttime' => $pirepdata['flighttime'], 
-        );
+        # Recalculate finances if these fields are set...
+        if($recalc_finances === true) {
+         
+            $data = array(
+                'price' => $pirepdata['price'], 
+                'load' => $pirepdata['load'],
+                'expenses' => $pirepdata['expenses'], 
+                'fuelprice' => $pirepdata['fuelprice'],
+                'pilotpay' => $pirepdata['pilotpay'], 
+                'flighttime' => $pirepdata['flighttime'], 
+            );
+    
+            $gross = floatval($pirepdata['load']) * floatval($pirepdata['price']);
+            $revenue = self::getPIREPRevenue($data, $pirepinfo->paytype);
 
-        $gross = floatval($pirepdata['load']) * floatval($pirepdata['price']);
-        $revenue = self::getPIREPRevenue($data, $pirepinfo->paytype);
-
-        $fields = array_merge($pirepdata, array(
-            'flighttime_stamp' => $flighttime_stamp,
-            'gross' => $gross,
-            'revenue' => $revenue,
-            )
-        );
+            $pirepdata = array_merge($pirepdata, array(
+                'flighttime_stamp' => $flighttime_stamp,
+                'gross' => $gross,
+                'revenue' => $revenue,
+                )
+            );
+        }
         
-        /*$fields = array(
-            'code' => $pirepdata['code'], 
-            'flightnum' => $pirepdata['flightnum'],
-            'depicao' => $pirepdata['depicao'], 
-            'arricao' => $pirepdata['arricao'],
-            'aircraft' => $pirepdata['aircraft'], 
-            'flighttime' => $pirepdata['flighttime'],
-            'flighttime_stamp' => $flighttime_stamp, 
-            'load' => $pirepdata['load'], 
-            'price' => $pirepdata['price'], 
-            'gross' => $gross, 
-            'pilotpay' => $pirepdata['pilotpay'],
-            'fuelused' => $pirepdata['fuelused'], 
-            'fuelunitcost' => $pirepdata['fuelunitcost'],
-            'fuelprice' => $pirepdata['fuelprice'], 
-            'expenses' => $pirepdata['expenses'],
-            'revenue' => $revenue, 
-        );*/
-
-        return self::editPIREPFields($pirepid, $fields);
+        return self::editPIREPFields($pirepid, $pirepdata);
     }
 
     /**
@@ -837,6 +811,7 @@ class PIREPData extends CodonData {
      *
      */
     public static function editPIREPFields($pirepid, $fields) {
+        
         if (!is_array($fields)) {
             return false;
         }
@@ -855,16 +830,14 @@ class PIREPData extends CodonData {
     }
 
     /**
-     * 
      * Populate PIREPS which have 0 values for the load/price, etc
+     * 
      */
-
     public static function populateEmptyPIREPS() {
-        $sql = 'SELECT *
-				FROM ' . TABLE_PREFIX . 'pireps ';
+        
+        $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps ';
 
         $results = DB::get_results($sql);
-
         if (!$results) {
             return true;
         }
@@ -1011,12 +984,23 @@ class PIREPData extends CodonData {
 
     /**
      * Delete a flight report and all of its associated data
+     * Alias to PIREPData::deleteFlightReport()
+     * 
+     * @param int $pirepid Delete a PIREP
+     * @return none
      */
     public static function deletePIREP($pirepid) {
         self::deleteFlightReport($pirepid);
     }
 
+    /**
+     * Delete a flight report and all of its associated data
+     * 
+     * @param int $pirepid Delete a PIREP
+     * @return none
+     */
     public static function deleteFlightReport($pirepid) {
+        
         $pirepid = intval($pirepid);
         $pirep_details = self::getReportDetails($pirepid);
 
@@ -1039,10 +1023,10 @@ class PIREPData extends CodonData {
 
         # Check if this was accepted report
         #	If it was, remove it from that pilot's stats
-        if ($pirep_details->accepted == PIREP_ACCEPTED) {
-            PilotData::UpdateFlightData($pirep_details->pilotid, ($pirep_details->
-                flighttime) * -1, -1);
-        }
+        #if ($pirep_details->accepted == PIREP_ACCEPTED) {
+        #    PilotData::UpdateFlightData($pirep_details->pilotid, ($pirep_details->flighttime) * -1, -1);
+        #}
+        PilotData::updatePilotStats($pirep_details->pilotid);
 
         self::UpdatePIREPFeed();
     }
@@ -1053,8 +1037,8 @@ class PIREPData extends CodonData {
      * @return
      */
     public static function deleteAllRouteDetails() {
-        $sql = "UPDATE " . TABLE_PREFIX . "pireps
-				SET `route_details` = ''";
+        
+        $sql = "UPDATE " . TABLE_PREFIX . "pireps SET `route_details` = ''";
 
         $row = DB::get_row($sql);
 
@@ -1132,6 +1116,7 @@ class PIREPData extends CodonData {
      */
 
     public static function appendToLog($pirepid, $log) {
+        
         $sql = 'UPDATE ' . TABLE_PREFIX . 'pireps 
 					SET `log` = CONCAT(`log`, \'' . $log . '\')
 					WHERE `pirepid`=' . $pirepid;
@@ -1159,7 +1144,9 @@ class PIREPData extends CodonData {
      * 
      * Also handle paying the pilot, and handle PIREP rejection, etc
      * 
-     * @deprecated Use editPIREPFields instead
+     * @param int $pirepid The PIREP ID of status to change
+     * @param int $status Use consts: PIREP_PENDING, PIREP_ACCEPTED, PIREP_REJECTED,PIREP_INPROGRESS
+     * @return bool
      */
     public static function changePIREPStatus($pirepid, $status) {
         
@@ -1229,12 +1216,17 @@ class PIREPData extends CodonData {
 
     /**
      * Add a comment to the flight report
+     * 
+     * @param int $pirep_id PIREP to add a comment to
+     * @param int $user_id User ID the comment is coming from
+     * @param string $comment Comment to add
+     * @return
      */
-    public static function addComment($pirepid, $pilotid, $comment) {
+    public static function addComment($pirep_id, $user_id, $comment) {
+        
         $comment = DB::escape($comment);
-        $sql = "INSERT INTO " . TABLE_PREFIX .
-            "pirepcomments (`pirepid`, `pilotid`, `comment`, `postdate`)
-					VALUES ($pirepid, $pilotid, '$comment', NOW())";
+        $sql = "INSERT INTO ".TABLE_PREFIX."pirepcomments (`pirepid`, `pilotid`, `comment`, `postdate`)
+					VALUES ($pirep_id, $user_id, '$comment', NOW())";
 
         $res = DB::query($sql);
 
@@ -1258,10 +1250,9 @@ class PIREPData extends CodonData {
      */
     public static function getFieldData($pirepid) {
         $sql = 'SELECT f.title, f.name, v.value
-					FROM ' . TABLE_PREFIX . 'pirepfields f
-					LEFT JOIN ' . TABLE_PREFIX . 'pirepvalues v
-						ON f.fieldid=v.fieldid 
-							AND v.pirepid=' . intval($pirepid);
+				FROM '.TABLE_PREFIX.'pirepfields f
+				LEFT JOIN '.TABLE_PREFIX.'pirepvalues v
+					ON f.fieldid=v.fieldid AND v.pirepid='.intval($pirepid);
 
         return DB::get_results($sql);
     }
