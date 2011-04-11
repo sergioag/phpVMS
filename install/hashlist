@@ -10,7 +10,7 @@ fac7c09a2f7b3c46a3c4d20ccb0eb2fb  *./install/templates/s2_site_setup.tpl
 92d18b918b25652b7380ea65ca651ac9  *./install/templates/success.tpl
 c8262018a5d7da2e092f09bc9a92b011  *./install/navdata/navdata.sql.gz
 d4d204c3560c283fa4d7a3a367473740  *./install/navdata/navdata.sql
-bf00b0a3b459a481cb1e0df47682e8d2  *./install/checkinstall.php
+c500b8b76e204f1adcb0e6562f7f4277  *./install/checkinstall.php
 4f93058c2e74d9852ef20e0b681b0300  *./install/includes/loader.inc.php
 cedea63e288808e6b85422abf21b2049  *./install/includes/Installer.class.php
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
@@ -19,15 +19,15 @@ feca187733f80495d66720e114a1daae  *./install/sql/install.sql
 c2ac2bc16449a6c3d601357caefc78aa  *./install/fixtures/update.sql
 98645f25a6917b5922becfd8181eaef4  *./install/fixtures/install.sql
 63e2d542c42fa9e11e2934acb52ababb  *./install/update.php
-87a5365aeff06351424ae56fdb561909  *./install/checkdb.php
+d609f74eeaea0e4849d90b1c9a48943a  *./install/checkdb.php
 71c7531e4b713e67d84e310e354ddc47  *./install/install.php
 a177b8656fca431cc0b6d53ac301c537  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
-72a690efb085a477f3eb922d4342eca4  *./core/common/PIREPData.class.php
+31b223cd6e4a5119f6cde7d102ec1a54  *./core/common/PIREPData.class.php
 e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 be3826eab064935f32bbd498df3c7253  *./core/common/RegistrationData.class.php
-8f3075274102f38e8168b900d560d055  *./core/common/StatsData.class.php
+aa2d7a256669742fbee15dd28e3f61d8  *./core/common/StatsData.class.php
 93865ca8aff4f69378af6c6bd2c7b3b2  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
 5c6782c2b03950257c5b3cfb7498f753  *./core/common/PilotGroups.class.php
@@ -129,7 +129,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 03a4e232571398c5b90714904a668178  *./core/templates/login_passwordreset.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
-0d6869b068e7a10dc6494aa7016276fd  *./core/bootstrap.inc.php
+22d073e3e094e5db7cc490db9df8149b  *./core/bootstrap.inc.php
 c632a11265dcd1b4747112b12b89959f  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 c1e6bb7c33856c0723f1139ccf20ad9f  *./core/classes/CodonData.class.php
@@ -159,7 +159,7 @@ c5464e3a9e0079bd8229a1b1aa27379d  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-a39a56f601cd86786e2c2ec1f57bc141  *./core/app.config.php
+dae770c88396ce0b1d3a0351b7b4ab01  *./core/app.config.php
 c26d9878cab6959c8e58a14fc31fb614  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 935862c6f2d8c067c49c4af2797abebd  *./core/modules/XML/XML.php
@@ -239,7 +239,7 @@ a408163f9f6b777e784a6060a4ca2758  *./admin/templates/vacentral_index.tpl
 1c9aad99bf87eceb7969bbd4f5e7b037  *./admin/templates/ops_scheduleform.tpl
 d41d8cd98f00b204e9800998ecf8427e  *./admin/templates/core_footer.tpl
 fdf7f7a9ad04e276d263e0db7426df85  *./admin/templates/sidebar_maintenance.tpl
-98de5bfe5dea4d187ddb66562cd5707b  *./admin/templates/pilots_options.tpl
+a9ccfb80ed3bc193c7b94ed483ea4a47  *./admin/templates/pilots_options.tpl
 217d642a7e38f14449c1baf1f7aa172a  *./admin/templates/core_navigation.tpl
 cad7f94c4c5a0aadad4012dbc7fd19aa  *./admin/templates/pilots_pending.tpl
 8df8fcdc0bd39c38eb80688fad4ad61c  *./admin/templates/sidebar_airports.tpl

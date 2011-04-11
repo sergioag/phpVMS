@@ -213,22 +213,27 @@ class PIREPData extends CodonData {
     /**
      * Get the latest reports that have been submitted,
      * return the last 10 by default
+     * 
+     * @param int $count Number of PIREPs to return
      */
     public static function getRecentReportsByCount($count = 10) {
-        if ($count == '') $count = 10;
+        
+        if ($count == '') {
+            $count = 10;
+        }
 
-        return self::findPIREPS('', $count);
+        return self::findPIREPS(array(), intval($count));
     }
 
     /**
      * Get the latest reports by n number of days
+     * 
+     * @param int $days Number of days to return
      */
     public static function getRecentReports($days = 2) {
-        # No => assumes just to plop in the entire expression "raw"
-        $params = array('DATE_SUB(CURDATE(), INTERVAL ' . $days .
-            ' DAY) <= p.submitdate');
-
-        return self::findPIREPS($params);
+        return self::findPIREPS(array(
+            'DATE_SUB(CURDATE(), INTERVAL '.$days.' DAY) <= p.submitdate')
+        );
     }
 
     /**
@@ -246,6 +251,7 @@ class PIREPData extends CodonData {
      *  Pass unix timestamp for the date
      */
     public static function getReportCount($date) {
+        
         $sql = 'SELECT COUNT(*) AS count 
 				FROM ' . TABLE_PREFIX . 'pireps
 				WHERE DATE(submitdate)=DATE(FROM_UNIXTIME(' . $date . '))';
@@ -417,19 +423,16 @@ class PIREPData extends CodonData {
     /**
      * Get all of a pilot's reports by status
      * 
-     * @param int  $pilotid
+     * @param int $pilotid The Pilot ID to find
      * @param integer $accept PIREP_PENDING, PIREP_ACCEPTED, PIREP_REJECTED, PIREP_INPROGRESS
      * @return
      */
     public static function getReportsByAcceptStatus($pilotid, $accept = 0) {
-        
-        return self::findPIREPS(array('pilotid' => intval($pilotid), 'accepted' => intval($accept)));
-        
-        /*$sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps
-				WHERE pilotid=' . intval($pilotid) . ' 
-					AND accepted=' . intval($accept);
-
-        return DB::get_results($sql);*/
+        return self::findPIREPS(array(
+            'pilotid' => intval($pilotid), 
+            'accepted' => intval($accept)
+            )
+        );
     }
 
     /**
@@ -443,7 +446,9 @@ class PIREPData extends CodonData {
 
         $total = DB::get_row($sql);
 
-        if ($total == '') return 0;
+        if ($total == '') {
+            return 0;
+        }
 
         return $total->total;
     }
@@ -456,8 +461,11 @@ class PIREPData extends CodonData {
      */
     public static function setAllExportStatus($status = true) {
         
-        if ($status === true) $status = 1;
-        else  $status = 0;
+        if ($status === true) {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
 
         $sql = 'UPDATE '.TABLE_PREFIX.'pireps SET `exported`='.$status;
 
@@ -478,8 +486,12 @@ class PIREPData extends CodonData {
      * @return
      */
     public static function setExportedStatus($pirepid, $status) {
-        if ($status === true) $status = 1;
-        else  $status = 0;
+        
+        if ($status === true) {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
 
         return self::editPIREPFields($pirepid, array('exported' => $status));
     }
@@ -489,6 +501,7 @@ class PIREPData extends CodonData {
      * Get all of the comments for a pilot report
      */
     public static function getComments($pirepid) {
+        
         $sql = 'SELECT c.*, UNIX_TIMESTAMP(c.postdate) as postdate,
 						p.firstname, p.lastname
 					FROM ' . TABLE_PREFIX . 'pirepcomments c, ' . TABLE_PREFIX . 'pilots p
@@ -969,7 +982,9 @@ class PIREPData extends CodonData {
             'revenue' => $revenue
             );
 
-        if (isset($data['load']) && $data['load'] != '') $fields['load'] = $data['load'];
+        if (isset($data['load']) && $data['load'] != '') {
+            $fields['load'] = $data['load'];
+        }
 
         return self::editPIREPFields($pirepid, $fields);
     }
@@ -988,15 +1003,16 @@ class PIREPData extends CodonData {
         if($payment_type == PILOT_PAY_HOURLY) {
             $pilotpay = $data['pilotpay'] * $data['flighttime'];   
         } else {
-            $pilot = $data['pilotpay'];
+            $pilotpay = $data['pilotpay'];
         }
 
-        if ($data['expenses'] == '') $data['expenses'] = 0;
+        if ($data['expenses'] == '') {
+            $data['expenses'] = 0;
+        }
 
         $revenue = $gross - $data['expenses'] - $data['fuelprice'] - $pilotpay;
 
         return $revenue;
-
     }
 
     /**
