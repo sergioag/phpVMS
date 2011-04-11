@@ -19,13 +19,12 @@
 
 function pre_module_load() {
     
-    if (is_dir(CORE_PATH . '/local.config.php')) {
+    if (is_dir(CORE_PATH.'/local.config.php')) {
         Debug::showCritical('core/local.config.php is a folder, not a file. Please delete and create as a file');
         die();
     }
 
-    if (!file_exists(CORE_PATH . '/local.config.php') || filesize(CORE_PATH .
-        '/local.config.php') == 0) {
+    if (!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
         Debug::showCritical('phpVMS has not been installed yet! Goto <a href="install/install.php">install/install.php</a> to start!');
         exit;
     }
@@ -122,18 +121,18 @@ function cndebug($txt) {
 
 function adminaction($path) {
     if ($path[0] != '/') $path = '/' . $path;
-
     return SITE_URL . '/admin/action.php' . $path;
 }
 
+/**
+ * Get the proper url to the action.php script
+ * 
+ * @param mixed $path
+ * @return string
+ */
 function actionurl($path) {
     
     if ($path[0] != '/') $path = '/' . $path;
-
-    /*if (Config::Get('URL_REWRITE') == true) {
-        return SITE_URL . $path;
-    }*/
-
     return SITE_URL . '/action.php' . $path;
 }
 

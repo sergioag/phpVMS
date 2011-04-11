@@ -181,26 +181,33 @@ class PIREPData extends CodonData {
      * only want to return the latest n number of reports, use
      * getRecentReportsByCount()
      * 
+     * @param int $count Number of PIREPS to return
+     * @param int $start The record # to start from (for pagination)
+     * @return array List of PIREPs
      */
     public static function getAllReports($count = '', $start = 0) {
         return self::findPIREPS(array(), $count, $start);
     }
 
     /**
-     * Get all of the reports by the accepted status. Use the
-     * constants:
+     * Get all of the reports by the accepted status. Use the constants:
      * PIREP_PENDING, PIREP_ACCEPTED, PIREP_REJECTED,PIREP_INPROGRESS
+     * 
+     * @param int $accepted 
      */
     public static function getAllReportsByAccept($accepted = 0) {
-        $params = array('p.accepted' => $accept);
-
-        return self::findPIREPS($params);
+        return self::findPIREPS(array('p.accepted' => $accept));
     }
 
-    public static function getAllReportsFromHub($accepted = 0, $hub) {
-        $params = array('p.accepted' => $accepted, 'u.hub' => $hub);
-
-        return self::findPIREPS($params);
+    /**
+     * PIREPData::getAllReportsFromHub()
+     * 
+     * @param string $hub
+     * @param integer $accepted
+     * @return array All of the PIREPs for this hub
+     */
+    public static function getAllReportsFromHub($hub, $accepted = 0) {
+        return self::findPIREPS(array('p.accepted' => $accepted, 'u.hub' => $hub));
     }
 
     /**
@@ -287,6 +294,7 @@ class PIREPData extends CodonData {
      * Get all of the details for a PIREP, including lat/long of the airports
      */
     public static function getReportDetails($pirepid) {
+        
         $sql = 'SELECT p.*, s.*, s.id AS scheduleid, p.route, p.route_details,
 					u.pilotid, u.firstname, u.lastname, u.email, u.rank,
 					dep.name as depname, dep.lat AS deplat, dep.lng AS deplng,
@@ -294,7 +302,7 @@ class PIREPData extends CodonData {
 				    p.code, p.flightnum, p.depicao, p.arricao,  p.price AS price,
 				    a.id as aircraftid, a.name as aircraft, a.registration, p.flighttime,
 				    p.distance, UNIX_TIMESTAMP(p.submitdate) as submitdate, p.accepted, p.log
-				FROM ' . TABLE_PREFIX . 'pilots u, ' . TABLE_PREFIX . 'pireps p
+				FROM '.TABLE_PREFIX.'pilots u, '.TABLE_PREFIX.'pireps p
 					LEFT JOIN ' . TABLE_PREFIX . 'airports AS dep ON dep.icao = p.depicao
 					LEFT JOIN ' . TABLE_PREFIX . 'airports AS arr ON arr.icao = p.arricao
 					LEFT JOIN ' . TABLE_PREFIX . 'aircraft a ON a.id = p.aircraft
@@ -368,9 +376,6 @@ class PIREPData extends CodonData {
                 $row->route_details = unserialize($row->route_details);
             } else {
                 $row->route_details = NavData::parseRoute($row);
-
-                # Save it for future?
-                //PIREPData::updatePIREPFields($row->pirepid, array('route_details'=>serialize($row->route_details)));
             }
 
         }
@@ -379,17 +384,27 @@ class PIREPData extends CodonData {
         return $row;
     }
 
+
     /**
      * Get the latest reports for a pilot
+     * 
+     * @param int $pilotid Pilot ID to retrieve last reports for
+     * @param int $count Number of reports to return
+     * @param string $status Status type to return (only accepted, etc) 
+     * @return
      */
     public static function getLastReports($pilotid, $count = 1, $status = '') {
+        
+        if($pilotid == '') {
+            return false;
+        }
         
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps
 					WHERE pilotid=' . intval($pilotid);
 
         # Check it via the status
         if ($status != '') {
-            $sql .= ' AND accepted=' . $status;
+            $sql .= ' AND accepted=' . intval($status);
         }
 
         $sql .= ' ORDER BY submitdate DESC
@@ -408,18 +423,21 @@ class PIREPData extends CodonData {
      */
     public static function getReportsByAcceptStatus($pilotid, $accept = 0) {
         
-        $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps
+        return self::findPIREPS(array('pilotid' => intval($pilotid), 'accepted' => intval($accept)));
+        
+        /*$sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pireps
 				WHERE pilotid=' . intval($pilotid) . ' 
 					AND accepted=' . intval($accept);
 
-        return DB::get_results($sql);
+        return DB::get_results($sql);*/
     }
 
     /**
      * Get the count of comments
      */
     public static function getCommentCount($pirepid) {
-        $sql = 'SELECT COUNT(*) AS total FROM ' . TABLE_PREFIX . 'pirepcomments
+        
+        $sql = 'SELECT COUNT(*) AS total FROM '.TABLE_PREFIX.'pirepcomments
 					WHERE pirepid=' . $pirepid . '
 					GROUP BY pirepid';
 
@@ -441,8 +459,7 @@ class PIREPData extends CodonData {
         if ($status === true) $status = 1;
         else  $status = 0;
 
-        $sql = 'UPDATE ' . TABLE_PREFIX . 'pireps
-				SET `exported`=' . $status;
+        $sql = 'UPDATE '.TABLE_PREFIX.'pireps SET `exported`='.$status;
 
         $res = DB::query($sql);
 

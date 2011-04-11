@@ -304,7 +304,7 @@ Config::Set('ADMIN_SKIN', 'layout');
  */
 
 $revision = file_get_contents(CORE_PATH.'/version');
-define('PHPVMS_VERSION', '2.1.'.$revision);
+define('PHPVMS_VERSION', $revision);
 
 Config::Set('TEMPLATE_USE_CACHE', false);
 Config::Set('TEMPLATE_CACHE_EXPIRE', '24');
