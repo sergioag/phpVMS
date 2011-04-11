@@ -32,6 +32,13 @@ function pre_module_load() {
 
     SiteData::loadSiteSettings();
     Auth::StartAuth();
+    
+    # Set a "authuser" super variable, so it's available in every template...
+    if(Auth::LoggedIn() === true) {
+        Template::set('authuser', Auth::$userinfo);
+    } else {
+        Template::set('authuser', null);
+    }
 }
 
 function post_module_load() {
