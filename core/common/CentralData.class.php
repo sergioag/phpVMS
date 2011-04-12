@@ -20,12 +20,17 @@
 class CentralData extends CodonData {
     
     public static $xml;
+    public static $json;
+    
     public static $xml_data = '';
     public static $xml_response = '';
+    
     public static $debug = false;
     public static $response;
     public static $last_error;
     public static $method;
+    
+    public static $type = 'xml';
 
     /*	DO NOT try to circumvent these limits.
     They're also tracked server-side. If you change them,
@@ -56,11 +61,11 @@ class CentralData extends CodonData {
     }
 
     /**
-     * CentralData::send_xml()
+     * CentralData::sendToCentral()
      * 
      * @return
      */
-    private static function send_xml() {
+    private static function sendToCentral() {
         
         // Cover old and new format
         $api_server = Config::Get('VACENTRAL_API_SERVER');
@@ -68,15 +73,20 @@ class CentralData extends CodonData {
             $api_server = Config::Get('PHPVMS_API_SERVER');
         }
 
-        ob_start();
+       # ob_start();
         $web_service = new CodonWebService();
-        $options = array(
-            CURLOPT_USERAGENT => 'phpVMS ('.PHPVMS_VERSION.')',
-        );
+        $web_service->setOptions(array(CURLOPT_USERAGENT => 'phpVMS ('.PHPVMS_VERSION.')'));
         
-        $web_service->setOptions($options);
+        if(self::$type == 'xml') {
+            $data = self::$xml->asXML();
+        } else {
+            $data = json_encode(self::$json);
+            echo '<pre>';
+            print_r(self::$json);
+            echo '</pre>';
+        }
         
-        self::$xml_response = $web_service->post($api_server . '/update', self::$xml->asXML());
+        self::$xml_response = $web_service->post($api_server . '/update', $data);
 
         if (!self::$xml_response) {
             if (Config::Get('VACENTRAL_DEBUG_MODE') == true) {
@@ -109,7 +119,7 @@ class CentralData extends CodonData {
             # Extra detail
             if (Config::Get('VACENTRAL_DEBUG_DETAIL') == '2') {
                 Debug::log('SENT XML: ', 'vacentral');
-                Debug::log(self::$xml->asXML(), 'vacentral');
+                Debug::log($data, 'vacentral');
 
                 Debug::log('RECIEVED XML: ', 'vacentral');
                 Debug::log(self::$response->asXML(), 'vacentral');
@@ -130,33 +140,96 @@ class CentralData extends CodonData {
 
         return true;
     }
-
+    
     /**
-     * CentralData::set_xml()
+     * CentralData::startBody()
      * 
      * @param mixed $method
-     * @return
+     * @return void
      */
-    public static function set_xml($method) {
-        self::$xml = new SimpleXMLElement('<vacentral/>');
+    protected static function startBody($method) {
 
         $api_key = Config::Get('VACENTRAL_API_KEY');
-        if ($api_key == '') {
-            $api_key = Config::Get('PHPVMS_API_KEY');
+        
+        # Determine the type
+        self::$type = strtolower(trim(Config::Get('VACENTRAL_DATA_FORMAT')));
+        if(self::$type !== 'xml' || self::$type !== 'json') {
+            self::$type = 'xml';
         }
-
-        self::$xml->addChild('siteurl', SITE_URL);
-        self::$xml->addChild('apikey', $api_key);
-        self::$xml->addChild('version', PHPVMS_VERSION);
-
-        if (Config::Get('VACENTRAL_DEBUG_MODE') == true) {
-            self::$xml->addChild('debug', true);
+        
+        if(self::$type == 'xml') {
+            self::$xml = new SimpleXMLElement('<vacentral/>');
+        } elseif(self::$type == 'json') {
+            self::$json = array();
         }
-
+        
         self::$method = $method;
-        self::$xml->addChild('method', $method);
+        self::addElement(null, 'siteurl', SITE_URL);
+        self::addElement(null, 'apikey', $api_key);
+        self::addElement(null, 'version', PHPVMS_VERSION);
+        self::addElement(null, 'method', $method);
+        
+        if (Config::Get('VACENTRAL_DEBUG_MODE') == true) {
+            self::addElement(null, 'debug', true);
+        }
     }
-
+    
+    /**
+     * CentralData::addElement()
+     * 
+     * @return void
+     */
+    protected static function addElement($parent = null, $name, $value = '', $children = array()) {
+        
+        if(self::$type === 'xml') {
+            
+            if($parent === null) {
+                $child = self::$xml->addChild($name, $value);
+            } else {
+                $child = $parent->addChild($name, $value);
+            }
+            
+            # Add any children who might exist...            
+            if(count($children) > 0) {
+                foreach($children as $key => $value) {
+                    $child->addChild($key, $value);
+                }
+            }
+            
+            return $child; 
+                                    
+        } elseif(self::$type === 'json') {
+            
+            if($parent === null) {
+                if(is_array($children) && count($children) > 0) {
+                    
+                    if(!is_array(self::$json[$name])) {
+                        self::$json[$name] = array();
+                    }
+                    
+                    self::$json[$name][] = $children;
+                } else {
+                    self::$json[$name] = $value;
+                }
+                
+            } else {
+                if(is_array($children) && count($children) > 0) {
+                    
+                    if(!is_array(self::$json[$parent][$name])) {
+                        self::$json[$parent][$name] = array();
+                    }
+                    
+                    self::$json[$parent][$name][] = $children;
+                } else {
+                    self::$json[$parent][$name] = $value;
+                }
+            }
+            
+            return $name;
+        }
+    
+    }    
+    
     /**
      * CentralData::send_vastats()
      * 
@@ -173,37 +246,39 @@ class CentralData extends CodonData {
             }
         }
 
-        $vainfo = self::set_xml('update_vainfo');
-        self::$xml->addChild('pilotcount', StatsData::PilotCount());
-        self::$xml->addChild('totalhours', StatsData::TotalHours());
-        self::$xml->addChild('totalflights', StatsData::TotalFlights());
-        self::$xml->addChild('totalschedules', StatsData::TotalSchedules());
+        self::startBody('update_vainfo');
+        self::addElement(null, 'pilotcount', StatsData::PilotCount());
+        self::addElement(null, 'totalhours', StatsData::TotalHours());
+        self::addElement(null, 'totalflights', StatsData::TotalFlights());
+        self::addElement(null, 'totalschedules', StatsData::TotalSchedules());
         
         $all_news = SiteData::getAllNews();
         if(count($all_news) > 0) {
             
-            $news_parent = self::$xml->addChild('newsitems');
+            $news_parent = self::addElement(null, 'newsitems');
             foreach($all_news as $news) {
                 
                 $body = str_ireplace('<br>', "\n", $news->body);
                 $body = str_ireplace('<br />', "\n", $news->body);
                 $body = htmlentities(strip_tags($body));
                 
-                $news_xml = $news_parent->addChild('news');
-                $news_xml->addChild('id', $news->id);
-                $news_xml->addChild('subject', $news->subject);
-                $news_xml->addChild('body', $body);
-                $news_xml->addChild('postdate', $news->postdate);
-                $news_xml->addChild('postedby', $news->postedby);
+                $news_xml = self::addElement($news_parent, 'news', null, array(
+                        'id' => $news->id,
+                        'subject' => $news->subject,
+                        'body' => $body,
+                        'postdate' => $news->postdate,
+                        'postedby' => $news->postedby,
+                    )
+                );
             }
         }
         
         # Some of the settings
-        self::$xml->addChild('livefuel', Config::Get('FUEL_GET_LIVE_PRICE'));
+        self::addElement(null, 'livefuel', Config::Get('FUEL_GET_LIVE_PRICE'));
 
         # Package and send
         CronData::set_lastupdate('update_vainfo');
-        return self::send_xml();
+        return self::sendToCentral();
     }
     
     /**
@@ -215,27 +290,27 @@ class CentralData extends CodonData {
         
         if (!self::central_enabled()) return false;
         
-        self::set_xml('vanews');
-        
         $all_news = SiteData::getAllNews();
         if(!is_array($all_news) && count($all_news) == 0) {
             return false;
         }
         
-        self::$xml->addChild('total', count($all));
-        $news_parent = self::$xml->addChild('newsitems');
+        self::startBody('vanews');
+        self::addElement(null, 'total', count($all));
+        $news_parent = self::addElement('newsitems');
         foreach($all_news as $news) {
-            $news_xml = $news_parent->addChild('news');
-            
-            $news_xml->addChild('id', $news->id);
-            $news_xml->addChild('subject', $news->subject);
-            $news_xml->addChild('body', '<![CDATA['.$news->body.']]>');
-            $news_xml->addChild('postdate', $news->postdate);
-            $news_xml->addChild('postedby', $news->postedby);
+            $news_xml = self::addElement($news_parent, 'news', null, array(
+                'id' => $news->id,
+                'subject' => $news->subject,
+                'body' => '<![CDATA['.$news->body.']]>', 
+                'postdate' => $news->postdate,
+                'postedby' => $news->postedby,
+            ));
+
         }
         
         CronData::set_lastupdate('vanews');
-        $res = self::send_xml();
+        $res = self::sendToCentral();
 
         return $res;
     }
@@ -256,35 +331,35 @@ class CentralData extends CodonData {
             }
         }
 
-        self::set_xml('update_schedules');
+        $schedules = SchedulesData::findSchedules(array('s.enabled' => '1'));
+        if (!is_array($schedules)) {
+            return false;
+        }
 
-        $params = array('s.enabled' => '1');
-        $schedules = SchedulesData::findSchedules($params);
-
-        if (!is_array($schedules)) return false;
-
-        self::$xml->addChild('total', count($schedules));
-        $schedules_parent = self::$xml->addChild('schedules');
+        self::startBody('update_schedules');
+        self::addElement(null, 'total', count($schedules));
+        $schedules_parent = self::addElement(null, 'schedules');
         foreach ($schedules as $sched) {
-            $schedule_xml = $schedules_parent->addChild('schedule');
-
-            $schedule_xml->addChild('flightnum', $sched->code . $sched->flightnum);
-            $schedule_xml->addChild('depicao', $sched->depicao);
-            $schedule_xml->addChild('arricao', $sched->arricao);
-            $schedule_xml->addChild('aircraft', $sched->aircraft);
-            $schedule_xml->addChild('registration', $sched->registration);
-            $schedule_xml->addChild('distance', $sched->distance);
-            $schedule_xml->addChild('daysofweek', $sched->daysofweek);
-            $schedule_xml->addChild('price', $sched->price);
-            $schedule_xml->addChild('flighttype', $sched->flighttype);
-            $schedule_xml->addChild('notes', $sched->notes);
-            $schedule_xml->addChild('deptime', $sched->deptime);
-            $schedule_xml->addChild('arrtime', $sched->arrtime);
+            
+            $sp = self::addElement($schedules_parent, 'schedule', null, array(
+                'flightnum' => $sched->code . $sched->flightnum,
+                'depicao' => $sched->depicao,
+                'arricao' => $sched->arricao,
+                'aircraft' => $sched->aircraft,
+                'registration' => $sched->registration,
+                'distance' => $sched->distance,
+                'daysofweek' => $sched->daysofweek,
+                'price' => $sched->price,
+                'flighttype' => $sched->flighttype,
+                'notes' => $sched->notes,
+                'deptime' => $sched->deptime,
+                'arrtime' => $sched->arrtime,
+            ));
         }
 
         # Package and send
         CronData::set_lastupdate('update_schedules');
-        $res = self::send_xml();
+        $res = self::sendToCentral();
 
         return $res;
     }
@@ -294,23 +369,24 @@ class CentralData extends CodonData {
      * 
      * @return
      */
-    protected static function process_airport_list() {
+    /*protected static function process_airport_list() {
         
-        self::set_xml('process_airport_list');
+        self::startBody('process_airport_list');
 
         foreach (self::$response->airport as $apt) {
             // Get from API
             $apt = OperationsData::GetAirportInfo($apt->icao);
             if ($apt) {
-                $airport = self::$xml->addChild('airport');
-                $airport->addChild('icao', $apt->icao);
-                $airport->addChild('name', $apt->name);
-                $airport->addChild('location', $apt->country);
-                $airport->addChild('lat', $apt->lat);
-                $airport->addChild('lng', $apt->lng);
+                $airport = self::addElement(null, 'airport', null, array(
+                    'icao' => $apt->icao,
+                    'name' => $apt->name,
+                    'location' => $apt->country,
+                    'lat' => $apt->lat,
+                    'lng' => $apt->lng,
+                ));
             }
         }
-    }
+    }*/
 
     /**
      * CentralData::send_pilots()
@@ -318,6 +394,7 @@ class CentralData extends CodonData {
      * @return
      */
     public static function send_pilots() {
+        
         if (!self::central_enabled()) return false;
 
         if (self::$debug === false) {
@@ -326,22 +403,23 @@ class CentralData extends CodonData {
                 return false;
             }
         }
-
-        self::set_xml('update_pilots');
-
-        $allpilots = PilotData::GetAllPilots();
-        self::$xml->addChild('total', count($allpilots));
-
+        
+        if(!($allpilots = PilotData::getAllPilots())) {
+            return false;
+        }        
+        
+        self::startBody('update_pilots');
+        self::addElement(null, 'total', count($allpilots));
         foreach ($allpilots as $pilot) {
-            $pilot_xml = self::$xml->addChild('pilot');
-            $pilot_xml->addChild('pilotid', PilotData::GetPilotCode($pilot->code, $pilot->
-                pilotid));
-            $pilot_xml->addChild('pilotname', $pilot->firstname . ' ' . $pilot->lastname);
-            $pilot_xml->addChild('location', $pilot->location);
+            $pc = self::addElement(null, 'pilot', null, array(
+                'pilotid' => PilotData::GetPilotCode($pilot->code, $pilot->pilotid),
+                'pilotname' => $pilot->firstname . ' ' . $pilot->lastname,
+                'location' => $pilot->location,
+            ));
         }
 
         CronData::set_lastupdate('update_pilots');
-        return self::send_xml();
+        return self::sendToCentral();
     }
 
     /**
@@ -350,6 +428,7 @@ class CentralData extends CodonData {
      * @return
      */
     public static function send_all_pireps() {
+        
         if (!self::central_enabled()) return false;
 
         if (self::$debug === false) {
@@ -359,18 +438,19 @@ class CentralData extends CodonData {
             }
         }
 
-        self::set_xml('update_pireps');
+        $allpireps = PIREPData::findPIREPS(array(
+            'DATE_SUB(CURDATE(), INTERVAL 6 MONTH) <= p.submitdate'
+        ));
 
-        //$allpireps = PIREPData::GetAllReports();
-        $params = array('DATE_SUB(CURDATE(), INTERVAL 6 MONTH) <= p.submitdate');
-        $allpireps = PIREPData::findPIREPS($params);
-
-        if (!$allpireps) return false;
+        if (!$allpireps) {
+            return false;
+        }
 
         // Set them all to have not been exported
         PIREPData::setAllExportStatus(false);
 
-        self::$xml->addChild('total', count($allpireps));
+        self::startBody('update_pireps');
+        self::addElement(null, 'total', count($allpireps));
 
         foreach ($allpireps as $pirep) {
             # Skip erronious entries
@@ -380,7 +460,7 @@ class CentralData extends CodonData {
         }
 
         CronData::set_lastupdate('update_pireps');
-        $resp = self::send_xml();
+        $resp = self::sendToCentral();
 
         // Only if we get a valid response, set the PIREPs to exported
         if ($resp === true) {
@@ -396,23 +476,24 @@ class CentralData extends CodonData {
      * @return
      */
     public static function send_pirep($pirep_id) {
+        
         if (!self::central_enabled()) return false;
 
         if ($pirep_id == '') {
             return;
         }
 
-        self::set_xml('add_pirep');
-
-        $pirep = PIREPData::getReportDetails($pirep_id);
+        if (!($pirep = PIREPData::getReportDetails($pirep_id))) {
+            return false;
+        }
+        
         PIREPData::setExportedStatus($pirep_id, false);
 
-        if (!$pirep) return false;
-
+        self::startBody('add_pirep');
         self::get_pirep_xml($pirep);
 
         CronData::set_lastupdate('add_pirep');
-        $resp = self::send_xml();
+        $resp = self::sendToCentral();
 
         if ($resp === true) {
             PIREPData::setExportedStatus($pirep_id, true);
@@ -428,27 +509,28 @@ class CentralData extends CodonData {
      */
     protected static function get_pirep_xml($pirep) {
         
-        $pilotid = PilotData::GetPilotCode($pirep->code, $pirep->pilotid);
+        $pilotid = PilotData::getPilotCode($pirep->code, $pirep->pilotid);
 
-        $pirep_xml = self::$xml->addChild('pirep');
-        $pirep_xml->addChild('uniqueid', $pirep->pirepid);
-        $pirep_xml->addChild('pilotid', $pilotid);
-        $pirep_xml->addChild('pilotname', $pirep->firstname . ' ' . $pirep->lastname);
-        $pirep_xml->addChild('flightnum', $pirep->code . $pirep->flightnum);
-        $pirep_xml->addChild('depicao', $pirep->depicao);
-        $pirep_xml->addChild('arricao', $pirep->arricao);
-        $pirep_xml->addChild('aircraft', $pirep->aircraft);
-        $pirep_xml->addChild('registration', $pirep->registration);
-        $pirep_xml->addChild('flighttime', $pirep->flighttime_stamp);
-        $pirep_xml->addChild('submitdate', $pirep->submitdate);
-        $pirep_xml->addChild('flighttype', $pirep->flighttype);
-        $pirep_xml->addChild('load', $pirep->load);
-        $pirep_xml->addChild('fuelused', $pirep->fuelused);
-        $pirep_xml->addChild('fuelprice', $pirep->fuelprice);
-        $pirep_xml->addChild('pilotpay', $pirep->pilotpay);
-        $pirep_xml->addChild('price', $pirep->price);
-        $pirep_xml->addChild('source', $pirep->source);
-        $pirep_xml->addChild('revenue', $pirep->revenue);
+        $pirep_xml = self::addElement(null, 'pirep', null, array(
+            'uniqueid' => $pirep->pirepid,
+            'pilotid' => $pilotid,
+            'pilotname' => $pirep->firstname . ' ' . $pirep->lastname,
+            'flightnum' => $pirep->code . $pirep->flightnum,
+            'depicao' => $pirep->depicao,
+            'arricao' => $pirep->arricao,
+            'aircraft' => $pirep->aircraft,
+            'registration' => $pirep->registration,
+            'flighttime' => $pirep->flighttime_stamp,
+            'submitdate' => $pirep->submitdate,
+            'flighttype' => $pirep->flighttype,
+            'load' => $pirep->load,
+            'fuelused' => $pirep->fuelused,
+            'fuelprice' => $pirep->fuelprice, 
+            'pilotpay' => $pirep->pilotpay,
+            'price' => $pirep->price,
+            'source' => $pirep->source,
+            'revenue' => $pirep->revenue,
+        ));
     }
 
     /**
@@ -460,18 +542,18 @@ class CentralData extends CodonData {
         
         if (!self::central_enabled()) return false;
 
-        $acars_flights = ACARSData::GetAllFlights();
+        if (!($acars_flights = ACARSData::getAllFlights())) {
+            return false;
+        }
 
-        if (!$acars_flights) return false;
-
-        self::set_xml('update_acars');
+        self::startBody('update_acars');
 
         foreach ($acars_flights as $flight) {
             self::create_acars_flight($flight);
         }
 
         CronData::set_lastupdate('update_acars');
-        return self::send_xml();
+        return self::sendToCentral();
     }
 
     /**
@@ -481,13 +563,14 @@ class CentralData extends CodonData {
      * @return
      */
     public static function send_acars_data($flight) {
+        
         if (!self::central_enabled()) return false;
 
-        self::set_xml('update_acars_flight');
+        self::startBody('update_acars_flight');
         self::create_acars_flight($flight);
 
         CronData::set_lastupdate('update_acars');
-        return self::send_xml();
+        return self::sendToCentral();
     }
 
     /**
@@ -499,7 +582,7 @@ class CentralData extends CodonData {
     protected static function create_acars_flight($flight) {
         
         if (is_object($flight)) {
-            $flight = (array )$flight;
+            $flight = (array) $flight;
         }
 
         // If a unique was specified
@@ -507,25 +590,27 @@ class CentralData extends CodonData {
             $flight['id'] = $flight['unique_id'];
         }
 
-        $acars_xml = self::$xml->addChild('flight');
-        $acars_xml->addChild('unique_id', $flight['id']);
-        $acars_xml->addChild('pilotid', PilotData::GetPilotCode($flight['code'], $flight['pilotid']));
-        $acars_xml->addChild('pilotname', $flight['pilotname']);
-        $acars_xml->addChild('flightnum', $flight['flightnum']);
-        $acars_xml->addChild('aircraft', $flight['aircraft']);
-        $acars_xml->addChild('lat', $flight['lat']);
-        $acars_xml->addChild('lng', $flight['lng']);
-        $acars_xml->addChild('depicao', $flight['depicao']);
-        $acars_xml->addChild('arricao', $flight['arricao']);
-        $acars_xml->addChild('deptime', $flight['deptime']);
-        $acars_xml->addChild('arrtime', $flight['arrtime']);
-        $acars_xml->addChild('heading', $flight['heading']);
-        $acars_xml->addChild('phase', $flight['phasedetail']);
-        $acars_xml->addChild('alt', $flight['alt']);
-        $acars_xml->addChild('gs', $flight['gs']);
-        $acars_xml->addChild('distremain', $flight['distremain']);
-        $acars_xml->addChild('timeremain', $flight['timeremaining']);
-        $acars_xml->addChild('client', $flight['client']);
-        $acars_xml->addChild('lastupdate', $flight['lastupdate']);
+        $acars_xml = self::addElement(null, 'flight', null, array(
+            'unique_id' => $flight['id'],
+            'pilotid' => PilotData::GetPilotCode($flight['code'], $flight['pilotid']),
+            'pilotname' => $flight['pilotname'],
+            'flightnum' => $flight['flightnum'],
+            'aircraft' => $flight['aircraft'],
+            'lat' => $flight['lat'],
+            'lng' => $flight['lng'],
+            'depicao' => $flight['depicao'],
+            'arricao' => $flight['arricao'],
+            'deptime' => $flight['deptime'],
+            'arrtime' => $flight['arrtime'],
+            'heading' => $flight['heading'],
+            'phase' => $flight['phasedetail'],
+            'alt' => $flight['alt'],
+            'gs' => $flight['gs'],
+            'distremain' => $flight['distremain'],
+            'timeremain' => $flight['timeremaining'],
+            'client' => $flight['client'],
+            'lastupdate' => $flight['lastupdate']
+        ));
+        
     }
 }

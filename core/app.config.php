@@ -303,7 +303,7 @@ Config::Set('ADMIN_SKIN', 'layout');
  * 
  */
 
-$revision = file_get_contents(CORE_PATH.'/version');
+$revision = trim(file_get_contents(CORE_PATH.'/version'));
 define('PHPVMS_VERSION', $revision);
 
 Config::Set('TEMPLATE_USE_CACHE', false);
@@ -419,6 +419,7 @@ Config::Set('VACENTRAL_DEBUG_MODE', false);
 Config::Set('VACENTRAL_DEBUG_DETAIL', 0);
 Config::Set('VACENTRAL_API_SERVER', 'http://api.phpvms.net');
 Config::Set('VACENTRAL_API_KEY', '');
+Config::Set('VACENTRAL_DATA_FORMAT', 'xml');
 
 /**
  * Constants

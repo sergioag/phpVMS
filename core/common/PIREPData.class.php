@@ -70,8 +70,7 @@ class PIREPData extends CodonData {
             $sql .= ' OFFSET ' . $start;
         }
 
-        $ret = DB::get_results($sql);
-        return $ret;
+        return DB::get_results($sql);
     }
 
     /**
@@ -1036,29 +1035,17 @@ class PIREPData extends CodonData {
         
         $pirepid = intval($pirepid);
         $pirep_details = self::getReportDetails($pirepid);
+        
+        $delete_tables = array(
+            'pireps', 'pirepcomments', 'pirepvalues'
+        );
+        
+        foreach($delete_tables as $table) {
+            $sql = 'DELETE FROM '.TABLE_PREFIX.$table
+                 .' WHERE `pirepid`='.intval($pirepid);
+            DB::query($sql);
+        }
 
-        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'pireps
-					WHERE pirepid=' . $pirepid;
-
-        DB::query($sql);
-
-        # Delete any comments and fields
-        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'pirepcomments
-					WHERE pirepid=' . $pirepid;
-
-        DB::query($sql);
-
-        # Delete any custom field data
-        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'pirepvalues
-					WHERE pirepid=' . $pirepid;
-
-        DB::query($sql);
-
-        # Check if this was accepted report
-        #	If it was, remove it from that pilot's stats
-        #if ($pirep_details->accepted == PIREP_ACCEPTED) {
-        #    PilotData::UpdateFlightData($pirep_details->pilotid, ($pirep_details->flighttime) * -1, -1);
-        #}
         PilotData::updatePilotStats($pirep_details->pilotid);
 
         self::UpdatePIREPFeed();
@@ -1091,15 +1078,13 @@ class PIREPData extends CodonData {
         
         # Load PIREP into RSS feed
         $reports = PIREPData::findPIREPS(array(), 10);
-        $rss = new RSSFeed('Latest Pilot Reports', SITE_URL, 'The latest pilot reports');
-
+        
         # Empty the rss file if there are no pireps
         if (!$reports) {
-            //file_put_contents(LIB_PATH.'/rss/latestpireps.rss', '');
-            $reports = array();
-            return;
+            return false;
         }
 
+        $rss = new RSSFeed('Latest Pilot Reports', SITE_URL, 'The latest pilot reports');
         foreach ($reports as $report) {
             $rss->AddItem('Report #' . $report->pirepid . ' - ' . $report->depicao . ' to ' .
                 $report->arricao, SITE_URL . '/admin/index.php?admin=viewpending', '',
@@ -1114,9 +1099,9 @@ class PIREPData extends CodonData {
      * @deprecated Use isPIREPUnderAge()
      *
      */
-    public static function PIREPUnderAge($pirepid, $age_hours) {
+    /*public static function PIREPUnderAge($pirepid, $age_hours) {
         return self::isPIREPUnderAge($pirepid, $age_hours);
-    }
+    }*/
     
     /**
      * Return true if a PIREP if under $age_hours old	
@@ -1275,11 +1260,11 @@ class PIREPData extends CodonData {
      * @return
      */
     public static function getAllFields() {
-        return DB::get_results('SELECT * FROM ' . TABLE_PREFIX . 'pirepfields');
+        return DB::get_results('SELECT * FROM '.TABLE_PREFIX.'pirepfields');
     }
 
     /**
-     * Get all of the "cusom fields" for a pirep
+     * Get all of the "custom fields" for a pirep
      */
     public static function getFieldData($pirepid) {
         $sql = 'SELECT f.title, f.name, v.value
@@ -1290,6 +1275,12 @@ class PIREPData extends CodonData {
         return DB::get_results($sql);
     }
 
+    /**
+     * PIREPData::getFieldInfo()
+     * 
+     * @param mixed $id
+     * @return
+     */
     public static function getFieldInfo($id) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pirepfields
 					WHERE fieldid=' . $id;
@@ -1297,6 +1288,13 @@ class PIREPData extends CodonData {
         return DB::get_row($sql);
     }
 
+    /**
+     * PIREPData::getFieldValue()
+     * 
+     * @param mixed $fieldid
+     * @param mixed $pirepid
+     * @return
+     */
     public static function getFieldValue($fieldid, $pirepid) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pirepvalues
 					WHERE fieldid=' . $fieldid . ' AND pirepid=' . $pirepid;
@@ -1304,10 +1302,18 @@ class PIREPData extends CodonData {
         $ret = DB::get_row($sql);
         return $ret->value;
     }
+    
+    
     /**
      * Add a custom field to be used in a PIREP
+     * 
+     * @param mixed $title
+     * @param string $type
+     * @param string $values
+     * @return
      */
     public static function addField($title, $type = '', $values = '') {
+        
         $fieldname = strtoupper(str_replace(' ', '_', $title));
         //$values = DB::escape($values);
 
@@ -1330,8 +1336,8 @@ class PIREPData extends CodonData {
         
         $fieldname = strtoupper(str_replace(' ', '_', $title));
 
-        $sql = "UPDATE " . TABLE_PREFIX . "pirepfields
-					SET title='$title',name='$fieldname', type='$type', options='$values'
+        $sql = "UPDATE ".TABLE_PREFIX."pirepfields
+					SET title='$title', name='$fieldname', type='$type', options='$values'
 					WHERE fieldid=$id";
 
         $res = DB::query($sql);
@@ -1366,12 +1372,11 @@ class PIREPData extends CodonData {
 
             if ($res) {
                 $sql = 'UPDATE ' . TABLE_PREFIX . "pirepvalues
-							SET value='$value'
-							WHERE fieldid=$field->fieldid
-								AND pirepid=$pirepid";
+						SET value='$value'
+						WHERE fieldid=$field->fieldid
+							AND pirepid=$pirepid";
             } else {
-                $sql = "INSERT INTO " . TABLE_PREFIX . "pirepvalues
-						(fieldid, pirepid, value)
+                $sql = "INSERT INTO " . TABLE_PREFIX . "pirepvalues (fieldid, pirepid, value)
 						VALUES ($field->fieldid, $pirepid, '$value')";
             }
 
