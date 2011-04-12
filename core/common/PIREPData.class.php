@@ -45,6 +45,7 @@ class PIREPData extends CodonData {
     public static function findPIREPS($params, $count = '', $start = '') {
         
         $sql = 'SELECT p.*, UNIX_TIMESTAMP(p.submitdate) as submitdate, 
+                    UNIX_TIMESTAMP(p.modifieddate) as modifieddate, 
 					u.pilotid, u.firstname, u.lastname, u.email, u.rank,
 					a.id AS aircraftid, a.name as aircraft, a.registration,
 					dep.name as depname, dep.lat AS deplat, dep.lng AS deplng,
@@ -696,6 +697,7 @@ class PIREPData extends CodonData {
         /* Export status as 0 */
         $pirepdata['exported'] = 0;
         $pirepdata['submitdate'] = 'NOW()';
+        $pirepdata['modifieddate'] = 'NOW()';
         $pirepdata['accepted'] = PIREP_PENDING;
         $pirepdata['expenselist'] = '0';
         $pirepdata['flighttype'] = $sched->flighttype;
@@ -816,6 +818,8 @@ class PIREPData extends CodonData {
             );
         }
         
+        $pirepdata['modifieddate'] = 'NOW()';
+        
         return self::editPIREPFields($pirepid, $pirepdata);
     }
 
@@ -845,6 +849,8 @@ class PIREPData extends CodonData {
             return false;
         }
 
+        $fields['modifieddate'] = 'NOW()';
+        
         $sql = "UPDATE `" . TABLE_PREFIX . "pireps` SET ";
         $sql .= DB::build_update($fields);
         $sql .= ' WHERE `pirepid`=' . $pirepid;
