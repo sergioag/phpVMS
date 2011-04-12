@@ -419,7 +419,7 @@ Config::Set('VACENTRAL_DEBUG_MODE', false);
 Config::Set('VACENTRAL_DEBUG_DETAIL', 0);
 Config::Set('VACENTRAL_API_SERVER', 'http://api.phpvms.net');
 Config::Set('VACENTRAL_API_KEY', '');
-Config::Set('VACENTRAL_DATA_FORMAT', 'xml');
+Config::Set('VACENTRAL_DATA_FORMAT', 'json');
 
 /**
  * Constants

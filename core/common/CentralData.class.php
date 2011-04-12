@@ -73,7 +73,7 @@ class CentralData extends CodonData {
             $api_server = Config::Get('PHPVMS_API_SERVER');
         }
 
-       # ob_start();
+        ob_start();
         $web_service = new CodonWebService();
         $web_service->setOptions(array(CURLOPT_USERAGENT => 'phpVMS ('.PHPVMS_VERSION.')'));
         
@@ -81,9 +81,6 @@ class CentralData extends CodonData {
             $data = self::$xml->asXML();
         } else {
             $data = json_encode(self::$json);
-            echo '<pre>';
-            print_r(self::$json);
-            echo '</pre>';
         }
         
         self::$xml_response = $web_service->post($api_server . '/update', $data);
@@ -98,7 +95,12 @@ class CentralData extends CodonData {
             return false;
         }
 
-        self::$response = @simplexml_load_string(self::$xml_response);
+        if(self::$type == 'xml') {
+            self::$response = @simplexml_load_string(self::$xml_response);    
+        } else {
+            self::$response = json_decode(self::$xml_response);
+        }
+        
         ob_end_clean();
 
         if (!is_object(self::$response)) {
@@ -153,9 +155,10 @@ class CentralData extends CodonData {
         
         # Determine the type
         self::$type = strtolower(trim(Config::Get('VACENTRAL_DATA_FORMAT')));
-        if(self::$type !== 'xml' || self::$type !== 'json') {
+        if(self::$type !== 'xml' && self::$type !== 'json') {
             self::$type = 'xml';
         }
+        
         
         if(self::$type == 'xml') {
             self::$xml = new SimpleXMLElement('<vacentral/>');
@@ -413,7 +416,7 @@ class CentralData extends CodonData {
         foreach ($allpilots as $pilot) {
             $pc = self::addElement(null, 'pilot', null, array(
                 'pilotid' => PilotData::GetPilotCode($pilot->code, $pilot->pilotid),
-                'pilotname' => $pilot->firstname . ' ' . $pilot->lastname,
+                'pilotname' => $pilot->firstname.' '.$pilot->lastname,
                 'location' => $pilot->location,
             ));
         }
@@ -439,7 +442,7 @@ class CentralData extends CodonData {
         }
 
         $allpireps = PIREPData::findPIREPS(array(
-            'DATE_SUB(CURDATE(), INTERVAL 6 MONTH) <= p.submitdate'
+            'DATE_SUB(CURDATE(), INTERVAL 3 MONTH) <= p.submitdate'
         ));
 
         if (!$allpireps) {
@@ -522,6 +525,7 @@ class CentralData extends CodonData {
             'registration' => $pirep->registration,
             'flighttime' => $pirep->flighttime_stamp,
             'submitdate' => $pirep->submitdate,
+            'modifieddate' => $pirep->modifieddate,
             'flighttype' => $pirep->flighttype,
             'load' => $pirep->load,
             'fuelused' => $pirep->fuelused,

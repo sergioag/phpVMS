@@ -14,7 +14,7 @@ c500b8b76e204f1adcb0e6562f7f4277  *./install/checkinstall.php
 4f93058c2e74d9852ef20e0b681b0300  *./install/includes/loader.inc.php
 cedea63e288808e6b85422abf21b2049  *./install/includes/Installer.class.php
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
-feca187733f80495d66720e114a1daae  *./install/sql/install.sql
+e6d1e149c2321fdb690e6761938aab43  *./install/sql/install.sql
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
 c2ac2bc16449a6c3d601357caefc78aa  *./install/fixtures/update.sql
 98645f25a6917b5922becfd8181eaef4  *./install/fixtures/install.sql
@@ -23,7 +23,7 @@ d609f74eeaea0e4849d90b1c9a48943a  *./install/checkdb.php
 71c7531e4b713e67d84e310e354ddc47  *./install/install.php
 a177b8656fca431cc0b6d53ac301c537  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
-7dbacbcbaf8a7ee6615a16e703b3372e  *./core/common/PIREPData.class.php
+9f66c1350caed20e0261969d1744ab6f  *./core/common/PIREPData.class.php
 e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 be3826eab064935f32bbd498df3c7253  *./core/common/RegistrationData.class.php
@@ -50,7 +50,7 @@ fbf1d94494b20f35987fe7800e00aafe  *./core/common/SiteData.class.php
 b7cb7e11da8f135f2012aaedcda956d8  *./core/common/OperationsData.class.php
 a0eaecd33abf5726c36087c1c488e0cd  *./core/common/CronData.class.php
 17f388a37506a1664dd1281f237f2f56  *./core/common/OFCharts.class.php
-455aeca8119fa7bcd26b4d1534a96ea1  *./core/common/CentralData.class.php
+779c649b71b4e258b1c2dd67c6cf3860  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
 0600b921789561619e2a4a83385ff5ec  *./core/templates/email_registrationdenied.tpl
 08223291dd07074c31efc018645d8ad5  *./core/templates/schedule_results.tpl
@@ -159,7 +159,7 @@ c5464e3a9e0079bd8229a1b1aa27379d  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-4da63abda43eac763353f8d3dd8c00e2  *./core/app.config.php
+71d789005f5bc09e1f3c6d9633a1495f  *./core/app.config.php
 c26d9878cab6959c8e58a14fc31fb614  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 935862c6f2d8c067c49c4af2797abebd  *./core/modules/XML/XML.php

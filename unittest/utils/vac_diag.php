@@ -93,8 +93,16 @@ echo htmlentities(formatXmlString($response));
 
 <h3>Sent Data</h3>
 <pre><?php 
-$xml = CentralData::$xml->asXML();
-echo htmlentities(formatXmlString($xml)); ?>
+if(CentralData::$type == 'xml') {
+    $xml = CentralData::$xml->asXML();
+    echo htmlentities(formatXmlString($xml)); 
+} elseif(CentralData::$type == 'json') {
+    echo '<pre>';
+    print_r(CentralData::$json);
+    echo '</pre>';
+}
+
+?>
 </pre>
 </td>
 </tr>	
