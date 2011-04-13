@@ -50,7 +50,7 @@ fbf1d94494b20f35987fe7800e00aafe  *./core/common/SiteData.class.php
 b7cb7e11da8f135f2012aaedcda956d8  *./core/common/OperationsData.class.php
 a0eaecd33abf5726c36087c1c488e0cd  *./core/common/CronData.class.php
 17f388a37506a1664dd1281f237f2f56  *./core/common/OFCharts.class.php
-779c649b71b4e258b1c2dd67c6cf3860  *./core/common/CentralData.class.php
+a93454b10af140da4b851b0907f30fb3  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
 0600b921789561619e2a4a83385ff5ec  *./core/templates/email_registrationdenied.tpl
 08223291dd07074c31efc018645d8ad5  *./core/templates/schedule_results.tpl
@@ -306,7 +306,7 @@ fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
 b912b3305bb2e94554ce6ec162610d9c  *./admin/modules/Maintenance/Maintenance.php
-6617a64370941ea0cd75695422f4b089  *./admin/modules/Dashboard/Dashboard.php
+f7c586de18decd562ddc620fcc499729  *./admin/modules/Dashboard/Dashboard.php
 5f88707e6c5e6faf726c292ee6e2a92f  *./admin/modules/PIREPAdmin/PIREPAdmin.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/avatars/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/signatures/index.php

@@ -262,7 +262,7 @@ class CentralData extends CodonData {
             foreach($all_news as $news) {
                 
                 $body = str_ireplace('<br>', "\n", $news->body);
-                $body = str_ireplace('<br />', "\n", $news->body);
+                $body = str_ireplace('<br />', "\n", $body);
                 $body = htmlentities(strip_tags($body));
                 
                 $news_xml = self::addElement($news_parent, 'news', null, array(

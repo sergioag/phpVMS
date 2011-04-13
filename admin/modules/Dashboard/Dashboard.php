@@ -133,21 +133,20 @@ class Dashboard extends CodonModule {
             /* Retrieve latest news from Feedburner RSS, in case the phpVMS site is down
             */
             $key = 'PHPVMS_NEWS_FEED';
-            $feed  = CodonCache::read($key);
-            
-            if ($feed === false) {
+            $contents  = CodonCache::read($key);
+            if ($contents === false) {
                 $contents = $file->get(Config::Get('PHPVMS_NEWS_FEED'));
-                $feed = simplexml_load_string($contents);
-                CodonCache::write($key, $feed, 'medium_well');
+                CodonCache::write($key, $contents, 'medium_well');
             }
                 
             $contents = '';
 
             $i = 1;
             $count = 5; // Show the last 5
+            $feed = simplexml_load_string($contents);
             foreach ($feed->channel->item as $news) {
-                $news_content = (string )$news->description;
-                $date_posted = str_replace('-0400', '', (string )$news->pubDate);
+                $news_content = (string) $news->description;
+                $date_posted = str_replace('-0400', '', (string) $news->pubDate);
 
                 $contents .= "<div class=\"newsitem\">
 								<b>{$news->title}</b> <br />{$news_content}
