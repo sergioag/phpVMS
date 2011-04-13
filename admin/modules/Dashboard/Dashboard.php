@@ -82,12 +82,12 @@ class Dashboard extends CodonModule {
             
             if ($feed === false) {
                 
-                $url = Config::Get('PHPVMS_API_SERVER') . '/version/get/xml/' . PHPVMS_VERSION;
+                $url = Config::Get('PHPVMS_API_SERVER') . '/version/get/json/';
 
                 # Default to fopen(), if that fails it'll use CURL
                 $file = new CodonWebService();
                 $contents = @$file->get($url);
-                
+                                
                 # Something should have been returned
                 if ($contents == '') {
                     $msg = '<br /><b>Error:</b> The phpVMS update server could not be contacted. 
@@ -98,9 +98,10 @@ class Dashboard extends CodonModule {
                     return;
                 }
                 
-                $xml = @simplexml_load_string($contents);
+                #$xml = @simplexml_load_string($contents);
+                $message = json_decode($contents);                
                 
-                if (!$xml) {
+                if (!$message) {
                     $msg = '<br /><b>Error:</b> There was an error retrieving news. It may be temporary.
     						Check to make sure allow_url_fopen is set to ON in your php.ini, or 
     						that the cURL module is installed (contact your host).';
@@ -109,13 +110,13 @@ class Dashboard extends CodonModule {
                     return;
                 }
                 
-                CodonCache::write($key, $xml, 'medium_well');
+                CodonCache::write($key, $message, 'medium_well');
             }
             
-            $version = $xml->version;
+            $version = $message->version;                        
 
             if (Config::Get('CHECK_BETA_VERSION') == true) {
-                $version = $xml->betaversion;
+                $version = $message->betaversion;
             }
 
             $postversion = intval(str_replace('.', '', trim($version)));
@@ -128,30 +129,34 @@ class Dashboard extends CodonModule {
                     $this->set('message', 'Version ' . $version . ' is available for download! Please update ASAP');
                 }
 
-                $this->set('updateinfo', Template::GetTemplate('core_error.tpl', true));
+                $this->set('updateinfo', Template::GetTemplate('core_error.tpl', true)); 
             }
 
             /* Retrieve latest news from Feedburner RSS, in case the phpVMS site is down
             */
             $key = 'PHPVMS_NEWS_FEED';
-            $contents  = CodonCache::read($key);
-            if ($contents === false) {
-                $contents = $file->get(Config::Get('PHPVMS_NEWS_FEED'));
-                CodonCache::write($key, $contents, 'medium_well');
+            $feed_contents  = CodonCache::read($key);
+            if ($feed_contents === false) {
+                $feed_contents = $file->get(Config::Get('PHPVMS_NEWS_FEED'));
+                CodonCache::write($key, $feed_contents, 'medium_well');
             }
-
+            
             $i = 1;
-            $count = 5; // Show the last 5
-            $feed = simplexml_load_string($contents);
+            $count = 5; 
+            $contents = '';
+            $feed = simplexml_load_string($feed_contents);
             foreach ($feed->channel->item as $news) {
+                                
                 $news_content = (string) $news->description;
+                $guid = (string) $news->guid;
+                $title = (string) $news->title;
                 $date_posted = str_replace('-0400', '', (string) $news->pubDate);
 
-                $contents .= "<div class=\"newsitem\">
-								<b>{$news->title}</b> <br />{$news_content}
-								<br /><br />
-								Posted: {$date_posted}
-							</div>";
+                $contents .= "<div class=\"newsitem\">";
+                $contents .= '<a href="'.$guid.'"><b>'.$title.'</b></a><br />';
+                $contents .= $news_content;
+                $contents .= '<br /><br />Posted: '.$date_posted;
+                $contents .= '</div>';
 
                 if ($i++ == $count)
                     break;
