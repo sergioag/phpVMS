@@ -307,7 +307,10 @@ class PIREPData extends CodonData {
 					arr.name as arrname, arr.lat AS arrlat, arr.lng AS arrlng,
 				    p.code, p.flightnum, p.depicao, p.arricao,  p.price AS price,
 				    a.id as aircraftid, a.name as aircraft, a.registration, p.flighttime,
-				    p.distance, UNIX_TIMESTAMP(p.submitdate) as submitdate, p.accepted, p.log
+				    p.distance, 
+                    UNIX_TIMESTAMP(p.submitdate) as submitdate, 
+                    UNIX_TIMESTAMP(p.modifieddate) as modifieddate,
+                    p.accepted, p.log
 				FROM '.TABLE_PREFIX.'pilots u, '.TABLE_PREFIX.'pireps p
 					LEFT JOIN ' . TABLE_PREFIX . 'airports AS dep ON dep.icao = p.depicao
 					LEFT JOIN ' . TABLE_PREFIX . 'airports AS arr ON arr.icao = p.arricao
