@@ -306,7 +306,7 @@ fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
 b912b3305bb2e94554ce6ec162610d9c  *./admin/modules/Maintenance/Maintenance.php
-f7c586de18decd562ddc620fcc499729  *./admin/modules/Dashboard/Dashboard.php
+95d84e5c88e0c851d88c79c5aeddb3da  *./admin/modules/Dashboard/Dashboard.php
 5f88707e6c5e6faf726c292ee6e2a92f  *./admin/modules/PIREPAdmin/PIREPAdmin.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/avatars/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/signatures/index.php

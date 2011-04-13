@@ -74,6 +74,7 @@ class Dashboard extends CodonModule {
      * Show the notification that an update is available
      */
     public function CheckForUpdates() {
+        
         if (Config::Get('CHECK_RELEASE_VERSION') == true) {
             
             $key = 'PHPVMS_LATEST_VERSION';
@@ -138,8 +139,6 @@ class Dashboard extends CodonModule {
                 $contents = $file->get(Config::Get('PHPVMS_NEWS_FEED'));
                 CodonCache::write($key, $contents, 'medium_well');
             }
-                
-            $contents = '';
 
             $i = 1;
             $count = 5; // Show the last 5
