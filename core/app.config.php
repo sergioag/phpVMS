@@ -347,6 +347,10 @@ $cache_settings = array(
 		'medium' => array(
 			'duration' => '+1 hour',
 		),
+        
+        'medium_well' => array(
+			'duration' => '+3 hour',
+		),
 		
 		'long' => array(
 			'duration' => '+6 hours'

@@ -75,34 +75,42 @@ class Dashboard extends CodonModule {
      */
     public function CheckForUpdates() {
         if (Config::Get('CHECK_RELEASE_VERSION') == true) {
-            $url = Config::Get('PHPVMS_API_SERVER') . '/version/get/xml/' . PHPVMS_VERSION;
+            
+            $key = 'PHPVMS_LATEST_VERSION';
+            $feed  = CodonCache::read($key);
+            
+            if ($feed === false) {
+                
+                $url = Config::Get('PHPVMS_API_SERVER') . '/version/get/xml/' . PHPVMS_VERSION;
 
-            # Default to fopen(), if that fails it'll use CURL
-            $file = new CodonWebService();
-            $contents = @$file->get($url);
-
-            # Something should have been returned
-            if ($contents == '') {
-                $msg = '<br /><b>Error:</b> The phpVMS update server could not be contacted. 
-						Check to make sure allow_url_fopen is set to ON in your php.ini, or 
-						that the cURL module is installed (contact your host).';
-
-                $this->set('latestnews', $msg);
-                return;
+                # Default to fopen(), if that fails it'll use CURL
+                $file = new CodonWebService();
+                $contents = @$file->get($url);
+                
+                # Something should have been returned
+                if ($contents == '') {
+                    $msg = '<br /><b>Error:</b> The phpVMS update server could not be contacted. 
+    						Check to make sure allow_url_fopen is set to ON in your php.ini, or 
+    						that the cURL module is installed (contact your host).';
+    
+                    $this->set('latestnews', $msg);
+                    return;
+                }
+                
+                $xml = @simplexml_load_string($contents);
+                
+                if (!$xml) {
+                    $msg = '<br /><b>Error:</b> There was an error retrieving news. It may be temporary.
+    						Check to make sure allow_url_fopen is set to ON in your php.ini, or 
+    						that the cURL module is installed (contact your host).';
+    
+                    $this->set('latestnews', $msg);
+                    return;
+                }
+                
+                CodonCache::write($key, $xml, 'medium_well');
             }
-
-
-            $xml = @simplexml_load_string($contents);
-
-            if (!$xml) {
-                $msg = '<br /><b>Error:</b> There was an error retrieving news. It may be temporary.
-						Check to make sure allow_url_fopen is set to ON in your php.ini, or 
-						that the cURL module is installed (contact your host).';
-
-                $this->set('latestnews', $msg);
-                return;
-            }
-
+            
             $version = $xml->version;
 
             if (Config::Get('CHECK_BETA_VERSION') == true) {
@@ -124,8 +132,15 @@ class Dashboard extends CodonModule {
 
             /* Retrieve latest news from Feedburner RSS, in case the phpVMS site is down
             */
-            $contents = $file->get(Config::Get('PHPVMS_NEWS_FEED'));
-            $feed = simplexml_load_string($contents);
+            $key = 'PHPVMS_NEWS_FEED';
+            $feed  = CodonCache::read($key);
+            
+            if ($feed === false) {
+                $contents = $file->get(Config::Get('PHPVMS_NEWS_FEED'));
+                $feed = simplexml_load_string($contents);
+                CodonCache::write($key, $feed, 'medium_well');
+            }
+                
             $contents = '';
 
             $i = 1;
