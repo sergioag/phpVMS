@@ -601,14 +601,27 @@ class PilotData extends CodonData {
      */
     public static function updatePilotStats($pilotid) {
 
+        $sql = 'SELECT 
+                  COUNT(`pirepid`) as `totalpireps`
+                  SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) as `totaltime`
+                FROM `'.TABLE_PREFIX.'pireps`
+                WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED;
+        
+        $total = DB::get_row($sql);
+
+        return self::updateProfile($pilotid, array(
+            'totalhours' => $total->totaltime, 
+            'totalflights' => $total->totalpireps, 
+        ));
+
+        /*$totalpireps = 0;
+        $totalhours = 0;
+        
         $pireps = PIREPData::findPIREPS(array(
             'p.pilotid' => $pilotid,
             'p.accepted' => PIREP_ACCEPTED
             )
         );
-
-        $totalpireps = 0;
-        $totalhours = 0;
 
         if(is_array($pireps) && count($pireps) > 0) {
             foreach ($pireps as $p) {
@@ -623,6 +636,7 @@ class PilotData extends CodonData {
         );
 
         return self::updateProfile($pilotid, $params);
+        */
     }
 
 
