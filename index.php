@@ -41,8 +41,9 @@ define('CODON_MODULES_PATH', dirname(__FILE__).'/core/modules');
 define('CODON_DEFAULT_MODULE', 'Frontpage');
 include 'core/codon.config.php';
 
-if(Config::Get('XDEBUG_BENCHMARK'))
-{
+define('SKINS_PATH', LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);
+
+if(Config::Get('XDEBUG_BENCHMARK')) {
 	$memory_start = xdebug_memory_usage();
 }
 

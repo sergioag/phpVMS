@@ -130,4 +130,3 @@ MainController::loadEngineTasks();
 if(function_exists('post_module_load'))
 	post_module_load();
 	
-define('SKINS_PATH', LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);

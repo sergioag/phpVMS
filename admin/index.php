@@ -45,29 +45,28 @@
 define('ADMIN_PANEL', true);
 include '../core/codon.config.php';
 
-if(!Auth::LoggedIn())
-{
+if(!Auth::LoggedIn()) {
 	Debug::showCritical('Please login first');
 	die();
 }
 
-if(!PilotGroups::group_has_perm(Auth::$usergroups, ACCESS_ADMIN))
-{
+if(!PilotGroups::group_has_perm(Auth::$usergroups, ACCESS_ADMIN)) {
 	Debug::showCritical('Unauthorized access');
 	die();
 }
 
-$BaseTemplate = new TemplateSet;
+$BaseTemplate = new TemplateSet();
 $tplname = Config::Get('ADMIN_SKIN');
 if($tplname == '')
 	$tplname = 'layout';
 
 //load the main skin
 $settings_file = SITE_ROOT . '/admin/lib/'.$tplname.'/'.$tplname.'.php';
-if(file_exists($settings_file))
-{
+if(file_exists($settings_file)) {
 	include $settings_file;
 }
+
+define('SKINS_PATH', SITE_ROOT . '/admin/lib/'.$tplname);
 	
 $BaseTemplate->template_path = SITE_ROOT . '/admin/lib/'.$tplname;
 $BaseTemplate->Set('title', SITE_NAME);

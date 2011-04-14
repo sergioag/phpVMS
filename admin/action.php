@@ -48,13 +48,24 @@ include '../core/codon.config.php';
 
 error_reporting(E_ALL ^ E_NOTICE);
 
-if(!Auth::LoggedIn() && !PilotGroups::group_has_perm(Auth::$usergroups, ACCESS_ADMIN))
-{
+if(!Auth::LoggedIn() && !PilotGroups::group_has_perm(Auth::$usergroups, ACCESS_ADMIN)) {
 	Debug::showCritical('Unauthorized access!');
 	die();
 }
 
+$tplname = Config::Get('ADMIN_SKIN');
+if($tplname == '') {
+    $tplname = 'layout';
+}
+    
+$settings_file = SITE_ROOT . '/admin/lib/'.$tplname.'/'.$tplname.'.php';
+if(file_exists($settings_file)) {
+	include $settings_file;
+}
+
+define('SKINS_PATH', SITE_ROOT . '/admin/lib/'.$tplname);
 Template::SetTemplatePath(dirname(__FILE__).'/templates');
+
 MainController::runAllActions();
 
 # Force connection close
