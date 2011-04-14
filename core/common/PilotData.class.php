@@ -577,21 +577,7 @@ class PilotData extends CodonData {
     public static function updateFlightData($pilotid) {
 
         return self::updatePilotStats($pilotid);
-
-        /*
-        # Update the flighttime
-        $pilotdata = PilotData::getPilotData($pilotid);
-        $flighttime = Util::addTime($pilotdata->totalhours, $flighttime);
-
-        if ($numflights == '') $numflights = 1;
-
-        $params = array(
-            'totalhours' => $flighttime, 
-            'totalflights' => ($pilotdata->totalflights + $numflights), 
-        );
-
-        return self::updateProfile($pilotid, $params);
-        */
+        
     }
 
     /**
@@ -621,30 +607,6 @@ class PilotData extends CodonData {
             'totalhours' => $total->totaltime, 
             'totalflights' => $total->totalpireps, 
         ));
-
-        /*$totalpireps = 0;
-        $totalhours = 0;
-        
-        $pireps = PIREPData::findPIREPS(array(
-            'p.pilotid' => $pilotid,
-            'p.accepted' => PIREP_ACCEPTED
-            )
-        );
-
-        if(is_array($pireps) && count($pireps) > 0) {
-            foreach ($pireps as $p) {
-                $totalpireps++;
-                $totalhours = Util::addTime($p->flighttime, $totalhours);
-            }
-        }
-
-        $params = array(
-            'totalhours' => $totalhours, 
-            'totalflights' => $totalpireps, 
-        );
-
-        return self::updateProfile($pilotid, $params);
-        */
     }
 
 
@@ -664,11 +626,11 @@ class PilotData extends CodonData {
      * 	with the values given
      *
      * $data = array(
-     * 'pilotid' => '',
-     * 'flighttime' => '',
-     * 'numflights' => '',
-     * 'totalpay' => '',
-     * 'transferhours' => '',
+     *  'pilotid' => '',
+     *  'flighttime' => '',
+     *  'numflights' => '',
+     *  'totalpay' => '',
+     *  'transferhours' => '',
      * );
      *
      * @param int $pilotid Pilot ID
@@ -707,25 +669,29 @@ class PilotData extends CodonData {
 
         /* Get the sum for flights which are pay-per-hour
          */
-        $sql = "SELECT `pirepid`, `flighttime`, `pilotpay`
-				FROM " . TABLE_PREFIX . "pireps
-				WHERE `paytype`=".PILOT_PAY_HOURLY."
-                    AND `pilotid`={$pilotid} AND `accepted`=".PIREP_ACCEPTED;
+        $sql = "SELECT 
+                (SUM((TIME_TO_SEC(`flighttime_stamp`)/60) * (`pilotpay`/60))) AS `totalpay`
+				FROM `".TABLE_PREFIX."pireps`
+				WHERE `paytype`=".PILOT_PAY_HOURLY." 
+                    AND `pilotid`={$pilotid} 
+                    AND `accepted`=".PIREP_ACCEPTED;
 
-        $results = DB::get_results($sql);
-        if(count($results) > 0) {
+        $hourly_pay = DB::get_results($sql);
+        $total += $hourly_pay->totalpay;
+        /*if(count($results) > 0) {
             foreach ($results as $row) {
                 $payupdate = self::getPilotPay($row->flighttime, $row->pilotpay);
                 $total += $payupdate;
             }
-        }
+        }*/
         
         /* Get the sum for flights which are pay-per-schedule
          */
         $sql = 'SELECT SUM(pilotpay) as total 
                 FROM '.TABLE_PREFIX."pireps
                 WHERE `paytype`=".PILOT_PAY_SCHEDULE."
-                    `pilotid`={$pilotid} AND `accepted`=".PIREP_ACCEPTED;
+                    AND `pilotid`={$pilotid} 
+                    AND `accepted`=".PIREP_ACCEPTED;
                 
         $row = DB::get_row($sql);
         if($row) {
@@ -749,10 +715,10 @@ class PilotData extends CodonData {
      */
     public static function updatePilotPay($pilotid, $flighthours, $add = true) {
         
-        $pilotid=intval($pilotid);
+        $pilotid = intval($pilotid);
         
         $sql = 'SELECT payrate 
-				FROM ' . TABLE_PREFIX . 'ranks r, ' . TABLE_PREFIX . 'pilots p 
+				FROM '.TABLE_PREFIX.'ranks r, '.TABLE_PREFIX.'pilots p 
 				WHERE p.rank=r.rank AND p.pilotid=' . $pilotid;
 
         $payrate = DB::get_row($sql);
@@ -766,7 +732,7 @@ class PilotData extends CodonData {
         }
 
         $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 
-				SET totalpay=totalpay {$add} {$payupdate}
+				SET `totalpay`=`totalpay` {$add} {$payupdate}
 				WHERE pilotid=".$pilotid;
 
         DB::query($sql);
