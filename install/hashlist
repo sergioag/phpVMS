@@ -34,7 +34,7 @@ aa2d7a256669742fbee15dd28e3f61d8  *./core/common/StatsData.class.php
 54f5d17dad817c645e9ab646371ffb39  *./core/common/SchedulesData.class.php
 e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 e45ee0c21e2f6cec822252e59a5adaad  *./core/common/Countries.class.php
-df76beb1260ad6afbfddce817fc00400  *./core/common/PilotData.class.php
+e11daf4970286360c1eeda8ab4c1c048  *./core/common/PilotData.class.php
 9daa436be5011122490d123c00326ff9  *./core/common/GoogleChart.class.php
 78ccd18aafeebb9813811a99fd58af22  *./core/common/SettingsData.class.php
 0b1afcfae4793133402aeea081826f3e  *./core/common/NavData.class.php
@@ -130,7 +130,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
 22d073e3e094e5db7cc490db9df8149b  *./core/bootstrap.inc.php
-c632a11265dcd1b4747112b12b89959f  *./core/codon.config.php
+a6fca3102a9f27d5e717e9fc7f81d4d0  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 c1e6bb7c33856c0723f1139ccf20ad9f  *./core/classes/CodonData.class.php
 fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
@@ -138,7 +138,7 @@ fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
 957e4ee1ab6724dd1a768f207cd2b5d3  *./core/classes/CodonEvent.class.php
 c8a22eae5b17b5d8b7deed4aae2e0e5a  *./core/classes/CodonCache.class.php
 5ba6c886b93edf142519b533b573d547  *./core/classes/CodonWebService.class.php
-8e037ce1a5333ee8c02e7b0f533e013c  *./core/classes/TemplateSet.class.php
+b47811d8f29e3ba03cddfe90a5e4e118  *./core/classes/TemplateSet.class.php
 aa486b04311f07e1363563a6edf65f2d  *./core/classes/MainController.class.php
 fd37aa8d637c2ba981952ab95c5f89f5  *./core/classes/CodonForm.class.php
 6ddeda5cbf3870bc2bafd140c98ceda5  *./core/classes/Util.class.php
@@ -183,7 +183,7 @@ a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
 713228773df8c23688125f98e9cb8f17  *./core/modules/Pages/Pages.php
 925c6ea3907403895286aff5d9838916  *./core/modules/Login/Login.php
 ad702069274d2c2fcafebc86806fc55f  *./core/modules/RouteMap/RouteMap.php
-90b8b5f730d33915e49dc002179fd197  *./index.php
+13ddb5bc802f1cef205872d85c1a2b33  *./index.php
 a70283e88e1840bdfdee0b414d83ce4b  *./admin/maintenance.php
 9640f3f6d81dd2adce0aa39d0f820da8  *./admin/templates/diff_showdiff.tpl
 88e45847491bc3720114b632e32f05bd  *./admin/templates/sidebar_expenses.tpl
@@ -283,7 +283,7 @@ d09d63e66e3dc5077990329100d227d3  *./admin/templates/sidebar_mailer.tpl
 00b5070a20404be0c4fff66f9b871135  *./admin/templates/pirep_addcomment.tpl
 41c5a1e1d22c034a19e44136a061c9d9  *./admin/templates/ranks_rankform.tpl
 651c1a89417a676c8737cc0fcc2de6cd  *./admin/templates/downloads_downloadform.tpl
-db51741d41836a2f96de6b82d249ed38  *./admin/index.php
+bf8c44a206a66fd9c49ac1fe070c9579  *./admin/index.php
 54610ae6edfcb9fca44114b104a027fb  *./admin/lib/layout/layout.php
 764c064e3cb5da3119901a266fd9deae  *./admin/lib/layout/header.tpl
 98460347f7f55d7659d03260572bf8bc  *./admin/lib/layout/footer.tpl
@@ -291,7 +291,7 @@ d43a6cbd0262b0d6e34bf6ba3cb82546  *./admin/lib/layout_dark/header.tpl
 ae9aa5679b1f8cc2cb06e3daad7bdeef  *./admin/lib/layout_dark/footer.tpl
 54610ae6edfcb9fca44114b104a027fb  *./admin/lib/layout_dark/layout_dark.php
 80385da1e9cc870133382762b17a38f4  *./admin/lib/phpvmsadmin.js
-53db9092a4bcd6a60cf0682434216fb7  *./admin/action.php
+4721788b33646b94d25844d0a64e3f3e  *./admin/action.php
 f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
 65e788f582caecc863b2b469c2c29220  *./admin/modules/Finance/Finance.php
@@ -360,4 +360,4 @@ c7f1ec922ec7a3fd1c61f54bc92141b2  *./lib/js/jqgrid/js/i18n/grid.locale-it.js
 538d6d09c1e2e078be9e8702b5b151df  *./lib/js/jqgrid/js/i18n/grid.locale-bg.js
 d3fef3dadffe11d89ea8aba46a6817b3  *./lib/js/jqgrid/js/jquery.jqGrid.min.js
 c2df4618a63b494d8772f9fee66c4ef4  *./lib/js/jquery.form.js
-4f8032b77616217b57e8650d5ea0a0f3  *./action.php
+3a9c3f9c46d919e69f6dc2b7569c977c  *./action.php
