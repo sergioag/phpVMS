@@ -235,14 +235,16 @@ class PilotData extends CodonData {
      */
 
     public static function changeName($pilotid, $firstname, $lastname) {
+        
         # Non-blank
         if (empty($pilotid) || empty($firstname) || empty($lastname)) {
             return false;
         }
 
-        $params = array('firstname' => $firstname, 'lastname' => $lastname, );
-
-        return self::updateProfile($pilotid, $params);
+        return self::updateProfile($pilotid, array(
+            'firstname' => $firstname, 
+            'lastname' => $lastname
+        ));
     }
 
     /**
@@ -265,8 +267,7 @@ class PilotData extends CodonData {
         $table_list = array(
             'groupmembers', 'pilots', 'adminlog', 'awardsgranted',
             'acarsdata', 'sessions', 'pireps', 'pirepcomments', 
-            'fieldvalues', 'bids', 
-            );
+            'fieldvalues', 'bids');
 
         foreach ($table_list as $table) {
             $sql = 'UPDATE `' . TABLE_PREFIX . $table . '`
@@ -289,14 +290,15 @@ class PilotData extends CodonData {
     public static function changePilotRank($pilotid, $rankid) {
         
         $rank = RanksData::getRankInfo($rankid);
-        $rank_level = RanksData::getRankLevel($rankid);
-        if (!$rank) {
+        if (!($rank_level = RanksData::getRankLevel($rankid))) {
             return false;
         }
 
-        $data = array('rankid' => $rank->rankid, 'rank' => $rank->rank, 'ranklevel' => $rank_level, );
-
-        return self::updateProfile($pilotid, $data);
+        return self::updateProfile($pilotid, array(
+            'rankid' => $rank->rankid, 
+            'rank' => $rank->rank, 
+            'ranklevel' => $rank_level
+        ));
     }
 
     /**
@@ -470,7 +472,7 @@ class PilotData extends CodonData {
      * Reject a pilot
      */
     public static function rejectPilot($pilotid) {
-        return self::DeletePilot($pilotid);
+        return self::deletePilot($pilotid);
     }
 
 
@@ -485,22 +487,16 @@ class PilotData extends CodonData {
         
         $sql = array();
         unset(self::$pilot_data[$pilotid]);
+        
+        $tables = array(
+            'acarsdata', 'bids', 'pirepcomments', 'pireps', 
+            'fieldvalues', 'groupmembers', 'pilots'
+        );
 
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'acarsdata WHERE pilotid=' . $pilotid;
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'bids WHERE pilotid=' . $pilotid;
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'pireps WHERE pilotid=' . $pilotid;
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'pilots WHERE pilotid=' . $pilotid;
-
-        # These SHOULD delete on cascade, but incase they don't
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'fieldvalues WHERE pilotid=' . $pilotid;
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'groupmembers WHERE pilotid=' . $pilotid;
-        $sql[] = 'DELETE FROM ' . TABLE_PREFIX . 'pirepcomments WHERE pilotid=' . $pilotid;
-
-        foreach ($sql as $query) {
-            $res = DB::query($query);
+        foreach ($tables as $table) {
+            $sql = 'DELETE FROM '.TABLE_PREFIX.$table.' WHERE `pilotid`='.$pilotid;
+            $res = DB::query($sql);
         }
-
-        if (DB::errno() != 0) return false;
 
         return true;
     }
@@ -512,7 +508,12 @@ class PilotData extends CodonData {
      * @return
      */
     public static function updateLogin($pilotid) {
-        return self::updateProfile($pilotid, array('lastlogin' => 'NOW()', 'lastip' => $_SERVER['REMOTE_ADDR'], ));
+        
+        return self::updateProfile($pilotid, array(
+            'lastlogin' => 'NOW()', 
+            'lastip' => $_SERVER['REMOTE_ADDR']
+        ));
+        
     }
 
     /**
@@ -523,14 +524,14 @@ class PilotData extends CodonData {
      */
     public static function getPilotHours($pilotid) {
         
-         $sql= 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) AS total_time
+         $sql= 'SELECT 
+                  SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) AS total_time
                 FROM '.TABLE_PREFIX.'pireps
-                WHERE `accepted`=' . PIREP_ACCEPTED.'
-                	AND `pilotid`=' . $pilotid;
+                WHERE `accepted`=' . PIREP_ACCEPTED.' AND `pilotid`='.$pilotid;
                     
         $result = DB::get_row($sql);
         if(!$result) {
-            return '0.0';
+            return '00:00:00';
         }
         
         return $result->total_time;
@@ -602,13 +603,20 @@ class PilotData extends CodonData {
     public static function updatePilotStats($pilotid) {
 
         $sql = 'SELECT 
-                  COUNT(`pirepid`) as `totalpireps`
+                  COUNT(`pirepid`) as `totalpireps`,
                   SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) as `totaltime`
                 FROM `'.TABLE_PREFIX.'pireps`
                 WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED;
         
         $total = DB::get_row($sql);
-
+        
+        if($total->totalpireps == 0) {
+            $total->totaltime = 0;
+        } else {
+            $time = explode(':', $total->totaltime);
+            $total->totaltime = $time[0].'.'.$time[1];
+        }
+        
         return self::updateProfile($pilotid, array(
             'totalhours' => $total->totaltime, 
             'totalflights' => $total->totalpireps, 
