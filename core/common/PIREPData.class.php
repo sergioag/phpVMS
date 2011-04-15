@@ -1198,7 +1198,7 @@ class PIREPData extends CodonData {
                 # Pay per-schedule
                 if(!empty($pirep_details->payforflight)) {
                     
-                    $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 
+                    $sql = 'UPDATE `'.TABLE_PREFIX."pilots`
             				SET totalpay=totalpay+{$pirep_details->payforflight} 
             				WHERE pilotid={$pirep_details->pilotid}";
             

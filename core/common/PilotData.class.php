@@ -384,6 +384,7 @@ class PilotData extends CodonData {
      * @return
      */
     public static function setPilotRetired($pilotid, $retired) {
+        
         if ($retired === true || $retired == '1') {
             $retired = 1;
         } else {
@@ -401,6 +402,7 @@ class PilotData extends CodonData {
      *
      */
     public static function getBackgroundImages() {
+        
         $list = array();
         $files = scandir(SITE_ROOT . '/lib/signatures/background');
 
@@ -464,8 +466,10 @@ class PilotData extends CodonData {
      * Accept the pilot (allow them into the system)
      */
     public static function acceptPilot($pilotid) {
-        return self::updateProfile($pilotid, array('confirmed' => PILOT_ACCEPTED,
-            'retired' => '0'));
+        return self::updateProfile($pilotid, array(
+            'confirmed' => PILOT_ACCEPTED,
+            'retired' => '0'
+        ));
     }
 
     /**
@@ -524,32 +528,17 @@ class PilotData extends CodonData {
      */
     public static function getPilotHours($pilotid) {
         
-         $sql= 'SELECT 
-                  SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) AS total_time
-                FROM '.TABLE_PREFIX.'pireps
-                WHERE `accepted`=' . PIREP_ACCEPTED.' AND `pilotid`='.$pilotid;
-                    
-        $result = DB::get_row($sql);
-        if(!$result) {
-            return '00:00:00';
-        }
+        $sql= 'SELECT 
+                 SUM(TIME_TO_SEC(`flighttime_stamp`)) AS `total`
+               FROM `'.TABLE_PREFIX.'pireps`
+               WHERE `accepted`=' . PIREP_ACCEPTED.' AND `pilotid`='.$pilotid;
+         
+        $totaltime = DB::get_row($sql);
+        if(!$totaltime) {
+            $totaltime->total = '00:00:00';
+        } 
         
-        return $result->total_time;
-        
-        /*$sql = 'SELECT `flighttime` FROM ' . TABLE_PREFIX . 'pireps
-				WHERE `accepted`=' . PIREP_ACCEPTED . '
-					AND `pilotid`=' . $pilotid;
-
-        $pireps = DB::get_results($sql);
-
-        if (!$pireps) return '0.0';
-
-        $total = 0;
-        foreach ($pireps as $report) {
-            $total = Util::AddTime($total, $report->flighttime);
-        }
-
-        return $total;*/
+        return $totaltime->total;
     }
 
     /**
@@ -588,23 +577,28 @@ class PilotData extends CodonData {
      */
     public static function updatePilotStats($pilotid) {
 
-        $sql = 'SELECT 
-                  COUNT(`pirepid`) as `totalpireps`,
-                  SEC_TO_TIME(SUM(TIME_TO_SEC(`flighttime_stamp`))) as `totaltime`
-                FROM `'.TABLE_PREFIX.'pireps`
-                WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED;
-        
-        $total = DB::get_row($sql);
+        $total = DB::get_row(
+            'SELECT 
+              COUNT(*) as `totalpireps`,
+              SUM(TIME_TO_SEC(`flighttime_stamp`)) as `totaltime`
+            FROM `'.TABLE_PREFIX.'pireps`
+            WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED
+        );
         
         if($total->totalpireps == 0) {
-            $total->totaltime = 0;
+            $totaltime = 0;
         } else {
-            $time = explode(':', $total->totaltime);
-            $total->totaltime = $time[0].'.'.$time[1];
+            $totaltime = DB::get_row($sql);
+            if(!$totaltime) {
+                $totaltime = '00.00';
+            } else {
+                $totaltime = explode(':', Util::secondsToTime($totaltime->total));
+                $totaltime = $totaltime[0].'.'.$totaltime[1];
+            }
         }
         
         return self::updateProfile($pilotid, array(
-            'totalhours' => $total->totaltime, 
+            'totalhours' => $totaltime, 
             'totalflights' => $total->totalpireps, 
         ));
     }
@@ -621,39 +615,6 @@ class PilotData extends CodonData {
         return self::updateProfile($pilotid, array('lastpirep' => 'NOW()'));
     }
 
-    /**
-     * Don't update the pilot's flight data, but just replace it
-     * 	with the values given
-     *
-     * $data = array(
-     *  'pilotid' => '',
-     *  'flighttime' => '',
-     *  'numflights' => '',
-     *  'totalpay' => '',
-     *  'transferhours' => '',
-     * );
-     *
-     * @param int $pilotid Pilot ID
-     * @param int $flighttime Number of flight hours
-     * @param int $numflights Number of flights
-     * @param int $totalpay The total amount of money they have
-     * @return bool Success
-     *
-     */
-    public static function replaceFlightData($params) {
-        /*$data = array(
-        'pilotid' => '',
-        'flighttime' => '',
-        'numflights' => '',
-        'totalpay' => '',
-        'transferhours' => '',
-        );*/
-
-        $pilotid = $data['pilotid'];
-        unset($data['pilotid']);
-
-        return self::updateProfile($pilotid, $params);
-    }
 
     /**
      * PilotData::resetPilotPay()
@@ -664,11 +625,8 @@ class PilotData extends CodonData {
     public static function resetPilotPay($pilotid) {
         
         $total = 0;
-
-        self::updateProfile($pilotid, array('totalpay' => 0));
-
-        /* Get the sum for flights which are pay-per-hour
-         */
+        
+        # Get the sum for flights which are pay-per-hour
         $sql = "SELECT 
                 (SUM((TIME_TO_SEC(`flighttime_stamp`)/60) * (`pilotpay`/60))) AS `totalpay`
 				FROM `".TABLE_PREFIX."pireps`
@@ -678,15 +636,8 @@ class PilotData extends CodonData {
 
         $hourly_pay = DB::get_results($sql);
         $total += $hourly_pay->totalpay;
-        /*if(count($results) > 0) {
-            foreach ($results as $row) {
-                $payupdate = self::getPilotPay($row->flighttime, $row->pilotpay);
-                $total += $payupdate;
-            }
-        }*/
         
-        /* Get the sum for flights which are pay-per-schedule
-         */
+        # Get the sum for flights which are pay-per-schedule
         $sql = 'SELECT SUM(pilotpay) as total 
                 FROM '.TABLE_PREFIX."pireps
                 WHERE `paytype`=".PILOT_PAY_SCHEDULE."
@@ -769,6 +720,7 @@ class PilotData extends CodonData {
      *
      */
     public static function findRetiredPilots() {
+        
         $days = Config::Get('PILOT_INACTIVE_TIME');
 
         if ($days == '') $days = 90;
@@ -832,9 +784,10 @@ class PilotData extends CodonData {
         if (!$allfields) return true;
 
         foreach ($allfields as $field) {
+            
             $sql = 'SELECT id FROM ' . TABLE_PREFIX . 'fieldvalues 
-						WHERE fieldid=' . $field->fieldid . ' 
-							AND pilotid=' . $pilotid;
+					WHERE fieldid=' . $field->fieldid . ' 
+						AND pilotid=' . $pilotid;
 
             $res = DB::get_row($sql);
 
@@ -846,9 +799,9 @@ class PilotData extends CodonData {
 
             // if it exists
             if ($res) {
-                $sql = 'UPDATE ' . TABLE_PREFIX . 'fieldvalues
-							SET value="' . $value . '" 
-							WHERE fieldid=' . $field->fieldid . ' AND pilotid=' . $pilotid;
+                $sql = 'UPDATE '.TABLE_PREFIX.'fieldvalues
+						SET value="' . $value . '" 
+						WHERE fieldid=' . $field->fieldid . ' AND pilotid=' . $pilotid;
             } else {
                 $sql = "INSERT INTO " . TABLE_PREFIX . "fieldvalues
 						(fieldid, pilotid, value) VALUES ($field->fieldid, $pilotid, '$value')";
@@ -869,7 +822,9 @@ class PilotData extends CodonData {
      *
      */
     public static function getFieldData($pilotid, $inclprivate = false) {
-        $sql = 'SELECT f.fieldid, f.title, f.type, f.fieldname, f.value as fieldvalues, v.value, f.public
+        
+        $sql = 'SELECT f.fieldid, f.title, f.type, 
+                    f.fieldname, f.value as fieldvalues, v.value, f.public
 				FROM ' . TABLE_PREFIX . 'customfields f
 				LEFT JOIN ' . TABLE_PREFIX . 'fieldvalues v
 					ON f.fieldid=v.fieldid
@@ -890,11 +845,12 @@ class PilotData extends CodonData {
      *
      */
     public static function getFieldValue($pilotid, $title) {
+        
         $sql = "SELECT f.fieldid, v.value 
-					FROM " . TABLE_PREFIX . "customfields f, " . TABLE_PREFIX . "fieldvalues v 
-					WHERE f.fieldid=v.fieldid 
-						AND f.title='$title' 
-						AND v.pilotid=$pilotid";
+				FROM " . TABLE_PREFIX . "customfields f, " . TABLE_PREFIX . "fieldvalues v 
+				WHERE f.fieldid=v.fieldid 
+					AND f.title='$title' 
+					AND v.pilotid=$pilotid";
 
         $res = DB::get_row($sql);
         return $res->value;
@@ -912,8 +868,8 @@ class PilotData extends CodonData {
         $pilotid = DB::escape($pilotid);
 
         $sql = 'SELECT g.groupid, g.name
-					FROM ' . TABLE_PREFIX . 'groupmembers u,' . TABLE_PREFIX . 'groups g
-					WHERE u.pilotid=' . $pilotid . ' AND g.groupid=u.groupid';
+				FROM '.TABLE_PREFIX.'groupmembers u,'.TABLE_PREFIX.'groups g
+				WHERE u.pilotid=' . $pilotid . ' AND g.groupid=u.groupid';
 
         $ret = DB::get_results($sql);
 
@@ -955,15 +911,16 @@ class PilotData extends CodonData {
         $output[] = 'Total Hours: ' . $totalhours;
 
         if (Config::Get('SIGNATURE_SHOW_EARNINGS') == true) {
-            $output[] = 'Total Earnings: ' . (floatval($pilot->totalpay) + floatval($pilot->
-                payadjust));
+            $output[] = 'Total Earnings: '.(floatval($pilot->totalpay) + floatval($pilot->payadjust));
         }
 
         # Load up our image
         # Get the background image the pilot selected
-        if (empty($pilot->bgimage)) $bgimage = SITE_ROOT .
-                '/lib/signatures/background/background.png';
-        else  $bgimage = SITE_ROOT . '/lib/signatures/background/' . $pilot->bgimage;
+        if (empty($pilot->bgimage)) {
+            $bgimage = SITE_ROOT.'/lib/signatures/background/background.png';
+        } else {
+            $bgimage = SITE_ROOT.'/lib/signatures/background/'.$pilot->bgimage;
+        }  
 
         if (!file_exists($bgimage)) {
             # Doesn't exist so use the default
@@ -997,7 +954,6 @@ class PilotData extends CodonData {
             imageantialias($img, true);
         }
 
-
         /* Font stuff */
 
         if (!function_exists('imagettftext')) {
@@ -1025,8 +981,7 @@ class PilotData extends CodonData {
                 imagestring($img, $font, $xoffset, $currline, $output[$i], $textcolor);
             } else {
                 // Use TTF
-                $tmp = imagettftext($img, $font_size, 0, $xoffset, $currline, $textcolor, $font,
-                    $output[$i]);
+                $tmp = imagettftext($img, $font_size, 0, $xoffset, $currline, $textcolor, $font, $output[$i]);
 
                 // Flag is placed at the end of of the first line, so have that bounding box there
                 if ($i == 0) {
@@ -1045,8 +1000,7 @@ class PilotData extends CodonData {
                 '.png');
 
             if (Config::Get('SIGNATURE_USE_CUSTOM_FONT') == false) {
-                $ret = imagecopy($img, $flagimg, strlen($output[0]) * $fontwidth, ($yoffset + ($stepsize /
-                    2) - 5.5), 0, 0, 16, 11);
+                $ret = imagecopy($img, $flagimg, strlen($output[0]) * $fontwidth, ($yoffset+($stepsize/2) - 5.5), 0, 0, 16, 11);
             } else {
                 # figure out where it would go
                 $ret = imagecopy($img, $flagimg, $flag_bb[4] + 5, $flag_bb[5] + 2, 0, 0, 16, 11);
@@ -1055,21 +1009,11 @@ class PilotData extends CodonData {
 
         # Add the Rank image
 
-        if (Config::Get('SIGNATURE_SHOW_RANK_IMAGE') == true && $pilot->rankimage != ''
-            /* && file_exists($pilot->rankimage)*/ ) {
+        if (Config::Get('SIGNATURE_SHOW_RANK_IMAGE') == true && $pilot->rankimage != '') {
+                
             $cws = new CodonWebService();
             $rankimg = @$cws->get($pilot->rankimage);
             $rankimg = imagecreatefromstring($rankimg);
-
-            /*$ext = substr($pilot->rankimage, strlen($pilot->rankimage)-3, 3);
-            
-            # Get the rank image type, just jpg, gif or png
-            if($ext == 'png')
-            $rankimg = @imagecreatefrompng($pilot->rankimage);
-            elseif($ext == 'gif')
-            $rankimg = @imagecreatefromgif($pilot->rankimage);
-            else	
-            $rankimg = @imagecreatefromjpg($pilot->rankimage);*/
 
             if (!$rankimg) {
                 echo '';
@@ -1077,8 +1021,7 @@ class PilotData extends CodonData {
                 $r_width = imagesx($rankimg);
                 $r_height = imagesy($rankimg);
 
-                imagecopy($img, $rankimg, $width - $r_width - $xoffset, $yoffset, 0, 0, $r_width,
-                    $r_height);
+                imagecopy($img, $rankimg, $width - $r_width - $xoffset, $yoffset, 0, 0, $r_width, $r_height);
             }
         }
 

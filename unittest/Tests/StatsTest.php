@@ -68,11 +68,11 @@ class StatsTest extends PHPUnit_Framework_TestCase {
         }
     }
     
-    /*public function testTotalTime() {
+    public function testTotalTime() {
         
         StatsData::updateTotalHours();
         
-    }*/
+    }
     
 }
 

@@ -117,8 +117,11 @@ class StatsData extends CodonData {
         if ($months_list === false) {
             $date = self::GetStartDate();
 
-            if (!$date) $startdate = time();
-            else  $startdate = $date->submitdate;
+            if (!$date) {
+                $startdate = time();
+            } else  {
+                $startdate = $date->submitdate;
+            }
 
             $months_list = self::getMonthsSinceDate($startdate);
             CodonCache::write('months_since_start', $months_list, 'long');
@@ -138,8 +141,11 @@ class StatsData extends CodonData {
         if ($years_start === false) {
             $date = self::getStartDate();
 
-            if (!$date) $startdate = 'Today';
-            else  $startdate = $date->submitdate;
+            if (!$date) {
+                $startdate = 'Today';
+            } else {
+                $startdate = $date->submitdate;
+            }
 
             $start = strtotime($startdate);
             $end = date('Y');
@@ -200,6 +206,7 @@ class StatsData extends CodonData {
         $months = CodonCache::read($key);
 
         if ($months === false) {
+            
             if (!is_numeric($start)) {
                 $start = strtotime($start);
             }
@@ -235,29 +242,16 @@ class StatsData extends CodonData {
      */
     public static function updateTotalHours() {
         
-        $sql = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(flighttime_stamp))) AS `total`
-                FROM ".TABLE_PREFIX."pireps
-                WHERE accepted=".PIREP_ACCEPTED;
+        $sql = "SELECT SUM(TIME_TO_SEC(flighttime_stamp)) AS `total`
+                FROM `".TABLE_PREFIX."pireps`
+                WHERE `accepted`=".PIREP_ACCEPTED;
         
         $totaltime = DB::get_row($sql);
         if(!$totaltime) {
             $totaltime = '00:00:00';
         } else {
-            $totaltime = $totaltime->total;
+            $totaltime = Util::secondsToTime($totaltime->total);
         }
-        
-        /*
-        $pireps = PIREPData::findPIREPS(array('p.accepted' => 1));
-
-        if (!$pireps) {
-            return;
-        }
-
-        $totaltime = 0;
-        foreach ($pireps as $pirep) {
-            $totaltime = Util::AddTime($totaltime, $pirep->flighttime);
-        }
-        */
 
         SettingsData::SaveSetting('TOTAL_HOURS', $totaltime);
     }

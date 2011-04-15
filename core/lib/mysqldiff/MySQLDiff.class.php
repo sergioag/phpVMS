@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
-echo '<pre>';
 /**
  * MySQLDiff
  * 
@@ -288,6 +285,7 @@ class MySQLDiff {
         
         $this->missingCols['tables'] = array();
         $this->missingCols['columns'] = array();
+        $this->missingCols['types'] = array();
         $this->missingCols['indexes'] = array();
             
         foreach($this->xml->database->table_structure as $table) {
