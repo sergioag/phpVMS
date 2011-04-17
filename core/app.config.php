@@ -28,7 +28,7 @@
  */
 
 # Debug mode is off by default
-Config::Set('DEBUG_MODE', false);
+Config::Set('DEBUG_MODE', true);
 Config::Set('DEBUG_LEVEL', 1); // 1 logs query errors, 2 logs all queries
 Config::Set('ERROR_LEVEL', E_ALL ^ E_NOTICE);
 
@@ -460,8 +460,11 @@ define('PILOT_PENDING', 0);
 define('PILOT_ACCEPTED', 1);
 define('PILOT_REJECTED', 2);
 
+define('PAYSOURCE_PIREP', 1);
+
 define('PILOT_PAY_HOURLY', 1);
 define('PILOT_PAY_SCHEDULE', 2);
+define('PILOT_PAY_FIXED', 3);
 
 define('NAV_NDB', 2);
 define('NAV_VOR', 3);

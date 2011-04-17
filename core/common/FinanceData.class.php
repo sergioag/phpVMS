@@ -18,8 +18,8 @@
  */
 
 class FinanceData extends CodonData {
+    
     public static $lasterror;
-
 
     public static function formatMoney($number) {
         $isneg = false;
@@ -79,6 +79,7 @@ class FinanceData extends CodonData {
      *
      */
     public static function calculateFinances($month_info) {
+        
         # Grab the expenses for that month
         $expenses = self::getExpensesForMonth($month_info->timestamp);
 
@@ -132,6 +133,7 @@ class FinanceData extends CodonData {
     }
 
     public static function getExpensesForMonth($timestamp) {
+        
         $time = date('Ym', $timestamp);
         # If it's the current month, just return the latest expenses
         if ($time == date('Ym')) {

@@ -14,6 +14,8 @@ $params = array(
     'dbhost' => DBASE_SERVER,
     'dumpxml' => SITE_ROOT.'/install/sql/structure.xml',
 );
+
+echo '<pre>';
     
 try {
     $diff = new MySQLDiff($params); 
@@ -36,4 +38,4 @@ try {
     echo $e->getMessage(); 
 }
 
-var_dump($diff_lines);
+print_r($diff_lines);

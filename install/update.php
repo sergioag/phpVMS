@@ -92,6 +92,7 @@ echo 'Starting the update...<br />';
 	/* Add them to the default group */
 	$allpilots = PilotData::getAllPilots();
 	foreach($allpilots as $pilot) {
+        PilotData::resetLedgerforPilot($pilot->pilotid);
 		PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
 	}
 

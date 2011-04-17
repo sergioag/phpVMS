@@ -528,17 +528,19 @@ class PilotData extends CodonData {
      */
     public static function getPilotHours($pilotid) {
         
-        $sql= 'SELECT 
-                 SUM(TIME_TO_SEC(`flighttime_stamp`)) AS `total`
-               FROM `'.TABLE_PREFIX.'pireps`
-               WHERE `accepted`=' . PIREP_ACCEPTED.' AND `pilotid`='.$pilotid;
-         
-        $totaltime = DB::get_row($sql);
+        $totaltime = DB::get_row(
+            'SELECT SUM(TIME_TO_SEC(`flighttime_stamp`)) AS `total`
+             FROM `'.TABLE_PREFIX.'pireps`
+             WHERE `accepted`=' . PIREP_ACCEPTED.' AND `pilotid`='.$pilotid);
+            
         if(!$totaltime) {
-            $totaltime->total = '00:00:00';
-        } 
+            $totaltime = '0';
+        } else {
+            $totaltime = explode(':', Util::secondsToTime($totaltime->total));
+            $totaltime = $totaltime[0].'.'.$totaltime[1];
+        }
         
-        return $totaltime->total;
+        return $totaltime;
     }
 
     /**
@@ -549,8 +551,7 @@ class PilotData extends CodonData {
      *
      */
     public static function updateFlightHours($pilotid) {
-        $total = self::getPilotHours($pilotid);
-        $ret = self::updateProfile($pilotid, array('totalhours' => $total));
+        $ret = self::updateProfile($pilotid, array('totalhours' => self::getPilotHours($pilotid)));
         return $total;
     }
 
@@ -564,9 +565,7 @@ class PilotData extends CodonData {
      *
      */
     public static function updateFlightData($pilotid) {
-
         return self::updatePilotStats($pilotid);
-        
     }
 
     /**
@@ -588,11 +587,10 @@ class PilotData extends CodonData {
         if($total->totalpireps == 0) {
             $totaltime = 0;
         } else {
-            $totaltime = DB::get_row($sql);
             if(!$totaltime) {
                 $totaltime = '00.00';
             } else {
-                $totaltime = explode(':', Util::secondsToTime($totaltime->total));
+                $totaltime = explode(':', Util::secondsToTime($total->total));
                 $totaltime = $totaltime[0].'.'.$totaltime[1];
             }
         }
@@ -617,80 +615,182 @@ class PilotData extends CodonData {
 
 
     /**
-     * PilotData::resetPilotPay()
+     * PilotData::getPaymentByPIREP()
+     * 
+     * @param mixed $id
+     * @return
+     */
+    public static function getPaymentByID($id) {
+        
+        return DB::get_row(
+            'SELECT * FROM `'.TABLE_PREFIX.'ledger` 
+            WHERE `id`='.$id
+        );
+        
+    }
+    
+    /**
+     * PilotData::getPaymentByPIREP()
+     * 
+     * @param mixed $pirepid
+     * @return void
+     */
+    public static function getPaymentByPIREP($pirepid) {
+        
+        return DB::get_row(
+            'SELECT * FROM `'.TABLE_PREFIX.'ledger` 
+             WHERE `pirepid`='.$pirepid
+        );
+        
+    }
+    
+    
+    /**
+     * Add a payment for a pilot (give them money)
+     * 
+     * @param mixed $params
+     * @return void
+     */
+    public static function addPayment($params) {
+        
+        $params = array_merge(array(
+            'pilotid' => '',
+            'pirepid' => 0,
+            'paysource' => PAYSOURCE_PIREP,
+            'paytype' => 1,
+            'amount' => 0,
+        ), $params);
+        
+        if(empty($params['pilotid'])) {
+            return false;
+        }
+        
+        $sql = 'INSERT INTO `'.TABLE_PREFIX.'ledger`
+                  (`pilotid`, `pirepid`, `paysource`, `paytype`, `amount`, `submitdate`, `modifieddate`)
+                VALUES ('
+                    .$params['pilotid'].','
+                    .$params['pirepid'].','
+                    .$params['paysource'].','
+                    .$params['paytype'].','
+                    .$params['amount'].', NOW(), NOW()
+                );';
+        
+        DB::query($sql);
+        
+        self::resetPilotPay($params['pilotid']);
+    }
+    
+    
+    /**
+     * PilotData::editPayment()
+     * 
+     * @param mixed $id
+     * @param mixed $params
+     * @return
+     */
+    public static function editPayment($id, $params) {
+        
+        $params = array_merge(array(
+            'pilotid' => '',
+            'pirepid' => 0,
+            'paytype' => 1,
+            'amount' => 0,
+        ), $params);
+        
+        $sql = "UPDATE `".TABLE_PREFIX."ledger` SET ";
+        $sql .= DB::build_update($params);
+        $sql .= " WHERE `id`=".$id;
+        
+        $ret = DB::query($sql);
+        
+        self::resetPilotPay($params['pilotid']);
+        
+        return $ret;
+    }
+    
+    /**
+     * PilotData::deletePaymentByID()
+     * 
+     * @param mixed $id
+     * @return
+     */
+    public static function deletePaymentByID($id) {
+        
+        $payment = self::getPaymentByID($id);
+        
+        $ret = DB::query(
+            'DELETE FROM `'.TABLE_PREFIX.'ledger`
+             WHERE `pirepid`='.$pirep_id
+        );
+        
+        self::resetPilotPay($payment->pilotid);
+        
+        return $ret;
+    }
+    
+    /**
+     * PilotData::deletePayment()
+     * 
+     * @param mixed $pirep_id
+     * @return void
+     */
+    public static function deletePaymentByPIREP($pirepid) {
+        
+        $payment = self::getPaymentByPIREP($pirepid);
+        
+        $ret = DB::query(
+            'DELETE FROM `'.TABLE_PREFIX.'ledger`
+             WHERE `pirepid`='.$pirepid
+        );
+        
+        self::resetPilotPay($payment->pilotid);
+        
+        return $ret;
+    }
+
+    /**
+     * Go through the ledger and update the totalpay for a pilot
+     * 
+     * @param mixed $pilotid
+     * @return void
+     */
+    public static function resetPilotPay($pilotid) {
+        
+        $total = DB::get_row(
+            'SELECT SUM(`amount`) AS `total`
+             FROM `'.TABLE_PREFIX.'ledger` 
+             WHERE `pilotid`='.$pilotid
+        );
+                
+        self::updateProfile($pilotid, array('totalpay' => $total->total));
+    }
+    
+    /**
+     * Reset the pilot pay from all of the PIREPs, do it from
+     * scratch
      * 
      * @param mixed $pilotid
      * @return
      */
-    public static function resetPilotPay($pilotid) {
+    public static function resetLedgerforPilot($pilotid) {
         
-        $total = 0;
+        DB::query(
+            "DELETE FROM `".TABLE_PREFIX."ledger` WHERE `pirepid` > 0 AND `pilotid`=".$pilotid
+        );
+              
+        $sql = 'SELECT `pirepid` FROM `'.TABLE_PREFIX.'pireps`
+                WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED;
         
-        # Get the sum for flights which are pay-per-hour
-        $sql = "SELECT 
-                (SUM((TIME_TO_SEC(`flighttime_stamp`)/60) * (`pilotpay`/60))) AS `totalpay`
-				FROM `".TABLE_PREFIX."pireps`
-				WHERE `paytype`=".PILOT_PAY_HOURLY." 
-                    AND `pilotid`={$pilotid} 
-                    AND `accepted`=".PIREP_ACCEPTED;
-
-        $hourly_pay = DB::get_results($sql);
-        $total += $hourly_pay->totalpay;
+        $results = DB::get_results($sql);
+        if(! $results) {
+            return false;    
+        }
         
-        # Get the sum for flights which are pay-per-schedule
-        $sql = 'SELECT SUM(pilotpay) as total 
-                FROM '.TABLE_PREFIX."pireps
-                WHERE `paytype`=".PILOT_PAY_SCHEDULE."
-                    AND `pilotid`={$pilotid} 
-                    AND `accepted`=".PIREP_ACCEPTED;
-                
-        $row = DB::get_row($sql);
-        if($row) {
-            $total += $row->total;
+        foreach($results as $pirep) {
+            PIREPData::calculatePIREPPayment($pirep->pirepid);   
         }
 
-        self::updateProfile($pilotid, array('totalpay' => $total));
-
-        return $total;
-    }
-
-    /**
-     * Update a pilot's pay. Pass the pilot ID, and the number of
-     * hours they are being paid for
-     *
-     * @param int $pilotid The pilot ID
-     * @param int $flighthours Number of hours to pay the pilot for
-     * @param bool $add If true, add the amount, otherwise, subtract it
-     * @return bool Success
-     *
-     */
-    public static function updatePilotPay($pilotid, $flighthours, $add = true) {
-        
-        $pilotid = intval($pilotid);
-        
-        $sql = 'SELECT payrate 
-				FROM '.TABLE_PREFIX.'ranks r, '.TABLE_PREFIX.'pilots p 
-				WHERE p.rank=r.rank AND p.pilotid=' . $pilotid;
-
-        $payrate = DB::get_row($sql);
-
-        $payupdate = self::getPilotPay($flighthours, $payrate->payrate);
-        
-        if($add === false) {
-            $add = '-';
-        } else {
-            $add = '+';
-        }
-
-        $sql = 'UPDATE ' . TABLE_PREFIX . "pilots 
-				SET `totalpay`=`totalpay` {$add} {$payupdate}
-				WHERE pilotid=".$pilotid;
-
-        DB::query($sql);
-
-        if (DB::errno() != 0) return false;
-
-        return true;
+        self::resetPilotPay($pilotid);
     }
 
     /**

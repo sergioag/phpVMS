@@ -219,7 +219,8 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         
         # Check the pilot pay
         $post_pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals($this->sample_schedule['payforflight'], $post_pilot_data->totalpay, 'Check pilot pay after PIREP ACCEPT');
+        $pay_log = PilotData::getPaymentByPIREP($pirepid);
+        $this->assertEquals($this->sample_schedule['payforflight'], $pay_log->amount, 'Check pilot pay after PIREP ACCEPT');
         $this->assertEquals($pilot_data->totalflights + 1, $post_pilot_data->totalflights, 'Total Flights');
                 
         # Reject the PIREP and then check the pilot pay
@@ -320,9 +321,11 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         
         # Check the pilot pay
         $pilot_data = PilotData::getPilotData($this->samplePilotID);
+        
+        $pay_log = PilotData::getPaymentByPIREP($pirepid);
         $this->assertEquals(
             PilotData::getPilotPay($this->sample_schedule['flighttime'], $pilot_data->payrate), 
-            $pilot_data->totalpay, 
+            $pay_log->amount, 
             'Check pilot pay after PIREP ACCEPT'
         );
                 
@@ -445,6 +448,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($sched->timesflown, $post_accept->timesflown, "Schedule increment count");
         
         $post_pilot_data = PilotData::getPilotData($this->samplePilotID);
+        
         $this->assertEquals(0, $post_pilot_data->totalpay, 'Check pilot pay after PIREP REJECT');
         $this->assertEquals($pilot_data->totalflights, $post_pilot_data->totalflights, 'Total Flights');
         

@@ -117,6 +117,7 @@ class PIREPData extends CodonData {
      *
      */
     public static function getIntervalDataByDays($where_params, $interval = '7') {
+        
         $date_clause = "DATE_SUB(CURDATE(), INTERVAL {$interval} DAY)  <= p.submitdate";
 
         /* See if this array already exists */
@@ -164,7 +165,11 @@ class PIREPData extends CodonData {
 					SUM(p.fuelprice) as fuelprice,
 					SUM(p.price) as price,
 					SUM(p.expenses) as expenses,
-					SUM((TIME_TO_SEC(flighttime_stamp)/60) * (pilotpay/60)) as pilotpay
+					(SELECT SUM(`amount`) 
+                        FROM `".TABLE_PREFIX."ledger`
+                        WHERE DATE_FORMAT(submitdate, '{$format}') 
+                            AND `paysource` = ".PAYSOURCE_PIREP."
+                    ) AS `pilotpay`
 				FROM " . TABLE_PREFIX . "pireps p";
 
         $sql .= DB::build_where($where_params);
@@ -823,7 +828,11 @@ class PIREPData extends CodonData {
         
         $pirepdata['modifieddate'] = 'NOW()';
         
-        return self::editPIREPFields($pirepid, $pirepdata);
+        $ret = self::editPIREPFields($pirepid, $pirepdata);
+        
+        self::calculatePIREPPayment($pirepid);
+        
+        return $ret;
     }
 
     /**
@@ -1046,15 +1055,17 @@ class PIREPData extends CodonData {
         $pirep_details = self::getReportDetails($pirepid);
         
         $delete_tables = array(
-            'pireps', 'pirepcomments', 'pirepvalues'
+            'pireps', 'pirepcomments', 'pirepvalues', 'ledger'
         );
         
         foreach($delete_tables as $table) {
-            $sql = 'DELETE FROM '.TABLE_PREFIX.$table
-                 .' WHERE `pirepid`='.intval($pirepid);
-            DB::query($sql);
+            DB::query(
+                'DELETE FROM '.TABLE_PREFIX.$table.' 
+                 WHERE `pirepid`='.intval($pirepid)
+            );
         }
 
+        PilotData::resetPilotPay($pirep_details->pilotid);
         PilotData::updatePilotStats($pirep_details->pilotid);
 
         self::UpdatePIREPFeed();
@@ -1067,9 +1078,7 @@ class PIREPData extends CodonData {
      */
     public static function deleteAllRouteDetails() {
         
-        $sql = "UPDATE " . TABLE_PREFIX . "pireps SET `route_details` = ''";
-
-        $row = DB::get_row($sql);
+        $row = DB::get_row("UPDATE ".TABLE_PREFIX."pireps SET `route_details` = ''");
 
         if (!$row) {
             return false;
@@ -1102,15 +1111,6 @@ class PIREPData extends CodonData {
 
         $rss->BuildFeed(LIB_PATH . '/rss/latestpireps.rss');
     }
-
-    /**
-     *
-     * @deprecated Use isPIREPUnderAge()
-     *
-     */
-    /*public static function PIREPUnderAge($pirepid, $age_hours) {
-        return self::isPIREPUnderAge($pirepid, $age_hours);
-    }*/
     
     /**
      * Return true if a PIREP if under $age_hours old	
@@ -1194,20 +1194,7 @@ class PIREPData extends CodonData {
         if($pirep_details->accepted == PIREP_PENDING) {
             
             if($status == PIREP_ACCEPTED) {
-                                
-                # Pay per-schedule
-                if(!empty($pirep_details->payforflight)) {
-                    
-                    $sql = 'UPDATE `'.TABLE_PREFIX."pilots`
-            				SET totalpay=totalpay+{$pirep_details->payforflight} 
-            				WHERE pilotid={$pirep_details->pilotid}";
-            
-                    DB::query($sql);
-                    
-                } else { # Pay by hour
-                    PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime, true);
-                }
-                
+                self::calculatePIREPPayment($pirepid);       
                 SchedulesData::changeFlownCount($pirep_details->code, $pirep_details->flightnum, '+1');
                 
             } elseif($status == PIREP_REJECTED) {
@@ -1217,18 +1204,8 @@ class PIREPData extends CodonData {
         } elseif($pirep_details->accepted == PIREP_ACCEPTED) { # If already accepted
         
             if($status == PIREP_REJECTED) {
-                                
-                # Subtract their pay for the rejected flight
-                if(!empty($pirep_details->payforflight)) {
-                    $sql = 'UPDATE '.TABLE_PREFIX."pilots 
-            				SET totalpay=totalpay-{$pirep_details->payforflight} 
-            				WHERE pilotid={$pirep_details->pilotid}";
-            
-                    DB::query($sql);
-                } else {
-                    PilotData::updatePilotPay($pirep_details->pilotid, $pirep_details->flighttime, false);
-                }
-                
+                PilotData::deletePaymentByPIREP($pirep_details->pirepid);
+                PilotData::resetPilotPay($pirep_details->pilotpay);
                 SchedulesData::changeFlownCount($pirep_details->code, $pirep_details->flightnum, '-1');
             }
         }
@@ -1236,9 +1213,59 @@ class PIREPData extends CodonData {
         PilotData::updatePilotStats($pirep_details->pilotid);
         RanksData::calculateUpdatePilotRank($pirep_details->pilotid);
         PilotData::generateSignature($pirep_details->pilotid);
-        StatsData::updateTotalHours();       
+        StatsData::updateTotalHours();
         
         return $ret;
+    }
+    
+    /**
+     * Add a payment for a PIREP.
+     * 
+     * @param int $pirepid PIREP ID
+     * @return
+     */
+    public static function calculatePIREPPayment($pirepid) {
+        
+        $pirep = DB::get_row(
+            'SELECT `pirepid`, `pilotid`, 
+                    `flighttime_stamp`, `pilotpay`, 
+                `paytype`, `flighttype`, `accepted`
+            FROM `'.TABLE_PREFIX.'pireps`
+            WHERE `pirepid`='.$pirepid        
+        );
+            
+        if($pirep->accepted == PIREP_REJECTED) {
+            return false;
+        }
+                
+        if($pirep->paytype == PILOT_PAY_HOURLY) {
+            # Price out per-hour?
+            $peices = explode(':', $pirep->flighttime_stamp);
+            $minutes = ($peices[0] * 60) + $peices[1];
+            $amount = $minutes * ($pirep->pilotpay / 60);
+            
+        } elseif($pirep->paytype == PILOT_PAY_SCHEDULE) {
+            $amount = $pirep->pilotpay;
+        }
+        
+        $params = array(
+            'pirepid' => $pirepid,
+            'pilotid' => $pirep->pilotid,
+            'paysource' => PAYSOURCE_PIREP,
+            'paytype' => $pirep->paytype,
+            'amount' => $amount,
+        );
+        
+        $entry = PilotData::getPaymentByPIREP($pirepid);       
+        if(!$entry) {
+            PilotData::addPayment($params);
+        } else {
+            PilotData::editPayment($entry->id, $params);
+        }
+        
+        PilotData::resetPilotPay($pirep->pilotid);
+        
+        return $amount;
     }
 
     /**

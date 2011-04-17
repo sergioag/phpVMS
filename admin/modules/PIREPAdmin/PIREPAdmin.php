@@ -297,7 +297,7 @@ class PIREPAdmin extends CodonModule {
         # Call the event
         CodonEvent::Dispatch('pirep_deleted', 'PIREPAdmin', $pirepid);
 
-        PIREPData::DeleteFlightReport($pirepid);
+        PIREPData::deleteFlightReport($pirepid);
         StatsData::UpdateTotalHours();
     }
 
