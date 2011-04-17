@@ -14,7 +14,7 @@ c500b8b76e204f1adcb0e6562f7f4277  *./install/checkinstall.php
 4f93058c2e74d9852ef20e0b681b0300  *./install/includes/loader.inc.php
 cedea63e288808e6b85422abf21b2049  *./install/includes/Installer.class.php
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
-070235bb926416208550adc7809c1dd8  *./install/sql/install.sql
+d4aa8d7ca39a9c1fde82d094334ddf2a  *./install/sql/install.sql
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
 c2ac2bc16449a6c3d601357caefc78aa  *./install/fixtures/update.sql
 98645f25a6917b5922becfd8181eaef4  *./install/fixtures/install.sql
