@@ -38,13 +38,26 @@ CREATE TABLE `phpvms_acarsdata` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `phpvms_activityfeed` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pilotid` int(11) NOT NULL,
+  `refid` int(11) NOT NULL DEFAULT '0',
+  `type` tinyint(4) NOT NULL DEFAULT '0',
+  `message` varchar(100) NOT NULL,
+  `submitdate` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pilotid` (`pilotid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `phpvms_adminlog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pilotid` int(11) NOT NULL,
   `datestamp` datetime NOT NULL,
   `message` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -65,7 +78,7 @@ CREATE TABLE `phpvms_aircraft` (
   `ranklevel` int(11) NOT NULL DEFAULT '0',
   `enabled` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -76,7 +89,7 @@ CREATE TABLE `phpvms_airlines` (
   `enabled` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -92,7 +105,7 @@ CREATE TABLE `phpvms_airports` (
   `chartlink` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `icao` (`icao`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -122,7 +135,7 @@ CREATE TABLE `phpvms_bids` (
   `routeid` int(11) NOT NULL DEFAULT '0',
   `dateadded` date NOT NULL,
   PRIMARY KEY (`bidid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -206,7 +219,7 @@ CREATE TABLE `phpvms_fuelprices` (
   `jeta` float NOT NULL,
   `dateupdated` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -219,7 +232,7 @@ CREATE TABLE `phpvms_groupmembers` (
   KEY `phpvms_groupmembers_ibfk_2` (`pilotid`),
   CONSTRAINT `phpvms_groupmembers_ibfk_1` FOREIGN KEY (`groupid`) REFERENCES `phpvms_groups` (`groupid`) ON DELETE CASCADE,
   CONSTRAINT `phpvms_groupmembers_ibfk_2` FOREIGN KEY (`pilotid`) REFERENCES `phpvms_pilots` (`pilotid`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -229,7 +242,7 @@ CREATE TABLE `phpvms_groups` (
   `permissions` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`groupid`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -245,7 +258,7 @@ CREATE TABLE `phpvms_ledger` (
   PRIMARY KEY (`id`),
   KEY `pilot_id` (`pilotid`),
   KEY `pirepid` (`pirepid`)
-) ENGINE=MyISAM AUTO_INCREMENT=135 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -264,7 +277,7 @@ CREATE TABLE `phpvms_navdata` (
   PRIMARY KEY (`id`),
   KEY `name` (`name`),
   KEY `airway` (`airway`)
-) ENGINE=MyISAM AUTO_INCREMENT=92807 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -275,7 +288,7 @@ CREATE TABLE `phpvms_news` (
   `postdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `postedby` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -324,7 +337,7 @@ CREATE TABLE `phpvms_pilots` (
   KEY `code` (`code`),
   KEY `rank` (`rank`),
   CONSTRAINT `phpvms_pilots_ibfk_1` FOREIGN KEY (`code`) REFERENCES `phpvms_airlines` (`code`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -337,7 +350,7 @@ CREATE TABLE `phpvms_pirepcomments` (
   PRIMARY KEY (`id`),
   KEY `phpvms_pirepcomments_ibfk_1` (`pirepid`),
   CONSTRAINT `phpvms_pirepcomments_ibfk_1` FOREIGN KEY (`pirepid`) REFERENCES `phpvms_pireps` (`pirepid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=393 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -387,7 +400,7 @@ CREATE TABLE `phpvms_pireps` (
   `exported` tinyint(4) NOT NULL,
   `rawdata` text NOT NULL,
   PRIMARY KEY (`pirepid`)
-) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -409,7 +422,7 @@ CREATE TABLE `phpvms_ranks` (
   `payrate` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`rankid`),
   UNIQUE KEY `rank` (`rank`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -445,7 +458,7 @@ CREATE TABLE `phpvms_schedules` (
   KEY `depicao_arricao` (`depicao`,`arricao`),
   KEY `code` (`code`),
   CONSTRAINT `phpvms_schedules_ibfk_1` FOREIGN KEY (`code`) REFERENCES `phpvms_airlines` (`code`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -455,7 +468,7 @@ CREATE TABLE `phpvms_sessions` (
   `ipaddress` varchar(25) NOT NULL,
   `logintime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=379 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -468,7 +481,7 @@ CREATE TABLE `phpvms_settings` (
   `core` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -478,7 +491,7 @@ CREATE TABLE `phpvms_updates` (
   `lastupdate` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

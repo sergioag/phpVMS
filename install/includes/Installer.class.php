@@ -201,45 +201,28 @@ class Installer
         $sqlLines = array();
         
         $sql = '';
-        $sql_file = file_get_contents($file_name);
+        $sql_file = file($file_name);
         $revision = file_get_contents(SITE_ROOT.'/core/version');
         
-        for($i=0;$i<strlen($sql_file);$i++) {
         
-            $str = $sql_file{$i};
-            
-            if($str == ';') {
-             
-            	$sql .= $str;
-            	$sql = str_replace('phpvms_', $_POST['TABLE_PREFIX'], $sql);
+        foreach($sql_file as $sql_line) {
+                        
+            $sql .= trim($sql_line);
+                        
+            if(substr_count($sql, ';') > 0) {
+                
+                $sql = str_replace('phpvms_', $_POST['TABLE_PREFIX'], $sql);
             	$sql = trim($sql);
             	
-            	preg_match("/({$_POST['TABLE_PREFIX']}.*)` /", $sql, $matches);
+            	preg_match("/`{$_POST['TABLE_PREFIX']}([A-Za-z]*)`/", $sql, $matches);
             	$tablename = $matches[1];
-            	
-            	// Skip if it's a comment
-            	if($sql[0] == '-' && $sql[1] == '-') {
-            		$sql = '';
-            		continue;
-            	}
-            	
-            	if($tablename == '') {
-            		$sql = '';
-            		continue;
-            	}
-            	
-                # Any variable replacements
-            	$sql = str_replace('##REVISION##', $revision, $sql);
                 
                 $sqlLines[] = array(
-                    'table' => $tablename,
-                    'sql' => trim($sql),
+                    'tablename' => $tablename,
+                    'sql' => $sql
                 );
                 
                 $sql = '';
-                
-            } else {
-                $sql .= $str;
             }
         }
         
