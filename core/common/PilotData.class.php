@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpVMS - Virtual Airline Administration Software
  * Copyright (c) 2008 Nabeel Shahzad

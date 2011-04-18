@@ -5,6 +5,10 @@
 	//	This is in the modules/Frontpage folder
 	
 	MainController::Run('News', 'ShowNewsFront', 5);
+    
+    
+    // Show the activity feed
+    MainController::Run('Activity', 'Frontpage', 20);
 ?>
 </div>
 <div id="sidebar">

@@ -1,6 +1,7 @@
 <?php
 
-include '../../core/codon.config.php';
+include dirname(__FILE__).'/bootstrap.inc.php';
+
 echo '<pre>';
 
 $sql = 'UPDATE `'.TABLE_PREFIX.'pireps` SET `accepted`='.PIREP_PENDING.' WHERE `pirepid`=2';

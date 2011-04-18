@@ -94,7 +94,7 @@ class RanksData extends CodonData {
      */
     public static function getNextRank($hours) {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "ranks
-					WHERE minhours>$hours ORDER BY minhours ASC LIMIT 1";
+				WHERE minhours>$hours ORDER BY minhours ASC LIMIT 1";
 
         return DB::get_row($sql);
     }
@@ -110,7 +110,7 @@ class RanksData extends CodonData {
 
         $sql = "INSERT INTO " . TABLE_PREFIX .
                 "ranks (rank, rankimage, minhours, payrate)
-					VALUES('$title', '$imageurl', '$minhours', $payrate)";
+                VALUES('$title', '$imageurl', '$minhours', $payrate)";
 
         $ret = DB::query($sql);
 
@@ -242,5 +242,20 @@ class RanksData extends CodonData {
             );
 
         PilotData::updateProfile($pilot->pilotid, $update);
+        
+        if($pilot->rank != $last_rank) {
+        
+            $message = Lang::get('activity.pilot.promotion');
+            $message = str_replace('$rank', $last_rank, $message);
+            
+            # Add it to the activity feed
+            ActivityData::addActivity(array(
+                'pilotid' => $pilotid,
+                'type' => ACTIVITY_PROMOTION,
+                'refid' => $pilotid,
+                'message' => htmlentities($message),
+            ));   
+            
+        }
     }
 }

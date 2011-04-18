@@ -765,7 +765,22 @@ class PIREPData extends CodonData {
 
             Util::SendEmail($email, $sub, $message);
         }
+        
+        /* Add this into the activity feed */
+        $message = Lang::get('activity.new.pirep');
+        foreach($pirepdata as $key=>$value) {
+            $message = str_replace('$'.$key, $value, $message);
+        }
+        
+        # Add it to the activity feed
+        ActivityData::addActivity(array(
+            'pilotid' => $pirepdata['pilotid'],
+            'type' => ACTIVITY_NEW_PIREP,
+            'refid' => $pirepid,
+            'message' => htmlentities($message),
+        ));
 
+        /* Now send data to vaCentral */
         CentralData::send_pirep($pirepid);
 
         // Reset this ID back

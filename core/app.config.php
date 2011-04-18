@@ -451,20 +451,31 @@ Config::Set(
 define('SIGNATURE_PATH', '/lib/signatures');
 define('AVATAR_PATH', '/lib/avatars');
 
+# PIREP Statuses
 define('PIREP_PENDING', 0);
 define('PIREP_ACCEPTED', 1);
 define('PIREP_REJECTED', 2);
 define('PIREP_INPROGRESS', 3);
 
+# Pilot Registration 
 define('PILOT_PENDING', 0);
 define('PILOT_ACCEPTED', 1);
 define('PILOT_REJECTED', 2);
 
+# Constants for 'paysource' column in ledger
 define('PAYSOURCE_PIREP', 1);
 
+# Constants for 'paytype' column in ledge
 define('PILOT_PAY_HOURLY', 1);
 define('PILOT_PAY_SCHEDULE', 2);
 define('PILOT_PAY_FIXED', 3);
+
+# Activity Feed types
+define('ACTIVITY_NEW_PIREP', 1);
+define('ACTIVITY_NEW_PILOT', 2);
+define('ACTIVITY_PROMOTION', 3);
+define('ACTIVITY_NEW_AWARD', 4);
+define('ACTIVITY_NEW_BID', 5);
 
 define('NAV_NDB', 2);
 define('NAV_VOR', 3);
@@ -475,10 +486,7 @@ define('NAV_TRACK', 6);
 define('LOAD_VARIATION', 5);
 define('SECONDS_PER_DAY', 86400);
 
-define('GEONAME_URL', 'http://ws.geonames.org');
-
 define('VMS_AUTH_COOKIE', 'VMSAUTH');
-
 
 
 /**

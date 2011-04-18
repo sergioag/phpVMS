@@ -27,7 +27,7 @@ class RegistrationData extends CodonData {
      * Get all of the custom fields that will show up
      *	during the registration
      */
-    public static function GetCustomFields($getall = false) {
+    public static function getCustomFields($getall = false) {
 
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'customfields';
 
@@ -42,7 +42,7 @@ class RegistrationData extends CodonData {
      * @param mixed $email
      * @return
      */
-    public static function CheckUserEmail($email) {
+    public static function checkUserEmail($email) {
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'pilots
 					WHERE email=\'' . $email . '\'';
 
@@ -98,8 +98,12 @@ class RegistrationData extends CodonData {
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "pilots (firstname, lastname, email,
 					code, location, hub, password, salt, confirmed, joindate, lastip)
-				  VALUES ('{$firstname}', '{$lastname}', '{$data['email']}', '{$code}',
-							'{$location}', '{$data['hub']}', '{$password}', '{$salt}', {$confirm}, NOW(), '{$_SERVER['REMOTE_ADDR']}')";
+				  VALUES (
+                    '{$firstname}', '{$lastname}', '{$data['email']}', '{$code}',
+					'{$location}', '{$data['hub']}', '{$password}', 
+                    '{$salt}', {$confirm}, NOW(), 
+                    '{$_SERVER['REMOTE_ADDR']}'
+                    )";
 
 
         $res = DB::query($sql);
@@ -126,20 +130,37 @@ class RegistrationData extends CodonData {
         self::$pilotid = $pilotid;
 
         //Get customs fields
-        $fields = self::GetCustomFields();
-        if (!$fields) return true;
-
-        foreach ($fields as $field) {
-            $value = Vars::POST($field->fieldname);
-            $value = DB::escape($value);
-
-            if ($value != '') {
-                $sql = "INSERT INTO " . TABLE_PREFIX . "fieldvalues (fieldid, pilotid, value)
-							VALUES ($field->fieldid, $pilotid, '$value')";
-
-                DB::query($sql);
+        $fields = self::getCustomFields();
+        
+        if(count($fields) > 0) {
+            foreach ($fields as $field) {
+                $value = Vars::POST($field->fieldname);
+                $value = DB::escape($value);
+    
+                if ($value != '') {
+                    $sql = "INSERT INTO " . TABLE_PREFIX . "fieldvalues (fieldid, pilotid, value)
+    							VALUES ($field->fieldid, $pilotid, '$value')";
+    
+                    DB::query($sql);
+                }
             }
         }
+
+        $pilotdata = PilotData::getPilotData($pilotid);
+        
+        /* Add this into the activity feed */
+        $message = Lang::get('activity.new.pilot');
+        foreach($pilotdata as $key=>$value) {
+            $message = str_replace('$'.$key, $value, $message);
+        }
+        
+        # Add it to the activity feed
+        ActivityData::addActivity(array(
+            'pilotid' => $pilotid,
+            'type' => ACTIVITY_NEW_PILOT,
+            'refid' => $pilotid,
+            'message' => htmlentities($message),
+        ));        
 
         return true;
     }
