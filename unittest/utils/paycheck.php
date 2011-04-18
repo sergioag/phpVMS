@@ -9,4 +9,4 @@ DB::query($sql);
 
 PIREPData::changePIREPStatus(2, PIREP_ACCEPTED);
 
-var_dump(PilotData::getPaymentByPIREP(2));
+var_dump(LedgerData::getPaymentByPIREP(2));

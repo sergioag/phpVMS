@@ -1219,7 +1219,7 @@ class PIREPData extends CodonData {
         } elseif($pirep_details->accepted == PIREP_ACCEPTED) { # If already accepted
         
             if($status == PIREP_REJECTED) {
-                PilotData::deletePaymentByPIREP($pirep_details->pirepid);
+                LedgerData::deletePaymentByPIREP($pirep_details->pirepid);
                 PilotData::resetPilotPay($pirep_details->pilotpay);
                 SchedulesData::changeFlownCount($pirep_details->code, $pirep_details->flightnum, '-1');
             }
@@ -1271,11 +1271,11 @@ class PIREPData extends CodonData {
             'amount' => $amount,
         );
         
-        $entry = PilotData::getPaymentByPIREP($pirepid);       
+        $entry = LedgerData::getPaymentByPIREP($pirepid);       
         if(!$entry) {
-            PilotData::addPayment($params);
+            LedgerData::addPayment($params);
         } else {
-            PilotData::editPayment($entry->id, $params);
+            LedgerData::editPayment($entry->id, $params);
         }
         
         PilotData::resetPilotPay($pirep->pilotid);
