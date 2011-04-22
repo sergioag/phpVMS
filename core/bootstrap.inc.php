@@ -50,7 +50,7 @@ function post_module_load() {
     if (Config::Get('USE_CRON') == false) {
         if (Config::Get('PILOT_AUTO_RETIRE') == true) {
             $within_timelimit = CronData::check_hoursdiff('find_retired_pilots', '24');
-            if ($within_timelimit == false) {
+            if ($within_timelimit === false) {
                 PilotData::findRetiredPilots();
                 CronData::set_lastupdate('find_retired_pilots');
             }
@@ -58,7 +58,7 @@ function post_module_load() {
 
         if (Config::Get('CLOSE_BIDS_AFTER_EXPIRE') === false) {
             $within_timelimit = CronData::check_hoursdiff('check_expired_bids', '24');
-            if ($within_timelimit == false) {
+            if ($within_timelimit === false) {
                 SchedulesData::deleteExpiredBids();
                 CronData::set_lastupdate('check_expired_bids');
             }
@@ -70,9 +70,17 @@ function post_module_load() {
             FinanceData::updateAllExpenses();
             CronData::set_lastupdate('populate_expenses');
         }
-
+        
         /* And finally, clear expired sessions */
         Auth::clearExpiredSessions();
+    }
+    
+    if (Config::Get('TWITTER_AIRLINE_ACCOUNT') != '') {
+        $within_timelimit = CronData::check_hoursdiff('twitter_update', '3');
+        if ($within_timelimit === false) {
+            ActivityData::readTwitter();
+            CronData::set_lastupdate('twitter_update');
+        }
     }
 
     // @TODO: Clean ACARS records older than one month

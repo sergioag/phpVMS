@@ -21,6 +21,9 @@ define('TABLE_PREFIX', '$TABLE_PREFIX');
 
 define('SITE_URL', '$SITE_URL');
 
+# This is your airline's twitter account, if it exists
+Config::Set('TWITTER_AIRLINE_ACCOUNT', '');
+
 # Page encoding options
 Config::Set('PAGE_ENCODING', 'ISO-8859-1');
 

@@ -47,17 +47,17 @@ class CodonData
 		
 	}
 	
-	public function config($setting)
+	public static function config($setting)
 	{
 		return Config::Get($setting);
 	}
 	
-	public function log($text, $file='log')
+	public static function log($text, $file='log')
 	{
 		Debug::log($text, $file);
 	}
 	
-	public function firephp()
+	public static function firephp()
 	{
 		include_once CORE_PATH.DS.'lib'.DS.'firebug'.DS.'FirePHP.class.php';
 		

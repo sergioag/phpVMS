@@ -25,7 +25,7 @@ class Activity extends CodonModule
      */
     public function index() {
         
-        $activities = ActivityData::getActivity($count);
+        $activities = ActivityData::getActivity(array(), $count);
         if(!$activities) {
             $activities = array();
         }
@@ -42,7 +42,7 @@ class Activity extends CodonModule
      */
     public function frontpage($count = 20)
     {
-        $activities = ActivityData::getActivity($count);
+        $activities = ActivityData::getActivity(array(), $count);
         if(!$activities) {
             $activities = array();
         }

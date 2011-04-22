@@ -40,6 +40,9 @@ Config::Set('DB_CHARSET_NAME', 'utf8');
 Config::Set('MAINTENANCE_MODE', false);
 Config::Set('MAINTENANCE_MESSAGE', 'We are currently down for maintenance, please check back soon.');
 
+# This is your airline's twitter account, if it exists
+Config::Set('TWITTER_AIRLINE_ACCOUNT', '');
+
 # See more details about these in the docs
 Config::Set('PAGE_EXT', '.htm');	# .htm is fine. You can still run PHP
 Config::Set('PILOTID_OFFSET', 0);	# What # to start pilot ID's from
@@ -477,6 +480,8 @@ define('ACTIVITY_PROMOTION', 3);
 define('ACTIVITY_NEW_AWARD', 4);
 define('ACTIVITY_NEW_BID', 5);
 define('ACTIVITY_TWITTER', 6);
+
+define('TWITTER_STATUS_URL', 'http://api.twitter.com/1/statuses/user_timeline.json?include_entities=0&screen_name=');
 
 define('NAV_NDB', 2);
 define('NAV_VOR', 3);

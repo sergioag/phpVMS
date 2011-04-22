@@ -15,9 +15,7 @@ foreach($allactivities as $activity) {
         $activity-> also contains all the fields about the pilot who this notice
         is about        
      */
-        
-    $pilotCode = PilotData::getPilotCode($activity->code, $activity->pilotid);
-    
+           
     $link_title = '';
     $link_href = '';
     if($activity->type == ACTIVITY_NEW_PIREP) {
@@ -25,15 +23,43 @@ foreach($allactivities as $activity) {
         $link_href = url('/pireps/view/'.$activity->refid);
         $link_title = 'View Flight Report';
         
+    } elseif($activity->type == ACTIVITY_TWITTER) {
+        
+        $link_href = 'http://twitter.com/#!/'.Config::get('TWITTER_AIRLINE_ACCOUNT').'/status/'.$activity->refid;
+        $link_title = 'View Tweet';
+        
     } elseif($activity->type == ACTIVITY_NEW_PILOT) {
         /* Something special for a new pilot? */
     }
 ?>
-    <p><a href="<?php echo url('/profile/view/'.$activity->pilotid);?>">
-        <?php echo $pilotCode.' '.$activity->firstname.' '.$activity->lastname?>
-        </a> 
+    <p>
+        <?php
+        /*  Example, if it's a twitter status update (ACTIVITY_TWITTER),
+            then show an image (in this case, a small Twitter icon) */
+        if($activity->type == ACTIVITY_TWITTER) {
+            echo '<img src="'.fileurl('/lib/images/twitter.png').'" alt="twitter update" />';
+        }
+        
+        ?>
+        <?php
+        /*  If there is a pilot associated with this feed update, show their name
+            and a link to their profile page */ 
+        if($activity->pilotid != 0) { 
+            $pilotCode = PilotData::getPilotCode($activity->code, $activity->pilotid);
+            ?>
+        
+            <a href="<?php echo url('/profile/view/'.$activity->pilotid);?>">
+            <?php echo $pilotCode.' '.$activity->firstname.' '.$activity->lastname?>
+            </a> 
     
-        <?php echo $activity->message ?>
+        <?php 
+        } /* End if pilot ID != 0 */ 
+        ?>
+        
+        <?php 
+            /* Show the activity message itself */
+            echo stripslashes($activity->message); 
+        ?>
         
         <?php
         if($link_href != '') {
