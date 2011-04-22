@@ -18,10 +18,37 @@
 
 class Activity extends CodonModule 
 {
-	public function frontpage($count = 20)
-	{
-	   $this->set('allactivities', ActivityData::getActivity($count));
-       $this->render('activity_list.tpl');
-	}
-	
+    /**
+     * Activity::index()
+     * 
+     * @return void
+     */
+    public function index() {
+        
+        $activities = ActivityData::getActivity($count);
+        if(!$activities) {
+            $activities = array();
+        }
+        
+        $this->set('allactivities', $activities);
+        $this->render('activity_list.tpl');
+    }
+    
+    /**
+     * Activity::frontpage()
+     * 
+     * @param integer $count
+     * @return void
+     */
+    public function frontpage($count = 20)
+    {
+        $activities = ActivityData::getActivity($count);
+        if(!$activities) {
+            $activities = array();
+        }
+        
+        $this->set('allactivities', $activities);
+        $this->render('activity_list.tpl');
+    }
+
 }

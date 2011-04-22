@@ -550,8 +550,7 @@ class PilotData extends CodonData {
      *
      */
     public static function updateFlightHours($pilotid) {
-        $ret = self::updateProfile($pilotid, array('totalhours' => self::getPilotHours($pilotid)));
-        return $total;
+        return self::updateProfile($pilotid, array('totalhours' => self::getPilotHours($pilotid)));
     }
 
     /**
@@ -628,6 +627,31 @@ class PilotData extends CodonData {
         );
                 
         self::updateProfile($pilotid, array('totalpay' => $total->total));
+        return $total->total;
+    }
+    
+    
+    /**
+     * Fill in the ledger any PIREPs which might be missing
+     * 
+     * @param mixed $pilotid
+     * @return void
+     */
+    public static function fillMissingLedgerForPIREPS($pilotid) {
+        
+        $sql = 'SELECT `pirepid` FROM `'.TABLE_PREFIX.'pireps`
+                    WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED;
+        
+        $res = DB::get_results($sql);
+        
+        foreach($res as $pirep) {
+            
+            $exists = LedgerData::getPaymentByPIREP($pirep->pirepid);
+            if(!$exists) {
+                PIREPData::calculatePIREPPayment($pirep->pirepid);
+            }
+            
+        }
     }
     
     /**
@@ -655,7 +679,7 @@ class PilotData extends CodonData {
             PIREPData::calculatePIREPPayment($pirep->pirepid);   
         }
 
-        self::resetPilotPay($pilotid);
+        return self::resetPilotPay($pilotid);
     }
 
     /**

@@ -28,21 +28,22 @@ Auth::$userinfo->pilotid = 0;
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
+set_time_limit(0);
+ini_set('memory_limit', '-1');
+
 /* Clear expired sessions */
 Auth::clearExpiredSessions();
 
 /* Update any expenses */
 FinanceData::updateAllExpenses();
 
-if(Config::Get('PILOT_AUTO_RETIRE') == true)
-{
+if(Config::Get('PILOT_AUTO_RETIRE') == true) {
 	/* Find any retired pilots and set them to retired */
 	PilotData::findRetiredPilots();
 	CronData::set_lastupdate('find_retired_pilots');
 }
 
-if(Config::Get('CLOSE_BIDS_AFTER_EXPIRE') === false)
-{
+if(Config::Get('CLOSE_BIDS_AFTER_EXPIRE') === false) {
 	SchedulesData::deleteExpiredBids();
 	CronData::set_lastupdate('check_expired_bids');
 }

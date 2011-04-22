@@ -55,14 +55,14 @@
 					$allgroups = PilotGroups::getAllGroups();
 					$current = SettingsData::getSetting('DEFAULT_GROUP');
 					
-					echo '<SELECT name="DEFAULT_GROUP">';
+					echo '<select name="DEFAULT_GROUP">';
 						
 						foreach($allgroups as $group) {
 							$sel = ($current == $group->groupid)? 'selected' : '';
 							echo '<option value="'.$group->groupid.'" '. $sel . '>'.$group->name.'</option>';
 						}
    
-					echo '</SELECT>';
+					echo '</select>';
 					break;
 				
 					break;
@@ -70,6 +70,7 @@
 				default:
 					
 					if($setting->value == 'true' || $setting->value == 'false') {
+					   
 						if($setting->value == 'true') {
 							$sel_true = 'selected';
 							$sel_false = '';
@@ -78,11 +79,10 @@
 							$sel_false = 'selected';
 						}
    
-						echo '
-								<SELECT name="' . $setting->name . '" onChange="showChanged();" >
+						echo '<select name="' . $setting->name . '" onChange="showChanged();" >
 								<option value="true" '. $sel_true . '>Enabled</option>
 								<option value="false" ' . $sel_false . '>Disabled</option>
-							  </SELECT>';
+							  </select>';
 					} else {
 						echo '<input type="text" name="'.$setting->name.'" value="'.$setting->value.'" />';
 					}

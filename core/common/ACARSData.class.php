@@ -328,7 +328,7 @@ class ACARSData extends CodonData {
             //$cutofftime = $cutofftime / 60;
         }
 
-        $sql = 'SELECT a.*, c.name as aircraftname,
+        $sql = 'SELECT a.*, c.name as aircraftname, c.registration,
 					p.code, p.pilotid as pilotid, p.firstname, p.lastname,
 					dep.name as depname, dep.lat AS deplat, dep.lng AS deplng,
 					arr.name as arrname, arr.lat AS arrlat, arr.lng AS arrlng

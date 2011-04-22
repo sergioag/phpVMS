@@ -476,6 +476,7 @@ define('ACTIVITY_NEW_PILOT', 2);
 define('ACTIVITY_PROMOTION', 3);
 define('ACTIVITY_NEW_AWARD', 4);
 define('ACTIVITY_NEW_BID', 5);
+define('ACTIVITY_TWITTER', 6);
 
 define('NAV_NDB', 2);
 define('NAV_VOR', 3);
