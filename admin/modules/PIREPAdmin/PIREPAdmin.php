@@ -121,14 +121,12 @@ class PIREPAdmin extends CodonModule {
             # Update pilot stats
             SchedulesData::IncrementFlownCount($pirep_details->code, $pirep_details->flightnum);
             PIREPData::ChangePIREPStatus($pirep_details->pirepid, PIREP_ACCEPTED); // 1 is accepted
-            //PilotData::UpdateFlightData($pirep_details->pilotid, $pirep_details->flighttime, 1);
-            PilotData::UpdatePilotStats($pirep_details->pilotid);
-            PilotData::UpdatePilotPay($pirep_details->pilotid, $pirep_details->flighttime);
+            #PilotData::UpdatePilotStats($pirep_details->pilotid);
 
-            RanksData::CalculateUpdatePilotRank($pirep_details->pilotid);
+            #RanksData::CalculateUpdatePilotRank($pirep_details->pilotid);
             RanksData::CalculatePilotRanks();
-            PilotData::GenerateSignature($pirep_details->pilotid);
-            StatsData::UpdateTotalHours();
+            #PilotData::GenerateSignature($pirep_details->pilotid);
+            #StatsData::UpdateTotalHours();
 
             $count++;
         }

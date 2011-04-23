@@ -312,7 +312,7 @@ fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
 838682cce53a398825489fc9afbe9318  *./admin/modules/Maintenance/Maintenance.php
 7d9dd19aa8516b4a88dce314242f826e  *./admin/modules/Dashboard/Dashboard.php
-fce896851297db965ca0a726862f41a8  *./admin/modules/PIREPAdmin/PIREPAdmin.php
+bba58e31eeac641aedb3039ec8fcf8b5  *./admin/modules/PIREPAdmin/PIREPAdmin.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/avatars/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/signatures/index.php
 56cde3e8c38b1e07d4b949503440b5dc  *./lib/skins/crystal/layout.tpl
