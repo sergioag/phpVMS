@@ -258,6 +258,13 @@ class PIREPAdmin extends CodonModule {
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added a comment to PIREP #' . $pirepid);
     }
+    
+    public function approvepirep($pirepid) {
+        $this->post->id = $pirepid;
+        $this->approve_pirep_post();
+        
+        $this->render('pirepadmin_approved.tpl');       
+    }
 
     /**
      * Approve the PIREP, and then update
@@ -266,12 +273,14 @@ class PIREPAdmin extends CodonModule {
     protected function approve_pirep_post() {
         
         $pirepid = $this->post->id;
-
+        
         if ($pirepid == '')
             return;
 
         $pirep_details = PIREPData::getReportDetails($pirepid);
-
+        
+        $this->set('pirep', $pirep_details);
+        
         # See if it's already been accepted
         if (intval($pirep_details->accepted) == PIREP_ACCEPTED)
             return;
