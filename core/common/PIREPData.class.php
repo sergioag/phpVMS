@@ -751,6 +751,7 @@ class PIREPData extends CodonData {
         PilotData::UpdateLastPIREPDate($pilotinfo->pilotid);
 
         if (Config::Get('EMAIL_SEND_PIREP') === true) {
+            
             # Send an email to the admin that a PIREP was submitted
             $sub = "A PIREP has been submitted by {$pilotcode} ({$pirepdata['depicao']} - {$pirepdata['arricao']})";
             $message = "A PIREP has been submitted by {$pilotcode} "
