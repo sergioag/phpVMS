@@ -581,16 +581,12 @@ class PilotData extends CodonData {
             FROM `'.TABLE_PREFIX.'pireps`
             WHERE `pilotid`='.$pilotid.' AND `accepted`='.PIREP_ACCEPTED
         );
-        
+                
         if($total->totalpireps == 0) {
             $totaltime = 0;
         } else {
-            if(!$totaltime) {
-                $totaltime = '00.00';
-            } else {
-                $totaltime = explode(':', Util::secondsToTime($total->total));
-                $totaltime = $totaltime[0].'.'.$totaltime[1];
-            }
+            $totaltime = explode(':', Util::secondsToTime($total->totaltime));
+            $totaltime = $totaltime[0].'.'.$totaltime[1];
         }
         
         return self::updateProfile($pilotid, array(

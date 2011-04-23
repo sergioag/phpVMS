@@ -40,8 +40,8 @@ CREATE TABLE `phpvms_acarsdata` (
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `phpvms_activityfeed` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pilotid` int(11) NOT NULL,
-  `refid` int(11) NOT NULL DEFAULT '0',
+  `pilotid` int(11) NOT NULL DEFAULT '0',
+  `refid` bigint(20) NOT NULL DEFAULT '0',
   `type` tinyint(4) NOT NULL DEFAULT '0',
   `message` varchar(100) NOT NULL,
   `submitdate` datetime NOT NULL,

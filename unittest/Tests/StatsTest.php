@@ -53,7 +53,10 @@ class StatsTest extends PHPUnit_Framework_TestCase {
      */
     public function testPaxCount() {
         
-        $total = DB::get_row('SELECT COUNT(`load`) AS `total` FROM phpvms_pireps WHERE `flighttype`=\'P\'');
+        $total = DB::get_row(
+            'SELECT SUM(`load`) AS `total` 
+                FROM phpvms_pireps WHERE `flighttype`=\'P\' AND `accepted`='.PIREP_ACCEPTED);
+                
         $this->assertEquals($total->total, StatsData::TotalPaxCarried(), 'StatsData::TotalPaxCarried(NO CODE)');
         
         $airlines = OperationsData::getAllAirlines(true);
@@ -61,8 +64,13 @@ class StatsTest extends PHPUnit_Framework_TestCase {
             
             $pilotCount = StatsData::TotalPaxCarried($airline->code);
             
-            $total = DB::get_row('SELECT COUNT(`load`) AS `total` FROM phpvms_pireps
-                                    WHERE accepted ='. PIREP_ACCEPTED.' AND flighttype = \'P\' AND code = \''.$airline->code.'\'');
+            $total = DB::get_row(
+                'SELECT SUM(`load`) AS `total` 
+                 FROM phpvms_pireps
+                 WHERE accepted ='. PIREP_ACCEPTED.' 
+                    AND flighttype = \'P\' 
+                    AND code = \''.$airline->code.'\''
+            );
                                     
             $this->assertEquals($total->total, $pilotCount, 'StatsData::TotalPaxCarried('.$airline->code.')');
         }

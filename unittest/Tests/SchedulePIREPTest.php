@@ -76,15 +76,6 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
      */
     protected function resetPilot() {
         
-        $save = PilotData::updateProfile($this->samplePilotID, array(
-            'totalflights' => '0',
-            'totalpay' => '0',
-            'totalhours' => '0'
-            )
-        );
-        
-        $this->assertTrue($save, DB::error());
-        
     }
     
     /**
@@ -180,12 +171,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         	'source' => 'unittest',
         	'comment' => 'Test Flight',
         );
-        
-        # Update Pilot Pay to be set to zero
-        PilotData::updateProfile($this->samplePilotID, array('totalpay' => 0));
-        $pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals($pilot_data->totalpay, 0, 'Reset Pilot Pay to 0');
-        
+                
         # File the flight report
         $pirepid = PIREPData::fileReport($pirep_test);
 		$this->assertGreaterThan(0, $pirepid, PIREPData::$lasterror);
@@ -195,55 +181,8 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         
         # Work on one...
         $pirepdata = $pirepdata[0];
-        
-        $this->checkPIREPFinances($pirep_test, $pirepdata);        
-        
-        # Verify the little bits of this PIREP....
-        $this->assertEquals(PILOT_PAY_SCHEDULE, $pirepdata->paytype , 'PIREP Pay Type');
-        $this->assertEquals($this->sample_schedule['payforflight'], $pirepdata->pilotpay, 'PIREP Pay Amount');
-        
-        # Check the pilot pay        
-        $pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals(0, $pilot_data->totalpay, 'Check pilot pay after PIREP FILE');
-        $this->assertEquals(0, $pilot_data->totalflights, 'Check total flights after PIREP FILE');
-        
-        # Change PIREP Status
-        $status = PIREPData::changePIREPStatus($pirepdata->pirepid, PIREP_ACCEPTED);
-        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid)); 
-        $this->assertEquals(PIREP_ACCEPTED, $pirepdata[0]->accepted, 'changePIREPStatus to ACCEPTED');
-        $pirepdata = $pirepdata[0];
-        
-        # Check the schedule flown count:
-        $post_accept = $this->findSchedule();
-        $this->assertEquals($sched->timesflown + 1, $post_accept->timesflown, "Schedule increment count");
-        
-        # Check the pilot pay
-        $post_pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $pay_log = LedgerData::getPaymentByPIREP($pirepid);
-        $this->assertEquals($this->sample_schedule['payforflight'], $pay_log->amount, 'Check pilot pay after PIREP ACCEPT');
-        $this->assertEquals($pilot_data->totalflights + 1, $post_pilot_data->totalflights, 'Total Flights');
-                
-        # Reject the PIREP and then check the pilot pay
-        $status = PIREPData::changePIREPStatus($pirepdata->pirepid, PIREP_REJECTED);
-        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid)); 
-        $this->assertEquals(PIREP_REJECTED, $pirepdata[0]->accepted, 'changePIREPStatus to REJECTED');
-        $pirepdata = $pirepdata[0];
-        
-        # Check the schedule flown count:
-        $post_accept = $this->findSchedule();
-        $this->assertEquals($sched->timesflown, $post_accept->timesflown, "Schedule increment count");
-        
-        $post_pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals(0, $post_pilot_data->totalpay, 'Check pilot pay after PIREP REJECT');
-        $this->assertEquals(0, $post_pilot_data->totalflights, 'Total Flights after REJECT');
-        
-        # Delete the PIREP
-        PIREPData::deletePIREP($pirepid);
-		
-		# Verify delete
-		$data = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));
-		$this->assertEmpty($data, 'PIREPDdata::deletePIREP()');
-    }
+        $this->checkPIREP($pirep_test, $pirepdata->pirepid);
+      }
     
     
     /**
@@ -284,9 +223,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         );
         
         # Update Pilot Pay to be set to zero
-        PilotData::updateProfile($this->samplePilotID, array('totalpay' => 0));
         $pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals($pilot_data->totalpay, 0, 'Reset Pilot Pay to 0');
                 
         # File the flight report
         $pirepid = PIREPData::fileReport($pirep_test);
@@ -298,20 +235,31 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         # Work on one...
         $pirepdata = $pirepdata[0];
         
+        $this->checkPIREP($pirep_test, $pirepdata->pirepid);
+    }
+    
+    
+    /**
+     * SchedulePIREPTest::checkPIREP()
+     * 
+     * @param mixed $pirepdata
+     * @return void
+     */
+    protected function checkPIREP($pirep_test, $pirepid) {
+        
+        $sched = $this->findSchedule();
+        
+        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));
+        $pirepdata = $pirepdata[0];
+        
         $this->checkPIREPFinances($pirep_test, $pirepdata);        
-        
-        # Verify the little bits of this PIREP....
-        $this->assertEquals(PILOT_PAY_HOURLY, $pirepdata->paytype , 'PIREP Pay Type');
-        $this->assertEquals($pilot_data->payrate, $pirepdata->pilotpay, 'PIREP Pay Amount');
-        
+                        
         # Check the pilot pay        
         $pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals(0, $pilot_data->totalpay, 'Check pilot pay after PIREP FILE');
-        $this->assertEquals(0, $pilot_data->totalflights, 'Check total flights after PIREP FILE');
         
         # Change PIREP Status
         $status = PIREPData::changePIREPStatus($pirepdata->pirepid, PIREP_ACCEPTED);
-        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid)); 
+        $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));
         $this->assertEquals(PIREP_ACCEPTED, $pirepdata[0]->accepted, 'changePIREPStatus to ACCEPTED');
         $pirepdata = $pirepdata[0];
         
@@ -320,19 +268,35 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($sched->timesflown + 1, $post_accept->timesflown, "Schedule increment count");
         
         # Check the pilot pay
-        $pilot_data = PilotData::getPilotData($this->samplePilotID);
-        
+        $post_pilot_data = PilotData::getPilotData($this->samplePilotID);
         $pay_log = LedgerData::getPaymentByPIREP($pirepid);
-        $this->assertEquals(
-            PilotData::getPilotPay($this->sample_schedule['flighttime'], $pilot_data->payrate), 
-            $pay_log->amount, 
-            'Check pilot pay after PIREP ACCEPT'
-        );
+        
+        if($pirepdata->paytype == PILOT_PAY_SCHEDULE) {
+            
+            $this->assertEquals($this->sample_schedule['payforflight'], $pirepdata->pilotpay, 
+                                'PIREP Pay Amount');
+            
+            $this->assertEquals($this->sample_schedule['payforflight'], $pay_log->amount, 
+                                'Check pilot pay after PIREP ACCEPT');
+            
+        } else {
+            $this->assertEquals(
+                PilotData::getPilotPay($this->sample_schedule['flighttime'], $pilot_data->payrate), 
+                $pay_log->amount, 
+                'Check pilot pay after PIREP ACCEPT'
+            );
+            
+        }
+        
+        $this->assertEquals($pilot_data->totalflights + 1, $post_pilot_data->totalflights, 'Total Flights');
+               
+        # Check total hours
+        $this->assertGreaterThan($pilot_data->totalhours, $post_pilot_data->totalhours, 'Checking total hours');
                 
         # Reject the PIREP and then check the pilot pay
         $status = PIREPData::changePIREPStatus($pirepdata->pirepid, PIREP_REJECTED);
         $pirepdata = PIREPData::findPIREPS(array('p.pirepid' => $pirepid)); 
-        $this->assertEquals(PIREP_REJECTED, $pirepdata[0]->accepted, 'changePIREPStatus to ACCEPTED');
+        $this->assertEquals(PIREP_REJECTED, $pirepdata[0]->accepted, 'changePIREPStatus to REJECTED');
         $pirepdata = $pirepdata[0];
         
         # Check the schedule flown count:
@@ -340,8 +304,8 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($sched->timesflown, $post_accept->timesflown, "Schedule increment count");
         
         $post_pilot_data = PilotData::getPilotData($this->samplePilotID);
-        $this->assertEquals(0, $post_pilot_data->totalpay, 'Check pilot pay after PIREP REJECT');
-        $this->assertEquals(0, $post_pilot_data->totalflights, 'Total Flights after REJECT');
+        $this->assertEquals($pilot_data->totalpay, $post_pilot_data->totalpay, 'Check pilot pay after PIREP REJECT');
+        $this->assertEquals($pilot_data->totalflights, $post_pilot_data->totalflights, 'Total Flights after REJECT');
         
         # Delete the PIREP
         PIREPData::deletePIREP($pirepid);
@@ -349,6 +313,7 @@ class SchedulePIREPTest extends PHPUnit_Framework_TestCase {
 		# Verify delete
 		$data = PIREPData::findPIREPS(array('p.pirepid' => $pirepid));
 		$this->assertEmpty($data, 'PIREPDdata::deletePIREP()');
+        
     }
     
     
