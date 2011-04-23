@@ -26,8 +26,9 @@ class AwardsData extends CodonData {
      * @return mixed array of objects
      *
      */
-    public static function GetAllAwards() {
-        $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'awards';
+    public static function getAllAwards() {
+        $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'awards`
+                ORDER BY `name` ASC';
         return DB::get_results($sql);
     }
 
