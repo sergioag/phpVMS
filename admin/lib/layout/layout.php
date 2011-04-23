@@ -54,4 +54,3 @@ function randquote()
 	
 	return 	$quotes[rand(0, count($quotes)-1)];	
 }
-?>

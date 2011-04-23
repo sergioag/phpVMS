@@ -63,8 +63,9 @@ if(file_exists($settings_file)) {
 	include $settings_file;
 }
 
-define('SKINS_PATH', SITE_ROOT . '/admin/lib/'.$tplname);
-Template::SetTemplatePath(dirname(__FILE__).'/templates');
+
+Template::setTemplatePath(dirname(__FILE__).'/templates');
+Template::setSkinPath(SITE_ROOT . '/admin/lib/'.$tplname);
 
 MainController::runAllActions();
 

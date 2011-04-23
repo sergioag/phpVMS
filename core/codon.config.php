@@ -67,6 +67,8 @@ spl_autoload_register('codon_autoload');
 Config::Set('MODULES_PATH', CORE_PATH.DS.'modules');
 Config::Set('MODULES_AUTOLOAD', true);
 
+Template::init();
+
 require CORE_PATH.DS.'app.config.php';
 @include CORE_PATH.DS.'local.config.php';
 
@@ -126,6 +128,9 @@ if(function_exists('pre_module_load')) {
 }
 
 MainController::loadEngineTasks();
+
+Template::setTemplatePath(TEMPLATES_PATH);
+Template::setSkinPath(LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);
 
 if(function_exists('post_module_load'))
 	post_module_load();

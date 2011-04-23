@@ -24,6 +24,7 @@
  */
 
 class Dashboard extends CodonModule {
+    
     public function HTMLHead() {
         $this->set('sidebar', 'sidebar_dashboard.tpl');
     }

@@ -1,1 +1,1 @@
-<div id="sidecolumn"><?php echo $sidebar?></div>
+<div id="sidecolumn"><?php echo $sidebar;?></div>

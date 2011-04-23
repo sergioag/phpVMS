@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Codon PHP Framework
  *	www.nsslive.net/codon
@@ -41,63 +42,59 @@
 */
 
 
-class Template
-{
-	public static $tplset;
-	
-	public static function SetTemplatePath($path)
-	{
-		self::$tplset = new TemplateSet();
-		self::$tplset->SetTemplatePath($path);
-	}
-	
-	public static function setTemplateExt($ext)
-	{
-		self::$tplset->tpl_ext = $ext;
-	}
-	
-	public static function EnableCaching($bool=true)
-	{
-		self::$tplset->enable_caching = $bool;
-	}
-	
-	public static function ClearVars()
-	{
-		self::$tplset->ClearVars();
-	}
+class Template {
+    
+    public static $tplset;
+    
+    public static function init() {
+        self::$tplset = new TemplateSet();
+    }
 
-	public static function showVars()
-	{
-		return self::$tplset->showvars();
-	}
-	
-	public static function set($name, $value)
-	{
-		return self::$tplset->Set($name, $value);
-	}
-	
-	public static function show($tpl_name)
-	{
-		return self::$tplset->ShowTemplate($tpl_name);
-	}
-	
-	public static function get($tpl_path, $ret=false, $checkskin=true, $force_base=false)
-	{
-		return self::$tplset->GetTemplate($tpl_path, $ret, $checkskin, $force_base);
-	}
-	
-	public static function showTemplate($tpl_name, $checkskin=true)
-	{
-		return self::$tplset->ShowTemplate($tpl_name, $checkskin);
-	}
-	
-	public static function getTemplate($tpl_path, $ret=false, $checkskin=true, $force_base=false)
-	{
-		return self::$tplset->GetTemplate($tpl_path, $ret, $checkskin, $force_base);
-	}
-	
-	public static function showModule($ModuleName, $Method)
-	{
-		return self::$tplset->ShowModule($ModuleName, $Method);
-	}
+    public static function setTemplatePath($path) {
+        self::$tplset->SetTemplatePath($path);
+    }
+
+    public static function setSkinPath($path) {
+        self::$tplset->setSkinPath($path);
+    }
+
+    public static function setTemplateExt($ext) {
+        self::$tplset->tpl_ext = $ext;
+    }
+
+    public static function EnableCaching($bool = true) {
+        self::$tplset->enable_caching = $bool;
+    }
+
+    public static function ClearVars() {
+        self::$tplset->ClearVars();
+    }
+
+    public static function showVars() {
+        return self::$tplset->showvars();
+    }
+
+    public static function set($name, $value) {
+        return self::$tplset->Set($name, $value);
+    }
+
+    public static function show($tpl_name) {
+        return self::$tplset->ShowTemplate($tpl_name);
+    }
+
+    public static function get($tpl_path, $ret = false, $checkskin = true, $force_base = false) {
+        return self::$tplset->GetTemplate($tpl_path, $ret, $checkskin, $force_base);
+    }
+
+    public static function showTemplate($tpl_name, $checkskin = true) {
+        return self::$tplset->ShowTemplate($tpl_name, $checkskin);
+    }
+
+    public static function getTemplate($tpl_path, $ret = false, $checkskin = true, $force_base = false) {
+        return self::$tplset->GetTemplate($tpl_path, $ret, $checkskin, $force_base);
+    }
+
+    public static function showModule($ModuleName, $Method) {
+        return self::$tplset->ShowModule($ModuleName, $Method);
+    }
 }

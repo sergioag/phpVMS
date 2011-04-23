@@ -66,9 +66,11 @@ if(file_exists($settings_file)) {
 	include $settings_file;
 }
 
-define('SKINS_PATH', SITE_ROOT . '/admin/lib/'.$tplname);
+Template::setTemplatePath(SITE_ROOT.'/admin/templates');
+Template::setSkinPath(SITE_ROOT.'/admin/lib/'.$tplname);
 	
-$BaseTemplate->template_path = SITE_ROOT . '/admin/lib/'.$tplname;
+$BaseTemplate->template_path = SITE_ROOT.'/admin/lib/'.$tplname;
+$BaseTemplate->skin_path = SITE_ROOT.'/admin/lib/'.$tplname;
 $BaseTemplate->Set('title', SITE_NAME);
 
 Template::Set('MODULE_NAV_INC', $NAVBAR);

@@ -40,6 +40,7 @@
 
 class TemplateSet {
     
+    public $skin_path = '';
     public $template_path = '';
     public $enable_caching = false;
     public $cache_timeout;
@@ -60,11 +61,30 @@ class TemplateSet {
      */
     public function setTemplatePath($path) {
         # Remove trailing directory separator
-        $len = strlen($path);
-        if ($path[$len - 1] == DS)
-            $path = substr($path, 0, $len - 1);
+        $len = strlen($path) - 1;
+        if ($path[$len] == DS) {
+            $path[$len] = '';
+        }
 
         $this->template_path = $path;
+    }
+    
+    /**
+     * Set the path to the skin directory
+     * 
+     * @param mixed $path
+     * @return void
+     */
+    public function setSkinPath($path) {
+        
+        $len = strlen($path) - 1;
+        if ($path[$len] == DS) {
+            $path[$len] = '';
+        }
+            
+
+        $this->skin_path = $path;
+        
     }
 
     public function enableCaching($bool = true) {
@@ -88,9 +108,9 @@ class TemplateSet {
     public function set($name, $value) {
         // See if they're setting the template as a file
         //	Check if the file exists
-        if (is_string($value) && strstr($value, $this->tpl_ext)) {
+        if (is_string($value) && $value != '' && substr_count($value, $this->tpl_ext) > 0) {
             if (file_exists($this->template_path . DS . $value)) {
-                $value = $this->GetTemplate($value, true);
+                $value = $this->getTemplate($value, true);
             }
         }
 
@@ -191,11 +211,11 @@ class TemplateSet {
 
         $tpl_path = $this->template_path . DS . $tpl_name;
         if($checkskin === true && $force_base === false) {
-            if(defined('SKINS_PATH') && file_exists(SKINS_PATH.DS.$tpl_name)) {
-                $tpl_path = SKINS_PATH . DS . $tpl_name;
+            if(file_exists($this->skin_path.DS.$tpl_name)) {
+                $tpl_path = $this->skin_path . DS . $tpl_name;
             }
         }
-
+        
         if (!file_exists($tpl_path)) {
             trigger_error('The template file "' . $tpl_path . '" doesn\'t exist');
             return false;

@@ -133,7 +133,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
 2c35bcd117836df8dfc4d81b70aa96fb  *./core/bootstrap.inc.php
-a6fca3102a9f27d5e717e9fc7f81d4d0  *./core/codon.config.php
+7ddf7f58a502254f9052aee19f43f3c0  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 b40dbe61b74f98afb3254abd03bfcc36  *./core/classes/CodonData.class.php
 fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
@@ -141,7 +141,7 @@ fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
 957e4ee1ab6724dd1a768f207cd2b5d3  *./core/classes/CodonEvent.class.php
 c8a22eae5b17b5d8b7deed4aae2e0e5a  *./core/classes/CodonCache.class.php
 5ba6c886b93edf142519b533b573d547  *./core/classes/CodonWebService.class.php
-b47811d8f29e3ba03cddfe90a5e4e118  *./core/classes/TemplateSet.class.php
+537c3631ef180100be1271850c57615b  *./core/classes/TemplateSet.class.php
 aa486b04311f07e1363563a6edf65f2d  *./core/classes/MainController.class.php
 fd37aa8d637c2ba981952ab95c5f89f5  *./core/classes/CodonForm.class.php
 9a97b90f6cd87db1783b3d64bf4fcb38  *./core/classes/Util.class.php
@@ -149,8 +149,8 @@ fd37aa8d637c2ba981952ab95c5f89f5  *./core/classes/CodonForm.class.php
 8bc0a726762131516617e3d876ff90de  *./core/classes/SessionManager.class.php
 c24936573bc8c875aee085610bb0e218  *./core/classes/CodonModule.class.php
 cf7005129f40c0b800ed987809debd89  *./core/classes/autoload.php
-468eeae842fe91ef425bfba3d59b58be  *./core/classes/Config.class.php
-a9028d246a90f26f329f3c76af93f4a1  *./core/classes/Template.class.php
+d38a564ddc5e1f2de95d9742dae56f75  *./core/classes/Config.class.php
+0fbad0dbb43e795eb780ad7c41a215c3  *./core/classes/Template.class.php
 74f79f15db7476a6ce4a8521996eeeef  *./core/classes/CodonCondenser.class.php
 a62228aa685f0a0f68871de6558aae5b  *./core/classes/ezdb/ezdb.class.php
 861e6ba71f6c7ff348d353d999b79897  *./core/classes/ezdb/ezdb_base.class.php
@@ -187,7 +187,7 @@ a5e67fddae9c3f77e262cee30771db05  *./core/modules/Logout/Logout.php
 713228773df8c23688125f98e9cb8f17  *./core/modules/Pages/Pages.php
 925c6ea3907403895286aff5d9838916  *./core/modules/Login/Login.php
 ad702069274d2c2fcafebc86806fc55f  *./core/modules/RouteMap/RouteMap.php
-13ddb5bc802f1cef205872d85c1a2b33  *./index.php
+6173a7736d13d14ab2a91515e72282d8  *./index.php
 c69a4ed831a0cb54bf7c1e26b1ea2474  *./admin/maintenance.php
 9640f3f6d81dd2adce0aa39d0f820da8  *./admin/templates/diff_showdiff.tpl
 88e45847491bc3720114b632e32f05bd  *./admin/templates/sidebar_expenses.tpl
@@ -238,7 +238,7 @@ f6859dd73bb69367fa470ec32ee4096b  *./admin/templates/settings_customfieldsform.t
 998c822282b68f3eaf12e3f178b6fa85  *./admin/templates/core_htmlreq.tpl
 81011a56d0b63f6d66f4343fccfc0f00  *./admin/templates/pilots_addawards.tpl
 a408163f9f6b777e784a6060a4ca2758  *./admin/templates/vacentral_index.tpl
-40d93924c47d599145ddc1f159a53584  *./admin/templates/core_sidebar.tpl
+34d6d1d2874405e9d5df47c1f36daec7  *./admin/templates/core_sidebar.tpl
 63dfab48ce454fbe5857e4f1d431f04d  *./admin/templates/pilots_viewallbids.tpl
 5fab462c2781619206888e845e708d9d  *./admin/templates/downloads_categoryform.tpl
 1c9aad99bf87eceb7969bbd4f5e7b037  *./admin/templates/ops_scheduleform.tpl
@@ -288,15 +288,15 @@ d09d63e66e3dc5077990329100d227d3  *./admin/templates/sidebar_mailer.tpl
 00b5070a20404be0c4fff66f9b871135  *./admin/templates/pirep_addcomment.tpl
 41c5a1e1d22c034a19e44136a061c9d9  *./admin/templates/ranks_rankform.tpl
 651c1a89417a676c8737cc0fcc2de6cd  *./admin/templates/downloads_downloadform.tpl
-bf8c44a206a66fd9c49ac1fe070c9579  *./admin/index.php
-54610ae6edfcb9fca44114b104a027fb  *./admin/lib/layout/layout.php
+693372d99aa26037c6c7f5eb8c66f82c  *./admin/index.php
+915decfea9a409d9ba3ccc0a309352cd  *./admin/lib/layout/layout.php
 764c064e3cb5da3119901a266fd9deae  *./admin/lib/layout/header.tpl
 98460347f7f55d7659d03260572bf8bc  *./admin/lib/layout/footer.tpl
 d43a6cbd0262b0d6e34bf6ba3cb82546  *./admin/lib/layout_dark/header.tpl
 ae9aa5679b1f8cc2cb06e3daad7bdeef  *./admin/lib/layout_dark/footer.tpl
 54610ae6edfcb9fca44114b104a027fb  *./admin/lib/layout_dark/layout_dark.php
 80385da1e9cc870133382762b17a38f4  *./admin/lib/phpvmsadmin.js
-4721788b33646b94d25844d0a64e3f3e  *./admin/action.php
+e50f2dc76e5663bcaf827cc885c1f642  *./admin/action.php
 f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
 65e788f582caecc863b2b469c2c29220  *./admin/modules/Finance/Finance.php
@@ -311,7 +311,7 @@ fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
 838682cce53a398825489fc9afbe9318  *./admin/modules/Maintenance/Maintenance.php
-7d9dd19aa8516b4a88dce314242f826e  *./admin/modules/Dashboard/Dashboard.php
+ccd8555feef03a1d3f633717a3a3be5b  *./admin/modules/Dashboard/Dashboard.php
 bba58e31eeac641aedb3039ec8fcf8b5  *./admin/modules/PIREPAdmin/PIREPAdmin.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/avatars/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/signatures/index.php
@@ -365,4 +365,4 @@ c7f1ec922ec7a3fd1c61f54bc92141b2  *./lib/js/jqgrid/js/i18n/grid.locale-it.js
 538d6d09c1e2e078be9e8702b5b151df  *./lib/js/jqgrid/js/i18n/grid.locale-bg.js
 d3fef3dadffe11d89ea8aba46a6817b3  *./lib/js/jqgrid/js/jquery.jqGrid.min.js
 c2df4618a63b494d8772f9fee66c4ef4  *./lib/js/jquery.form.js
-3a9c3f9c46d919e69f6dc2b7569c977c  *./action.php
+66b90e0c2f7862d3440c69799bf4010d  *./action.php

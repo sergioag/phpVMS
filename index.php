@@ -42,12 +42,13 @@ define('CODON_DEFAULT_MODULE', 'Frontpage');
 include 'core/codon.config.php';
 
 define('SKINS_PATH', LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);
+Template::setSkinPath(SKINS_PATH);
 
 if(Config::Get('XDEBUG_BENCHMARK')) {
 	$memory_start = xdebug_memory_usage();
 }
 
-$BaseTemplate = new TemplateSet;
+$BaseTemplate = new TemplateSet();
 
 # Load the main skin
 $settings_file = SKINS_PATH.DS.CURRENT_SKIN . '.php';
@@ -55,6 +56,7 @@ if(file_exists($settings_file))
 	include $settings_file;
 
 $BaseTemplate->template_path = SKINS_PATH;
+$BaseTemplate->skin_path = SKINS_PATH;
 
 Template::Set('MODULE_NAV_INC', $NAVBAR);
 Template::Set('MODULE_HEAD_INC', $HTMLHead);
