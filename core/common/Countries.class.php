@@ -76,7 +76,7 @@ class Countries extends CodonData {
         'Saint Kitts And Nevis', 'LC' => 'Saint Lucia', 'PM' =>
         'Saint Pierre And Miquelon', 'VC' => 'Saint Vincent And The Grenadines', 'WS' =>
         'Samoa', 'SM' => 'San Marino', 'ST' => 'Sao Tome And Principe', 'SA' =>
-        'Saudi Arabia', 'Scotland' => 'Scotland', 'SN' => 'Senegal', 'SC' =>
+        'Saudi Arabia', 'SCOTLAND' => 'Scotland', 'SN' => 'Senegal', 'SC' =>
         'Seychelles', 'SL' => 'Sierra Leone', 'SG' => 'Singapore', 'SK' => 'Slovakia',
         'SI' => 'Slovenia', 'SB' => 'Solomon Islands', 'SO' => 'Somalia', 'ZA' =>
         'South Africa', 'GS' => 'South Georgia And The South Sandwich Islands', 'ES' =>
@@ -91,7 +91,7 @@ class Countries extends CodonData {
         'United Arab Emirates', 'GB' => 'United Kingdom', 'US' => 'United States', 'UM' =>
         'United States Minor Outlying Islands', 'UY' => 'Uruguay', 'UZ' => 'Uzbekistan',
         'VU' => 'Vanuatu', 'VE' => 'Venezuela', 'VN' => 'Viet Nam', 'VG' =>
-        'Virgin Islands, British', 'VI' => 'Virgin Islands, U.S.', 'Wales' => 'Wales',
+        'Virgin Islands, British', 'VI' => 'Virgin Islands, U.S.', 'WALES' => 'Wales',
         'WF' => 'Wallis And Futuna', 'EH' => 'Western Sahara', 'YE' => 'Yemen', 'YU' =>
         'Yugoslavia', 'ZM' => 'Zambia', 'ZW' => 'Zimbabwe');
 
