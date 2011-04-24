@@ -49,7 +49,8 @@ if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.con
 include CORE_PATH.'/lib/mysqldiff/MySQLDiff.class.php';
 include INSTALL_ROOT.'/includes/Installer.class.php';
 
-Template::SetTemplatePath(INSTALL_ROOT.'/templates');
+Template::init();
+Template::setTemplatePath(INSTALL_ROOT.'/templates');
 
 # Get the version info from the version file
 $revision = file_get_contents(CORE_PATH.'/version');
