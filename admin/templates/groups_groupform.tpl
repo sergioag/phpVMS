@@ -1,5 +1,5 @@
 <h3><?php echo $title; ?></h3>
-<form action="<?php echo adminurl('/pilotadmin/pilotgroups');?>" method="post">
+<form  id="dialogform" action="<?php echo adminaction('/pilotadmin/pilotgroups');?>" method="post">
 
 <table id="tabledlist" class="tablesorter">
 <tbody>
@@ -15,18 +15,17 @@
 			<input type="checkbox" name="permissions[]" value="0" <?php echo $checked;?> />No admin access<br />
 		<?php
 		
-		foreach($permission_set as $p_name=>$p_value)
-		{
+		foreach($permission_set as $p_name=>$p_value) {
 			# Does group have this permission?
 			
-			if(PilotGroups::check_permission($group->permissions, $p_value))
-				$checked = 'checked';
-			else
-				$checked = '';
-				
+			if(PilotGroups::check_permission($group->permissions, $p_value)) {
+                $checked = 'checked';
+			} else {
+                $checked = '';
+			}
+            	
 			echo '<input type="checkbox" name="permissions[]" value="'.$p_value.'" '.$checked.' />'.$p_name.'<br />';
-			
-			
+            
 		}
 		
 		?>		
