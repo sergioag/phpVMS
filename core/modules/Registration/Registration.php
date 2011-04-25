@@ -61,104 +61,103 @@ class Registration extends CodonModule
 		$this->render('registration_mainform.tpl');
 	}
 	
+	/**
+	 * Registration::ProcessRegistration()
+	 * 
+	 * @return
+	 */
 	protected function ProcessRegistration()
 	{
 			
 		// Yes, there was an error
-		if(!$this->VerifyData())
-		{
+		if(!$this->VerifyData()) {
 			$this->ShowForm();
+            return;
+        } 
+        
+		$data = array(
+			'firstname' => $this->post->firstname,
+			'lastname' => $this->post->lastname,
+			'email' => $this->post->email,
+			'password' => $this->post->password1,
+			'code' => $this->post->code,
+			'location' => $this->post->location,
+			'hub' => $this->post->hub,
+			'confirm' => false
+		);
+			
+		if(CodonEvent::Dispatch('registration_precomplete', 'Registration', $_POST) == false) {
+			return false;
 		}
-		else
-		{
-			$data = array(
-				'firstname' => $this->post->firstname,
-				'lastname' => $this->post->lastname,
-				'email' => $this->post->email,
-				'password' => $this->post->password1,
-				'code' => $this->post->code,
-				'location' => $this->post->location,
-				'hub' => $this->post->hub,
-				'confirm' => false
-			);
+		
+		$ret = RegistrationData::CheckUserEmail($data['email']);
+		
+		if($ret) {
+			$this->set('error', Lang::gs('email.inuse'));
+			$this->render('registration_error.tpl');
+			return false;
+		}
+		
+		$val = RegistrationData::AddUser($data);
+		if($val == false) {
+			$this->set('error', RegistrationData::$error);
+			$this->render('registration_error.tpl');
+			return;
+		} else {
+		  
+			$pilotid = RegistrationData::$pilotid;
+			
+			/* Automatically confirm them if that option is set */
+			if(Config::Get('PILOT_AUTO_CONFIRM') == true)
+			{
+				PilotData::AcceptPilot($pilotid);
+				RanksData::CalculatePilotRanks();
 				
-			if(CodonEvent::Dispatch('registration_precomplete', 'Registration', $_POST) == false)
-			{
-				return false;
+				$pilot = PilotData::GetPilotData($pilotid);
+				$this->set('pilot', $pilot);
+				$this->render('registration_autoconfirm.tpl');
 			}
-			
-			$ret = RegistrationData::CheckUserEmail($data['email']);
-			
-			if($ret)
-			{
-				$this->set('error', Lang::gs('email.inuse'));
-				$this->render('registration_error.tpl');
-				return false;
-			}
-			
-			$val = RegistrationData::AddUser($data);
-			if($val == false)
-			{
-				$this->set('error', RegistrationData::$error);
-				$this->render('registration_error.tpl');
-				return;
-			}
+			/* Otherwise, wait until an admin confirms the registration */
 			else
 			{
-				$pilotid = RegistrationData::$pilotid;
-				
-				/* Automatically confirm them if that option is set */
-				if(Config::Get('PILOT_AUTO_CONFIRM') == true)
-				{
-					PilotData::AcceptPilot($pilotid);
-					RanksData::CalculatePilotRanks();
-					
-					$pilot = PilotData::GetPilotData($pilotid);
-					$this->set('pilot', $pilot);
-					$this->render('registration_autoconfirm.tpl');
-				}
-				/* Otherwise, wait until an admin confirms the registration */
-				else
-				{
-					RegistrationData::SendEmailConfirm($email, $firstname, $lastname);
-					$this->render('registration_sentconfirmation.tpl');
-				}
+				RegistrationData::SendEmailConfirm($email, $firstname, $lastname);
+				$this->render('registration_sentconfirmation.tpl');
 			}
-			
-			CodonEvent::Dispatch('registration_complete', 'Registration', $_POST);
-			
-			// Registration email/show user is waiting for confirmation
-			$sub = 'A user has registered';
-			$message = "The user {$data['firstname']} {$data['lastname']} ({$data['email']}) has registered, and is awaiting confirmation.";
-			
-			$email = Config::Get('EMAIL_NEW_REGISTRATION');
-			if(empty($email))
-			{
-				$email = ADMIN_EMAIL;
-			}
-			
-			Util::SendEmail($email, $sub, $message);
-			
-			// Send email to user
-			$this->set('firstname', $data['firstname']);
-			$this->set('lastname', $data['lastname']);
-			$this->set('userinfo', $data);
-			
-			$message = Template::Get('email_registered.tpl', true);
-			Util::SendEmail($data['email'], 'Registration at '.SITE_NAME, $message);
-			
-			$rss = new RSSFeed('Latest Pilot Registrations', SITE_URL, 'The latest pilot registrations');
-			$allpilots = PilotData::GetLatestPilots();
-			
-			foreach($allpilots as $pilot)
-			{
-				$rss->AddItem('Pilot '.PilotData::GetPilotCode($pilot->code, $pilot->pilotid)
-								. ' ('.$pilot->firstname .' ' . $pilot->lastname.')',
-								SITE_URL.'/admin/index.php?admin=pendingpilots','','');
-			}
-		
-			$rss->BuildFeed(LIB_PATH.'/rss/latestpilots.rss');
 		}
+		
+		CodonEvent::Dispatch('registration_complete', 'Registration', $_POST);
+		
+		// Registration email/show user is waiting for confirmation
+		$sub = 'A user has registered';
+		$message = "The user {$data['firstname']} {$data['lastname']} ({$data['email']}) has registered, and is awaiting confirmation.";
+		
+		$email = Config::Get('EMAIL_NEW_REGISTRATION');
+		if(empty($email)) {
+			$email = ADMIN_EMAIL;
+		}
+		
+		Util::SendEmail($email, $sub, $message);
+		
+		// Send email to user
+		$this->set('firstname', $data['firstname']);
+		$this->set('lastname', $data['lastname']);
+		$this->set('userinfo', $data);
+		
+		$message = Template::Get('email_registered.tpl', true);
+		Util::SendEmail($data['email'], 'Registration at '.SITE_NAME, $message);
+		
+		$rss = new RSSFeed('Latest Pilot Registrations', SITE_URL, 'The latest pilot registrations');
+		$allpilots = PilotData::GetLatestPilots();
+		
+		foreach($allpilots as $pilot)
+		{
+			$rss->AddItem('Pilot '.PilotData::GetPilotCode($pilot->code, $pilot->pilotid)
+							. ' ('.$pilot->firstname .' ' . $pilot->lastname.')',
+							SITE_URL.'/admin/index.php?admin=pendingpilots','','');
+		}
+	
+		$rss->BuildFeed(LIB_PATH.'/rss/latestpilots.rss');
+		
 	}
 
 	/*

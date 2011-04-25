@@ -1,7 +1,6 @@
 <h3>Pending Pilots</h3>
 <?php
-if(!$allpilots)
-{
+if(!$allpilots) {
 	echo '<p>There are no pilots!</p>';
 	return;
 }
@@ -32,6 +31,15 @@ foreach($allpilots as $pilot)
 				
         <button href="<?php echo SITE_URL?>/admin/action.php/pilotadmin/pendingpilots" action="rejectpilot"
 			id="<?php echo $pilot->pilotid;?>" class="ajaxcall {button:{icons:{primary:'ui-icon-circle-close'}}}">Reject</button>
+   
+        <?php
+        if(Config::Get('PILOT_AUTO_CONFIRM') == false) {
+            ?>
+        <button href="<?php echo SITE_URL?>/admin/action.php/pilotadmin/resendemail" action="resendemail"
+			id="<?php echo $pilot->pilotid;?>" class="ajaxcall {button:{icons:{primary:'ui-icon-circle-close'}}}">Re-Send Activation Email</button>
+        <?php
+        }
+        ?>
 	</td>
 </tr>
 <?php

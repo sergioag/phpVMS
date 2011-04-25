@@ -51,11 +51,11 @@ class Template {
     }
 
     public static function setTemplatePath($path) {
-        self::$tplset->SetTemplatePath($path);
+        return self::$tplset->setTemplatePath($path);
     }
 
     public static function setSkinPath($path) {
-        self::$tplset->setSkinPath($path);
+        return self::$tplset->setSkinPath($path);
     }
 
     public static function setTemplateExt($ext) {
@@ -91,7 +91,7 @@ class Template {
     }
 
     public static function getTemplate($tpl_path, $ret = false, $checkskin = true, $force_base = false) {
-        return self::$tplset->GetTemplate($tpl_path, $ret, $checkskin, $force_base);
+        return self::$tplset->getTemplate($tpl_path, $ret, $checkskin, $force_base);
     }
 
     public static function showModule($ModuleName, $Method) {

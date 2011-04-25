@@ -29,9 +29,12 @@ class RegistrationData extends CodonData {
      */
     public static function getCustomFields($getall = false) {
 
-        $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'customfields';
+        $sql = 'SELECT * 
+                FROM `'.TABLE_PREFIX.'customfields`';
 
-        if ($getall == false) $sql .= ' WHERE showonregister=1';
+        if ($getall == false) {
+            $sql .= ' WHERE `showonregister`=1';
+        }
 
         return DB::get_results($sql);
     }
@@ -138,7 +141,7 @@ class RegistrationData extends CodonData {
                 $value = DB::escape($value);
     
                 if ($value != '') {
-                    $sql = "INSERT INTO " . TABLE_PREFIX . "fieldvalues (fieldid, pilotid, value)
+                    $sql = "INSERT INTO `".TABLE_PREFIX."fieldvalues` (fieldid, pilotid, value)
     							VALUES ($field->fieldid, $pilotid, '$value')";
     
                     DB::query($sql);
@@ -165,6 +168,13 @@ class RegistrationData extends CodonData {
         return true;
     }
 
+    /**
+     * RegistrationData::ChangePassword()
+     * 
+     * @param mixed $pilotid
+     * @param mixed $newpassword
+     * @return
+     */
     public static function ChangePassword($pilotid, $newpassword) {
         $salt = md5(date('His'));
         $password = md5($newpassword . $salt);
@@ -172,9 +182,9 @@ class RegistrationData extends CodonData {
 
         //, confirmed='y'
         $sql = "UPDATE " . TABLE_PREFIX . "pilots 
-					SET password='$password', 
-						salt='$salt'
-					WHERE pilotid=$pilotid";
+				SET password='$password', 
+					salt='$salt'
+				WHERE pilotid=$pilotid";
 
         $res = DB::query($sql);
 
@@ -183,11 +193,17 @@ class RegistrationData extends CodonData {
         return true;
     }
 
-    public static function SendEmailConfirm($email, $firstname, $lastname, $newpw =
-        '') {
-        /*$firstname = Vars::POST('firstname');
-        $lastname = Vars::POST('lastname');
-        $email = Vars::POST('email');*/
+    /**
+     * RegistrationData::SendEmailConfirm()
+     * 
+     * @param mixed $email
+     * @param mixed $firstname
+     * @param mixed $lastname
+     * @param string $newpw
+     * @return void
+     */
+    public static function SendEmailConfirm($email, $firstname, $lastname, $newpw = '') {
+        
         $confid = self::$salt;
 
         $subject = SITE_NAME . ' Registration';
@@ -195,18 +211,26 @@ class RegistrationData extends CodonData {
         Template::Set('firstname', $firstname);
         Template::Set('lastname', $lastname);
         Template::Set('confid', $confid);
-
-        $message = Template::GetTemplate('email_registered.tpl', true);
+        
+        $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
+        $message = Template::getTemplate('email_registered.tpl', true, true, true);
+        Template::setTemplatePath($oldPath);
 
         //email them the confirmation
         Util::SendEmail($email, $subject, $message);
     }
 
+    /**
+     * RegistrationData::ValidateConfirm()
+     * 
+     * @return
+     */
     public static function ValidateConfirm() {
         $confid = Vars::GET('confirmid');
 
-        $sql = "UPDATE " . TABLE_PREFIX .
-            "pilots SET confirmed=1, retired=0 WHERE salt='$confid'";
+        $sql = "UPDATE `".TABLE_PREFIX."pilots` 
+                SET `confirmed`=1, `retired`=0 
+                WHERE `salt`='".$confid."'";
         $res = DB::query($sql);
 
         if (DB::errno() != 0) return false;

@@ -61,12 +61,16 @@ class TemplateSet {
      */
     public function setTemplatePath($path) {
         # Remove trailing directory separator
+        $old_path = $this->template_path;
+        
         $len = strlen($path) - 1;
         if ($path[$len] == DS) {
             $path[$len] = '';
         }
 
         $this->template_path = $path;
+        
+        return $old_path;
     }
     
     /**
@@ -77,6 +81,8 @@ class TemplateSet {
      */
     public function setSkinPath($path) {
         
+        $old_path = $this->skin_path;
+        
         $len = strlen($path) - 1;
         if ($path[$len] == DS) {
             $path[$len] = '';
@@ -84,7 +90,7 @@ class TemplateSet {
             
 
         $this->skin_path = $path;
-        
+        return $old_path;
     }
 
     public function enableCaching($bool = true) {
