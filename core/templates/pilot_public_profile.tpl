@@ -1,6 +1,5 @@
 <?php
-if(!$userinfo)
-{
+if(!$userinfo) {
 	echo '<h3>This pilot does not exist!</h3>';
 	return;
 }
@@ -10,12 +9,9 @@ if(!$userinfo)
 	<tr>
 		<td align="center" valign="top">
 			<?php
-			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png'))
-			{
+			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png')) {
 				echo 'No avatar';
-			}
-			else
-			{
+			} else {
 				echo '<img src="'.SITE_URL.AVATAR_PATH.'/'.$pilotcode.'.png'.'" alt="No Avatar" /> ';
 			}
 			?>
@@ -36,10 +32,8 @@ if(!$userinfo)
 			
 				<?php
 				// Show the public fields
-				if($allfields)
-				{
-					foreach($allfields as $field)
-					{
+				if($allfields) {
+					foreach($allfields as $field) {
 						echo "<li><strong>$field->title: </strong>$field->value</li>";
 					}
 				}
@@ -49,17 +43,15 @@ if(!$userinfo)
 			<p>
 			<strong>Awards</strong>
 			<?php
-			if(is_array($allawards))
-			{			
+			if(is_array($allawards)) {			
 			?>
 			<ul>
-				<?php foreach($allawards as $award)
-				{ 
+				<?php 
+                foreach($allawards as $award) { 
 					/* To show the image:
 					
 						<img src="<?php echo $award->image?>" alt="<?php echo $award->descrip?>" />
 					*/
-				
 				?>
 					<li><?php echo $award->name ?></li>
 				<?php } ?>

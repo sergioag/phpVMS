@@ -129,12 +129,6 @@ class PilotAdmin extends CodonModule {
                     return;
                 }
 
-                if (intval($this->post->retired) == 1) {
-                    $retired = true;
-                } else {
-                    $retired = false;
-                }
-
                 $params = array(
                     'code' => $this->post->code, 
                     'firstname' => $this->post->firstname, 
@@ -142,7 +136,7 @@ class PilotAdmin extends CodonModule {
                     'email' => $this->post->email, 
                     'location' => $this->post->location, 
                     'hub' => $this->post->hub, 
-                    'retired' => $retired, 
+                    'retired' => $this->post->retired, 
                     'totalhours' => $this->post->totalhours, 
                     'totalflights' => $this->post->totalflights, 
                     'totalpay' => floatval($this->post->totalpay), 
@@ -168,7 +162,9 @@ class PilotAdmin extends CodonModule {
 
 
                 $pilot = PilotData::getPilotData($this->post->pilotid);
-                LogData::addLog(Auth::$userinfo->pilotid, 'Updated profile for ' . PilotData::getPilotCode($pilot->code, $pilot->pilotid) . ' ' . $pilot->firstname . ' ' . $pilot->lastname);
+                LogData::addLog(Auth::$userinfo->pilotid, 'Updated profile for ' 
+                                .PilotData::getPilotCode($pilot->code, $pilot->pilotid) 
+                                .' '.$pilot->firstname.' '.$pilot->lastname);
 
                 return;
                 break;
@@ -336,6 +332,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function getpilotsjson() {
+        
         $page = $this->get->page; // get the requested page
         $limit = $this->get->rows; // get how many rows we want to have into the grid
         $sidx = $this->get->sidx; // get index row - i.e. user click to sort
@@ -383,10 +380,20 @@ class PilotAdmin extends CodonModule {
         # Form the json header
         $json = array('page' => $page, 'total' => $total_pages, 'records' => $count, 'rows' => array());
 
+        $statuses = Config::get('PILOT_STATUS_TYPES');
+        
         # Add each row to the above array
         foreach ($allpilots as $row) {
+            
             $pilotid = PilotData::getPilotCode($row->code, $row->pilotid);
-            $status = ($row->retired == 0) ? 'Active' : 'Retired';
+            
+            foreach($statuses as $id => $details) {
+                if($row->retired == $id) {
+                    $status = $details['name'];
+                    break;
+                }
+            }
+            
             $location = '<img src="' . Countries::getCountryImage($row->location) . '" alt="' . $row->location . '" />';
             $edit = '<a href="' . adminurl('/pilotadmin/viewpilots?action=viewoptions&pilotid=' . $row->pilotid) . '">Edit</a>';
 
@@ -429,6 +436,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function SetGroupsData($pilotid) {
+        
         # This is for the groups tab
         $freegroups = array();
 
@@ -556,10 +564,11 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function ApprovePilot() {
+        
         PilotData::AcceptPilot($this->post->id);
         RanksData::CalculatePilotRanks();
 
-        $pilot = PilotData::GetPilotData($this->post->id);
+        $pilot = PilotData::getPilotData($this->post->id);
 
         # Send pilot notification
         $subject = Lang::gs('email.register.accepted.subject');

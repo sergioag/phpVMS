@@ -150,18 +150,21 @@
 </tr>
 <tr>
 	<td>Pilot active?</td>
-	<td><?php 
-		if(intval($pilotinfo->retired) == 1)  {  
-			$retsel='selected'; 
-			$activesel = ''; 
-		} else {
-			$activesel = 'selected'; 
-			$retsel = '';
-		}
+	<td><select name="retired">
+        <?php 
+    
+        $pilotStatuses = Config::get('PILOT_STATUS_TYPES');
+        foreach($pilotStatuses as $id => $info) {
+            if($pilotinfo->retired == $id) {
+                $active = 'selected';
+            } else {
+                $active = '';
+            }
+            
+            echo '<option value="'.$id.'" '.$active.'>'.$info['name'].'</option>';
+        }
+        
 		?>
-		<select name="retired">
-			<option value="0" <?php echo $activesel?>>Active</option>
-			<option value="1" <?php echo $retsel?>>Inactive</option>
 		</select>
 	
 	</td>

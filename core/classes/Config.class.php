@@ -1,8 +1,10 @@
 <?php
 
 class Config {
+    
     static $values = array();
     static $final = array();
+    static $merge = array();
 
 
     /**
@@ -28,11 +30,12 @@ class Config {
      *
      */
     public static function Set($name, $value, $final = false) {
+        
         if (in_array($name, self::$final))
             return;
-
+        
         self::$values[$name] = $value;
-
+        
         if ($final == true) {
             self::$final[] = $name;
         }

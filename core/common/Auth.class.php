@@ -251,6 +251,18 @@ class Auth extends CodonData {
             return false;
         }
 
+        /*  Implement the pilot statuses, see if they are allowed in
+            according to their status */
+        $pilotStatuses = Config::get('PILOT_STATUS_TYPES');
+        foreach($pilotStatuses as $id => $info) {
+            if($userinfo->retired == $id) {
+                if($info['canlogin'] == false) {
+                    self::$error_message = $info['message'];
+                    return false;
+                }
+            }
+        }
+        
         /*if($userinfo->retired == 1)
         {
         self::$error_message = 'Your account was deactivated, please contact an admin';

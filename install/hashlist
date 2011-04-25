@@ -25,7 +25,7 @@ b93585ee3d7e1d70cb3d4937f3e8069b  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
 bf728ada7c00dd8e9cf57c98a55cafac  *./core/common/PIREPData.class.php
 8a5cb317fbcafa8badef4df19ba10488  *./core/common/LedgerData.class.php
-e61e61593cae4813c33914be562701ae  *./core/common/Auth.class.php
+a2ef10c1861c7458bef3e9c3879c4379  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 0ad7f1a221a5b7aed18e4665bd817ef1  *./core/common/RegistrationData.class.php
 4b930556c0957f86bb290023be2f41fd  *./core/common/StatsData.class.php
@@ -119,7 +119,7 @@ c9d56fa8afc976e59e3f3967699a1d0f  *./core/templates/pilots_list.tpl
 a7809ff8c48c4a9b8a332c84b16c0eb3  *./core/templates/login_unconfirmed.tpl
 484b9180ba5ad41b0e25b6379cdc3c81  *./core/templates/downloads_list.tpl
 d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
-5e54dfea61c0477557872f73219710dc  *./core/templates/pilot_public_profile.tpl
+88b174ac4cbcf7a72d703bfab58a7878  *./core/templates/pilot_public_profile.tpl
 74509a45104870fffb6cffd731a7602d  *./core/templates/download_item.tpl
 195bccea8218c5a0fece3b909cce0c51  *./core/templates/email_lostpassword.tpl
 024e111d80c93ed5565f22fdb858b789  *./core/templates/fspax_config.tpl
@@ -149,7 +149,7 @@ fd37aa8d637c2ba981952ab95c5f89f5  *./core/classes/CodonForm.class.php
 8bc0a726762131516617e3d876ff90de  *./core/classes/SessionManager.class.php
 c24936573bc8c875aee085610bb0e218  *./core/classes/CodonModule.class.php
 cf7005129f40c0b800ed987809debd89  *./core/classes/autoload.php
-d38a564ddc5e1f2de95d9742dae56f75  *./core/classes/Config.class.php
+6a2c875fa3afa32e728d98506c17b5f4  *./core/classes/Config.class.php
 5f3d848a8309174f0bf2348b06a9ad75  *./core/classes/Template.class.php
 74f79f15db7476a6ce4a8521996eeeef  *./core/classes/CodonCondenser.class.php
 a62228aa685f0a0f68871de6558aae5b  *./core/classes/ezdb/ezdb.class.php
@@ -162,7 +162,7 @@ c5464e3a9e0079bd8229a1b1aa27379d  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-caf692be17176c27aaff9a1828e13b09  *./core/app.config.php
+95f83d60405f7684eef520c46fb1d1b8  *./core/app.config.php
 c26d9878cab6959c8e58a14fc31fb614  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 73fc6e1d3106739551d5358922d65d40  *./core/modules/Activity/Activity.php
@@ -209,7 +209,7 @@ f4810662fd0c7191ae537045f4994d65  *./admin/templates/sidebar_awards.tpl
 316f9c45b89506a2646a6a1a3c392c92  *./admin/templates/finance_summarysheet.tpl
 7eee22e868ad1cfa54c020876b10153c  *./admin/templates/sidebar_settings.tpl
 e8c22cb9ae3fdd723ac9948697850c1c  *./admin/templates/import_aircraftform.tpl
-1b29b4a4eafb787b1af5edfaec5b5658  *./admin/templates/pilots_details.tpl
+da4c1ef3981ee1a3abe6ef50df8e55c7  *./admin/templates/pilots_details.tpl
 43647f7912f986186e1bd6999c535ca9  *./admin/templates/core_message.tpl
 8d0515f54ff8db717a6a8fe45e6075d7  *./admin/templates/pireps_list.tpl
 2e79fc0f2948a8aae1d33b58a7fd60c5  *./admin/templates/downloads_overview.tpl
@@ -301,7 +301,7 @@ f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
 65e788f582caecc863b2b469c2c29220  *./admin/modules/Finance/Finance.php
 c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
-6765c065ba9be5374340f14134fbb488  *./admin/modules/PilotAdmin/PilotAdmin.php
+dc6d5075b5505a99c9ffb54511ce9c8d  *./admin/modules/PilotAdmin/PilotAdmin.php
 36b45668ad6e73826bc8ef7ff02f7e4d  *./admin/modules/PilotRanking/PilotRanking.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php

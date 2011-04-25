@@ -455,7 +455,37 @@ Config::Set(
 		'G'=>'Percent (per flight)'
 	)
 );
-			
+
+
+/*  These are pilot statuses which can be selected in
+    the admin panel */
+Config::Set('PILOT_STATUS_TYPES', array(
+    0 => array(
+        'name' => 'Active',     # The title to show in the dropdown
+        'message' => '',        # Message to show if they can't login (below is false)
+        'canlogin' => false,    # Are they allowed to log in
+        'active' => true,       # Are they an active pilot?
+    ),
+    1 => array(
+        'name' => 'Inactive',
+        'message' => 'Your account was marked inactive',
+        'canlogin' => false,
+        'active' => false,
+    ),
+    2 => array(
+        'name' => 'Banned',
+        'message' => 'Your account is banned, please contact an admin!',
+        'canlogin' => false,
+        'active' => false,
+    ),
+    3 => array(
+        'name' => 'On Leave',
+        'message' => 'You have been marked as on leave',
+        'canlogin' => false,
+        'active' => false,
+    ),
+));
+
 define('SIGNATURE_PATH', '/lib/signatures');
 define('AVATAR_PATH', '/lib/avatars');
 
