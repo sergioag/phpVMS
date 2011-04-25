@@ -213,11 +213,15 @@ class RegistrationData extends CodonData {
         Template::Set('confid', $confid);
         
         $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
+        $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
+        
         $message = Template::getTemplate('email_registered.tpl', true, true, true);
+        
         Template::setTemplatePath($oldPath);
+        Template::setSkinPath($oldSkinPath);
 
         //email them the confirmation
-        Util::SendEmail($email, $subject, $message);
+        Util::sendEmail($email, $subject, $message);
     }
 
     /**

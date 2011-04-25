@@ -27,7 +27,7 @@ bf728ada7c00dd8e9cf57c98a55cafac  *./core/common/PIREPData.class.php
 8a5cb317fbcafa8badef4df19ba10488  *./core/common/LedgerData.class.php
 a2ef10c1861c7458bef3e9c3879c4379  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
-0ad7f1a221a5b7aed18e4665bd817ef1  *./core/common/RegistrationData.class.php
+f73b426ff4f4cfa66f65d20cd707a467  *./core/common/RegistrationData.class.php
 4b930556c0957f86bb290023be2f41fd  *./core/common/StatsData.class.php
 3f98e73623e9b6f9ead96b6da3513f45  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
@@ -133,7 +133,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
 2c35bcd117836df8dfc4d81b70aa96fb  *./core/bootstrap.inc.php
-7ddf7f58a502254f9052aee19f43f3c0  *./core/codon.config.php
+c4e2b2296c615f5cbb855ca7ce6ac52e  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 b40dbe61b74f98afb3254abd03bfcc36  *./core/classes/CodonData.class.php
 fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
@@ -219,7 +219,7 @@ d190bfe1d24011d109b013489ad0d9c5  *./admin/templates/core_htmlhead.tpl
 17b3e303ca2b626812c53665b99dc620  *./admin/templates/finance_expenseform.tpl
 d41d8cd98f00b204e9800998ecf8427e  *./admin/templates/sidebar_central.tpl
 7dc531584bbd6ffea8b35c6217f89dcf  *./admin/templates/settings_pirepfieldsform.tpl
-152606190d17aaf21d8caee338b3f6a3  *./admin/templates/groups_groupform.tpl
+9049db2b9f5cda8c8c04c7f4ca5ef25f  *./admin/templates/groups_groupform.tpl
 44c81c86b2df122e63c8ec1c42e85551  *./admin/templates/finance_header.tpl
 978b8517403732739fdabf82d71cee70  *./admin/templates/route_map.tpl
 655749c491f9e3071eeea52774c74335  *./admin/templates/ops_airlineform.tpl
@@ -301,7 +301,7 @@ f1c016469d12fd1974599d675da8d97b  *./admin/modules/Reports/Reports.php
 eb48b61566644404735718c7607dce33  *./admin/modules/VACentral/VACentral.php
 65e788f582caecc863b2b469c2c29220  *./admin/modules/Finance/Finance.php
 c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
-dc6d5075b5505a99c9ffb54511ce9c8d  *./admin/modules/PilotAdmin/PilotAdmin.php
+78caeda91be8e9fd0ebeede1fbbb92ac  *./admin/modules/PilotAdmin/PilotAdmin.php
 36b45668ad6e73826bc8ef7ff02f7e4d  *./admin/modules/PilotRanking/PilotRanking.php
 7f8afe3dfe944a0a010c23bcbd7e2467  *./admin/modules/Downloads/Downloads.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php

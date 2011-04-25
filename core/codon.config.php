@@ -129,8 +129,10 @@ if(function_exists('pre_module_load')) {
 
 MainController::loadEngineTasks();
 
+define('ACTIVE_SKIN_PATH', LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);
+
 Template::setTemplatePath(TEMPLATES_PATH);
-Template::setSkinPath(LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);
+Template::setSkinPath(ACTIVE_SKIN_PATH);
 
 if(function_exists('post_module_load'))
 	post_module_load();

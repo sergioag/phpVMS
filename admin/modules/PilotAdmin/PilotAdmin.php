@@ -573,7 +573,14 @@ class PilotAdmin extends CodonModule {
         # Send pilot notification
         $subject = Lang::gs('email.register.accepted.subject');
         $this->set('pilot', $pilot);
+        
+        $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
+        $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
+        
         $message = Template::GetTemplate('email_registrationaccepted.tpl', true, true, true);
+        
+        Template::setTemplatePath($oldPath);
+        Template::setSkinPath($oldSkinPath);
 
         Util::SendEmail($pilot->email, $subject, $message);
 
@@ -595,8 +602,15 @@ class PilotAdmin extends CodonModule {
         $subject = Lang::gs('email.register.rejected.subject');
 
         $this->set('pilot', $pilot);
+        
+        $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
+        $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
+        
         $message = Template::Get('email_registrationdenied.tpl', true, true, true);
-
+        
+        Template::setTemplatePath($oldPath);
+        Template::setSkinPath($oldSkinPath);
+        
         Util::SendEmail($pilot->email, $subject, $message);
 
         # Reject in the end, since it's delted
