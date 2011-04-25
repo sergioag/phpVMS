@@ -42,6 +42,11 @@ Config::Set('MAINTENANCE_MESSAGE', 'We are currently down for maintenance, pleas
 
 # This is your airline's twitter account, if it exists
 Config::Set('TWITTER_AIRLINE_ACCOUNT', '');
+Config::Set('TWITTER_ENABLE_PUSH', false);
+Config::Set('TWITTER_CONSUMER_KEY', '');
+Config::Set('TWITTER_CONSUMER_SECRET', '');
+Config::Set('TWITTER_OAUTH_TOKEN', '');
+Config::Set('TWITTER_OAUTH_SECRET', '');
 
 # See more details about these in the docs
 Config::Set('PAGE_EXT', '.htm');	# .htm is fine. You can still run PHP

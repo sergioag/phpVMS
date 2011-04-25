@@ -21,9 +21,6 @@ define('TABLE_PREFIX', '$TABLE_PREFIX');
 
 define('SITE_URL', '$SITE_URL');
 
-# This is your airline's twitter account, if it exists
-Config::Set('TWITTER_AIRLINE_ACCOUNT', '');
-
 # Page encoding options
 Config::Set('PAGE_ENCODING', 'ISO-8859-1');
 
@@ -82,6 +79,13 @@ Config::Set('MAP_ZOOM_LEVEL', 12);
 Config::Set('ACARS_LIVE_TIME', 720); 
 Config::Set('ACARS_DEBUG', false);
 
+# This is your airline's twitter account, if it exists
+Config::Set('TWITTER_AIRLINE_ACCOUNT', '');
+Config::Set('TWITTER_ENABLE_PUSH', false);
+Config::Set('TWITTER_CONSUMER_KEY', '');
+Config::Set('TWITTER_CONSUMER_SECRET', '');
+Config::Set('TWITTER_OAUTH_TOKEN', '');
+Config::Set('TWITTER_OAUTH_SECRET', '');
 
 /*
   This is the unit of money. For non-dollars, use :

@@ -29,7 +29,8 @@ foreach($allactivities as $activity) {
         $link_title = 'View Tweet';
         
     } elseif($activity->type == ACTIVITY_NEW_PILOT) {
-        /* Something special for a new pilot? */
+        $link_href = url('/profile/view/'.$activity->pilotid);
+        $link_title = 'View Profile';
     }
 ?>
     <p>

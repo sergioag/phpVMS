@@ -81,7 +81,79 @@
                 ('.$params['pilotid'].','.$params['refid'].','.$params['type']
                   .',\''.DB::escape($params['message']).'\', '.$params['submitdate'].')';
         
-        return DB::query($sql);
+        $ret = DB::query($sql);
+        
+        if(Config::get('TWITTER_ENABLE_PUSH') == true) {
+            self::pushToTwitter($params);
+        }
+            
+    }
+    
+    /**
+     * ActivityData::pushToTwitter()
+     * 
+     * @param mixed $params
+     * @return void
+     */
+    public static function pushToTwitter($params) {
+        
+        require_once CORE_LIB_PATH.'/twitteroauth/twitteroauth.php';
+        
+        $params = array_merge(array(
+            'pilotid' => '',
+            'type' => '',
+            'refid' => '',
+            'message' => '',
+        ), $params);
+        
+        $message = '';
+        # These defaults will be ignored
+        $lat = -120;
+        $long = -120; 
+        
+        if(!empty($params['pilotid'])) {
+            $pilot = PilotData::getPilotData($params['pilotid']);
+            $message .= PilotData::getPilotCode($pilot->code, $pilot->pilotid)
+                     . ' ' .$pilot->firstname.' '.$pilot->lastname.' ';
+        }
+        
+        $message .= $params['message'].' ';
+        
+        # Show a new PIREP, also get the airport information
+        if($params['type'] == ACTIVITY_NEW_PIREP) {
+            $message .= url('/pireps/view/'.$params['refid']);
+            
+            $pirep = PIREPData::findPIREPS(array('pirepid'=>$params['refid']), 1);
+            $pirep = $pirep[0];
+            
+            $airport = OperationsData::getAirportInfo($pirep->arricao);
+            $lat = $airport->lat;
+            $long = $airport->lng;
+                        
+        } elseif($params['type']== ACTIVITY_NEW_PILOT) {
+            
+            $message .= url('/profile/view/'.$params['pilotid']);
+            
+            $airport = OperationsData::getAirportInfo($pilot->hub);
+            $lat = $airport->lat;
+            $long = $airport->lng;
+        } 
+        
+        $tweet = new TwitterOAuth(
+            Config::get('TWITTER_CONSUMER_KEY'), 
+            Config::get('TWITTER_CONSUMER_SECRET'), 
+            Config::get('TWITTER_OAUTH_TOKEN'), 
+            Config::get('TWITTER_OAUTH_SECRET')
+        );
+        
+        $status = $tweet->post('statuses/update', array(
+            'status' => $message,
+            'lat' => $lat,
+            'long' => $long,
+            'trim_user' => true,
+        ));
+        
+        return $status;
     }
  
  
@@ -91,6 +163,11 @@
      * @return void
      */
     public static function readTwitter() {
+        
+        # Don't pull data from Twitter if we are pushing
+        if(Config::get('TWITTER_ENABLE_PUSH') == true) {
+            return false;
+        }
         
         $twitterAccount = Config::get('TWITTER_AIRLINE_ACCOUNT');
         if(empty($twitterAccount)) {

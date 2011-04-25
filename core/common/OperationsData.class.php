@@ -631,7 +631,7 @@ class OperationsData extends CodonData {
         if($airport_info === false)
         {*/
         $sql = 'SELECT * FROM ' . TABLE_PREFIX . 'airports 
-						WHERE `icao`=\'' . $icao . '\'';
+				WHERE `icao`=\'' . $icao . '\'';
 
         $airport_info = DB::get_row($sql);
         /*	CodonCache::write($key, $airport_info, 'long');
