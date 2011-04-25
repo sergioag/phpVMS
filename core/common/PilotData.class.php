@@ -334,16 +334,7 @@ class PilotData extends CodonData {
             $params['location'] = strtoupper($params['location']);
         }
 
-        if (isset($params['retired'])) {
-            if (is_bool($params['retired'])) {
-                //$params['retired'] = intval($params['retired']);
-
-                # The above doesn't work for false =\
-                if ($params['retired'] == true) $params['retired'] = 1;
-                else  $params['retired'] = 0;
-            }
-        }
-
+        
         if (isset($params['pilotid'])) {
             unset($params['pilotid']);
         }
@@ -384,12 +375,6 @@ class PilotData extends CodonData {
      */
     public static function setPilotRetired($pilotid, $retired) {
         
-        if ($retired === true || $retired == '1') {
-            $retired = 1;
-        } else {
-            $retired = 0;
-        }
-
         return self::updateProfile($pilotid, array('retired' => $retired));
     }
 
@@ -467,7 +452,7 @@ class PilotData extends CodonData {
     public static function acceptPilot($pilotid) {
         return self::updateProfile($pilotid, array(
             'confirmed' => PILOT_ACCEPTED,
-            'retired' => '0'
+            'retired' => 0
         ));
     }
 
@@ -707,8 +692,9 @@ class PilotData extends CodonData {
     public static function findRetiredPilots() {
         
         $days = Config::Get('PILOT_INACTIVE_TIME');
-
-        if ($days == '') $days = 90;
+        if ($days == '') {
+            $days = 90;
+        }
 
         $sql = "SELECT * FROM " . TABLE_PREFIX . "pilots
 				WHERE DATE_SUB(CURDATE(), INTERVAL  {$days} DAY) > `lastlogin`  
@@ -741,9 +727,18 @@ class PilotData extends CodonData {
             return false;
         }
 
+        # Find the retired status
+        $statuses = Config::get('PILOT_STATUS_TYPES');
+        foreach($statuses as $retired_id => $status) {
+            if($status['autoretire'] == true) {
+                break;
+            }
+        }
+        
         foreach ($results as $row) {
+            
             // Set them retired
-            self::updateProfile($row->pilotid, array('retired' => 1));
+            self::updateProfile($row->pilotid, array('retired' => $retired_id));
 
             Template::Set('pilot', $row);
             $pilot_retired_template = Template::Get('email_pilot_retired.tpl', true, true, true);

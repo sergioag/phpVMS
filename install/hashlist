@@ -35,7 +35,7 @@ f73b426ff4f4cfa66f65d20cd707a467  *./core/common/RegistrationData.class.php
 54f5d17dad817c645e9ab646371ffb39  *./core/common/SchedulesData.class.php
 e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 4b5c566bbf4c0f02a35588032cd7ff03  *./core/common/Countries.class.php
-6463288fdc48d0a77ffcc40a65a866a3  *./core/common/PilotData.class.php
+087e444917e2e67c24e477158969bfb0  *./core/common/PilotData.class.php
 9daa436be5011122490d123c00326ff9  *./core/common/GoogleChart.class.php
 78ccd18aafeebb9813811a99fd58af22  *./core/common/SettingsData.class.php
 0b1afcfae4793133402aeea081826f3e  *./core/common/NavData.class.php
@@ -162,7 +162,7 @@ c5464e3a9e0079bd8229a1b1aa27379d  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-95f83d60405f7684eef520c46fb1d1b8  *./core/app.config.php
+151e950486b43a65a244365b640fc302  *./core/app.config.php
 c26d9878cab6959c8e58a14fc31fb614  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 73fc6e1d3106739551d5358922d65d40  *./core/modules/Activity/Activity.php
