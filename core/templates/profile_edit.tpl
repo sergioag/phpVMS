@@ -2,15 +2,15 @@
 <form action="<?php echo url('/profile');?>" method="post" enctype="multipart/form-data">
 <dl>
 	<dt>Name</dt>
-	<dd><?php echo $userinfo->firstname . ' ' . $userinfo->lastname;?></dd>
+	<dd><?php echo $pilot->firstname . ' ' . $pilot->lastname;?></dd>
 	
 	<dt>Airline</dt>
-	<dd><?php echo $userinfo->code?>
+	<dd><?php echo $pilot->code?>
 		<p>To request a change, contact your admin</p>
 	</dd>
 	
 	<dt>Email Address</dt>
-	<dd><input type="text" name="email" value="<?php echo $userinfo->email;?>" />
+	<dd><input type="text" name="email" value="<?php echo $pilot->email;?>" />
 		<?php
 			if(isset($email_error) && $email_error == true)
 				echo '<p class="error">Please enter your email address</p>';
@@ -22,7 +22,7 @@
 		<?php
 		foreach($countries as $countryCode=>$countryName)
 		{
-			if($userinfo->location == $countryCode)
+			if($pilot->location == $countryCode)
 				$sel = 'selected="selected"';
 			else	
 				$sel = '';
@@ -42,7 +42,7 @@
 		<?php
 		foreach($bgimages as $image)
 		{
-			if($userinfo->bgimage == $image)
+			if($pilot->bgimage == $image)
 				$sel = 'selected="selected"';
 			else	
 				$sel = '';
@@ -54,25 +54,21 @@
 	</dd>
 	
 	<?php
-	if($customfields)
-	{
-		foreach($customfields as $field)
-		{
+	if($customfields) {
+		foreach($customfields as $field) {
 			echo '<dt>'.$field->title.'</dt>
 				  <dd>';
 			
-			if($field->type == 'dropdown')
-			{
+			if($field->type == 'dropdown') {
 				$field_values = SettingsData::GetField($field->fieldid);				
 				$values = explode(',', $field_values->value);
 				
 				
 				echo "<select name=\"{$field->fieldname}\">";
 			
-				if(is_array($values))
-				{						
-					foreach($values as $val)
-					{
+				if(is_array($values)) {		
+				    
+					foreach($values as $val) {
 						$val = trim($val);
 						
 						if($val == $field->value)
@@ -85,13 +81,9 @@
 				}
 				
 				echo '</select>';
-			}
-			elseif($field->type == 'textarea')
-			{
+			} elseif($field->type == 'textarea') {
 				echo '<textarea class="customfield_textarea"></textarea>';
-			}
-			else
-			{
+			} else {
 				echo '<input type="text" name="'.$field->fieldname.'" value="'.$field->value.'" />';
 			}
 			
@@ -107,12 +99,9 @@
 	</dd>
 	<dt>Current Avatar:</dt>
 	<dd><?php	
-			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png'))
-			{
+			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png')) {
 				echo 'None selected';
-			}
-			else
-			{
+			} else {
 		?>
 			<img src="<?php	echo SITE_URL.AVATAR_PATH.'/'.$pilotcode.'.png';?>" /></dd>
 		<?php

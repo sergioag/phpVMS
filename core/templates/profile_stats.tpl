@@ -22,7 +22,7 @@ $chart_height = '250';
 swfobject.embedSWF("<?php echo fileurl('/lib/js/ofc/open-flash-chart.swf');?>", 
 	"months_data", "<?php echo $chart_width;?>", "<?php echo $chart_height;?>", 
 	"9.0.0", "expressInstall.swf", 
-	{"data-file":"<?php echo actionurl('/pilots/statsmonthsdata/'.Auth::$userinfo->pilotid);?>"});
+	{"data-file":"<?php echo actionurl('/pilots/statsmonthsdata/'.$pilot->pilotid);?>"});
 	
 	
 <?php
@@ -34,5 +34,5 @@ $chart_height = '300';
 swfobject.embedSWF("<?php echo fileurl('/lib/js/ofc/open-flash-chart.swf');?>", 
 	"aircraft_data", "<?php echo $chart_width;?>", "<?php echo $chart_height;?>", 
 	"9.0.0", "expressInstall.swf", 
-	{"data-file":"<?php echo actionurl('/pilots/statsaircraftdata/'.Auth::$userinfo->pilotid);?>"});
+	{"data-file":"<?php echo actionurl('/pilots/statsaircraftdata/'.$pilot->pilotid);?>"});
 </script>

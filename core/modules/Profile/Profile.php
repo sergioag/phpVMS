@@ -47,20 +47,20 @@ class Profile extends CodonModule
 			}
 		}
         
-        $pilotInfo = PilotData::getPilotData(Auth::$userinfo->pilotid);
+        $pilot = PilotData::getPilotData(Auth::$pilot->pilotid);
 		
 		if(Config::Get('TRANSFER_HOURS_IN_RANKS') == true) {
-			$totalhours = $pilotInfo->totalhours + $pilotInfo->transferhours;
+			$totalhours = $pilotInfo->totalhours + $pilot->transferhours;
 		} else {
 			$totalhours = $pilotInfo->totalhours;
 		}
 		
-		$this->set('pilotcode', PilotData::getPilotCode($pilotInfo->code, $pilotInfo->pilotid));
-		$this->set('report', PIREPData::getLastReports($pilotInfo->pilotid));
+		$this->set('pilotcode', PilotData::getPilotCode($pilot->code, $pilot->pilotid));
+		$this->set('report', PIREPData::getLastReports($pilot->pilotid));
 		$this->set('nextrank', RanksData::getNextRank($totalhours));
-		$this->set('allawards', AwardsData::getPilotAwards($pilotInfo->pilotid));
-		$this->set('userinfo', $pilotInfo);
-        $this->set('pilot', $pilotInfo);
+		$this->set('allawards', AwardsData::getPilotAwards($pilot->pilotid));
+		$this->set('userinfo', $pilot);
+        $this->set('pilot', $pilot);
 		$this->set('pilot_hours', $totalhours);
 
 		$this->render('profile_main.tpl');
@@ -81,15 +81,21 @@ class Profile extends CodonModule
 	{
         
         $pilotid = PilotData::parsePilotID($pilotid);
-		$userinfo = PilotData::getPilotData($pilotid);
+		$pilot = PilotData::getPilotData($pilotid);
 		
-		$this->title = 'Profile of '.$userinfo->firstname.' '.$userinfo->lastname;
+		$this->title = 'Profile of '.$pilot->firstname.' '.$pilot->lastname;
 		
-		$this->set('userinfo', $userinfo);
+		$this->set('userinfo', $pilot);
+        $this->set('pilot', $pilot);
+        
 		$this->set('allfields', PilotData::getFieldData($pilotid, false));
-		$this->set('pireps', PIREPData::getAllReportsForPilot($pilotid));
-		$this->set('pilotcode', PilotData::getPilotCode($userinfo->code, $userinfo->pilotid));
-		$this->set('allawards', AwardsData::getPilotAwards($userinfo->pilotid));
+        
+        $pirep_list = PIREPData::getAllReportsForPilot($pilotid);
+		$this->set('pireps', $pirep_list);
+        $this->set('pirep_list', $pirep_list);
+        
+		$this->set('pilotcode', PilotData::getPilotCode($pilot->code, $pilot->pilotid));
+		$this->set('allawards', AwardsData::getPilotAwards($pilot->pilotid));
 		
 		$this->render('pilot_public_profile.tpl');
 		$this->render('pireps_viewall.tpl');
@@ -108,6 +114,7 @@ class Profile extends CodonModule
 			return;
 		}
 		
+        $this->set('pilot', Auth::$pilot);
 		$this->render('profile_stats.tpl');
 	}
 
@@ -118,8 +125,8 @@ class Profile extends CodonModule
 	 */
 	public function badge()
 	{
-		$this->set('badge_url', fileurl(SIGNATURE_PATH.'/'.PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid).'.png'));
-		$this->set('pilotcode', PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
+		$this->set('badge_url', fileurl(SIGNATURE_PATH.'/'.PilotData::GetPilotCode(Auth::$pilot->code, Auth::$pilot->pilotid).'.png'));
+		$this->set('pilotcode', PilotData::getPilotCode(Auth::$pilot->code, Auth::$pilot->pilotid));
 		$this->render('profile_badge.tpl');
 	}
 		
@@ -136,11 +143,12 @@ class Profile extends CodonModule
 			return;
 		}
 
-		$this->set('userinfo', Auth::$userinfo);
+		$this->set('userinfo', Auth::$pilot);
+        $this->set('pilot', Auth::$pilot);
 		$this->set('customfields', PilotData::getFieldData(Auth::$pilotid, true));
 		$this->set('bgimages', PilotData::getBackgroundImages());
 		$this->set('countries', Countries::getAllCountries());
-		$this->set('pilotcode', PilotData::getPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
+		$this->set('pilotcode', PilotData::getPilotCode(Auth::$pilot->code, Auth::$pilot->pilotid));
 
 		$this->render('profile_edit.tpl');
 	}
@@ -174,7 +182,7 @@ class Profile extends CodonModule
 			return;
 		}
 		
-		$userinfo = Auth::$userinfo;
+		$pilot = Auth::$pilot;
 		
 		//TODO: check email validity
 		if($this->post->email == '') {
@@ -182,21 +190,21 @@ class Profile extends CodonModule
 		}
 				
 		$params = array(
-			'code' => Auth::$userinfo->code,
+			'code' => $pilot->code,
 			'email' => $this->post->email,
 			'location' => $this->post->location,
-			'hub' => Auth::$userinfo->hub,
+			'hub' => $pilot->hub,
 			'bgimage' => $this->post->bgimage,
 			'retired' => false
 		);
 			
-		PilotData::updateProfile($userinfo->pilotid, $params);
-		PilotData::SaveFields($userinfo->pilotid, $_POST);
+		PilotData::updateProfile($pilot->pilotid, $params);
+		PilotData::SaveFields($pilot->pilotid, $_POST);
 		
 		# Generate a fresh signature
-		PilotData::GenerateSignature($userinfo->pilotid);
+		PilotData::GenerateSignature($pilot->pilotid);
 		
-		PilotData::SaveAvatar($userinfo->code, $userinfo->pilotid, $_FILES);
+		PilotData::SaveAvatar($pilot->code, $pilot->pilotid, $_FILES);
 		
 		$this->set('message', 'Profile saved!');
 		$this->render('core_success.tpl');
@@ -229,9 +237,9 @@ class Profile extends CodonModule
 		}
 
 		// Change
-		$hash = md5($this->post->oldpassword . Auth::$userinfo->salt);
+		$hash = md5($this->post->oldpassword . Auth::$pilot->salt);
 
-		if($hash == Auth::$userinfo->password) {
+		if($hash == Auth::$pilot->password) {
 			RegistrationData::ChangePassword(Auth::$pilotid, $_POST['password1']);
 			$this->set('message', 'Your password has been reset');
 		} else {

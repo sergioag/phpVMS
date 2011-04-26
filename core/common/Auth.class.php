@@ -18,12 +18,14 @@
  */
 
 class Auth extends CodonData {
+    
     public static $init = false;
     public static $loggedin = false;
     public static $error_message;
 
     public static $pilotid;
     public static $userinfo;
+    public static $pilot;
     public static $session_id;
     public static $usergroups;
 
@@ -60,6 +62,7 @@ class Auth extends CodonData {
 
                     self::$loggedin = true;
                     self::$userinfo = $userinfo;
+                    self::$pilot = $userinfo;
                     self::$pilotid = self::$userinfo->pilotid;
                     self::$usergroups = SessionManager::Get('usergroups');
                     self::$session_id = $session_id;
@@ -89,12 +92,14 @@ class Auth extends CodonData {
             if (SessionManager::Get('loggedin') == true) {
                 self::$loggedin = true;
                 self::$userinfo = SessionManager::Get('userinfo');
+                self::$pilot = self::$userinfo;
 
                 self::$usergroups = PilotGroups::GetUserGroups(self::$userinfo->pilotid);
                 self::$pilotid = self::$userinfo->pilotid;
 
                 # Bugfix, in case user updates their profile info, grab the latest
                 self::$userinfo = PilotData::GetPilotData(self::$pilotid);
+                self::$pilot = self::$userinfo;
                 self::update_session(self::$session_id, self::$userinfo->pilotid);
 
                 return true;

@@ -55,11 +55,15 @@
 <br/>
 <strong>Templates Changed</strong>:</p>
 <ul>
-	<li>profile_main.tpl - Included payadjust to total money</li>
-    <li>schedule_results.tpl - Added route ID to add bid URL, in case AJAX fails, then bid still gets added</li>
-    <li>schedule_results.tpl - All of the schedule filter code moved to Schedules module</li>
-    <li>schedule_searchform.tpl - Added "Airline" as a search filter</li>
-    <li>frontpage_main.tpl - Added a MainController::Run to show the activity feed</li>
+    <li>frontpage_main - Added a MainController::Run to show the activity feed</li>
+	<li>profile_main - Included payadjust to total money, also use $pilot instead of $userinfo (refer to bug <a href="https://github.com/nshahzad/phpVMS/issues/38">#38</a>)</li>
+    <li>pilot_public_profile - Changed $userinfo to $pilot (refer to bug <a href="https://github.com/nshahzad/phpVMS/issues/38">#38</a>)</li>
+    <li>pireps_viewall - $userinfo to $pilot, $pireps to $pirep_list (refer to bug <a href="https://github.com/nshahzad/phpVMS/issues/38">#38</a>)</li>
+    <li>profile_edit - $userinfo to $pilot, $pireps to $pirep_list (refer to bug <a href="https://github.com/nshahzad/phpVMS/issues/38">#38</a>)</li>
+    <li>profile_stats - $userinfo to $pilot (refer to bug <a href="https://github.com/nshahzad/phpVMS/issues/38">#38</a>)</li>
+    <li>schedule_results - Added route ID to add bid URL, in case AJAX fails, then bid still gets added</li>
+    <li>schedule_results - All of the schedule filter code moved to Schedules module</li>
+    <li>schedule_searchform - Added "Airline" as a search filter</li>
 </ul>
 
 <h1>Build 934 (Version 2.1.934)</h1>

@@ -1,10 +1,10 @@
 <?php
-if(!$userinfo) {
+if(!$pilot) {
 	echo '<h3>This pilot does not exist!</h3>';
 	return;
 }
 ?>
-<h3>Profile For <?php echo $userinfo->firstname . ' ' . $userinfo->lastname?></h3>
+<h3>Profile For <?php echo $pilot->firstname . ' ' . $pilot->lastname?></h3>
 <table>
 	<tr>
 		<td align="center" valign="top">
@@ -16,18 +16,18 @@ if(!$userinfo) {
 			}
 			?>
 			<br /><br />
-			<img src="<?php echo $userinfo->rankimage?>"  alt="" />
+			<img src="<?php echo $pilot->rankimage?>"  alt="" />
 		</td>
 		<td valign="top">
 			<ul>
 				<li><strong>Pilot ID: </strong><?php echo $pilotcode ?></li>
-				<li><strong>Rank: </strong><?php echo $userinfo->rank;?></li>
-				<li><strong>Total Flights: </strong><?php echo $userinfo->totalflights?></li>
-				<li><strong>Total Hours: </strong><?php echo Util::AddTime($userinfo->totalhours, $userinfo->transferhours); ?></li>
+				<li><strong>Rank: </strong><?php echo $pilot->rank;?></li>
+				<li><strong>Total Flights: </strong><?php echo $pilot->totalflights?></li>
+				<li><strong>Total Hours: </strong><?php echo Util::AddTime($pilot->totalhours, $pilot->transferhours); ?></li>
 				<li><strong>Location: </strong>
-					<img src="<?php echo Countries::getCountryImage($userinfo->location);?>" 
-								alt="<?php echo Countries::getCountryName($userinfo->location);?>" />
-					<?php echo Countries::getCountryName($userinfo->location);?> 
+					<img src="<?php echo Countries::getCountryImage($pilot->location);?>" 
+								alt="<?php echo Countries::getCountryName($pilot->location);?>" />
+					<?php echo Countries::getCountryName($pilot->location);?> 
 				</li>
 			
 				<?php
@@ -82,5 +82,5 @@ $chart_height = '250';
 swfobject.embedSWF("<?php echo fileurl('/lib/js/ofc/open-flash-chart.swf');?>", 
 	"pireps_chart", "<?php echo $chart_width;?>", "<?php echo $chart_height;?>", 
 	"9.0.0", "expressInstall.swf", 
-	{"data-file":"<?php echo actionurl('/pilots/statsdaysdata/'.$userinfo->pilotid);?>"});
+	{"data-file":"<?php echo actionurl('/pilots/statsdaysdata/'.$pilot->pilotid);?>"});
 </script>

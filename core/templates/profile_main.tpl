@@ -1,21 +1,20 @@
 <div id="mainbox">
 <h3>Pilot Center</h3>
 <div class="indent">
-<p><strong>Welcome back <?php echo $userinfo->firstname . ' ' . $userinfo->lastname; ?>!</strong></p>
+<p><strong>Welcome back <?php echo $pilot->firstname . ' ' . $pilot->lastname; ?>!</strong></p>
 <table>
 <tr>
 	<td valign="top" align="center">
 		<img src="<?php echo PilotData::getPilotAvatar($pilotcode); ?>" />
 		<br /><br />
-		<img src="<?php echo $userinfo->rankimage ?>" />
+		<img src="<?php echo $pilot->rankimage ?>" />
 	</td>
 	<td valign="top">
 		<ul style="margin-top: 0px;">
 			<li><strong>Your Pilot ID: </strong> <?php echo $pilotcode; ?></li>
-			<li><strong>Your Rank: </strong><?php echo $userinfo->rank;?></li>
+			<li><strong>Your Rank: </strong><?php echo $pilot->rank;?></li>
 			<?php
-			if($report)
-			{ ?>
+			if($report) { ?>
 				<li><strong>Latest Flight: </strong><a 
 						href="<?php echo url('pireps/view/'.$report->pirepid); ?>">
 						<?php echo $report->code . $report->flightnum; ?></a>
@@ -24,10 +23,10 @@
 			}
 			?>
 			
-			<li><strong>Total Flights: </strong><?php echo $userinfo->totalflights?></li>
-			<li><strong>Total Hours: </strong><?php echo $userinfo->totalhours; ?></li>
-			<li><strong>Total Transfer Hours: </strong><?php echo $userinfo->transferhours?></li>
-			<li><strong>Total Money: </strong><?php echo FinanceData::FormatMoney((floatval($userinfo->totalpay) + floatval($userinfo->payadjust))) ?></li>
+			<li><strong>Total Flights: </strong><?php echo $pilot->totalflights?></li>
+			<li><strong>Total Hours: </strong><?php echo $pilot->totalhours; ?></li>
+			<li><strong>Total Transfer Hours: </strong><?php echo $pilot->transferhours?></li>
+			<li><strong>Total Money: </strong><?php echo FinanceData::formatMoney((floatval($pilot->totalpay) + floatval($pilot->payadjust))) ?></li>
 		
 			<?php
 			if($nextrank)
@@ -70,12 +69,9 @@
 		<p>
 			<strong>My Awards</strong><br />
 			<?php
-			if(!$allawards)
-			{
+			if(!$allawards) {
 				echo 'No awards yet';
-			}
-			else
-			{	
+			} else {	
 			
 				/* To show the image:
 					<img src="<?php echo $award->image?>" alt="<?php echo $award->descrip?>" />
