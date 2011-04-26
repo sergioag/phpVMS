@@ -1,6 +1,7 @@
 <div id="scheduleresults">
 <?php
-if($allroutes)
-	Template::ShowTemplate('schedule_results.tpl');
+if($schedule_list) {
+    Template::ShowTemplate('schedule_results.tpl');
+}
 ?>
 </div>

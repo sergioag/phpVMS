@@ -122,7 +122,7 @@ class Schedules extends CodonModule {
         if (!Auth::LoggedIn())
             return;
 
-        $this->set('bids', SchedulesData::GetBids(Auth::$userinfo->pilotid));
+        $this->set('bids', SchedulesData::GetBids(Auth::$pilot->pilotid));
         $this->render('schedule_bids.tpl');
     }
 
@@ -155,7 +155,7 @@ class Schedules extends CodonModule {
         /* Block any other bids if they've already made a bid
         */
         if (Config::Get('DISABLE_BIDS_ON_BID') == true) {
-            $bids = SchedulesData::getBids(Auth::$userinfo->pilotid);
+            $bids = SchedulesData::getBids(Auth::$pilot->pilotid);
 
             # They've got somethin goin on
             if (count($bids) > 0) {
@@ -164,7 +164,7 @@ class Schedules extends CodonModule {
             }
         }
 
-        $ret = SchedulesData::AddBid(Auth::$userinfo->pilotid, $routeid);
+        $ret = SchedulesData::AddBid(Auth::$pilot->pilotid, $routeid);
         CodonEvent::Dispatch('bid_added', 'Schedules', $routeid);
 
         if ($ret == true) {
@@ -197,10 +197,14 @@ class Schedules extends CodonModule {
         $equip = OperationsData::GetAllAircraftSearchList(true);
         $airlines = OperationsData::GetAllAirlines();
         
-        $this->set('airlines', $airlines);
+        $this->set('airlines', $airlines); #deprecated
+        $this->set('airline_list', $airlines);
+        
         $this->set('depairports', $depapts);
-        $this->set('equipment', $equip);
-
+        
+        $this->set('equipment', $equip); # deprecated
+        $this->set('aircraft_list', $equip);
+        
         $this->render('schedule_searchform.tpl');
 
         # Show the routes. Remote this to not show them.
@@ -216,7 +220,7 @@ class Schedules extends CodonModule {
         # query once, save for later
         if(Config::get('SCHEDULES_ONLY_LAST_PIREP') === true && Auth::LoggedIn() == true) {
    	    	$reports = PIREPData::findPIREPS(array(
-    			'p.pilotid' => Auth::$userinfo->pilotid,
+    			'p.pilotid' => Auth::$pilot->pilotid,
     			'p.accepted' => PIREP_ACCEPTED
     		  ), 1); // return only one
         }
@@ -251,7 +255,7 @@ class Schedules extends CodonModule {
         		what the pilot's ranklevel, so just do "continue"
        			and move onto the next route in the list  */
             if(Config::get('RESTRICT_AIRCRAFT_RANKS') === true && Auth::LoggedIn()) {
-        		if($route->aircraftlevel > Auth::$userinfo->ranklevel) {
+        		if($route->aircraftlevel > Auth::$pilot->ranklevel) {
         			unset($schedules[$key]);
                     continue;
         		}
@@ -270,6 +274,7 @@ class Schedules extends CodonModule {
         } // end foreach schedules
         
         $this->set('allroutes', $schedules);
+        $this->set('schedule_list', $schedules);
         $this->render('schedule_list.tpl');
     }
 
@@ -311,7 +316,10 @@ class Schedules extends CodonModule {
 
         $params['s.enabled'] = 1;
         
-        $this->set('allroutes', SchedulesData::findSchedules($params));
+        $schedule_list = SchedulesData::findSchedules($params);
+        $this->set('allroutes', $schedule_list); #deprecated
+        $this->set('schedule_list', $schedule_list);
+        
         $this->render('schedule_results.tpl');
     }
 
@@ -322,13 +330,14 @@ class Schedules extends CodonModule {
      * @return
      */
     public function statsdaysdata($routeid) {
-        $routeinfo = SchedulesData::findSchedules(array('s.id' => $routeid));
-        $routeinfo = $routeinfo[0];
+        
+        $schedule = SchedulesData::findSchedules(array('s.id' => $routeid));
+        $schedule = $schedule[0];
 
         // Last 30 days stats
         $data = PIREPData::getIntervalDataByDays(array(
-            'p.code' => $routeinfo->code,
-            'p.flightnum' => $routeinfo->flightnum, 
+            'p.code' => $schedule->code,
+            'p.flightnum' => $schedule->flightnum, 
             ), 30);
 
         $this->create_line_graph('Schedule Flown Counts', $data);

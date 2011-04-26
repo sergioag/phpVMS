@@ -45,11 +45,14 @@
 	<div id="aircrafttab">
 		<p>Select aircraft:</p>
 		<select id="equipment" name="equipment">
-			<option value="">Select equipment</option>
+			<option value="">Select aircraft</option>
 		<?php
-		if(!$equipment) $equipment = array();
-		foreach($equipment as $equip) {
-			echo '<option value="'.$equip->name.'">'.$equip->name.'</option>';
+		if(!$aircraft_list) {
+            $aircraft_list = array();
+		}
+        
+		foreach($aircraft_list as $aircraft) {
+			echo '<option value="'.$aircraft->name.'">'.$aircraft->name.'</option>';
 		}
 		
 		?>
