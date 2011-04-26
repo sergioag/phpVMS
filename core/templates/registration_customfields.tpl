@@ -1,16 +1,13 @@
 <?php
 /* Show any extra fields
  */
-if($extrafields)
-{
-	foreach($extrafields as $field)
-	{
+if($field_list) {
+	foreach($field_list as $field) {
 ?>
 	<dt><?php echo $field->title; ?></dt>
 	<dd>
 	<?php
-		if($field->type == 'dropdown')
-		{
+		if($field->type == 'dropdown') {
 			echo "<select name=\"{$field->fieldname}\">";
 			$values = explode(',', $field->value);
 		
@@ -24,15 +21,10 @@ if($extrafields)
 			}
 			
 			echo '</select>';
-		}
-		elseif($field->type == 'textarea')
-		{
+		} elseif($field->type == 'textarea') {
 			echo '<textarea name="'.$field->fieldname.'" class="customfield_textarea"></textarea>';
-		}
-		else
-		{
-?>
-				<input type="text" name="<?php echo $field->fieldname; ?>" value="<?php echo Vars::POST($field->fieldname);?>" /></dd>
+		} else { ?>
+            <input type="text" name="<?php echo $field->fieldname; ?>" value="<?php echo Vars::POST($field->fieldname);?>" /></dd>
 <?php	}
 	}
 }

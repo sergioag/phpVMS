@@ -30,8 +30,7 @@
 	<dd>
 		<select name="code" id="code">
 		<?php
-		foreach($allairlines as $airline)
-		{
+		foreach($airline_list as $airline) {
 			echo '<option value="'.$airline->code.'">'.$airline->code.' - '.$airline->name.'</option>';
 		}
 		?>
@@ -42,8 +41,7 @@
 	<dd>
 		<select name="hub" id="hub">
 		<?php
-		foreach($allhubs as $hub)
-		{
+		foreach($hub_list as $hub) {
 			echo '<option value="'.$hub->icao.'">'.$hub->icao.' - ' . $hub->name .'</option>';
 		}
 		?>
@@ -53,20 +51,21 @@
 	<dt>Location: *</dt>
 	<dd><select name="location">
 		<?php
-			foreach($countries as $countryCode=>$countryName)
-			{
-				if(Vars::POST('location') == $countryCode)
-					$sel = 'selected="selected"';
-				else	
-					$sel = '';
-					
+			foreach($country_list as $countryCode=>$countryName) {
+				if(Vars::POST('location') == $countryCode) {
+				    $sel = 'selected="selected"';
+				} else {
+				    $sel = '';
+				}	
+				
 				echo '<option value="'.$countryCode.'" '.$sel.'>'.$countryName.'</option>';
 			}
 		?>
 		</select>
 		<?php
-			if($location_error == true)
-				echo '<p class="error">Please enter your location</p>';
+			if($location_error == true) {
+                echo '<p class="error">Please enter your location</p>';
+			}
 		?>
 	</dd>
 	

@@ -18,8 +18,7 @@
  
 class Registration extends CodonModule
 {
-	public function HTMLHead()
-	{
+	public function HTMLHead() {
 		/*Show our password strength checker
 			*/
 		if($this->get->page == 'register') {
@@ -47,12 +46,22 @@ class Registration extends CodonModule
 		
 	protected function ShowForm()
 	{
+		$field_list = RegistrationData::GetCustomFields();
+		$this->set('extrafields', $field_list);
+        $this->set('field_list', $field_list);
+        
+        $airline_list = OperationsData::getAllAirlines(true);
+		$this->set('allairlines', $airline_list);
+        $this->set('airline_list', $airline_list);
 		
-		$this->set('extrafields', RegistrationData::GetCustomFields());
-		$this->set('allairlines', OperationsData::GetAllAirlines(true));
-		$this->set('allhubs', OperationsData::GetAllHubs());
-		$this->set('countries', Countries::getAllCountries());
-		
+        $hub_list = OperationsData::getAllHubs();
+        $this->set('allhubs', $hub_list);
+        $this->set('hub_list', $hub_list);
+        
+        $country_list = Countries::getAllCountries();
+		$this->set('countries', $country_list);
+		$this->set('country_list', $country_list);
+        
 		$this->render('registration_mainform.tpl');
 	}
 	
@@ -103,18 +112,14 @@ class Registration extends CodonModule
 			$pilotid = RegistrationData::$pilotid;
 			
 			/* Automatically confirm them if that option is set */
-			if(Config::Get('PILOT_AUTO_CONFIRM') == true)
-			{
+			if(Config::Get('PILOT_AUTO_CONFIRM') == true) {
 				PilotData::AcceptPilot($pilotid);
 				RanksData::CalculatePilotRanks();
 				
 				$pilot = PilotData::getPilotData($pilotid);
 				$this->set('pilot', $pilot);
 				$this->render('registration_autoconfirm.tpl');
-			}
-			/* Otherwise, wait until an admin confirms the registration */
-			else
-			{
+			} else { /* Otherwise, wait until an admin confirms the registration */
 				RegistrationData::SendEmailConfirm($email, $firstname, $lastname);
 				$this->render('registration_sentconfirmation.tpl');
 			}
@@ -142,10 +147,9 @@ class Registration extends CodonModule
 		Util::SendEmail($data['email'], 'Registration at '.SITE_NAME, $message);
 		
 		$rss = new RSSFeed('Latest Pilot Registrations', SITE_URL, 'The latest pilot registrations');
-		$allpilots = PilotData::GetLatestPilots();
 		
-		foreach($allpilots as $pilot)
-		{
+        $pilot_list = PilotData::GetLatestPilots();
+		foreach($pilot_list as $pilot) {
 			$rss->AddItem('Pilot '.PilotData::GetPilotCode($pilot->code, $pilot->pilotid)
 							. ' ('.$pilot->firstname .' ' . $pilot->lastname.')',
 							SITE_URL.'/admin/index.php?admin=pendingpilots','','');
