@@ -177,55 +177,40 @@ class RanksData extends CodonData {
             return;
         }
 
-        $allranks = self::getAllRanks();
+        $ranks_list = self::getAllRanks();
         $pilots = PilotData::getAllPilots();
         if (count($pilots) == 0 || !is_array($pilots)) {
             return;
         }
 
         foreach ($pilots as $pilot) {
-            $last_rank = '';
-
-            $pilothours = intval($pilot->totalhours);
-            if (Config::Get('TRANSFER_HOURS_IN_RANKS') == true) {
-                $pilothours += $pilot->transferhours;
-            }
-
-            $i = 1;
-            foreach ($allranks as $rank) {
-                if ($pilothours >= intval($rank->minhours)) {
-                    $rank_level = $i;
-                    $last_rank = $rank->rank;
-                    $last_rankid = $rank->rankid;
-                }
-
-                $i++;
-            }
-
-            $update = array('rankid' => $last_rankid, 'rank' => $last_rank, 'ranklevel' => $rank_level, );
-
-            PilotData::updateProfile($pilot->pilotid, $update);
+            self::calculateUpdatePilotRank($pilot->pilotid, $ranks_list);
         }
     }
 
-    public static function calculateUpdatePilotRank($pilotid) {
+    public static function calculateUpdatePilotRank($pilotid, $ranks_list = null) {
         
         /* Don't calculate a pilot's rank if this is set */
         if (Config::Get('RANKS_AUTOCALCULATE') == false) {
             return;
         }
 
+        if($ranks_list === null) {
+            $ranks_list = self::getAllRanks();
+        }
+        
         $pilotid = intval($pilotid);
-        $allranks = self::GetAllRanks();
-        $pilot = PilotData::GetPilotData($pilotid);
+        
+        $pilot = PilotData::getPilotData($pilotid);
         $pilothours = $pilot->totalhours;
-
+        
         if (Config::Get('TRANSFER_HOURS_IN_RANKS') == true) {
             $pilothours += $pilot->transferhours;
         }
 
         $i = 0;
-        foreach ($allranks as $rank) {
+        foreach ($ranks_list as $rank) {
+            
             $i++;
 
             if ($pilothours >= intval($rank->minhours)) {

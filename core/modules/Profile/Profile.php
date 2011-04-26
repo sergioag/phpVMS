@@ -19,10 +19,14 @@
 class Profile extends CodonModule
 {
 	
+	/**
+	 * Profile::index()
+	 * 
+	 * @return
+	 */
 	public function index()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			$this->set('message', 'You must be logged in to access this feature!');
 			$this->render('core_error.tpl');
 			return;
@@ -31,35 +35,32 @@ class Profile extends CodonModule
 		/*
 		 * This is from /profile/editprofile
 		 */
-		 if(isset($this->post->action))
-		 {
-			if($this->post->action == 'saveprofile')
-			{
+		 if(isset($this->post->action)) {
+			if($this->post->action == 'saveprofile') {
 				$this->save_profile_post();
 			}
 			
 			/* this comes from /profile/changepassword
 			*/
-			if($this->post->action == 'changepassword')
-			{
+			if($this->post->action == 'changepassword') {
 				$this->change_password_post();
 			}
 		}
+        
+        $pilotInfo = PilotData::getPilotData(Auth::$userinfo->pilotid);
 		
-		if(Config::Get('TRANSFER_HOURS_IN_RANKS') == true)
-		{
-			$totalhours = intval(Auth::$userinfo->totalhours) + intval(Auth::$userinfo->transferhours);
-		}
-		else
-		{
-			$totalhours = Auth::$userinfo->totalhours;
+		if(Config::Get('TRANSFER_HOURS_IN_RANKS') == true) {
+			$totalhours = $pilotInfo->totalhours + $pilotInfo->transferhours;
+		} else {
+			$totalhours = $pilotInfo->totalhours;
 		}
 		
-		$this->set('pilotcode', PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
-		$this->set('report', PIREPData::GetLastReports(Auth::$userinfo->pilotid));
-		$this->set('nextrank', RanksData::GetNextRank($totalhours));
-		$this->set('allawards', AwardsData::GetPilotAwards(Auth::$userinfo->pilotid));
-		$this->set('userinfo', Auth::$userinfo);
+		$this->set('pilotcode', PilotData::getPilotCode($pilotInfo->code, $pilotInfo->pilotid));
+		$this->set('report', PIREPData::getLastReports($pilotInfo->pilotid));
+		$this->set('nextrank', RanksData::getNextRank($totalhours));
+		$this->set('allawards', AwardsData::getPilotAwards($pilotInfo->pilotid));
+		$this->set('userinfo', $pilotInfo);
+        $this->set('pilot', $pilotInfo);
 		$this->set('pilot_hours', $totalhours);
 
 		$this->render('profile_main.tpl');
@@ -70,34 +71,38 @@ class Profile extends CodonModule
 	/**
 	 * This is the public profile for the pilot
 	 */
+	/**
+	 * Profile::view()
+	 * 
+	 * @param string $pilotid
+	 * @return
+	 */
 	public function view($pilotid='')
 	{
-
-		if(!is_numeric($pilotid))
-		{
-			preg_match('/^([A-Za-z]*)(\d*)/', $pilotid, $matches);
-			$code = $matches[1];
-			$pilotid = intval($matches[2]) - Config::Get('PILOTID_OFFSET');
-		}
-		
+        
+        $pilotid = PilotData::parsePilotID($pilotid);
 		$userinfo = PilotData::getPilotData($pilotid);
 		
 		$this->title = 'Profile of '.$userinfo->firstname.' '.$userinfo->lastname;
 		
 		$this->set('userinfo', $userinfo);
-		$this->set('allfields', PilotData::GetFieldData($pilotid, false));
-		$this->set('pireps', PIREPData::GetAllReportsForPilot($pilotid));
-		$this->set('pilotcode', PilotData::GetPilotCode($userinfo->code, $userinfo->pilotid));
-		$this->set('allawards', AwardsData::GetPilotAwards($userinfo->pilotid));
+		$this->set('allfields', PilotData::getFieldData($pilotid, false));
+		$this->set('pireps', PIREPData::getAllReportsForPilot($pilotid));
+		$this->set('pilotcode', PilotData::getPilotCode($userinfo->code, $userinfo->pilotid));
+		$this->set('allawards', AwardsData::getPilotAwards($userinfo->pilotid));
 		
 		$this->render('pilot_public_profile.tpl');
 		$this->render('pireps_viewall.tpl');
 	}
 	
+	/**
+	 * Profile::stats()
+	 * 
+	 * @return
+	 */
 	public function stats()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			$this->set('message', 'You must be logged in to access this feature!');
 			$this->render('core_error.tpl');
 			return;
@@ -106,6 +111,11 @@ class Profile extends CodonModule
 		$this->render('profile_stats.tpl');
 	}
 
+	/**
+	 * Profile::badge()
+	 * 
+	 * @return
+	 */
 	public function badge()
 	{
 		$this->set('badge_url', fileurl(SIGNATURE_PATH.'/'.PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid).'.png'));
@@ -113,28 +123,36 @@ class Profile extends CodonModule
 		$this->render('profile_badge.tpl');
 	}
 		
+	/**
+	 * Profile::editprofile()
+	 * 
+	 * @return
+	 */
 	public function editprofile()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			$this->set('message', 'You must be logged in to access this feature!');
 			$this->render('core_error.tpl');
 			return;
 		}
 
 		$this->set('userinfo', Auth::$userinfo);
-		$this->set('customfields', PilotData::GetFieldData(Auth::$pilotid, true));
-		$this->set('bgimages', PilotData::GetBackgroundImages());
+		$this->set('customfields', PilotData::getFieldData(Auth::$pilotid, true));
+		$this->set('bgimages', PilotData::getBackgroundImages());
 		$this->set('countries', Countries::getAllCountries());
-		$this->set('pilotcode', PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
+		$this->set('pilotcode', PilotData::getPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
 
 		$this->render('profile_edit.tpl');
 	}
 	
+	/**
+	 * Profile::changepassword()
+	 * 
+	 * @return
+	 */
 	public function changepassword()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			$this->set('message', 'You must be logged in to access this feature!');
 			$this->render('core_error.tpl');
 			return;
@@ -143,10 +161,14 @@ class Profile extends CodonModule
 		$this->render('profile_changepassword.tpl');
 	}
 	
+	/**
+	 * Profile::save_profile_post()
+	 * 
+	 * @return
+	 */
 	protected function save_profile_post()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			$this->set('message', 'You must be logged in to access this feature!');
 			$this->render('core_error.tpl');
 			return;
@@ -155,8 +177,7 @@ class Profile extends CodonModule
 		$userinfo = Auth::$userinfo;
 		
 		//TODO: check email validity
-		if($this->post->email == '')
-		{
+		if($this->post->email == '') {
 			return;
 		}
 				
@@ -181,25 +202,27 @@ class Profile extends CodonModule
 		$this->render('core_success.tpl');
 	}
 
+	/**
+	 * Profile::change_password_post()
+	 * 
+	 * @return
+	 */
 	protected function change_password_post()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			$this->set('message', 'You must be logged in to access this feature!');
 			$this->render('core_error.tpl');
 			return;
 		}
 		
 		// Verify
-		if($this->post->oldpassword == '')
-		{
+		if($this->post->oldpassword == '') {
 			$this->set('message', 'You must enter your current password');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if($this->post->password1 != $this->post->password2)
-		{
+		if($this->post->password1 != $this->post->password2) {
 			$this->set('message', 'Your passwords do not match');
 			$this->render('core_error.tpl');
 			return;
@@ -208,13 +231,10 @@ class Profile extends CodonModule
 		// Change
 		$hash = md5($this->post->oldpassword . Auth::$userinfo->salt);
 
-		if($hash == Auth::$userinfo->password)
-		{
+		if($hash == Auth::$userinfo->password) {
 			RegistrationData::ChangePassword(Auth::$pilotid, $_POST['password1']);
 			$this->set('message', 'Your password has been reset');
-		}
-		else
-		{
+		} else {
 			$this->set('message', 'You entered an invalid password');
 		}
 
