@@ -214,15 +214,32 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function resendemail($show_pending = true) {
+                
+        $pilot = PilotData::getPilotData($this->post->id);
+
+        # Send pilot notification
+        $subject = Lang::gs('email.register.accepted.subject');
         
-        $pilotid = $this->post->id;
+        $this->set('pilot', $pilot);
         
-        $pilot = PilotData::getPilotData($pilotid);
-        RegistrationData::SendEmailConfirm($pilot->email, $pilot->firstname, $pilot->lastname);
+        $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
+        $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
         
+        $message = Template::getTemplate('email_registrationaccepted.tpl', true, true, true);
+        
+        Template::setTemplatePath($oldPath);
+        Template::setSkinPath($oldSkinPath);
+
+        Util::sendEmail($pilot->email, $subject, $message);
+                
         $this->set('message', 'Activation email has been re-sent to '.$pilot->firstname.' '.$pilot->lastname);
         $this->render('core_success.tpl');
             
+        LogData::addLog(
+            Auth::$userinfo->pilotid, 
+            'Activation email re-sent '.PilotData::getPilotCode($pilot->code, $pilot->pilotid).' - '.$pilot->firstname.' '.$pilot->lastname
+        );
+        
         if($show_pending === true) {
             $this->set('allpilots', PilotData::getPendingPilots());
             $this->render('pilots_pending.tpl');
