@@ -123,7 +123,7 @@ class RegistrationData extends CodonData {
         //Grab the new pilotid, we need it to insert those "custom fields"
         $pilotid = DB::$insert_id;
         RanksData::CalculateUpdatePilotRank($pilotid);
-        PilotData::GenerateSignature($pilotid);
+        PilotData::generateSignature($pilotid);
 
         /* Add them to the default group */
         $defaultGroup = SettingsData::getSettingValue('DEFAULT_GROUP');

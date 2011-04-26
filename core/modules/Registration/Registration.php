@@ -22,8 +22,7 @@ class Registration extends CodonModule
 	{
 		/*Show our password strength checker
 			*/
-		if($this->get->page == 'register')
-		{
+		if($this->get->page == 'register') {
 			$this->renderTemplate('registration_javascript.tpl');
 		}
 	}
@@ -33,19 +32,15 @@ class Registration extends CodonModule
 	{
 		require_once CORE_LIB_PATH.'/recaptcha/recaptchalib.php';
 
-		if(Auth::LoggedIn()) // Make sure they don't over-ride it
-		{
+		if(Auth::LoggedIn()) { // Make sure they don't over-ride it
 			$this->render('login_already.tpl');
 			return;
 		}
 			
 		
-		if(isset($_POST['submit']))
-		{
+		if(isset($_POST['submit'])) {
 			$this->ProcessRegistration();
-		}
-		else
-		{
+		} else {
 			$this->ShowForm();
 		}
 	}
@@ -113,7 +108,7 @@ class Registration extends CodonModule
 				PilotData::AcceptPilot($pilotid);
 				RanksData::CalculatePilotRanks();
 				
-				$pilot = PilotData::GetPilotData($pilotid);
+				$pilot = PilotData::getPilotData($pilotid);
 				$this->set('pilot', $pilot);
 				$this->render('registration_autoconfirm.tpl');
 			}
@@ -172,84 +167,69 @@ class Registration extends CodonModule
 			$_POST["recaptcha_challenge_field"],
 			$_POST["recaptcha_response_field"]);
 
-		if(!$resp->is_valid)
-		{
+		if(!$resp->is_valid) {
 			$error = true;
 			$this->set('captcha_error', $resp->error);
+		} else {
+		  $this->set('captcha_error', '');
 		}
-		else
-			$this->set('captcha_error', '');
 		
 		/* Check the firstname and last name
 		 */
-		if($this->post->firstname == '')
-		{
+		if($this->post->firstname == '') {
 			$error = true;
 			$this->set('firstname_error', true);
-		}
-		else
-			$this->set('firstname_error', '');
+		} else {
+		  $this->set('firstname_error', '');
 		
+		}
+			
 		/* Check the last name
 		 */
-		if($this->post->lastname == '')
-		{
+		if($this->post->lastname == '') {
 			$error = true;
 			$this->set('lastname_error', true);
 		}
-		else
-			$this->set('lastname_error', '');
+		else {
+		      $this->set('lastname_error', '');
+		}
 		
 		/* Check the email address
 		 */
-		if(filter_var($this->post->email, FILTER_VALIDATE_EMAIL) == false)
-		{
+		if(filter_var($this->post->email, FILTER_VALIDATE_EMAIL) == false) {
 			$error = true;
 			$this->set('email_error', true);
+		} else {
+            $this->set('email_error', '');
 		}
-		else
-			$this->set('email_error', '');
+			
 		
 		/* Check the location
 		 */
-		if($this->post->location == '')
-		{
+		if($this->post->location == '') {
 			$error = true;
 			$this->set('location_error', true);
+		} else {
+            $this->set('location_error', '');
 		}
-		else
-			$this->set('location_error', '');
 		
 		// Check password length
-		if(strlen($this->post->password1) <= 5)
-		{
+		if(strlen($this->post->password1) <= 5) {
 			$error = true;
 			$this->set('password_error', 'The password is too short!');
+		} else {
+            $this->set('password_error', '');
 		}
-		else
-			$this->set('password_error', '');
 		
 		// Check is passwords are the same
-		if($this->post->password1 != $this->post->password2)
-		{
+		if($this->post->password1 != $this->post->password2) {
 			$error = true;
 			$this->set('password_error', 'The passwords do not match!');
+		} else {
+            $this->set('password_error', '');
 		}
-		else
-			$this->set('password_error', '');
-		
-		/* Check if they agreed to the statement
-
-		if(!$_POST['agree'])
-		{
-			$error = true;
-			$this->set('agree_error', true);
-		}
-		else
-			$this->set('agree_error', '');
-		 */
-		if($error == true)
-		{
+	
+		if($error == true) {
 			return false;
 		}
 		

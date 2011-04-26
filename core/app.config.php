@@ -464,6 +464,7 @@ Config::Set(
     the additional settings provided
  */
 Config::Set('PILOT_STATUS_TYPES', array(
+
     /* DO NOT CHANGE THIS ACTIVE NUMBER OR STATUS OR THINGS WILL BREAK!!! */
     0 => array( 
         'name' => 'Active',     # The title to show in the dropdown
@@ -472,6 +473,7 @@ Config::Set('PILOT_STATUS_TYPES', array(
         'active' => true,       # Are they an active pilot?
         'autoretire' => false,  # Use this status for the auto-retire functionality
     ),
+    
     /* DO NOT CHANGE THIS INACTIVE NUMBER OR STATUS OR THINGS WILL BREAK!!! */
     1 => array(
         'name' => 'Inactive',
@@ -480,6 +482,7 @@ Config::Set('PILOT_STATUS_TYPES', array(
         'active' => false,
         'autoretire' => false,
     ),
+    
     2 => array(
         'name' => 'Banned',
         'message' => 'Your account is banned, please contact an admin!',
@@ -487,6 +490,7 @@ Config::Set('PILOT_STATUS_TYPES', array(
         'active' => false,
         'autoretire' => false,
     ),
+    
     3 => array(
         'name' => 'On Leave',
         'message' => 'You have been marked as on leave',

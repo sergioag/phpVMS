@@ -159,7 +159,11 @@ class PilotAdmin extends CodonModule {
 
                 $this->set('message', 'Profile updated successfully');
                 $this->render('core_success.tpl');
-
+                
+                if($this->post->resend_email == 'true') {
+                    $this->post->id = $this->post->pilotid;
+                    $this->resendemail(false);
+                }
 
                 $pilot = PilotData::getPilotData($this->post->pilotid);
                 LogData::addLog(Auth::$userinfo->pilotid, 'Updated profile for ' 
@@ -209,7 +213,7 @@ class PilotAdmin extends CodonModule {
      * 
      * @return
      */
-    public function resendemail() {
+    public function resendemail($show_pending = true) {
         
         $pilotid = $this->post->id;
         
@@ -219,8 +223,10 @@ class PilotAdmin extends CodonModule {
         $this->set('message', 'Activation email has been re-sent to '.$pilot->firstname.' '.$pilot->lastname);
         $this->render('core_success.tpl');
             
-        $this->set('allpilots', PilotData::getPendingPilots());
-        $this->render('pilots_pending.tpl');
+        if($show_pending === true) {
+            $this->set('allpilots', PilotData::getPendingPilots());
+            $this->render('pilots_pending.tpl');
+        }
     }
 
     /**
@@ -397,8 +403,23 @@ class PilotAdmin extends CodonModule {
             $location = '<img src="' . Countries::getCountryImage($row->location) . '" alt="' . $row->location . '" />';
             $edit = '<a href="' . adminurl('/pilotadmin/viewpilots?action=viewoptions&pilotid=' . $row->pilotid) . '">Edit</a>';
 
-            $tmp = array('id' => $row->id, 'cell' => array( # Each column, in order
-                $row->id, $pilotid, $row->firstname, $row->lastname, $row->email, $location, $status, $row->rank, $row->totalflights, $row->totalhours, $row->lastip, $edit, ), );
+            $tmp = array(
+                'id' => $row->id, 
+                'cell' => array( # Each column, in order
+                    $row->id, 
+                    $pilotid, 
+                    $row->firstname, 
+                    $row->lastname, 
+                    $row->email, 
+                    $location, 
+                    $status, 
+                    $row->rank, 
+                    $row->totalflights, 
+                    $row->totalhours, 
+                    $row->lastip, 
+                    $edit
+                )
+            );
 
             $json['rows'][] = $tmp;
         }
@@ -618,7 +639,10 @@ class PilotAdmin extends CodonModule {
 
         CodonEvent::Dispatch('pilot_rejected', 'PilotAdmin', $pilot);
 
-        LogData::addLog(Auth::$userinfo->pilotid, 'Approved ' . PilotData::getPilotCode($pilot->code, $pilot->pilotid) . ' - ' . $pilot->firstname . ' ' . $pilot->lastname);
+        LogData::addLog(
+            Auth::$userinfo->pilotid, 
+            'Approved '.PilotData::getPilotCode($pilot->code, $pilot->pilotid).' - '.$pilot->firstname.' '.$pilot->lastname
+        );
     }
 
     /**
@@ -655,7 +679,10 @@ class PilotAdmin extends CodonModule {
         }
 
         $pilot = PilotData::getPilotData($this->post->pilotid);
-        LogData::addLog(Auth::$userinfo->pilotid, 'Changed the password for ' . PilotData::getPilotCode($pilot->code, $pilot->pilotid) . ' - ' . $pilot->firstname . ' ' . $pilot->lastname);
+        LogData::addLog(
+            Auth::$userinfo->pilotid, 
+            'Changed the password for '.PilotData::getPilotCode($pilot->code, $pilot->pilotid).' - '.$pilot->firstname.' '.$pilot->lastname
+        );
     }
 
     /**

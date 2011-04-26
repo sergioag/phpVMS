@@ -166,6 +166,8 @@
         
 		?>
 		</select>
+        
+        <input type="checkbox" name="resend_email" value="true" />Check to resend the welcome email
 	
 	</td>
 </tr>
