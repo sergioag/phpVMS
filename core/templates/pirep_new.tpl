@@ -6,17 +6,15 @@ if(isset($message))
 <form action="<?php echo url('/pireps/mine');?>" method="post">
 <dl>
 	<dt>Pilot:</dt>
-	<dd><strong><?php echo Auth::$userinfo->firstname . ' ' . Auth::$userinfo->lastname;?></strong></dd>
+	<dd><strong><?php echo Auth::$pilot->firstname . ' ' . Auth::$pilot->lastname;?></strong></dd>
 	
 	<dt>Select Airline:</dt>
 	<dd>
 		<select name="code" id="code">
 			<option value="">Select your airline</option>
 		<?php
-		foreach($allairlines as $airline)
-		{
+		foreach($airline_list as $airline) {
 			$sel = ($_POST['code'] == $airline->code || $bid->code == $airline->code)?'selected':'';
-				
 			echo '<option value="'.$airline->code.'" '.$sel.'>'.$airline->code.' - '.$airline->name.'</option>';
 		}
 		?>
@@ -32,10 +30,8 @@ if(isset($message))
 		<select id="depicao" name="depicao">
 			<option value="">Select a departure airport</option>
 			<?php
-			foreach($allairports as $airport)
-			{
+			foreach($airport_list as $airport) {
 				$sel = ($_POST['depicao'] == $airport->icao || $bid->depicao == $airport->icao)?'selected':'';
-				
 				echo '<option value="'.$airport->icao.'" '.$sel.'>'.$airport->icao . ' - '.$airport->name .'</option>';
 			}
 			?>
@@ -49,10 +45,8 @@ if(isset($message))
 		<select id="arricao" name="arricao">
 			<option value="">Select an arrival airport</option>
 			<?php
-			foreach($allairports as $airport)
-			{
+			foreach(airport_list as $airport) {
 				$sel = ($_POST['arricao'] == $airport->icao || $bid->arricao == $airport->icao)?'selected':'';
-				
 				echo '<option value="'.$airport->icao.'" '.$sel.'>'.$airport->icao . ' - '.$airport->name .'</option>';
 			}
 			?>
@@ -66,26 +60,9 @@ if(isset($message))
 			<option value="">Select the aircraft of this flight</option>
 		<?php
 		
-		foreach($allaircraft as $aircraft)
+		foreach($aircraft_list as $aircraft)
 		{
-			
-			/*	Skip any aircraft which have aircraft that the pilot
-				is not rated to fly (according to RANK) 
-			*/
-			if(Config::Get('RESTRICT_AIRCRAFT_RANKS') === true)
-			{
-				/*	This means the aircraft rank level is higher than
-					what the pilot's ranklevel, so just do "continue"
-					and move onto the next route in the list 
-				 */
-				if($aircraft->ranklevel > Auth::$userinfo->ranklevel)
-				{
-					continue;
-				}
-			}
-			
-			$sel = ($_POST['aircraft'] == $aircraft->name || $bid->registration == $aircraft->registration)?'selected':'';
-			
+			$sel = ($_POST['aircraft'] == $aircraft->name || $bid->registration == $aircraft->registration)?'selected':'';	
 			echo '<option value="'.$aircraft->id.'" '.$sel.'>'.$aircraft->name.' - '.$aircraft->registration.'</option>';
 		}
 		?>
@@ -104,23 +81,17 @@ if(isset($message))
 		
 		// Determine field by the type
 		
-		if($field->type == '' || $field->type == 'text')
-		{
+		if($field->type == '' || $field->type == 'text') {
 		?>
 			<input type="text" name="<?php echo $field->name ?>" value="<?php echo $_POST[$field->name] ?>" />
 		<?php
-		} 
-		elseif($field->type == 'textarea')
-		{
+		}  elseif($field->type == 'textarea') {
 			echo '<textarea name="'.$field->name.'">'.$field->values.'</textarea>';
-		}
-		elseif($field->type == 'dropdown')
-		{
+		} elseif($field->type == 'dropdown') {
 			$values = explode(',', $field->options);
 			
 			echo '<select name="'.$field->name.'">';
-			foreach($values as $value)
-			{
+			foreach($values as $value) {
 				$value = trim($value);
 				echo '<option value="'.$value.'">'.$value.'</option>';
 			}

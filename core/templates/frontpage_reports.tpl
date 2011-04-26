@@ -1,15 +1,19 @@
 <?php
-if(!$reports)
-{
+if(!$pirep_list) {
 	echo 'No reports have been filed';
 	return;
 }
 
-foreach($reports as $report)
-{
+foreach($pirep_list as $pirep) {
 ?>
-<p><a href="<?php echo url('/pireps/viewreport/'.$report->pirepid);?>">#<?php echo $report->pirepid
-	. ' - ' . $report->code.$report->flightnum?></a> - <a href="<?php echo url('/profile/view/'.$report->pilotid);?>"><?php echo $report->firstname . ' ' . $report->lastname?></a></p>
+    <p>
+        <a href="<?php echo url('/pireps/viewreport/'.$pirep->pirepid);?>">
+            #<?php echo $pirep->pirepid.' - '.$pirep->code.$pirep->flightnum?>
+        </a> - 
+        <a href="<?php echo url('/profile/view/'.$pirep->pilotid);?>">
+            <?php echo $pirep->firstname . ' ' . $pirep->lastname?>
+        </a>
+    </p>
 <?php
 }
 ?>

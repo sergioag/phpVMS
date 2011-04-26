@@ -20,33 +20,33 @@ var flightMarkers = [];
 
 <?php 
 $shown = array();
-foreach($allschedules as $route)
+foreach($pirep_list as $pirep)
 {	
 	// Dont show repeated routes		
-	if(in_array($route->code.$route->flightnum, $shown))
+	if(in_array($pirep->code.$pirep->flightnum, $shown))
 		continue;
 	else
-		$shown[] = $route->code.$route->flightnum;
+		$shown[] = $pirep->code.$pirep->flightnum;
 	
-	if(empty($route->arrlat) || empty($route->arrlng)
-		|| empty($route->deplat) || empty($route->deplng))
+	if(empty($pirep->arrlat) || empty($pirep->arrlng)
+		|| empty($pirep->deplat) || empty($pirep->deplng))
 	{
 		continue;
 	}
 ?>
-	dep_location = new google.maps.LatLng(<?php echo $route->deplat?>, <?php echo $route->deplng?>);
-	arr_location = new google.maps.LatLng(<?php echo $route->arrlat?>, <?php echo $route->arrlng?>);
+	dep_location = new google.maps.LatLng(<?php echo $pirep->deplat?>, <?php echo $pirep->deplng?>);
+	arr_location = new google.maps.LatLng(<?php echo $pirep->arrlat?>, <?php echo $pirep->arrlng?>);
 
 	flightMarkers[flightMarkers.length] = new google.maps.Marker({
 		position: dep_location,
 		map: map,
-		title: "<?php echo "$route->depname ($route->depicao)";?>"
+		title: "<?php echo "$pirep->depname ($pirep->depicao)";?>"
 	});
 
 	flightMarkers[flightMarkers.length] = new google.maps.Marker({
 		position: arr_location,
 		map: map,
-		title: "<?php echo "$route->arrname ($route->arricao)";?>"
+		title: "<?php echo "$pirep->arrname ($pirep->arricao)";?>"
 	});
 
 	var flightPath = new google.maps.Polyline({
