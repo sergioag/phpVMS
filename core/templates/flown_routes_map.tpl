@@ -20,8 +20,7 @@ var flightMarkers = [];
 
 <?php 
 $shown = array();
-foreach($pirep_list as $pirep)
-{	
+foreach($pirep_list as $pirep) {	
 	// Dont show repeated routes		
 	if(in_array($pirep->code.$pirep->flightnum, $shown))
 		continue;
