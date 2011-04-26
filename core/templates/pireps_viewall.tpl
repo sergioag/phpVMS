@@ -43,22 +43,23 @@ foreach($pirep_list as $pirep)
 	<td align="center">
 		<?php
 		
-		if($pirep->accepted == PIREP_ACCEPTED)
-			echo '<div id="success">Accepted</div>';
-		elseif($pirep->accepted == PIREP_REJECTED)
-			echo '<div id="error">Rejected</div>';
-		elseif($pirep->accepted == PIREP_PENDING)
-			echo '<div id="error">Approval Pending</div>';
-		elseif($pirep->accepted == PIREP_INPROGRESS)
-			echo '<div id="error">Flight in Progress</div>';
+		if($pirep->accepted == PIREP_ACCEPTED) {
+            echo '<div id="success">Accepted</div>';
+		} elseif($pirep->accepted == PIREP_REJECTED) {
+            echo '<div id="error">Rejected</div>';
+		} elseif($pirep->accepted == PIREP_PENDING) {
+            echo '<div id="error">Approval Pending</div>';
+		} elseif($pirep->accepted == PIREP_INPROGRESS) {
+            echo '<div id="error">Flight in Progress</div>';
+		}
+			
 		
 		?>
 	</td>
 	<?php
 	// Only show this column if they're logged in, and the pilot viewing is the
 	//	owner/submitter of the PIREPs
-	if(Auth::LoggedIn() && Auth::$pilot->pilotid == $pirep->pilotid)
-	{
+	if(Auth::LoggedIn() && Auth::$pilot->pilotid == $pirep->pilotid) {
 		?>
 	<td align="right">
 		<a href="<?php echo url('/pireps/addcomment?id='.$pirep->pirepid);?>">Add Comment</a><br />

@@ -19,6 +19,11 @@
 class Pilots extends CodonModule
 {
 	
+	/**
+	 * Pilots::index()
+	 * 
+	 * @return
+	 */
 	public function index()
 	{
 		// Get all of our hubs, and list pilots by hub
@@ -31,33 +36,44 @@ class Pilots extends CodonModule
 			$this->set('title', $hub->name);
 			$this->set('icao', $hub->icao);
 			
-			$this->set('allpilots', PilotData::findPilots(array('p.hub'=>$hub->icao)));
+            $pilot_list = PilotData::findPilots(array('p.hub'=>$hub->icao));
+			$this->set('allpilots', $pilot_list); # deprecated
+            $this->set('pilot_list', $pilot_list);
 								
 			$this->render('pilots_list.tpl');
 		}
 		
 		$nohub = PilotData::findPilots(array('p.hub'=>''));
-		if(!$nohub)
-		{
+		if(!$nohub) {
 			return;
 		}
 		
 		$this->set('title', 'No Hub');
 		$this->set('icao', '');
-		$this->set('allpilots', $nohub);
+		$this->set('allpilots', $nohub); # deprecated
+        $this->set('pilot_list', $nohub);
 		$this->render('pilots_list.tpl');
 	}
 	
+	/**
+	 * Pilots::reports()
+	 * 
+	 * @param string $pilotid
+	 * @return
+	 */
 	public function reports($pilotid='')
 	{
-		if($pilotid == '')
-		{
+		if($pilotid == '') {
 			$this->set('message', 'No pilot specified!');
 			$this->render('core_error.tpl');
 			return;
 		}
 		
-		$this->set('pireps', PIREPData::GetAllReportsForPilot($pilotid));
+        $pirep_list = PIREPData::GetAllReportsForPilot($pilotid);
+		
+        $this->set('pireps', $pirep_list); # deprecated
+        $this->set('pireps_list', $pirep_list);
+        
 		$this->render('pireps_viewall.tpl');
 	}
 	
@@ -65,18 +81,36 @@ class Pilots extends CodonModule
 	/* Stats stuff for charts */
 	
 	
+	/**
+	 * Pilots::statsdaysdata()
+	 * 
+	 * @param mixed $pilotid
+	 * @return
+	 */
 	public function statsdaysdata($pilotid)
 	{
 		$data = PIREPData::getIntervalDataByDays(array('p.pilotid'=>$pilotid), 30);
 		$this->create_line_graph('Past 30 days PIREPs', $data);
 	}
 	
+	/**
+	 * Pilots::statsmonthsdata()
+	 * 
+	 * @param mixed $pilotid
+	 * @return
+	 */
 	public function statsmonthsdata($pilotid)
 	{
 		$data = PIREPData::getIntervalDataByMonth(array('p.pilotid'=>$pilotid), 3);
 		$this->create_line_graph('Monthly Flight Stats', $data);
 	}
 	
+	/**
+	 * Pilots::statsaircraftdata()
+	 * 
+	 * @param mixed $pilotid
+	 * @return
+	 */
 	public function statsaircraftdata($pilotid)
 	{
 		$data = StatsData::PilotAircraftFlownCounts($pilotid);
@@ -85,26 +119,29 @@ class Pilots extends CodonModule
 		include CORE_LIB_PATH.'/php-ofc-library/open-flash-chart.php';
 		
 		$d = array();
-		foreach($data as $ac)
-		{
+		foreach($data as $ac) {
 			OFCharts::add_data_set($ac->aircraft, floatval($ac->hours));
 		}
 		
 		echo OFCharts::create_pie_graph('Aircraft Flown');
 	}
 	
+	/**
+	 * Pilots::create_line_graph()
+	 * 
+	 * @param mixed $title
+	 * @param mixed $data
+	 * @return
+	 */
 	protected function create_line_graph($title, $data)
 	{	
-		if(!$data)
-		{
+		if(!$data) {
 			$data = array();
 		}
 				
 		$bar_values = array();
 		$bar_titles = array();
-		foreach($data as $val)
-		{
-			
+		foreach($data as $val) {
 			$bar_titles[] = $val->ym;
 			$bar_values[] = floatval($val->total);
 		}
@@ -113,9 +150,18 @@ class Pilots extends CodonModule
 		echo OFCharts::create_area_graph($title);
 	}
 		
+	/**
+	 * Pilots::RecentFrontPage()
+	 * 
+	 * @param integer $count
+	 * @return
+	 */
 	public function RecentFrontPage($count = 5)
 	{
-		$this->set('pilots', PilotData::GetLatestPilots($count));
+        $pilot_list = PilotData::getLatestPilots($count);
+		$this->set('pilots', $pilot_list);
+        $this->set('pilot_list', $pilot_list);
+        
 		$this->render('frontpage_recentpilots.tpl');
 	}
 }

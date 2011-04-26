@@ -1,11 +1,10 @@
 <h3><?php echo $title?></h3>
 
 <?php
-	if(!$allpilots)
-	{
-		echo 'There are no pilots!';
-		return;
-	}
+if(!$pilot_list) {
+	echo 'There are no pilots!';
+	return;
+}
 ?>
 <table id="tabledlist" class="tablesorter">
 <thead>
@@ -19,7 +18,7 @@
 </thead>
 <tbody>
 <?php
-foreach($allpilots as $pilot)
+foreach($pilot_list as $pilot)
 {
 	/* 
 		To include a custom field, use the following example:
