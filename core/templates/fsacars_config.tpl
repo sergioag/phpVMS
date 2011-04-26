@@ -4,7 +4,7 @@ Mail=
 URL=<?php echo SITE_URL?>/index.php/profile/view
 passwd=
 [FSacars]
-CompanyICAO=<?php echo $userinfo->code ?>
+CompanyICAO=<?php echo $pilot->code ?>
 
 CompanyName=<?php echo SITE_NAME?>
 

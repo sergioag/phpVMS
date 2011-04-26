@@ -43,8 +43,7 @@ class ACARS extends CodonModule
 	
 		// clean the name...
 		$name = preg_replace("/[^a-z0-9-]/", "", strtolower($name));
-		if(dirname(__FILE__).DS.$name.'.php')
-		{
+		if(dirname(__FILE__).DS.$name.'.php') {
 			include_once dirname(__FILE__).DS.$name.'.php';
 			return;
 		}
@@ -58,8 +57,8 @@ class ACARS extends CodonModule
 			$flights = array();
 		
 		$this->acarsflights = array();
-		foreach($flights as $flight)
-		{	
+		foreach($flights as $flight) {
+		  
 			if($flight->route == '') {
 				$flight->route_details = array();
 			} else {
@@ -126,14 +125,12 @@ class ACARS extends CodonModule
 			return;
 		
 		$depinfo = OperationsData::GetAirportInfo($this->get->depicao);
-		if(!$depinfo)
-		{
+		if(!$depinfo) {
 			$depinfo = OperationsData::RetrieveAirportInfo($this->get->depicao);
 		}
 		
 		$arrinfo = OperationsData::GetAirportInfo($this->get->arricao);
-		if(!$arrinfo)
-		{
+		if(!$arrinfo) {
 			$arrinfo = OperationsData::RetrieveAirportInfo($this->get->arricao);
 		}
 		
@@ -177,8 +174,9 @@ class ACARS extends CodonModule
 			break;
 		}
 		
-		$this->set('pilotcode', PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
-		$this->set('userinfo', Auth::$userinfo);
+		$this->set('pilotcode', PilotData::GetPilotCode(Auth::$pilot->code, Auth::$pilot->pilotid));
+		$this->set('userinfo', Auth::$pilot);
+        $this->set('pilot', Auth::$pilot);
 		
 		$acars_config = Template::GetTemplate($template_name, true);
 		$acars_config = str_replace("\n", "\r\n", $acars_config);

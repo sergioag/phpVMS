@@ -22,8 +22,7 @@ class Downloads extends CodonModule
 	
 	public function index()
 	{
-		if(!Auth::LoggedIn())
-		{
+		if(!Auth::LoggedIn()) {
 			echo 'You must be logged in to access this page!';
 			return;
 		}
@@ -50,8 +49,7 @@ class Downloads extends CodonModule
 	
 	public function download($id='')
 	{
-		if($id == '')
-		{
+		if($id == '') {
 			$this->index();
 		}
 		

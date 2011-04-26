@@ -29,20 +29,16 @@ class Login extends CodonModule
 	
 	public function login($redir='')
 	{
-		if(Auth::LoggedIn() == true)
-		{
+		if(Auth::LoggedIn() == true) {
 			$this->render('login_already.tpl');
 			return;
 		}
 		
 		$this->set('redir', $redir);
 	
-		if(isset($this->post->action) && $this->post->action == 'login')
-		{
+		if(isset($this->post->action) && $this->post->action == 'login') {
 			$this->ProcessLogin();
-		}
-		else
-		{
+		} else {
 			$this->render('login_form.tpl');
 		}
 	}
@@ -56,8 +52,7 @@ class Login extends CodonModule
 	
 	public function forgotpassword()
 	{
-		if($this->post->action == 'resetpass')
-		{
+		if($this->post->action == 'resetpass') {
 			$this->ResetPassword();
 			return;
 		}
@@ -69,31 +64,28 @@ class Login extends CodonModule
 	{
 		$email = $this->post->email;
 		
-		if(!$email)
-		{
+		if(!$email) {
 			return false;
-		}
-		else
-		{
-			$pilotdata = PilotData::GetPilotByEmail($email);
+		} else  {
+		  
+			$pilot = PilotData::GetPilotByEmail($email);
 			
-			if(!$pilotdata)
-			{
+			if(!$pilot) {
 				$this->render('login_notfound.tpl');
 				return;
 			}
 			
 			$newpw = substr(md5(date('mdYhs')), 0, 6);
 			
-			RegistrationData::ChangePassword($pilotdata->pilotid, $newpw);
+			RegistrationData::ChangePassword($pilot->pilotid, $newpw);
 						
-			$this->set('firstname', $pilotdata->firstname);
-			$this->set('lastname', $pilotdata->lastname);
+			$this->set('firstname', $pilot->firstname);
+			$this->set('lastname', $pilot->lastname);
 			$this->set('newpw', $newpw);
 			
 			$message = Template::GetTemplate('email_lostpassword.tpl', true);
 			
-			Util::SendEmail($pilotdata->email, 'Password Reset', $message);
+			Util::SendEmail($pilot->email, 'Password Reset', $message);
 			
 			$this->render('login_passwordreset.tpl');
 		}
@@ -116,37 +108,28 @@ class Login extends CodonModule
 			$this->set('message', Auth::$error_message);
 			$this->render('login_form.tpl');
 			return false;
-		}
-		else
-		{
-			if(Auth::$userinfo->confirmed == PILOT_PENDING)
-			{
+		} else {
+			if(Auth::$pilot->confirmed == PILOT_PENDING) {
 				$this->render('login_unconfirmed.tpl');
 				Auth::LogOut();
 				
 				// show error
-			}
-			elseif(Auth::$userinfo->confirmed == PILOT_REJECTED)
-			{
+			} elseif(Auth::$pilot->confirmed == PILOT_REJECTED) {
 				$this->render('login_rejected.tpl');
 				Auth::LogOut();
 			}
 			else
 			{
-				$pilotid = Auth::$userinfo->pilotid;
+				$pilotid = Auth::$pilot->pilotid;
 				$session_id = Auth::$session_id;
 				
 				# If they choose to be "remembered", then assign a cookie
-				if($this->post->remember == 'on')
-				{
+				if($this->post->remember == 'on') {
 					$cookie = "{$session_id}|{$pilotid}|{$_SERVER['REMOTE_ADDR']}";
 					$res = setrawcookie(VMS_AUTH_COOKIE, $cookie, time() + Config::Get('SESSION_LOGIN_TIME'), '/');
 				}
 				
-				PilotData::UpdateLogin($pilotid);
-				
-				#$this->set('redir', SITE_URL . '/' . $this->post->redir);
-				#$this->render('login_complete.tpl');
+				PilotData::updateLogin($pilotid);
 				
 				CodonEvent::Dispatch('login_success', 'Login');
 				

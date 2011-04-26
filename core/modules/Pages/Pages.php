@@ -33,19 +33,15 @@ class Pages extends CodonModule
 		$page = DB::escape($name);
 		$pageinfo = SiteData::GetPageDataByName($page);
 		
-		if($pageinfo->public == 0 && Auth::LoggedIn() == false)
-		{
+		if($pageinfo->public == 0 && Auth::LoggedIn() == false) {
 			$this->render('pages_nopermission.tpl');
 			return;
 		}
 		
 		$content = SiteData::GetPageContent($page);
-		if(!$content)
-		{
+		if(!$content) {
 			$this->render('pages_notfound.tpl');
-		}
-		else
-		{
+		} else {
 			// Do it this way, so then that this page/template
 			//	can be customized on a skin-by-skin basis
 			$this->title = $content->pagename;

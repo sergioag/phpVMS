@@ -21,10 +21,7 @@ class Logout extends CodonModule
 	{
 		Auth::LogOut();
 		
-		/*redirect back to front page
-		*/
+		# redirect back to front page 
 		header('Location: '.url('/'));
-		#$this->set('redir', SITE_URL);
-		#$this->render('login_complete.tpl');
 	}
 }

@@ -13,8 +13,7 @@
 
 /* $data is all the ACARS data */
 $i=1;
-foreach($data as $name => $value)
-{
+foreach($data as $name => $value) {
 
 	/* $name is the name of the parameter (like "TOIAS")
 	   $value is 160 */
