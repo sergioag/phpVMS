@@ -27,7 +27,7 @@ if(!$CURRENT_VERSION) {
 	$CURRENT_VERSION = $CURRENT_VERSION->value;
     
     if(substr_count($CURRENT_VERSION, '-')) {
-        preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $revision, $matches);
+        preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $CURRENT_VERSION, $matches);
         list($CURR_FULL_VERSION_STRING, $curr_full_version, $curr_revision_count, $curr_hash) = $matches;
         
         preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
@@ -63,40 +63,40 @@ if(!isset($_GET['force']) && !isset($_GET['test'])) {
 echo 'Starting the update...<br />';
 
 	# Do updates based on version
-	#	But cascade the updates
+#	But cascade the updates
 
-	$CURRENT_VERSION = intval(str_replace('.', '', $CURRENT_VERSION));
-	$latestversion = intval(str_replace('.', '', UPDATE_VERSION));
-	    
-    $mysqlDiff = new MySQLDiff(array(
-        'dbuser' => DBASE_USER,
-        'dbpass' => DBASE_PASS,
-        'dbname' => DBASE_NAME,
-        'dbhost' => DBASE_SERVER,
-        'dumpxml' => 'sql/structure.xml',
-        )
-    );
+$CURRENT_VERSION = intval(str_replace('.', '', $CURRENT_VERSION));
+$latestversion = intval(str_replace('.', '', UPDATE_VERSION));
     
-    $diffs_done = $mysqlDiff->getSQLDiffs();
-    if(!is_array($diffs_done)) {
-        $diffs_done = array();
-    }
-    
-    # Run it local so it's logged
-    foreach($diffs_done as $sql) {
-        DB::query($sql);
-    }
-	
-	OperationsData::updateAircraftRankLevels();
-	
-	/* Add them to the default group */
-	$allpilots = PilotData::getAllPilots();
-	foreach($allpilots as $pilot) {
-        PilotData::resetLedgerforPilot($pilot->pilotid);
-		PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
-	}
+$mysqlDiff = new MySQLDiff(array(
+    'dbuser' => DBASE_USER,
+    'dbpass' => DBASE_PASS,
+    'dbname' => DBASE_NAME,
+    'dbhost' => DBASE_SERVER,
+    'dumpxml' => 'sql/structure.xml',
+    )
+);
 
-	SettingsData::saveSetting('PHPVMS_VERSION', $FULL_VERSION_STRING);
+$diffs_done = $mysqlDiff->getSQLDiffs();
+if(!is_array($diffs_done)) {
+    $diffs_done = array();
+}
+
+# Run it local so it's logged
+foreach($diffs_done as $sql) {
+    DB::query($sql);
+}
+
+OperationsData::updateAircraftRankLevels();
+
+/* Add them to the default group */
+$pilot_list = PilotData::getAllPilots();
+foreach($pilot_list as $pilot) {
+    PilotData::resetLedgerforPilot($pilot->pilotid);
+	PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
+}
+
+SettingsData::saveSetting('PHPVMS_VERSION', $FULL_VERSION_STRING);
 
 echo '<p><strong>Update completed!</strong></p>
 		<hr>

@@ -114,20 +114,36 @@ class Dashboard extends CodonModule {
                 CodonCache::write($key, $message, 'medium_well');
             }
             
-            $version = $message->version;                        
-
             if (Config::Get('CHECK_BETA_VERSION') == true) {
-                $version = $message->betaversion;
+                $latest_version = $message->betaversion;
+            } else {
+                $latest_version = $message->version;
             }
 
-            $postversion = intval(str_replace('.', '', trim($version)));
-            $currversion = intval(str_replace('.', '', PHPVMS_VERSION));
-
-            if ($currversion < $postversion) {
+            # GET THE VERSION THAT'S THE LATEST AVAILABLE
+            preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $latest_version, $matches);
+            list($FULL_VERSION_STRING, $full_version, $revision_count, $hash) = $matches;
+            
+            preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
+            list($full, $major, $minor, $revision) = $matches;
+            $latest_version = $major.$minor.($revision + $revision_count);
+            
+            # GET THE CURRENT VERSION INFO INSTALLED
+            $installed_version = PHPVMS_VERSION;
+            preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $installed_version, $matches);
+            list($FULL_VERSION_STRING, $full_version, $revision_count, $hash) = $matches;
+            
+            preg_match('/([0-9]*)\.([0-9]*)\.([0-9]*)/', $full_version, $matches);
+            list($full, $major, $minor, $revision) = $matches;
+            $installed_version = $major.$minor.($revision + $revision_count);
+            
+            #echo "CURRVERSION : $installed_version<br>AVAILVERSION: $latest_version<br>";
+            
+            if ($installed_version < $latest_version) {
                 if (Config::Get('CHECK_BETA_VERSION') == true) {
-                    $this->set('message', 'A beta version ' . $version . ' is available for download!');
+                    $this->set('message', 'Beta version ' . $message->betaversion . ' is available for download!');
                 } else {
-                    $this->set('message', 'Version ' . $version . ' is available for download! Please update ASAP');
+                    $this->set('message', 'Version ' . $message->version . ' is available for download! Please update ASAP');
                 }
 
                 $this->set('updateinfo', Template::GetTemplate('core_error.tpl', true)); 

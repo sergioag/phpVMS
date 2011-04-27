@@ -11,6 +11,10 @@
  * settings to take effect
  *
  */
+Config::Set('DEBUG_MODE', false);
+Config::Set('DEBUG_LEVEL', 1); // 1 logs query errors, 2 logs all queries
+Config::Set('ERROR_LEVEL', E_ALL ^ E_NOTICE);
+
 define('DBASE_USER', '$DBASE_USER');
 define('DBASE_PASS', '$DBASE_PASS');
 define('DBASE_NAME', '$DBASE_NAME');
@@ -31,6 +35,15 @@ Config::Set('URL_REWRITE', false);
 # Maintenance mode - this disables the site to non-admins
 Config::Set('MAINTENANCE_MODE', false);
 Config::Set('MAINTENANCE_MESSAGE', 'We are currently down for maintenance, please check back soon.');
+
+/*	Whether you have the /admin/maintenance.php script added into cron.
+	If you do, set this to true. This saves many DB calls since phpVMS will
+	have to 'fake' a cron-job
+	*/
+Config::Set('USE_CRON', false);
+
+Config::Set('CHECK_RELEASE_VERSION', true);
+Config::Set('CHECK_BETA_VERSION', false);
 
 # See more details about these in the docs
 Config::Set('PAGE_EXT', '.htm');	# .htm is fine. You can still run PHP
@@ -146,8 +159,3 @@ Config::Set('EMAIL_SMTP_SECURE', 'ssl'); # must be "ssl" for Google Apps
 Config::Set('EMAIL_SMTP_USER', '');
 Config::Set('EMAIL_SMTP_PASS', '');
 
-# Debug mode is off by default
-Config::Set('DEBUG_MODE', false);
-Config::Set('ERROR_LEVEL', E_ALL ^ E_NOTICE);
-
-Config::Set('SESSION_LOGIN_TIME', (60*60*24*30)); # Expire after 30 days, in seconds

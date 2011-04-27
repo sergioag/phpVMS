@@ -80,44 +80,25 @@ class FinanceData extends CodonData {
      */
     public static function calculateFinances($month_info) {
         
-        # Grab the expenses for that month
-        $expenses = self::getExpensesForMonth($month_info->timestamp);
-
-        if (!$expenses) return $month_info;
-
+        
+        $pilot_pay = LedgerData::getTotalForMonth($month_info->timestamp);
+    
         /* Where the bulk of our work is done for expenses */
         $running_total = 0;
+        
+        $expenses = self::getExpensesForMonth($month_info->timestamp);
         foreach ($expenses as $ex) {
-            switch (strtolower($ex->type)) {
-                    /* fixed cost, per month */
-
-                case 'm':
-
-                    $ex->total = $ex->cost;
-
-                    break;
-
-                    /* per-flight expense, so multiply the cost
-                    times the number of flights we've had */
-                case 'f':
-
-                    $ex->total = $month_info->total * $ex->cost;
-
-                    break;
-
-                    /* percent of gross per month */
-                case 'p':
-
-                    $ex->total = $month_info->gross * ($ex->cost / 100);
-
-                    break;
-
-                    /* perfect revenue, per flight */
-                case 'g':
-
-                    $ex->total = $month_info->gross * ($ex->cost / 100);
-
-                    break;
+            
+            $ex->type = strtolower($ex->type);
+            
+            if($ex->type == 'm') {
+                $ex->total = $ex->cost;
+            } elseif($ex->type == 'f') { /* per-flight expense */
+                $ex->total = $month_info->total * $ex->cost;
+            } elseif($ex->type == 'p') { /* percent of gross per month */
+                $ex->total = $month_info->gross * ($ex->cost / 100);
+            } elseif($ex->type == 'g') { /* perfect revenue, per flight */
+                $ex->total = $month_info->gross * ($ex->cost / 100);
             }
 
             $running_total += $ex->total;
@@ -125,13 +106,20 @@ class FinanceData extends CodonData {
 
         $month_info->expenses = $expenses;
         $month_info->expenses_total = $running_total;
-
-        $month_info->revenue = $month_info->gross - $month_info->fuelprice - $month_info->
-            pilotpay - $running_total;
+        $month_info->pilotpay = $pilot_pay;
+        
+        $month_info->revenue = 
+            $month_info->gross - $month_info->fuelprice - $month_info->pilotpay - $running_total;
 
         return $month_info;
     }
 
+    /**
+     * FinanceData::getExpensesForMonth()
+     * 
+     * @param mixed $timestamp
+     * @return
+     */
     public static function getExpensesForMonth($timestamp) {
         
         $time = date('Ym', $timestamp);
@@ -144,10 +132,20 @@ class FinanceData extends CodonData {
 				WHERE `dateadded`=' . $time;
 
         $ret = DB::get_results($sql);
+        
+        if(!$ret) {
+            return array();
+        }
 
         return $ret;
     }
 
+    /**
+     * FinanceData::setExpensesforMonth()
+     * 
+     * @param mixed $timestamp
+     * @return
+     */
     public function setExpensesforMonth($timestamp) {
         
         $all_expenses = self::getAllExpenses();
@@ -202,6 +200,12 @@ class FinanceData extends CodonData {
         }
     }
 
+    /**
+     * FinanceData::removeExpensesforMonth()
+     * 
+     * @param mixed $timestamp
+     * @return void
+     */
     public static function removeExpensesforMonth($timestamp) {
         $time = date('Ym', $timestamp);
         $sql = 'DELETE FROM ' . TABLE_PREFIX . 'expenselog WHERE `dateadded`=' . $time;
@@ -212,10 +216,16 @@ class FinanceData extends CodonData {
      * Get a list of all the expenses
      */
     public static function getAllExpenses() {
+        
         $sql = 'SELECT * 
 				FROM ' . TABLE_PREFIX . 'expenses';
 
-        return DB::get_results($sql);
+        $res = DB::get_results($sql);
+        if(!$res) {
+            return array();
+        }
+        
+        return $res;
     }
 
     /**

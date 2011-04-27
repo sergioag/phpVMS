@@ -2,7 +2,7 @@ c53987a61354c3460fdac8e07f5c2cd2  *./install/templates/s0_config_check.tpl
 07f182be09dde3f18f6d7f9a3fccdccb  *./install/templates/s3_setup_finished.tpl
 935c97d85897117c44242b97214221b2  *./install/templates/header.tpl
 cc03311e935549a5d652466a28aa5692  *./install/templates/error.tpl
-16b9b452aa676d78616ba209a5cc7add  *./install/templates/config.tpl
+1528fa1ddd06d3571d1af855b118ebe0  *./install/templates/config.tpl
 122a8d2b3a31e759ff75e87bb32d0089  *./install/templates/s1_db_setup.tpl
 f486373c1d765b4f40dab95e8561d254  *./install/templates/setting.tpl
 fac7c09a2f7b3c46a3c4d20ccb0eb2fb  *./install/templates/s2_site_setup.tpl
@@ -18,14 +18,14 @@ c1a6a7588d2c2a9342d8b93c5ac9db60  *./install/sql/install.sql
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
 c2ac2bc16449a6c3d601357caefc78aa  *./install/fixtures/update.sql
 98645f25a6917b5922becfd8181eaef4  *./install/fixtures/install.sql
-e37181dd1b34c54f91a04f638b77d682  *./install/update.php
+10ae62b07f975b0f7dd611084dae3982  *./install/update.php
 d609f74eeaea0e4849d90b1c9a48943a  *./install/checkdb.php
 71c7531e4b713e67d84e310e354ddc47  *./install/install.php
 b93585ee3d7e1d70cb3d4937f3e8069b  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
 bf728ada7c00dd8e9cf57c98a55cafac  *./core/common/PIREPData.class.php
-8a5cb317fbcafa8badef4df19ba10488  *./core/common/LedgerData.class.php
-f9b8154e17280669abced26d493e85c2  *./core/common/Auth.class.php
+a370d02b20cc43cb39ef5c50a747bc46  *./core/common/LedgerData.class.php
+08039ab59cded068416d954e528dea41  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 81b031ad3c45255fe84f4f5a15d14182  *./core/common/RegistrationData.class.php
 4b930556c0957f86bb290023be2f41fd  *./core/common/StatsData.class.php
@@ -43,7 +43,7 @@ e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 a1f928f3282b98f566c4b56a62ef7c06  *./core/common/FuelData.class.php
 fbf1d94494b20f35987fe7800e00aafe  *./core/common/SiteData.class.php
 899f9e1eabdc3155c3d7144748595691  *./core/common/AircraftStats.class.php
-ddcb543c28fcef67ad9372ed532473dd  *./core/common/FinanceData.class.php
+c41691f3c776d156a13c5fc8088021fc  *./core/common/FinanceData.class.php
 8ed39ab361932f975bbc6d30ef2c34e9  *./core/common/LogData.class.php
 62973b13082ca19c6547f696b32514ad  *./core/common/ActivityData.class.php
 7f5737e62f815d1f0330639bc0976050  *./core/common/ChartGraph.class.php
@@ -163,7 +163,7 @@ c5464e3a9e0079bd8229a1b1aa27379d  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-fbd146d48872dcfc9b60a4c7ea45c5ca  *./core/app.config.php
+6b14c20b48b6c48f47ba9035e171eb17  *./core/app.config.php
 02bd2d79260bca8038dbc414c7edf4d6  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 73fc6e1d3106739551d5358922d65d40  *./core/modules/Activity/Activity.php
@@ -186,7 +186,7 @@ ea2818195e0faae4908303ff689b615f  *./core/modules/Logout/Logout.php
 103402ce01621b2fb995095df38e34db  *./core/modules/PIREPS/PIREPS.php
 1a015897585ff97e49e76c9ef771ba69  *./core/modules/Finances/Finances.php
 ee1c7b496bc6f086b510c956192ff79d  *./core/modules/Pages/Pages.php
-2a424f6455acbe66811387bc11d7675b  *./core/modules/Login/Login.php
+c652fcbf046db502bb76c50436ffdaed  *./core/modules/Login/Login.php
 3a5d2280949c6fa6de05d1c76cd01cf6  *./core/modules/RouteMap/RouteMap.php
 6173a7736d13d14ab2a91515e72282d8  *./index.php
 c69a4ed831a0cb54bf7c1e26b1ea2474  *./admin/maintenance.php
@@ -312,7 +312,7 @@ fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
 838682cce53a398825489fc9afbe9318  *./admin/modules/Maintenance/Maintenance.php
-ccd8555feef03a1d3f633717a3a3be5b  *./admin/modules/Dashboard/Dashboard.php
+e8e13efe98992df0e10968d14c1be2fa  *./admin/modules/Dashboard/Dashboard.php
 bba58e31eeac641aedb3039ec8fcf8b5  *./admin/modules/PIREPAdmin/PIREPAdmin.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/avatars/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./lib/signatures/index.php

@@ -47,7 +47,26 @@ class LedgerData extends CodonData {
              WHERE `pirepid`='.$pirepid
         );
         
-    }     
+    }
+    
+    
+    /**
+     * LedgerData::getTotalForMonth()
+     * 
+     * @param mixed $timestamp
+     * @return void
+     */
+    public static function getTotalForMonth($timestamp) {
+        
+        $total = DB::get_row(
+            "SELECT SUM(`amount`) as `total`
+            FROM `".TABLE_PREFIX."ledger`
+            WHERE DATE_FORMAT(submitdate, '%Y-%m') = DATE_FORMAT(FROM_UNIXTIME(".$timestamp."), '%Y-%m')
+                AND `paysource` = ".PAYSOURCE_PIREP
+        );
+        
+        return $total->total;
+    }
     
     /**
      * Add a payment for a pilot (give them money)
