@@ -278,7 +278,9 @@ class Auth extends CodonData {
         $hash = md5($password . $userinfo->salt);
 
         if ($hash == $userinfo->password) {
-            self::$userinfo = $userinfo;
+            
+            self::$userinfo = $userinfo; #deprecated
+            self::$pilot = self::$userinfo;
 
             self::update_session(self::$session_id, self::$userinfo->pilotid);
 

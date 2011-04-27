@@ -109,6 +109,7 @@ class Login extends CodonModule
 			$this->render('login_form.tpl');
 			return false;
 		} else {
+            
 			if(Auth::$pilot->confirmed == PILOT_PENDING) {
 				$this->render('login_unconfirmed.tpl');
 				Auth::LogOut();
@@ -117,9 +118,7 @@ class Login extends CodonModule
 			} elseif(Auth::$pilot->confirmed == PILOT_REJECTED) {
 				$this->render('login_rejected.tpl');
 				Auth::LogOut();
-			}
-			else
-			{
+			} else {
 				$pilotid = Auth::$pilot->pilotid;
 				$session_id = Auth::$session_id;
 				
