@@ -28,7 +28,7 @@ class PilotGroups extends CodonData {
         if ($all_groups === false) {
             $sql = 'SELECT * 
 					FROM ' . TABLE_PREFIX . 'groups
-					ORDER BY name ASC';
+					ORDER BY `name` ASC';
 
             $all_groups = DB::get_results($sql);
             CodonCache::write('all_groups', $all_groups, 'medium');
@@ -42,7 +42,7 @@ class PilotGroups extends CodonData {
      */
     public static function addGroup($groupname, $permissions) {
         
-        $sql = "INSERT INTO " . TABLE_PREFIX . "groups 
+        $sql = "INSERT INTO ".TABLE_PREFIX."groups 
 				(`name`, `permissions`) VALUES ('$groupname', $permissions)";
 
         $res = DB::query($sql);

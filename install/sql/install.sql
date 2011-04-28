@@ -240,6 +240,7 @@ CREATE TABLE `phpvms_groups` (
   `groupid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL DEFAULT '',
   `permissions` varchar(25) NOT NULL DEFAULT '',
+  `core` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`groupid`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;

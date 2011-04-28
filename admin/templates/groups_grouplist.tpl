@@ -1,7 +1,6 @@
 <h3>User Groups</h3>
 <?php
-if(!$allgroups)
-{
+if(!$allgroups) {
 	echo 'There are no groups';
 	return;
 }
@@ -16,16 +15,14 @@ if(!$allgroups)
 </thead>
 <tbody>
 <?php
-foreach($allgroups as $group)
-{
+foreach($allgroups as $group) {
 ?>
 <tr>
 	<td align="center"><?php echo $group->name; ?></td>
 	<td align="center"><?php echo $group->groupid; ?></td>
 	<td align="center" width="1%" nowrap>
 	<?php
-	if($group->name!='Administrators')
-	{
+	if($group->core == 1) {
 	?>
 		<a class="button {button:{icons:{primary:'ui-icon-wrench'}}}" 
 			href="<?php echo adminurl('/pilotadmin/editgroup/?groupid='.$group->groupid);?>">
