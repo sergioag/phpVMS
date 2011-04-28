@@ -122,16 +122,16 @@ foreach($pilot_list as $pilot) {
 
 SettingsData::saveSetting('PHPVMS_VERSION', $FULL_VERSION_STRING);
 
+# Don't count forced updates
+if(!isset($_GET['force'])) {
+	Installer::RegisterInstall($FULL_VERSION_STRING);
+}
+
 echo '<p><strong>Update completed!</strong></p>
 		<hr>
 	  <p >If there were any errors, you may have to manually run the SQL update, 
 		or correct the errors, and click the following to re-run the update: <br />
 		<a href="update.php?force">Click here to force the update to run again</a></p>
 	  <p>Click here to <a href="'.SITE_URL.'">goto your site</a>, or <a href="'.SITE_URL.'/admin">your admin panel</a></p>  ';
-
-# Don't count forced updates
-if(!isset($_GET['force'])) {
-	Installer::RegisterInstall($FULL_VERSION_STRING);
-}
 
 Template::Show('footer.tpl');

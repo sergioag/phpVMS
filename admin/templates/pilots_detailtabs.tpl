@@ -4,7 +4,7 @@
 <div id="tabcontainer" style="float: left; width: 100%">
 	<ul>
 		<li><a href="#pilotdetails"><span>Pilot Details</span></a></li>
-		<li><a href="#pilotgroups"><span>Pilot Groups</span></a></li>
+		<li><a href="#pilotgroups" id="pilotgroupslink"><span>Pilot Groups</span></a></li>
 		<li><a href="#awards"><span>Pilot Awards</span></a></li>
 		<li><a href="#pireps"><span>View PIREPs</span></a></li>
 		<li><a href="#resetpass"><span>Pilot Options</span></a></li>
@@ -14,8 +14,7 @@
 		<?php Template::Show('pilots_details.tpl'); ?>
 	</div>
 	<div id="pilotgroups">
-		<?php Template::Show('pilots_groups.tpl'); 
-			  Template::Show('pilots_addtogroup.tpl');
+		<?php 
 		?>
 	</div>
 	<div id="awards">
@@ -34,4 +33,9 @@
 
 <script type="text/javascript">
 $("#tabcontainer").tabs();
+$("#pilotgroupslink").bind('click', function(e) {
+    $.get("<?php echo adminaction('/pilotadmin/pilotgrouptab/'.$pilotinfo->pilotid);?>", function(d){
+        $("#pilotgroups").html(d);
+    })    
+})
 </script>

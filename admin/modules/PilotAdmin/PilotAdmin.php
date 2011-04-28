@@ -182,6 +182,13 @@ class PilotAdmin extends CodonModule {
         $this->ShowPilotsList();
     }
 
+    public function pilotgrouptab($pilotid) {
+        $this->setGroupsData($pilotid);
+        Template::Show('pilots_groups.tpl'); 
+        Template::Show('pilots_addtogroup.tpl');
+    }
+
+
     /**
      * PilotAdmin::pendingpilots()
      * 
