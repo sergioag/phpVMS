@@ -112,6 +112,11 @@ class UserTest extends PHPUnit_Framework_TestCase   {
 		unset($data);
 	}
     
+    /**
+     * UserTest::testUserStatusChanges()
+     * 
+     * @return void
+     */
     public function testUserStatusChanges() {
         
         $pilot = PilotData::getPilotByEmail('unittest@email.com');

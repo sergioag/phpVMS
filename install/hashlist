@@ -18,7 +18,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
 23201172c90a99ef6aa1ffb50bd5c96b  *./install/fixtures/update.sql
 0ffbe695c16a2bb130d8079e193bdaee  *./install/fixtures/install.sql
-3318ad2a783d9bcf20194b4f59605ccd  *./install/update.php
+7a0c81698b9f55d2b534aea4e5070299  *./install/update.php
 d609f74eeaea0e4849d90b1c9a48943a  *./install/checkdb.php
 71c7531e4b713e67d84e310e354ddc47  *./install/install.php
 b93585ee3d7e1d70cb3d4937f3e8069b  *./core/lang/en.lang.php

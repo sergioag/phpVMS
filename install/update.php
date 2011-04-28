@@ -106,17 +106,19 @@ $status_type_list = Config::get('PILOT_STATUS_TYPES');
 $pilot_list = PilotData::getAllPilots();
 foreach($pilot_list as $pilot) {
     
+    echo "Fixing settings for ".$pilot->firstname." ".$pilot->lastname."<br>";
+    
     PilotData::resetLedgerforPilot($pilot->pilotid);
 	PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
     
     # Reset the default groups
     $status = $status_type_list[$pilot->retired];
     foreach($status['group_add'] as $group) {
-        PilotGroups::CheckUserInGroup($pilot->pilotid, $group);
+        PilotGroups::addUsertoGroup($pilot->pilotid, $group);
     }
     
     foreach($status['group_remove'] as $group) {
-        PilotGroups::CheckUserInGroup($pilot->pilotid, $group);
+        PilotGroups::removeUserFromGroup($pilot->pilotid, $group);
     }
 }
 
