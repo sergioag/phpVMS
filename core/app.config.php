@@ -467,36 +467,64 @@ Config::Set('PILOT_STATUS_TYPES', array(
 
     /* DO NOT CHANGE THIS ACTIVE NUMBER OR STATUS OR THINGS WILL BREAK!!! */
     0 => array( 
-        'name' => 'Active',     # The title to show in the dropdown
-        'message' => '',        # Message to show if they can't login (below is false)
-        'canlogin' => true,     # Are they allowed to log in
-        'active' => true,       # Are they an active pilot?
-        'autoretire' => false,  # Use this status for the auto-retire functionality
+        'name' => 'Active',             # The title to show in the dropdown
+        'message' => '',                # Message to show if they can't login (below is false)
+        'default' => true,              # Should this be their default status?
+        'canlogin' => true,             # Are they allowed to log in
+        'active' => true,               # Are they an active pilot?
+        'autoretire' => false,          # Use this status for the auto-retire functionality
+        'group_add' => array(           # ID or name of the group this user is added to with this status
+            'Active Pilots', 
+        ),      
+        'group_remove' => array(        # ID or name of the groups this user is removed from with this status
+            'Inactive Pilots', 
+        ),   
     ),
     
     /* DO NOT CHANGE THIS INACTIVE NUMBER OR STATUS OR THINGS WILL BREAK!!! */
     1 => array(
         'name' => 'Inactive',
         'message' => 'Your account was marked inactive',
+        'default' => false, 
         'canlogin' => false,
         'active' => false,
         'autoretire' => false,
+        'group_add' => array(          
+            'Inactive Pilots',  
+        ),      
+        'group_remove' => array(       
+            'Active Pilots',
+        ),
     ),
     
     2 => array(
         'name' => 'Banned',
         'message' => 'Your account is banned, please contact an admin!',
+        'default' => false, 
         'canlogin' => false,
         'active' => false,
         'autoretire' => false,
+        'group_add' => array(
+            'Inactive Pilots', 
+        ),  
+        'group_remove' => array(
+            'Active Pilots', 
+        ),
     ),
     
     3 => array(
         'name' => 'On Leave',
         'message' => 'You have been marked as on leave',
+        'default' => false, 
         'canlogin' => true,
         'active' => false,
         'autoretire' => true,
+        'group_add' => array(
+            'Inactive Pilots', 
+        ),  
+        'group_remove' => array(
+            'Active Pilots', 
+        ),
     ),
 ));
 

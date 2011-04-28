@@ -87,13 +87,37 @@ foreach($diffs_done as $sql) {
     DB::query($sql);
 }
 
+/* Run the update fixtures file */
+echo '<h2>Populating Update Data...</h2>';
+$sqlLines = Installer::readSQLFile(SITE_ROOT.'/install/fixtures/update.sql', TABLE_PREFIX);
+foreach($sqlLines as $sql) {
+    DB::query($sql['sql']);
+    if(DB::errno() != 0 && DB::errno() != 1062) {
+        echo '<div id="error" style="text-align: left;">Writing to "'.$sql['table'].'" table... ';
+        echo "<br /><br />".DB::error();
+        echo '</div>';
+    }
+}
+
 OperationsData::updateAircraftRankLevels();
 
 /* Add them to the default group */
+$status_type_list = Config::get('PILOT_STATUS_TYPES');
 $pilot_list = PilotData::getAllPilots();
 foreach($pilot_list as $pilot) {
+    
     PilotData::resetLedgerforPilot($pilot->pilotid);
 	PilotGroups::addUsertoGroup($pilot->pilotid, DEFAULT_GROUP);
+    
+    # Reset the default groups
+    $status = $status_type_list[$pilot->retired];
+    foreach($status['group_add'] as $group) {
+        PilotGroups::CheckUserInGroup($pilot->pilotid, $group);
+    }
+    
+    foreach($status['group_remove'] as $group) {
+        PilotGroups::CheckUserInGroup($pilot->pilotid, $group);
+    }
 }
 
 SettingsData::saveSetting('PHPVMS_VERSION', $FULL_VERSION_STRING);

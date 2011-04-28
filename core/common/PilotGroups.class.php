@@ -129,7 +129,6 @@ class PilotGroups extends CodonData {
         if ($groupidorname == '') {
             return false;
         }
-
        
         // If group name is given, get the group ID
         if (!is_numeric($groupidorname)) {
@@ -144,8 +143,9 @@ class PilotGroups extends CodonData {
 					VALUES ('.$pilotid.', '.$groupidorname.')';
 
         $res = DB::query($sql);
-
+                
         if (DB::errno() != 0) {
+            echo DB::error();
             return false;
         }
 
@@ -254,16 +254,20 @@ class PilotGroups extends CodonData {
      * Check if a user is in a group, pass the name or the id
      */
     public static function CheckUserInGroup($pilotid, $groupid) {
+        
         if (!is_numeric($groupid)) {
             $groupid = self::getGroupID($groupid);
         }
 
-        $query = 'SELECT g.groupid
-					FROM ' . TABLE_PREFIX . 'groupmembers g
-					WHERE g.pilotid=' . $pilotid . ' AND g.groupid=' . $groupid;
+        $sql = 'SELECT g.groupid
+    			 FROM ' . TABLE_PREFIX . 'groupmembers g
+    			 WHERE g.pilotid=' . $pilotid . ' AND g.groupid=' . $groupid;
 
-        if (!DB::get_row($query)) return false;
-        else  return true;
+        if (!DB::get_row($sql)) {
+            return false;
+        }
+        
+        return true;
     }
 
     public static function getUsersInGroup($groupid) {
@@ -300,6 +304,7 @@ class PilotGroups extends CodonData {
      * Remove a user from a group (pass the ID or the name)
      */
     public static function RemoveUserFromGroup($pilotid, $groupid) {
+        
         $pilotid = DB::escape($pilotid);
         $groupid = DB::escape($groupid);
 
@@ -308,7 +313,7 @@ class PilotGroups extends CodonData {
         }
 
         $sql = 'DELETE FROM ' . TABLE_PREFIX . 'groupmembers
-					WHERE pilotid=' . $pilotid . ' AND groupid=' . $groupid;
+				WHERE pilotid=' . $pilotid . ' AND groupid=' . $groupid;
 
         $res = DB::query($sql);
 

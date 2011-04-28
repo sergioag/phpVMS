@@ -161,7 +161,7 @@ class Installer
 		
         echo '<h2>Writing Tables...</h2>';
         
-		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/sql/install.sql');				
+		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/sql/install.sql', $_POST['TABLE_PREFIX']);				
 		foreach($sqlLines as $sql) {
 		
 			DB::query($sql['sql']);
@@ -177,7 +177,7 @@ class Installer
 		}
         
         echo '<h2>Populating Initial Data...</h2>';
-        $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures/install.sql');
+        $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures/install.sql', $_POST['TABLE_PREFIX']);
         foreach($sqlLines as $sql) {
             DB::query($sql['sql']);
             if(DB::errno() != 0) {
@@ -196,7 +196,7 @@ class Installer
      * @param mixed $file_name
      * @return void
      */
-    public static function readSQLFile($file_name) {
+    public static function readSQLFile($file_name, $table_prefix = '') {
    	    
         $sqlLines = array();
         
@@ -211,10 +211,16 @@ class Installer
                         
             if(substr_count($sql, ';') > 0) {
                 
-                $sql = str_replace('phpvms_', $_POST['TABLE_PREFIX'], $sql);
+                # See if it's a comment?
+                if($sql[0] == '-' && $sql[1] == '-') {
+                    $sql = '';
+                    continue;
+                }
+                
+                $sql = str_replace('phpvms_', $table_prefix, $sql);
             	$sql = trim($sql);
             	
-            	preg_match("/`{$_POST['TABLE_PREFIX']}([A-Za-z]*)`/", $sql, $matches);
+            	preg_match("/`{$table_prefix}([A-Za-z]*)`/", $sql, $matches);
             	$tablename = $matches[1];
                 
                 $sqlLines[] = array(

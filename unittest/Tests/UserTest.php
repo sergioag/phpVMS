@@ -100,7 +100,6 @@ class UserTest extends PHPUnit_Framework_TestCase   {
         $save = PilotData::updateProfile($pilot->pilotid, array(
             'email' => 'unittest2@email.com',
             'location' => 'PK',
-            'retired' => true,
             )
         );
         
@@ -112,6 +111,51 @@ class UserTest extends PHPUnit_Framework_TestCase   {
 		
 		unset($data);
 	}
+    
+    public function testUserStatusChanges() {
+        
+        $pilot = PilotData::getPilotByEmail('unittest@email.com');
+        
+        # Go through all the statuses
+        $status_type_list = Config::get('PILOT_STATUS_TYPES');
+        
+        foreach($status_type_list as $id => $status) {
+            
+            $save = PilotData::updateProfile($pilot->pilotid, array(
+                'retired' => $id
+            ));
+            
+            # Check if they are in the proper groups:
+            foreach($status['group_add'] as $group) {
+                $this->assertTrue(PilotGroups::CheckUserInGroup($pilot->pilotid, $group), "Error adding to \"$group\" for {$status['name']}");
+            }
+            
+            foreach($status['group_remove'] as $group) {
+                $this->assertNotTrue(PilotGroups::CheckUserInGroup($pilot->pilotid, $group));
+            }
+        }
+        
+        /* Set the user back to the default status */
+        foreach($status_type_list as $id => $status) {
+            
+            if($status['default'] == false) {
+                continue;
+            }
+            
+            $save = PilotData::updateProfile($pilot->pilotid, array(
+                'retired' => $id,
+            ));
+            
+            # Check if they are in the proper groups:
+            foreach($status['group_add'] as $group) {
+                $this->assertTrue(PilotGroups::CheckUserInGroup($pilot->pilotid, $group), "Error adding to \"$group\" for {$status['name']}");
+            }
+            
+            foreach($status['group_remove'] as $group) {
+                $this->assertNotTrue(PilotGroups::CheckUserInGroup($pilot->pilotid, $group));
+            }
+        }
+    }
     
     
     /**

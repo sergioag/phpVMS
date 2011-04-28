@@ -334,8 +334,7 @@ class PilotData extends CodonData {
         if (isset($params['location'])) {
             $params['location'] = strtoupper($params['location']);
         }
-
-        
+                
         if (isset($params['pilotid'])) {
             unset($params['pilotid']);
         }
@@ -349,7 +348,27 @@ class PilotData extends CodonData {
         if (DB::errno() != 0) {
             return false;
         }
-
+        
+        # Auto groups?
+        $groups = Config::get('PILOT_STATUS_TYPES');
+        if(isset($params['retired'])) {
+            
+            $info = $groups[$params['retired']];
+            
+            # Automatically add into these groups
+            if(is_array($info['group_add']) && count($info['group_add']) > 0) {
+                foreach($info['group_add'] as $group) {
+                    PilotGroups::addUsertoGroup($pilotid, $group);
+                }
+            }
+            
+            if(is_array($info['group_remove']) && count($info['group_remove']) > 0) {
+                foreach($info['group_remove'] as $group) {
+                    PilotGroups::removeUserFromGroup($pilotid, $group);
+                }
+            }
+        }
+        
         return true;
     }
 
