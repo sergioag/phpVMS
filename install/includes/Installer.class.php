@@ -161,26 +161,29 @@ class Installer
 		
         echo '<h2>Writing Tables...</h2>';
         
-		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/sql/install.sql', $_POST['TABLE_PREFIX']);				
+		$sqlLines = self::readSQLFile(SITE_ROOT.'/install/sql/install.sql', $_POST['TABLE_PREFIX']);	
+		
 		foreach($sqlLines as $sql) {
 		
 			DB::query($sql['sql']);
 						            
 			if(DB::errno() != 0) {
+			     
 				#echo 'failed - manually run this query: <br /><br />"'.$sql.'"';
                 echo '<div id="error" style="text-align: left;">Writing "'.$sql['table'].'" table... ';
                 echo "<br /><br />".DB::error();
                 echo '</div>';
-            }
-            
-			$sql = '';
+            } 
 		}
+        
+        echo "Wrote {$totalTables} tables<br />";
         
         echo '<h2>Populating Initial Data...</h2>';
         $sqlLines = self::readSQLFile(SITE_ROOT.'/install/fixtures/install.sql', $_POST['TABLE_PREFIX']);
         foreach($sqlLines as $sql) {
             DB::query($sql['sql']);
             if(DB::errno() != 0) {
+                
                 echo '<div id="error" style="text-align: left;">Writing to "'.$sql['table'].'" table... ';
                 echo "<br /><br />".DB::error();
                 echo '</div>';
@@ -211,14 +214,19 @@ class Installer
                         
             if(substr_count($sql, ';') > 0) {
                 
+                $sql = trim($sql);
+                
                 # See if it's a comment?
                 if($sql[0] == '-' && $sql[1] == '-') {
                     $sql = '';
                     continue;
                 }
                 
+                if($sql == '') {
+                    continue;
+                }
+                
                 $sql = str_replace('phpvms_', $table_prefix, $sql);
-            	$sql = trim($sql);
             	
             	preg_match("/`{$table_prefix}([A-Za-z]*)`/", $sql, $matches);
             	$tablename = $matches[1];

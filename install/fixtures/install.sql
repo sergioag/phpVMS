@@ -8,9 +8,9 @@ INSERT INTO `phpvms_airports` (`id`, `icao`, `name`, `country`, `lat`, `lng`, `h
 
 INSERT INTO `phpvms_ranks` VALUES(1, 'New Hire', '', 0, 18.0); 
 
-INSERT INTO `phpvms_groups` (`name`, `permissions`, `core) VALUES ('Administrators', '35651519', 1);
-INSERT INTO `phpvms_groups` (`name`, `permissions`, `core) VALUES ('Active Pilots', '0', 1);
-INSERT INTO `phpvms_groups` (`name`, `permissions`, `core) VALUES ('Inactive Pilots', '0', 1);
+INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Administrators', '35651519', 1);
+INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Active Pilots', '0', 1);
+INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Inactive Pilots', '0', 1);
 
 INSERT INTO `phpvms_settings` VALUES(NULL , 'phpVMS Version', 'PHPVMS_VERSION', '0', 'phpVMS Version', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Virtual Airline Name', 'SITE_NAME', 'PHPVMS', 'The name of your site. This will show up in the browser title bar.', 1);
@@ -18,4 +18,4 @@ INSERT INTO `phpvms_settings` VALUES(NULL, 'Webmaster Email Address', 'ADMIN_EMA
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Date Format', 'DATE_FORMAT', 'm/d/Y', 'This is the date format to be used around the site.', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Current Skin', 'CURRENT_SKIN', 'crystal', 'Available skins', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Default User Group', 'DEFAULT_GROUP', 'Active Pilots', 'This is the default group if they are not explicitly denied', 1);
-INSERT INTO `phpvms_settings` VALUES(NULL , 'Total VA Hours', 'TOTAL_HOURS', '0', 'Your total hours', 0);
+INSERT INTO `phpvms_settings` VALUES(NULL , 'Total VA Hours', 'TOTAL_HOURS', '0', 'Your total hours', 1);

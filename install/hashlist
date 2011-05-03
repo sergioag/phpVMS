@@ -12,12 +12,12 @@ c8262018a5d7da2e092f09bc9a92b011  *./install/navdata/navdata.sql.gz
 d4d204c3560c283fa4d7a3a367473740  *./install/navdata/navdata.sql
 c500b8b76e204f1adcb0e6562f7f4277  *./install/checkinstall.php
 72eef8512a59638c04392cdf68b66539  *./install/includes/loader.inc.php
-1de6ded59c1a50f7c960dd22295e8c86  *./install/includes/Installer.class.php
+f507635af0d8960a9c54bebee5ae149e  *./install/includes/Installer.class.php
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 09193e17adbd7f90c536013ff6b2c8b8  *./install/sql/install.sql
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
 13d038eeb83865834d2f7f07e6c9bd2a  *./install/fixtures/update.sql
-0ffbe695c16a2bb130d8079e193bdaee  *./install/fixtures/install.sql
+424be73c986f03531325d5a3a168630c  *./install/fixtures/install.sql
 7a0c81698b9f55d2b534aea4e5070299  *./install/update.php
 d609f74eeaea0e4849d90b1c9a48943a  *./install/checkdb.php
 71c7531e4b713e67d84e310e354ddc47  *./install/install.php
