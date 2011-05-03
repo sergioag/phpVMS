@@ -94,8 +94,7 @@ class RanksData extends CodonData {
      */
     public static function getNextRank($hours) {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "ranks
-				WHERE minhours>$hours ORDER BY minhours ASC LIMIT 1";
-
+				WHERE minhours>$hours ORDER BY minhours ASC LIMIT 1";        
         return DB::get_row($sql);
     }
 

@@ -50,9 +50,9 @@ class Profile extends CodonModule
         $pilot = PilotData::getPilotData(Auth::$pilot->pilotid);
 		
 		if(Config::Get('TRANSFER_HOURS_IN_RANKS') == true) {
-			$totalhours = $pilotInfo->totalhours + $pilot->transferhours;
+			$totalhours = $pilot->totalhours + $pilot->transferhours;
 		} else {
-			$totalhours = $pilotInfo->totalhours;
+			$totalhours = $pilot->totalhours;
 		}
 		
 		$this->set('pilotcode', PilotData::getPilotCode($pilot->code, $pilot->pilotid));
