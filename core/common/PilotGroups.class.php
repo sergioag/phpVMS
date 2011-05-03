@@ -253,7 +253,7 @@ class PilotGroups extends CodonData {
     /**
      * Check if a user is in a group, pass the name or the id
      */
-    public static function CheckUserInGroup($pilotid, $groupid) {
+    public static function checkUserInGroup($pilotid, $groupid) {
         
         if (!is_numeric($groupid)) {
             $groupid = self::getGroupID($groupid);
@@ -270,6 +270,12 @@ class PilotGroups extends CodonData {
         return true;
     }
 
+    /**
+     * PilotGroups::getUsersInGroup()
+     * 
+     * @param mixed $groupid
+     * @return
+     */
     public static function getUsersInGroup($groupid) {
         
         if (!is_numeric($groupid)) {
@@ -282,6 +288,10 @@ class PilotGroups extends CodonData {
 				WHERE g.groupid=' . $groupid;
 
         $ret = DB::get_results($sql);
+        if(!$ret) {
+            return array();
+        }
+        
         return $ret;
     }
 
@@ -296,6 +306,9 @@ class PilotGroups extends CodonData {
 				WHERE u.pilotid=' . $pilotid . ' AND g.groupid=u.groupid';
 
         $ret = DB::get_results($sql);
+        if(!$ret) {
+            return array();
+        }
 
         return $ret;
     }

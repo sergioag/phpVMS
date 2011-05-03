@@ -209,7 +209,7 @@ class Schedules extends CodonModule {
 
         # Show the routes. Remote this to not show them.
         
-        $schedules = SchedulesData::GetSchedules();
+        $schedules = SchedulesData::getSchedules();
         
         # Do some filtering and whatnots, take it out of the template...      
         $today = getdate();
@@ -219,7 +219,7 @@ class Schedules extends CodonModule {
         
         # query once, save for later
         if(Config::get('SCHEDULES_ONLY_LAST_PIREP') === true && Auth::LoggedIn() == true) {
-   	    	$reports = PIREPData::findPIREPS(array(
+   	    	$pirep_list = PIREPData::findPIREPS(array(
     			'p.pilotid' => Auth::$pilot->pilotid,
     			'p.accepted' => PIREP_ACCEPTED
     		  ), 1); // return only one
@@ -262,9 +262,9 @@ class Schedules extends CodonModule {
         	}
             
             if(Config::get('SCHEDULES_ONLY_LAST_PIREP') === true && Auth::LoggedIn() == true) {
-        		if(count($reports) > 0) {
+        		if(count($pirep_list) > 0) {
         			# IF the arrival airport doesn't match the departure airport
-        			if($reports[0]->arricao != $s->depicao) {
+        			if($pirep_list[0]->arricao != $s->depicao) {
         				unset($schedules[$key]);
                         continue;
         			}

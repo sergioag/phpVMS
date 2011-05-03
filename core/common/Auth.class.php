@@ -260,11 +260,9 @@ class Auth extends CodonData {
             according to their status */
         $pilotStatuses = Config::get('PILOT_STATUS_TYPES');
         foreach($pilotStatuses as $id => $info) {
-            if($userinfo->retired == $id) {
-                if($info['canlogin'] == false) {
-                    self::$error_message = $info['message'];
-                    return false;
-                }
+            if($userinfo->retired == $id && $info['canlogin'] == false) {
+                self::$error_message = $info['message'];
+                return false;
             }
         }
         

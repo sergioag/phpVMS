@@ -66,6 +66,11 @@ class SchedulesData extends CodonData {
         }
 
         $ret = DB::get_results($sql);
+        
+        if(!$ret) {
+            return array();
+        }
+        
         return $ret;
     }
 

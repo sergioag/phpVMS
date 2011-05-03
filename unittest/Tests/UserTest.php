@@ -130,9 +130,20 @@ class UserTest extends PHPUnit_Framework_TestCase   {
                 'retired' => $id
             ));
             
+            $pilotGroups = PilotGroups::getUserGroups($pilot->pilotid);
+    
             # Check if they are in the proper groups:
             foreach($status['group_add'] as $group) {
-                $this->assertTrue(PilotGroups::CheckUserInGroup($pilot->pilotid, $group), "Error adding to \"$group\" for {$status['name']}");
+                #$this->assertTrue(PilotGroups::checkUserInGroup($pilot->pilotid, $group), "Error adding to \"$group\" for {$status['name']}");
+                $found = false;
+                foreach($pilotGroups as $pilot_group) {
+                    if($pilot_group->name === $group) {
+                        $found = true;
+                        break;
+                    }
+                }
+                
+                $this->assertTrue($found, "Error adding to \"$group\" for {$status['name']}");
             }
             
             foreach($status['group_remove'] as $group) {

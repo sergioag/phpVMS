@@ -64,6 +64,10 @@ class OperationsData extends CodonData {
 					ORDER BY `code` ASC";
 
             $all_airlines = DB::get_results($sql);
+            if(!$all_airlines) {
+                $all_airlines = array();
+            }
+            
             CodonCache::write($key, $all_airlines, 'long');
         }
 
@@ -105,8 +109,9 @@ class OperationsData extends CodonData {
         $sql .= ' ORDER BY icao ASC';
 
         $all_aircraft = DB::get_results($sql);
-        //	CodonCache::write($key, $all_aircraft, 'long');
-        //}
+        if(!$all_aircraft) {
+            $all_aircraft = array();
+        }
 
         return $all_aircraft;
     }
@@ -132,6 +137,7 @@ class OperationsData extends CodonData {
      * Get all of the aircraft
      */
     public static function getAllAircraftSearchList($onlyenabled = false) {
+        
         $key = 'all_aircraft_search';
         if ($onlyenabled == true) {
             $key .= '_enabled';
@@ -210,6 +216,9 @@ class OperationsData extends CodonData {
 					ORDER BY `icao` ASC';
 
             $all_airports = DB::get_results($sql);
+            if(!$all_airports) {
+                $all_airports = array();
+            }
 
             CodonCache::write($key, $all_airports, 'long');
         }
