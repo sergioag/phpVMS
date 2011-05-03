@@ -758,7 +758,8 @@ class PIREPData extends CodonData {
                 ."({$pilotinfo->firstname} {$pilotinfo->lastname})\n\n"
                 ."{$pirepdata['code']}{$pirepdata['flightnum']}: {$pirepdata['depicao']} to {$pirepdata['arricao']}\n"
                 ."Aircraft: {$pirepdata['aircraft']}\n" . "Flight Time: {$pirepdata['flighttime']}\n"
-                ."Filed using: {$pirepdata['source']}\n\n" . "Comment: {$comment}\n\n"
+                ."Landing Rate: {$pirepdata['landingrate']}\n"."Filed using: {$pirepdata['source']}\n\n" 
+                ."Comment: {$comment}\n\n"
                 ."Click to approve this pirep (admin must be signed in):\n"
                 .adminurl('/pirepadmin/approvepirep/'.$pirepid);
 
