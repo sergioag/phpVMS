@@ -1,5 +1,0 @@
-#!/bin/bash
-
-rm -f ../../core/local.config.php
-mysql -uphpvms -pphpvms_test -e "drop database phpvms_stage"
-mysql -uphpvms -pphpvms_test -e "create database phpvms_stage"

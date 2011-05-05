@@ -328,7 +328,7 @@ class PIREPS extends CodonModule {
         if ($icao == '') return;
 
         $this->set('name', 'arricao');
-        $this->set('airport_list', SchedulesData::GetArrivalAiports($icao, $code));
+        $this->set('airport_list', SchedulesData::getArrivalAiports($icao, $code));
         $this->render('pireps_airportdropdown.tpl');
     }
 

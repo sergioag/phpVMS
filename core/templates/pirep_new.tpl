@@ -45,7 +45,7 @@ if(isset($message))
 		<select id="arricao" name="arricao">
 			<option value="">Select an arrival airport</option>
 			<?php
-			foreach(airport_list as $airport) {
+			foreach($airport_list as $airport) {
 				$sel = ($_POST['arricao'] == $airport->icao || $bid->arricao == $airport->icao)?'selected':'';
 				echo '<option value="'.$airport->icao.'" '.$sel.'>'.$airport->icao . ' - '.$airport->name .'</option>';
 			}

@@ -114,7 +114,7 @@ b0d8e46e19c5431aa260a350e051fcae  *./core/templates/finance_balancesheet.tpl
 21b61bf066cb0f58ee914bdaaf21981e  *./core/templates/email_registrationaccepted.tpl
 83fc2840a66e53b6e2276837d1599e3a  *./core/templates/core_error.tpl
 19a106cd031148dd5603af7e60d51c7c  *./core/templates/contact_sent.tpl
-3439b1a4216e320b7ac903b310391edb  *./core/templates/pirep_new.tpl
+3e38e9ef43ca52a38a9559ec422bd77d  *./core/templates/pirep_new.tpl
 4862e1554ff2bd2641b4fe4c2188821b  *./core/templates/xacars_config.tpl
 06b7b920cb5c0791ec5feb7b2851dafd  *./core/templates/pilots_list.tpl
 a7809ff8c48c4a9b8a332c84b16c0eb3  *./core/templates/login_unconfirmed.tpl
@@ -183,7 +183,7 @@ c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 f6e138fbaeaa80861bece1e809cf7885  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
 ea2818195e0faae4908303ff689b615f  *./core/modules/Logout/Logout.php
-103402ce01621b2fb995095df38e34db  *./core/modules/PIREPS/PIREPS.php
+fb3e4a6be3807ce0e02e1ce3e50e5b47  *./core/modules/PIREPS/PIREPS.php
 1a015897585ff97e49e76c9ef771ba69  *./core/modules/Finances/Finances.php
 ee1c7b496bc6f086b510c956192ff79d  *./core/modules/Pages/Pages.php
 c652fcbf046db502bb76c50436ffdaed  *./core/modules/Login/Login.php
