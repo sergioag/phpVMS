@@ -127,6 +127,8 @@ Config::Set('WelcomeMessage', 'phpVMS/FSPAX ACARS'); # Welcome Message
 	ftp://phpvms.net/phpvms/lib/fsfk or ftp://phpvms.net/public_html/phpvms/lib/fsfk
 	
 	You want the path from when you connect to the FTP down to where the /lib/fsfk folder is 
+    
+    SECURITY NOTE! Make a separate FTP user and password ONLY for this, with access only to this folder
 */
 Config::Set('FSFK_FTP_SERVER', '');
 Config::Set('FSFK_FTP_PORT', '21');
