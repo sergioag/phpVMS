@@ -1,8 +1,7 @@
 <h3>PIREPs List</h3>
 <p><?php if(isset($descrip)) { echo $descrip; }?></p>
 <?php
-if(!$pirep_list)
-{
+if(!$pirep_list) {
 	echo '<p>No reports have been found</p>';
 	return;
 }
@@ -28,8 +27,7 @@ if(!$pirep_list)
 </thead>
 <tbody>
 <?php
-foreach($pirep_list as $pirep)
-{
+foreach($pirep_list as $pirep) {
 ?>
 <tr>
 	<td align="center">

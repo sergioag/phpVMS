@@ -2,7 +2,7 @@ c53987a61354c3460fdac8e07f5c2cd2  *./install/templates/s0_config_check.tpl
 07f182be09dde3f18f6d7f9a3fccdccb  *./install/templates/s3_setup_finished.tpl
 935c97d85897117c44242b97214221b2  *./install/templates/header.tpl
 cc03311e935549a5d652466a28aa5692  *./install/templates/error.tpl
-1528fa1ddd06d3571d1af855b118ebe0  *./install/templates/config.tpl
+5119077d82a28f7262d19d82024702f3  *./install/templates/config.tpl
 122a8d2b3a31e759ff75e87bb32d0089  *./install/templates/s1_db_setup.tpl
 f486373c1d765b4f40dab95e8561d254  *./install/templates/setting.tpl
 fac7c09a2f7b3c46a3c4d20ccb0eb2fb  *./install/templates/s2_site_setup.tpl
@@ -56,7 +56,7 @@ a93454b10af140da4b851b0907f30fb3  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
 0600b921789561619e2a4a83385ff5ec  *./core/templates/email_registrationdenied.tpl
 e2ec32c5d858b759f25235dc1817a41a  *./core/templates/schedule_results.tpl
-08a29239bee65888be6fd2313539ab3d  *./core/templates/pireps_viewall.tpl
+35568db5b799fa6159125f2e623c8226  *./core/templates/pireps_viewall.tpl
 22c17523e1759462fdf5ef978b8acd40  *./core/templates/fsfk_log_flightimages.tpl
 6d692049399ca6ac1665b2e81ba3c1a0  *./core/templates/reqlogin.tpl
 93c4f380f1ed4fead18cc43fc6726add  *./core/templates/profile_edit.tpl
@@ -163,7 +163,7 @@ c5464e3a9e0079bd8229a1b1aa27379d  *./core/classes/ezdb/ezdb_oracle.class.php
 c56b2790383f5891808777c40c03e269  *./core/hooks/system/postmoduleload.php.1
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/pages/index.php
-bb87c6b0af057b4efb8109edb37f672c  *./core/app.config.php
+f8dc1d00840c0255e1c46beb5eaf946a  *./core/app.config.php
 92935183e41a1da255dc22b98adb4c3d  *./core/modules/Schedules/Schedules.php
 e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 73fc6e1d3106739551d5358922d65d40  *./core/modules/Activity/Activity.php
@@ -183,7 +183,7 @@ c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 f6e138fbaeaa80861bece1e809cf7885  *./core/modules/FSFK/FSFK.php
 8882059eb244446de66944aa53df28d3  *./core/modules/FrontBids/FrontBids.php
 ea2818195e0faae4908303ff689b615f  *./core/modules/Logout/Logout.php
-fb3e4a6be3807ce0e02e1ce3e50e5b47  *./core/modules/PIREPS/PIREPS.php
+51555f8488f3f3f6e37f04f071cb9369  *./core/modules/PIREPS/PIREPS.php
 1a015897585ff97e49e76c9ef771ba69  *./core/modules/Finances/Finances.php
 ee1c7b496bc6f086b510c956192ff79d  *./core/modules/Pages/Pages.php
 c652fcbf046db502bb76c50436ffdaed  *./core/modules/Login/Login.php

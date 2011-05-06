@@ -95,8 +95,7 @@ class PIREPS extends CodonModule {
             /* Now do the edit actions */
 
             if ($this->post->action == 'addcomment') {
-                $ret = PIREPData::addComment($this->post->pirepid, Auth::$pilot->pilotid, $this->
-                    post->comment);
+                $ret = PIREPData::addComment($this->post->pirepid, Auth::$pilot->pilotid, $this->post->comment);
 
                 $this->set('message', 'Comment added!');
                 $this->render('core_success.tpl');
@@ -110,9 +109,16 @@ class PIREPS extends CodonModule {
             }
         }
 
+        $this->title = 'My PIREPs';
+        
         // Show PIREPs filed
         $this->set('userinfo', Auth::$pilot);
-        $this->set('pireps', PIREPData::GetAllReportsForPilot(Auth::$pilot->pilotid));
+        $this->set('pilot', Auth::$pilot);
+        
+        $pirep_list = PIREPData::getAllReportsForPilot(Auth::$pilot->pilotid);
+        $this->set('pireps', $pirep_list);
+        $this->set('pirep_list', $pirep_list);
+                
         $this->render('pireps_viewall.tpl');
     }
 
