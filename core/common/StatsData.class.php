@@ -508,10 +508,10 @@ class StatsData extends CodonData {
         
         return self::getTotalForCol(array(
             'table' => 'pireps',
-            'column' => 'load',
+            'column' => '*',
             'airline_code' => $airline_code,
             'where' => array('accepted' => PIREP_ACCEPTED),
-            'func' => 'SUM',
+            'func' => 'COUNT',
             )
         );
         

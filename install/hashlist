@@ -28,7 +28,7 @@ a370d02b20cc43cb39ef5c50a747bc46  *./core/common/LedgerData.class.php
 d490d366f004a630fa73a619980db258  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 81b031ad3c45255fe84f4f5a15d14182  *./core/common/RegistrationData.class.php
-4b930556c0957f86bb290023be2f41fd  *./core/common/StatsData.class.php
+467f94fff22908d546bc68db2e0db80c  *./core/common/StatsData.class.php
 3f98e73623e9b6f9ead96b6da3513f45  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
 9763b6199ae731aedf89dd115cf42450  *./core/common/PilotGroups.class.php
