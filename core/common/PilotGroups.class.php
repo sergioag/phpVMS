@@ -43,7 +43,7 @@ class PilotGroups extends CodonData {
     public static function addGroup($groupname, $permissions) {
         
         $sql = "INSERT INTO ".TABLE_PREFIX."groups 
-				(`name`, `permissions`) VALUES ('$groupname', $permissions)";
+				(`name`, `permissions`, `core`) VALUES ('$groupname', $permissions, 0)";
 
         $res = DB::query($sql);
 

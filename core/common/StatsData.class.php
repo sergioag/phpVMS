@@ -558,7 +558,6 @@ class StatsData extends CodonData {
         
     }
 
-
     /**
      * Total amount of fuel burned among all accepted PIREPS
      *
@@ -578,7 +577,6 @@ class StatsData extends CodonData {
     
     }
 
-
     /**
      * Get the total miles/km flown
      *
@@ -586,7 +584,16 @@ class StatsData extends CodonData {
      *
      */
     public static function TotalMilesFlown($airline_code = '') {
-        
+          return self::TotalDistanceFlown($airline_code);      
+    }
+    
+    /**
+     * Get the total miles/km flown
+     *
+     * @return float Total distance flown in units in config
+     *
+     */
+    public static function TotalDistanceFlown($airline_code = '') {
         return self::getTotalForCol(array(
             'table' => 'pireps',
             'column' => 'distance',
@@ -595,7 +602,6 @@ class StatsData extends CodonData {
             'func' => 'SUM',
             )
         );
-        
     }
 
 

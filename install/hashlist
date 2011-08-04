@@ -14,7 +14,7 @@ c500b8b76e204f1adcb0e6562f7f4277  *./install/checkinstall.php
 72eef8512a59638c04392cdf68b66539  *./install/includes/loader.inc.php
 f507635af0d8960a9c54bebee5ae149e  *./install/includes/Installer.class.php
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
-09193e17adbd7f90c536013ff6b2c8b8  *./install/sql/install.sql
+770404c018586aa7d2bf44175ce5accc  *./install/sql/install.sql
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
 13d038eeb83865834d2f7f07e6c9bd2a  *./install/fixtures/update.sql
 424be73c986f03531325d5a3a168630c  *./install/fixtures/install.sql
@@ -28,10 +28,10 @@ a370d02b20cc43cb39ef5c50a747bc46  *./core/common/LedgerData.class.php
 d490d366f004a630fa73a619980db258  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
 81b031ad3c45255fe84f4f5a15d14182  *./core/common/RegistrationData.class.php
-467f94fff22908d546bc68db2e0db80c  *./core/common/StatsData.class.php
+b78d615f6f39105345d33e701c55fba6  *./core/common/StatsData.class.php
 3f98e73623e9b6f9ead96b6da3513f45  *./core/common/AwardsData.class.php
 464022eb2492daf0ae514c4549cb1b0e  *./core/common/RSSFeed.class.php
-9763b6199ae731aedf89dd115cf42450  *./core/common/PilotGroups.class.php
+31631c405df50f1333181f5f966544cd  *./core/common/PilotGroups.class.php
 c858e7fed036d9cddb03cbe2a9665a3c  *./core/common/SchedulesData.class.php
 e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 4b5c566bbf4c0f02a35588032cd7ff03  *./core/common/Countries.class.php
@@ -52,7 +52,7 @@ c41691f3c776d156a13c5fc8088021fc  *./core/common/FinanceData.class.php
 d0c81f870df66a7aecc3f57ec4904650  *./core/common/OperationsData.class.php
 a0eaecd33abf5726c36087c1c488e0cd  *./core/common/CronData.class.php
 17f388a37506a1664dd1281f237f2f56  *./core/common/OFCharts.class.php
-a93454b10af140da4b851b0907f30fb3  *./core/common/CentralData.class.php
+a196cb8c20427b0a03de9b4958b5a443  *./core/common/CentralData.class.php
 ad22d5c59925bc27a300dd27675a2ff8  *./core/templates/profile_badge.tpl
 0600b921789561619e2a4a83385ff5ec  *./core/templates/email_registrationdenied.tpl
 e2ec32c5d858b759f25235dc1817a41a  *./core/templates/schedule_results.tpl
@@ -134,7 +134,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/templates/profile_myroutesmap.tpl
 5b06756bb3b7c86aaf9d5c43f4bff27c  *./core/templates/fsfk_pirep_config.tpl
 12b22ed160deeac0c98fa1ee6de251e5  *./core/templates/pirep_editform.tpl
 2c35bcd117836df8dfc4d81b70aa96fb  *./core/bootstrap.inc.php
-c4e2b2296c615f5cbb855ca7ce6ac52e  *./core/codon.config.php
+9641382f18404e4713b37635b47e1ca9  *./core/codon.config.php
 3329577ddb4c1cdaba833209d75f7f70  *./core/classes/Lang.class.php
 b40dbe61b74f98afb3254abd03bfcc36  *./core/classes/CodonData.class.php
 fbe9cf582628a031e829b088b751a23a  *./core/classes/Debug.class.php
@@ -206,7 +206,7 @@ f4810662fd0c7191ae537045f4994d65  *./admin/templates/sidebar_awards.tpl
 53220743527d03dfbf208f51f40073b7  *./admin/templates/sidebar_aircraft.tpl
 5f29d2f5ed886394149e40f04f783541  *./admin/templates/pilots_detailtabs.tpl
 9881bfc84b94e11a0eaf912bf53d2c32  *./admin/templates/ops_aircraftform.tpl
-87c7b110381bac2225215be98ceaa342  *./admin/templates/groups_grouplist.tpl
+a834d4ff032083ab9c3c83ba7cccf5d8  *./admin/templates/groups_grouplist.tpl
 316f9c45b89506a2646a6a1a3c392c92  *./admin/templates/finance_summarysheet.tpl
 7eee22e868ad1cfa54c020876b10153c  *./admin/templates/sidebar_settings.tpl
 e8c22cb9ae3fdd723ac9948697850c1c  *./admin/templates/import_aircraftform.tpl

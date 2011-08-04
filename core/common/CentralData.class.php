@@ -124,7 +124,7 @@ class CentralData extends CodonData {
                 Debug::log($data, 'vacentral');
 
                 Debug::log('RECIEVED XML: ', 'vacentral');
-                Debug::log(self::$response->asXML(), 'vacentral');
+                Debug::log(self::$response, 'vacentral');
 
                 Debug::log('', 'vacentral');
             }
