@@ -442,12 +442,13 @@ class CentralData extends CodonData {
         }
 
         $allpireps = PIREPData::findPIREPS(array(
-            'DATE_SUB(CURDATE(), INTERVAL 3 MONTH) <= p.submitdate'
+            //'DATE_SUB(CURDATE(), INTERVAL 3 MONTH) <= p.submitdate'
         ));
 
         if (!$allpireps) {
             return false;
         }
+        
 
         // Set them all to have not been exported
         PIREPData::setAllExportStatus(false);

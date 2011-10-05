@@ -133,8 +133,8 @@ class Auth extends CodonData {
 
     public static function update_session($session_id, $pilot_id) {
         $sql = 'UPDATE ' . TABLE_PREFIX . "sessions
-				    SET `pilotid`={$pilot_id}, `logintime`=NOW(), `ipaddress`='{$_SERVER['REMOTE_ADDR']}'
-				    WHERE `id`={$session_id}";
+			    SET `pilotid`={$pilot_id}, `logintime`=NOW(), `ipaddress`='{$_SERVER['REMOTE_ADDR']}'
+			    WHERE `id`={$session_id}";
 
         DB::query($sql);
         $session_id = $session_data->id;

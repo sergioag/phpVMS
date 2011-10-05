@@ -54,7 +54,7 @@ define('CACHE_PATH', CORE_PATH.DS.'cache');
 define('COMMON_PATH', CORE_PATH.DS.'common');
 define('PAGES_PATH', CORE_PATH.DS.'pages');
 define('LIB_PATH', SITE_ROOT.DS.'lib');
-define('DOCTRINE_MODELS_PATH', CORE_PATH.DS.'models');
+define('VENDORS_PATH', CORE_PATH.DS.'vendors')
 
 $version = phpversion();
 if(intval($version[0]) < 5) {
@@ -119,6 +119,14 @@ if(DBASE_NAME != '' && DBASE_SERVER != '' && DBASE_NAME != 'DBASE_NAME') {
 	if(Config::Get('DB_CHARSET_NAME') !== '') {
 		DB::query('SET NAMES \''.Config::Get('DB_CHARSET_NAME').'\'');
 	}
+    
+    
+    # Include ORM
+    include_once(VENDORS_PATH.DS.'orm'.DS.'idiorm.php');
+    include_once(VENDORS_PATH.DS.'orm'.DS.'paris.php');
+    ORM::configure('mysql:host='.DBASE_SERVER.';dbname='.DBASE_NAME);
+    ORM::configure('username', DBASE_USER);
+    ORM::configure('password', DBASE_PASS);
 }
 
 include CORE_PATH.DS.'bootstrap.inc.php';

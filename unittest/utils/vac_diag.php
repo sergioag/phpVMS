@@ -7,6 +7,8 @@ if(!file_exists('../../core/codon.config.php')) {
 }
 
 include '../../core/codon.config.php';
+
+Config::set('VACENTRAL_ENABLED', true);
 ?>
 <html>
 <head>
@@ -44,10 +46,8 @@ pre {
 <br />
 <?php
 
-if(isset($_GET['diag']))
-{
-	Config::Set('PHPVMS_API_SERVER', 'http://apidev.phpvms.net');
-  Config::Set('VACENTRAL_API_SERVER', 'http://apidev.phpvms.net');
+if(isset($_GET['diag'])) {
+    Config::Set('VACENTRAL_API_SERVER', 'http://apidev.phpvms.net');
 	echo '<p style="color: red">Debug mode enabled!</p>';
 }
 
