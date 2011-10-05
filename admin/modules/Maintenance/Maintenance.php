@@ -125,7 +125,7 @@ class Maintenance extends CodonModule {
             echo "{$code} - {$pilot->firstname} {$pilot->lastname} - {$total} pireps<br />";
 
             # Update the pireps table
-            PilotData::updateProfile($pilot->pilotid, array('totalpireps' => $total));
+            PilotData::updateProfile($pilot->pilotid, array('totalflights' => $total));
         }
 
         echo 'Completed!';
