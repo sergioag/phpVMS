@@ -458,6 +458,7 @@ CREATE TABLE `phpvms_schedules` (
   KEY `flightnum` (`flightnum`),
   KEY `depicao_arricao` (`depicao`,`arricao`),
   KEY `code` (`code`),
+  KEY `idx_code_flightnum` (`code`,`flightnum`),
   CONSTRAINT `phpvms_schedules_ibfk_1` FOREIGN KEY (`code`) REFERENCES `phpvms_airlines` (`code`) ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

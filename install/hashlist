@@ -20,11 +20,11 @@ c8262018a5d7da2e092f09bc9a92b011  *./install/navdata/navdata.sql.gz
 d4d204c3560c283fa4d7a3a367473740  *./install/navdata/navdata.sql
 72eef8512a59638c04392cdf68b66539  *./install/includes/loader.inc.php
 f507635af0d8960a9c54bebee5ae149e  *./install/includes/Installer.class.php
-770404c018586aa7d2bf44175ce5accc  *./install/sql/install.sql
+ebe0655558709f5abb0a2640a50e1a4b  *./install/sql/install.sql
 13d038eeb83865834d2f7f07e6c9bd2a  *./install/fixtures/update.sql
 424be73c986f03531325d5a3a168630c  *./install/fixtures/install.sql
 2c35bcd117836df8dfc4d81b70aa96fb  *./core/bootstrap.inc.php
-aa0286c472e1f0a45ba9a99385e6c5a4  *./core/codon.config.php
+169392f71b3d5abb1fa1dc66714618d3  *./core/codon.config.php
 d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 f8dc1d00840c0255e1c46beb5eaf946a  *./core/app.config.php
 b93585ee3d7e1d70cb3d4937f3e8069b  *./core/lang/en.lang.php
