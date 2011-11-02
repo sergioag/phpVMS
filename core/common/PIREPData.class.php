@@ -201,7 +201,7 @@ class PIREPData extends CodonData {
      * @param int $accepted 
      */
     public static function getAllReportsByAccept($accepted = 0) {
-        return self::findPIREPS(array('p.accepted' => $accept));
+        return self::findPIREPS(array('p.accepted' => $accepted));
     }
 
     /**
@@ -437,10 +437,9 @@ class PIREPData extends CodonData {
      */
     public static function getReportsByAcceptStatus($pilotid, $accept = 0) {
         return self::findPIREPS(array(
-            'pilotid' => intval($pilotid), 
-            'accepted' => intval($accept)
-            )
-        );
+            'p.pilotid' => intval($pilotid), 
+            'p.accepted' => intval($accept)
+        ));
     }
 
     /**

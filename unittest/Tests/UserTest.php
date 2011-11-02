@@ -181,7 +181,52 @@ class UserTest extends PHPUnit_Framework_TestCase   {
      */
     public function testPIREPFile() {
         
+        Config::Set('PIREP_CHECK_DUPLICATE', false);
+
+        # Get a random schedule
+        $schedules = SchedulesData::findSchedules(array('s.flighttype'=>'P'));
+        $idx = rand(0, count($schedules)-1);
+        $sched = $schedules[$idx];
+        unset($schedules);
         
+        $pilot = PilotData::getPilotByEmail('unittest@email.com');
+        
+        $data = array(
+        	'pilotid'=> $pilot->id,
+        	'code' => $sched->code,
+        	'flightnum' => $sched->flightnum,
+        	'route' => 'HYLND DCT PUT J42 RBV J230 BYRDD J48 MOL DCT FLCON',
+        	'depicao' => $sched->depicao,
+        	'arricao' => $sched->arricao,
+        	'aircraft' => $sched->aircraft,
+        	'flighttime' => $sched->flighttime,
+        	'submitdate' => 'NOW()',
+        	'fuelused' => 6000,
+        	'source' => 'unittest',
+        	'comment' => 'Test Flight',
+        );
+        
+        $pirep_id = PIREPData::fileReport($data);
+        $this->assertGreaterThan(0, $pirep_id);
+        
+    }
+    
+    /**
+     * UserTest::testPIREPCount()
+     * 
+     * @return void
+     */
+    public function testPIREPCount() {
+        
+        $pilot = PilotData::getPilotByEmail('unittest@email.com');
+        
+        $sql = 'SELECT COUNT(*) AS `total` FROM '.TABLE_PREFIX.'pireps WHERE `pilotid`='.$pilot->id;
+        $res = DB::get_row($sql);
+        
+        $pireps = PIREPData::getReportsByAcceptStatus($pilot->id, PIREP_PENDING);
+        $total = count($pireps);
+        
+        $this->assertEquals($res->total, $total);
     }
     
 	

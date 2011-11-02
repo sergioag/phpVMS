@@ -31,7 +31,7 @@ class PilotData extends CodonData {
      */
     public static function findPilots($params, $limit = '', $start = '') {
         
-        $sql = "SELECT p.*, r.`rankimage`, r.`payrate`
+        $sql = "SELECT p.*, p.pilotid AS id, r.`rankimage`, r.`payrate`
 				FROM " . TABLE_PREFIX . "pilots p
 				LEFT JOIN " . TABLE_PREFIX . "ranks r ON r.rank=p.rank ";
 
