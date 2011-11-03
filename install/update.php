@@ -104,8 +104,6 @@ OperationsData::updateAircraftRankLevels();
 /* Add them to the default group */
 $status_type_list = Config::get('PILOT_STATUS_TYPES');
 $pilot_list = PilotData::getAllPilots();
-if(!$pilot_list) { $pilot_list = array(); }
-
 foreach($pilot_list as $pilot) {
     
     echo "Fixing settings for ".$pilot->firstname." ".$pilot->lastname."<br>";

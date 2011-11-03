@@ -3,7 +3,7 @@
 c500b8b76e204f1adcb0e6562f7f4277  *./install/checkinstall.php
 d41d8cd98f00b204e9800998ecf8427e  *./install/index.php
 131e6ba03639fe73943bf0c9a407d06f  *./install/dbtest.php
-6bb3f24b06920a7b9ff9825291d2a140  *./install/update.php
+7a0c81698b9f55d2b534aea4e5070299  *./install/update.php
 d609f74eeaea0e4849d90b1c9a48943a  *./install/checkdb.php
 71c7531e4b713e67d84e310e354ddc47  *./install/install.php
 c53987a61354c3460fdac8e07f5c2cd2  *./install/templates/s0_config_check.tpl
@@ -29,7 +29,7 @@ d41d8cd98f00b204e9800998ecf8427e  *./core/index.php
 f8dc1d00840c0255e1c46beb5eaf946a  *./core/app.config.php
 b93585ee3d7e1d70cb3d4937f3e8069b  *./core/lang/en.lang.php
 a5e10c076798685fd1f8e84a7115fb74  *./core/common/MaintenanceData.class.php
-617961763b667dead78e96279d204aec  *./core/common/PIREPData.class.php
+0a23753f4749fce708a12540178df448  *./core/common/PIREPData.class.php
 a370d02b20cc43cb39ef5c50a747bc46  *./core/common/LedgerData.class.php
 3027e4bdd4d5863728869c2cc0cab78d  *./core/common/Auth.class.php
 596033119a76e293a7ead1d29978fd97  *./core/common/jqgrid.class.php
@@ -41,7 +41,7 @@ b78d615f6f39105345d33e701c55fba6  *./core/common/StatsData.class.php
 c858e7fed036d9cddb03cbe2a9665a3c  *./core/common/SchedulesData.class.php
 e9f63aad57ccafcb8a1b267953432cdd  *./core/common/UserGroups.class.php
 4b5c566bbf4c0f02a35588032cd7ff03  *./core/common/Countries.class.php
-299047aa75e12311e9e6cdc5ae64e668  *./core/common/PilotData.class.php
+b077687befef8ac8fc5ce718fb0dd4c8  *./core/common/PilotData.class.php
 9daa436be5011122490d123c00326ff9  *./core/common/GoogleChart.class.php
 78ccd18aafeebb9813811a99fd58af22  *./core/common/SettingsData.class.php
 0b1afcfae4793133402aeea081826f3e  *./core/common/NavData.class.php
