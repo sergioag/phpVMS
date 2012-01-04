@@ -2,8 +2,11 @@
 <ul class="filetree treeview-famfamfam">
 	<li><span class="file">
 		<a id="dialog" class="jqModal" href="<?php echo SITE_URL?>/admin/action.php/operations/addairport">Add a new Airport</a>
-	</span>
-	</li>
+	</span>	</li>
+
+	<li><span class="file">
+		<a href="<?php echo SITE_URL?>/admin/action.php/import/exportairports">Export airports</a>
+	</span></li>
 	
 </ul>
 <h3>Help</h3>

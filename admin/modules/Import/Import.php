@@ -40,6 +40,30 @@ class Import extends CodonModule {
         $this->render('export_form.tpl');
     }
 
+	/**
+	 *
+	 */
+	public function exportairports() {
+
+		$allairports = OperationsData::getAllAirports();
+
+		header('Content-Type: text/plain');
+		header('Content-Disposition: attachment; filename="airports.csv"');
+
+		$fp = fopen('php://output', 'w');
+
+		# Then write out all of the airports
+		foreach ($allairports as $ap) {
+			unset($ap->id);
+			fputcsv($fp, (array) $ap, ',');
+		}
+
+		fclose($fp);
+	}
+
+	/**
+	 *
+	 */
     public function exportaircraft() {
         $allaircraft = OperationsData::getAllAircraft(false);
 
