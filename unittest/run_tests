@@ -1,4 +1,0 @@
-#!/bin/bash
-
-
-phpunit --syntax-check -c phpunit.xml

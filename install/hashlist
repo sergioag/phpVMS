@@ -254,7 +254,7 @@ fdf7f7a9ad04e276d263e0db7426df85  *./admin/templates/sidebar_maintenance.tpl
 a9ccfb80ed3bc193c7b94ed483ea4a47  *./admin/templates/pilots_options.tpl
 217d642a7e38f14449c1baf1f7aa172a  *./admin/templates/core_navigation.tpl
 e68ef1f419f9a83014c9d19acac2e55a  *./admin/templates/pilots_pending.tpl
-8df8fcdc0bd39c38eb80688fad4ad61c  *./admin/templates/sidebar_airports.tpl
+28a8b71d5c75fdb898efb33e90d6dd60  *./admin/templates/sidebar_airports.tpl
 17a687c9bef61ff6621e96a9b2a0eadc  *./admin/templates/mailer_form.tpl
 2fd7e42cd602cb6e8efcf35ca1e2fb32  *./admin/templates/core_success.tpl
 0dd5394a6e843e121e9131e5fb0c875a  *./admin/templates/news_list.tpl
@@ -312,7 +312,7 @@ c1de104017f08ab3f33a2635c0a6acf2  *./admin/modules/Logs/Logs.php
 2184a2fe0b3e89301b3c0171b9435d0a  *./admin/modules/MassMailer/MassMailer.php
 fb4ca464f4e518e63c31b409e48588bf  *./admin/modules/SiteCMS/SiteCMS.php
 93d84805baf4c190ad51a81c96678e72  *./admin/modules/Operations/Operations.php
-58be86122e37b9cd875b7d306a4425e8  *./admin/modules/Import/Import.php
+25d6053270652ad08aefb38e54b953ec  *./admin/modules/Import/Import.php
 086a4da89e7f2c4f6dba1284cc3ddc3a  *./admin/modules/Settings/Settings.php
 c32304847debef3cbef412e8102e7566  *./admin/modules/TemplateDiffs/TemplateDiffs.php
 1687cfd34da5b421bcc762c5cab6bcab  *./admin/modules/Maintenance/Maintenance.php
