@@ -17,10 +17,9 @@
  */
  
 
-class Logs extends CodonModule
-{	
-	public function index()
-	{
+class Logs extends CodonModule {
+
+	public function index() {
 		$params = array();
 		
 		$this->set('all_logs', LogData::findLogs($params));

@@ -16,33 +16,28 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  * @package module_admin_sitecms
  */
- 
-class Reports extends CodonModule
-{
-	function HTMLHead()
-	{
+
+class Reports extends CodonModule {
+	function HTMLHead() {
 		$this->set('sidebar', 'sidebar_reports.tpl');
 	}
-	
-	public function index()
-	{
+
+	public function index() {
 		$this->overview();
 	}
-	
-	public function overview()
-	{
+
+	public function overview() {
 		$this->set('acstats', StatsData::AircraftUsage());
 		$this->set('toproutes', StatsData::TopRoutes());
-		
+
 		$this->set('allairlines', OperationsData::GetAllAirlines());
-		
+
 		$this->render('reports_main.tpl');
 	}
-	
-	public function aircraft()
-	{
+
+	public function aircraft() {
 		$acstats = StatsData::AircraftUsage();
-		
+
 		$this->set('acstats', $acstats);
 		$this->render('reports_aircraft.tpl');
 	}

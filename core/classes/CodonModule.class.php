@@ -50,8 +50,7 @@ class CodonModule
 	
 	public $title;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		
 	}
 	
@@ -60,8 +59,8 @@ class CodonModule
 	 *  when the module is created
 	 *
 	 */
-	public function init($module_name='')
-	{
+	public function init($module_name='') {
+
 		$module_name = strtolower($module_name);
 				
 		$this->post = Vars::$post;
@@ -73,28 +72,23 @@ class CodonModule
 		$this->activeModule = MainController::$activeModule;
 	}
 	
-	public function config($setting)
-	{
+	public function config($setting) {
 		return Config::Get($setting);
 	}
 	
-	public function get($name)
-	{
+	public function get($name) {
 		return Template::Get($name, true);
 	}
 	
-	public function set($name, $value)
-	{
+	public function set($name, $value) {
 		Template::Set($name, $value);
 	}
 	
-	public function show($tpl)
-	{
+	public function show($tpl) {
 		Template::Show($tpl);
 	}
 	
-	public function render($tpl)
-	{
+	public function render($tpl) {
 		Template::Show($tpl);
 	}
 
@@ -102,24 +96,23 @@ class CodonModule
 		header('Location: '.$url);
 	}
 	
-	public function log($text, $file='log')
-	{
+	public function log($text, $file='log') {
 		Debug::log($text, $file);
 	}
 	
-	public function firephp()
-	{
+	public function firephp() {
 		include_once CORE_PATH.DS.'lib'.DS.'firebug'.DS.'FirePHP.class.php';
 		
 		$instance = FirePHP::getInstance(true);
 		$args = func_get_args();
 		return call_user_func_array(array($instance,'fb'),$args);
 	}
-	
-	public function callHook($hook_name)
-	{
-		if(file_exists(SITE_ROOT.'/core/hooks/'.$hook_name))
-		{
+
+	/**
+	 * @param $hook_name Include a hook file with a certain name
+	 */
+	public function callHook($hook_name) {
+		if(file_exists(SITE_ROOT.'/core/hooks/'.$hook_name)) {
 			include SITE_ROOT.'/core/hooks/'.$hook_name;
 		}
 	}

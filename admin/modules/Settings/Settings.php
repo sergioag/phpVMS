@@ -17,19 +17,15 @@
  * @package module_admin_settings
  */
  
-class Settings extends CodonModule
-{
+class Settings extends CodonModule {
 
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 	}
 	
-	
-	public function HTMLHead()
-	{
-		switch($this->controller->function)
-		{
+	public function HTMLHead() {
+
+		switch($this->controller->function) {
 			case '':
 			case 'settings':
 				$this->set('sidebar', 'sidebar_settings.tpl');
@@ -43,20 +39,16 @@ class Settings extends CodonModule
 				$this->set('sidebar', 'sidebar_pirepfields.tpl');
 				break;
 		}
-		
 	}
 	
-	public function index()
-	{
+	public function index() {
 		$this->settings();
 	}
 	
-	public function settings()
-	{
-		if(isset($this->post->action))
-		{
-			switch($this->post->action)
-			{
+	public function settings() {
+
+		if(isset($this->post->action)) {
+			switch($this->post->action) {
 				case 'addsetting':
 					$this->AddSetting();
 					break;
@@ -71,16 +63,14 @@ class Settings extends CodonModule
 	}
 	
 	
-	public function addfield()
-	{
+	public function addfield() {
 		$this->set('title', Lang::gs('settings.add.field'));
 		$this->set('action', 'addfield');
 		
 		$this->render('settings_addcustomfield.tpl');
 	}
 	
-	public function editfield()
-	{
+	public function editfield() {
 		$this->set('title', Lang::gs('settings.edit.field'));
 		$this->set('action', 'savefield');
 		$this->set('field', SettingsData::GetField($this->get->id));
@@ -89,15 +79,13 @@ class Settings extends CodonModule
 	}
 	
 	
-	public function addpirepfield()
-	{
+	public function addpirepfield() {
 		$this->set('title', Lang::gs('pirep.field.add'));
 		$this->set('action', 'addfield');
 		$this->render('settings_addpirepfield.tpl');
 	}
 	
-	public function editpirepfield()
-	{
+	public function editpirepfield() {
 		$this->set('title', Lang::gs('pirep.field.edit'));
 		$this->set('action', 'savefields');
 		$this->set('field', PIREPData::GetFieldInfo($this->get->id));
@@ -105,10 +93,9 @@ class Settings extends CodonModule
 		$this->render('settings_addpirepfield.tpl');
 	}
 	
-	public function pirepfields()
-	{
-		switch($this->post->action)
-		{
+	public function pirepfields() {
+
+		switch($this->post->action) {
 			case 'savefields':
 				$this->PIREP_SaveFields();
 				break;
@@ -125,10 +112,9 @@ class Settings extends CodonModule
 		$this->PIREP_ShowFields();
 	}
 	
-	public function customfields()
-	{
-		switch($this->post->action)
-		{
+	public function customfields() {
+
+		switch($this->post->action) {
 			case 'savefield':
 				$this->save_fields_post();
 				break;
@@ -149,12 +135,17 @@ class Settings extends CodonModule
 	/* Utility functions */	
 	
 		
-	protected function save_settings_post()
-	{
-		while(list($name, $value) = each($_POST))
-		{
-			if($name == 'action') continue;
-			elseif($name == 'submit') continue;
+	protected function save_settings_post() {
+
+		unset($_POST['action']);
+		unset($_POST['submit']);
+
+		while(list($name, $value) = each($_POST)){
+
+			if($name == 'action')
+					continue;
+			elseif($name == 'submit')
+				continue;
 			
 			$value = DB::escape($value);
 			SettingsData::SaveSetting($name, $value, '', false);
@@ -167,19 +158,20 @@ class Settings extends CodonModule
 		$this->render('core_success.tpl');
 	}
 	
-	protected function add_field_post()
-	{
-		if($this->post->title == '')
-		{
+	protected function add_field_post() {
+
+		if($this->post->title == '') {
 			echo 'No field name entered!';
 			return;
 		}
 		
-		$data=array('title'=>$this->post->title,
-					'value'=>$this->post->value,
-					'type'=>$this->post->type,
-					'public'=>$this->post->public,
-					'showinregistration'=>$this->post->showinregistration);
+		$data = array(
+			'title'=>$this->post->title,
+			'value'=>$this->post->value,
+			'type'=>$this->post->type,
+			'public'=>$this->post->public,
+			'showinregistration'=>$this->post->showinregistration
+		);
 			
 		if($data['public'] == 'yes')
 			$data['public'] = true;
@@ -193,13 +185,10 @@ class Settings extends CodonModule
 			
 		$ret = SettingsData::AddField($data);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$this->set('message', 'There was an error saving the settings: ' . DB::error());
 			$this->render('core_error.tpl');
-		}
-		else
-		{
+		} else {
 			LogData::addLog(Auth::$userinfo->pilotid, 'Added custom registration field "'.$this->post->title.'"');
 			
 			$this->set('message', 'Added custom registration field "'.$this->post->title.'"');
@@ -207,20 +196,21 @@ class Settings extends CodonModule
 		}
 	}
 	
-	protected function save_fields_post()
-	{
-		if($this->post->title == '')
-		{
+	protected function save_fields_post() {
+
+		if($this->post->title == '') {
 			echo 'No field name entered!';
 			return;
 		}
 		
-		$data= array('fieldid'=>$this->post->fieldid,
-					 'title'=>$this->post->title,
-					 'value'=>$this->post->value,
-					 'type'=>$this->post->type,
-					 'public'=>$this->post->public,
-					 'showinregistration'=>$this->post->showinregistration);
+		$data = array(
+			'fieldid'=>$this->post->fieldid,
+			 'title'=>$this->post->title,
+			 'value'=>$this->post->value,
+			 'type'=>$this->post->type,
+			 'public'=>$this->post->public,
+			 'showinregistration'=>$this->post->showinregistration
+		);
 		
 		if($data['public'] == 'yes')
 			$data['public'] = true;
@@ -234,13 +224,10 @@ class Settings extends CodonModule
 		
 		$ret = SettingsData::EditField($data);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$this->set('message', 'There was an error saving the settings: ' . DB::error());
 			$this->render('core_error.tpl');
-		}
-		else
-		{
+		} else {
 			LogData::addLog(Auth::$userinfo->pilotid, 'Edited custom registration field "'.$this->post->title.'"');
 			
 			$this->set('message', 'Edited custom registration field "'.$this->post->title.'"');
@@ -248,18 +235,16 @@ class Settings extends CodonModule
 		}
 	}
 	
-	protected function delete_field_post()
-	{
+	protected function delete_field_post() {
+
 		$id = DB::escape($this->post->id);
 		
 		$ret = SettingsData::deleteField($id);
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			echo json_encode(array(
 					'status' => 'error',
 					'message' => addslashes(DB::error())
-				)
-			);
+			) );
 			
 			return;
 		}
@@ -273,37 +258,31 @@ class Settings extends CodonModule
 		$this->render('settings_mainform.tpl');
 	}
 	
-	protected function ShowFields()
-	{
+	protected function ShowFields() {
+
 		$this->set('allfields', SettingsData::GetAllFields());
-		
 		$this->render('settings_customfieldsform.tpl');
 	}
 	
-	protected function PIREP_ShowFields()
-	{
+	protected function PIREP_ShowFields() {
 		$this->set('allfields', PIREPData::GetAllFields());
 		
 		$this->render('settings_pirepfieldsform.tpl');
 	}
 	
-	protected function PIREP_AddField()
-	{
-		if($this->post->title == '')
-		{
+	protected function PIREP_AddField() {
+
+		if($this->post->title == '') {
 			echo 'No field name entered!';
 			return;
 		}
 		
 		$ret = PIREPData::AddField($this->post->title, $this->post->type, $this->post->options);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$this->set('message', 'There was an error saving the field: ' . DB::error());
 			$this->render('core_error.tpl');
-		}
-		else
-		{
+		} else {
 			LogData::addLog(Auth::$userinfo->pilotid, 'Added PIREP field "'.$this->post->title.'"');
 			
 			$this->set('message', 'Added PIREP field "'.$this->post->title.'"');
@@ -311,11 +290,9 @@ class Settings extends CodonModule
 		}
 	}
 	
-	protected function PIREP_SaveFields()
-	{
+	protected function PIREP_SaveFields() {
 		
-		if($this->post->title == '')
-		{
+		if($this->post->title == '') {
 			$this->set('message', 'The title cannot be blank');
 			$this->render('core_error.tpl');
 			return false;
@@ -323,13 +300,10 @@ class Settings extends CodonModule
 		
 		$res = PIREPData::EditField($this->post->fieldid, $this->post->title, $this->post->type, $this->post->options);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$this->set('message', 'There was an error saving the field');
 			$this->render('core_error.tpl');
-		}
-		else
-		{
+		} else {
 			LogData::addLog(Auth::$userinfo->pilotid, 'Edited PIREP field "'.$this->post->title.'"');
 			
 			$this->set('message', 'Edited PIREP field "'.$this->post->title.'"');
@@ -337,19 +311,15 @@ class Settings extends CodonModule
 		}		
 	}
 	
-	protected function PIREP_DeleteField()
-	{
+	protected function PIREP_DeleteField() {
 		$id = DB::escape($this->post->id);
 		
 		$ret = PIREPData::DeleteField($id);
 		
-		if(DB::errno() != 0)
-		{
+		if(DB::errno() != 0) {
 			$this->set('message', 'There was an error deleting the field: ' . DB::$err);
 			$this->render('core_error.tpl');
-		}
-		else
-		{
+		} else {
 			LogData::addLog(Auth::$userinfo->pilotid, 'Deleted PIREP field');
 			
 			$this->set('message', 'The field was deleted');

@@ -19,57 +19,42 @@
  
 class SiteCMS extends CodonModule
 {
-	function HTMLHead()
-	{
-		switch($this->controller->function)
-		{
+	public function HTMLHead() {
+		switch($this->controller->function) {
 			case 'addnews':
 			case 'viewnews':
-				
 				$this->set('sidebar', 'sidebar_news.tpl');
-				
 				break;
 			
 			case 'viewpages':
-			
 				$this->set('sidebar', 'sidebar_pages.tpl');
-				
 				break;
 				
 			case 'addpageform':
-				
 				$this->set('sidebar', 'sidebar_addpage.tpl');
-				
 				break;
 		}
 	}
 	
-	public function viewnews()
-	{
+	public function viewnews() {
+
 		$isset = isset($this->post->action);
-		if($isset && $this->post->action == 'addnews')
-		{
+
+		if($isset && $this->post->action == 'addnews') {
 			$this->AddNewsItem();		
-		}
-		elseif($isset && $this->post->action == 'editnews')
-		{
+		} elseif($isset && $this->post->action == 'editnews') {
 			$res = SiteData::EditNewsItem($this->post->id, $this->post->subject, $this->post->body);
 			
-			if($res == false)
-			{
+			if($res == false) {
 				$this->set('message', Lang::gs('news.updated.error'));
 				$this->render('core_error.tpl');
-			}
-			else
-			{
+			} else {
 				LogData::addLog(Auth::$userinfo->pilotid, 'Edited news item "'.$this->post->subject.'"');
 				
 				$this->set('message', Lang::gs('news.updated.success'));
 				$this->render('core_success.tpl');
 			}
-		}
-		elseif($isset && $this->post->action == 'deleteitem')
-		{	
+		} elseif($isset && $this->post->action == 'deleteitem') {
 			$this->DeleteNewsItem();	
 			echo json_encode(array('status' => 'ok'));
 		}
@@ -78,16 +63,14 @@ class SiteCMS extends CodonModule
 		$this->render('news_list.tpl');
 	}
 	
-	public function addnews()
-	{
+	public function addnews() {
 		$this->set('title', Lang::gs('news.add.title'));
 		$this->set('action', 'addnews');
 		
 		$this->render('news_additem.tpl');
 	}
 	
-	public function editnews()
-	{
+	public function editnews() {
 		$this->set('title', Lang::gs('news.edit.title'));
 		$this->set('action', 'editnews');
 		$this->set('newsitem', SiteData::GetNewsItem($this->get->id));
@@ -95,16 +78,15 @@ class SiteCMS extends CodonModule
 		$this->render('news_additem.tpl');
 	}
 	
-	public function addpageform()
-	{
+	public function addpageform() {
 		$this->set('title', Lang::gs('page.add.title'));
 		$this->set('action', 'addpage');
 		
 		$this->render('pages_editpage.tpl');
 	}
 	
-	public function editpage()
-	{
+	public function editpage() {
+
 		$page = SiteData::GetPageData( $this->get->pageid);
 		$this->set('pagedata', $page);
 		$this->set('content', @file_get_contents(PAGES_PATH . '/' . $page->filename . PAGE_EXT));
@@ -116,15 +98,12 @@ class SiteCMS extends CodonModule
 		LogData::addLog(Auth::$userinfo->pilotid, 'Page '. $page->pagename.' edited');
 	}
 	
-	public function deletepage()
-	{
-		if(SiteData::DeletePage( $this->get->pageid) == false)
-		{
+	public function deletepage() {
+
+		if(SiteData::DeletePage( $this->get->pageid) == false) {
 			$this->set('message', Lang::gs('page.error.delete'));
 			$this->render('core_error.tpl');
-		}
-		else
-		{
+		} else {
 			LogData::addLog(Auth::$userinfo->pilotid, 'Page '. $this->get->pageid.' deleted');
 			
 			$this->set('message', Lang::gs('page.deleted'));
@@ -210,13 +189,11 @@ class SiteCMS extends CodonModule
 		$this->render('core_success.tpl');
 	}
 	
-	protected function edit_page_post()
-	{
+	protected function edit_page_post() {
 		$public = ($this->post->public == 'true') ? true : false;
 		$enabled = ($this->post->enabled == 'true') ? true : false;
 		
-		if(!SiteData::EditFile($this->post->pageid, $this->post->content, $public, $enabled))
-		{
+		if(!SiteData::EditFile($this->post->pageid, $this->post->content, $public, $enabled)) {
 			$this->set('message', Lang::gs('page.edit.error'));
 			$this->render('core_error.tpl');
 		}
@@ -227,16 +204,15 @@ class SiteCMS extends CodonModule
 		LogData::addLog(Auth::$userinfo->pilotid, 'Edited page "'.$this->post->pagename.'"');
 	}
 	
-	protected function AddNewsItem()
-	{
+	protected function AddNewsItem() {
+
 		if($this->post->subject == '')
 			return;
 		
 		if($this->post->body == '')
 			return;
 			
-		if(!SiteData::AddNewsItem($this->post->subject, $this->post->body))
-		{
+		if(!SiteData::AddNewsItem($this->post->subject, $this->post->body)) {
 			$this->set('message', 'There was an error adding the news item');
 		}
 		
@@ -245,10 +221,9 @@ class SiteCMS extends CodonModule
 		LogData::addLog(Auth::$userinfo->pilotid, 'Added news "'.$this->post->subject.'"');
 	}
 	
-	protected function DeleteNewsItem()
-	{
-		if(!SiteData::DeleteItem($this->post->id))
-		{
+	protected function DeleteNewsItem() {
+
+		if(!SiteData::DeleteItem($this->post->id)) {
 			$this->set('message', Lang::gs('news.delete.error'));
 			$this->render('core_error.tpl');
 			return;
