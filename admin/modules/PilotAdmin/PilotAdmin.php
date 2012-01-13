@@ -622,7 +622,7 @@ class PilotAdmin extends CodonModule {
         $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
         $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
         
-        $message = Template::GetTemplate('email_registrationaccepted.tpl', true, true, true);
+        $message = Template::getTemplate('email_registrationaccepted.tpl', true, true, true);
         
         Template::setTemplatePath($oldPath);
         Template::setSkinPath($oldSkinPath);

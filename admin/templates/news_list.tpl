@@ -1,7 +1,6 @@
 <h3>Posted News</h3>
 <?php
-if(!$allnews)
-{
+if(!$allnews) {
 	echo '<p>No news items have been posted yet</p>';
 	return;
 }
@@ -17,14 +16,16 @@ if(!$allnews)
 </thead>
 <tbody>
 <?php
-foreach($allnews as $news)
-{
+foreach($allnews as $news) {
 ?>
 <tr id="row<?php echo $news->id;?>">
 	<td align="center"><?php echo $news->subject;?></td>
 	<td align="center"><?php echo $news->postedby;?></td>
 	<td align="center"><?php echo date(DATE_FORMAT, $news->postdate);?></td>
 	<td align="center" width="1%" nowrap>
+        <button class="{button:{icons:{primary:'ui-icon-wrench'}}}" onclick="window.location='<?php echo adminaction('/sitecms/bumpnews?id='.$news->id);?>';">
+			Bump
+		</button>
 		<button class="{button:{icons:{primary:'ui-icon-wrench'}}}" onclick="window.location='<?php echo adminurl('/sitecms/editnews?id='.$news->id);?>';">
 			Edit
 		</button>

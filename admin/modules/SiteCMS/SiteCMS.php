@@ -132,15 +132,12 @@ class SiteCMS extends CodonModule
 		}
 	}
 	
-	public function viewpages()
-	{
+	public function viewpages() {
 		
 		/* This is the actual adding page process
-				 */
-		if(isset($this->post->action))
-		{
-			switch($this->post->action)
-			{
+		 */
+		if(isset($this->post->action)) {
+			switch($this->post->action) {
 				case 'addpage':
 					$this->add_page_post();
 					break;
@@ -152,8 +149,7 @@ class SiteCMS extends CodonModule
 		
 		/* this is the popup form edit form
 		 */
-		switch($this->get->action)
-		{
+		switch($this->get->action) {
 			case 'editpage':
 		
 				$this->edit_page_form();
@@ -172,32 +168,36 @@ class SiteCMS extends CodonModule
 		$this->set('allpages', SiteData::GetAllPages());
 		$this->render('pages_allpages.tpl');
 	}
+
+	public function bumpnews() {
+
+		$id = $this->get->id;
+
+		SiteData::bumpNewsItem($id);
+
+		$this->redirect(adminurl('sitecms/viewnews'));
+	}
 	
 	/**
 	 * This is the function for adding the actual page
 	 */
-	protected function add_page_post()
-	{
+	protected function add_page_post() {
 		
 		$public = ($this->post->public == 'true') ? true : false;
 		$enabled = ($this->post->enabled == 'true') ? true : false;
 		
-		if(!$this->post->pagename)
-		{
+		if(!$this->post->pagename) {
 			$this->set('message', 'You must have a title');
 			$this->render('core_error.tpl');
 			return;
 		}
 		
 		$this->post->content = stripslashes($this->post->content);
-		if(!SiteData::AddPage($this->post->pagename, $this->post->content, $public, $enabled))
-		{
-			if(DB::$errno == 1062)
-			{
+		if(!SiteData::AddPage($this->post->pagename, $this->post->content, $public, $enabled)) {
+
+			if(DB::$errno == 1062) {
 				$this->set('message', Lang::gs('page.exists'));
-			}
-			else
-			{
+			} else {
 				$this->set('message', Lang::gs('page.create.error'));
 			}
 			

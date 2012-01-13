@@ -91,6 +91,23 @@ class SiteData extends CodonData {
         return true;
     }
 
+	/**
+	 * Set the last modified date of the news item to now
+	 * @param $id
+	 * @return bool
+	 */
+	public static function bumpNewsItem($id) {
+
+		$id = DB::escape($id);
+
+		$sql = 'UPDATE '.TABLE_PREFIX.'news SET postdate=NOW() WHERE id='.$id;
+		$res = DB::query($sql);
+
+		if (DB::errno() != 0) return false;
+
+		return true;
+	}
+
     /**
      * SiteData::EditNewsItem()
      * 
@@ -103,9 +120,8 @@ class SiteData extends CodonData {
         $subject = DB::escape($subject);
         $body = DB::escape($body);
 
-        $sql = 'UPDATE ' . TABLE_PREFIX . 'news SET subject=\'' . $subject . '\', body=\'' .
-            $body . '\' 
-					WHERE id=' . $id;
+        $sql = 'UPDATE '.TABLE_PREFIX.'news SET subject=\''.$subject.'\', body=\''.$body.'\'
+        		WHERE id='.$id;
 
         $res = DB::query($sql);
 

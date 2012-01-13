@@ -65,6 +65,7 @@ class Import extends CodonModule {
 	 *
 	 */
     public function exportaircraft() {
+
         $allaircraft = OperationsData::getAllAircraft(false);
 
         # Get the column headers

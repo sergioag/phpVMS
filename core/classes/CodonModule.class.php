@@ -97,6 +97,10 @@ class CodonModule
 	{
 		Template::Show($tpl);
 	}
+
+	public function redirect($url) {
+		header('Location: '.$url);
+	}
 	
 	public function log($text, $file='log')
 	{
