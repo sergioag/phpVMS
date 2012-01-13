@@ -1,0 +1,24 @@
+<phpunit colors="true" bootstrap="bootstrap.php" verbose="true"
+  convertErrorsToExceptions="true" convertNoticesToExceptions="true" 
+  convertWarningsToExceptions="true">
+    
+      <testsuites>
+        <testsuite name="phpVMS">
+            <!--<file>Tests/TimesTest.php</file>-->
+            <file>Tests/InstallTest.php</file>
+            <file>Tests/UserTest.php</file>
+            <file>Tests/SchedulePIREPTest.php</file>
+            <file>Tests/StatsTest.php</file>
+        </testsuite>
+      </testsuites>
+  
+    <logging>
+        <!--<log type="coverage-html" target="reports/coverage_report" charset="UTF-8"
+           yui="true" highlight="true"/>-->
+        <log type="coverage-clover" target="reports/coverage.xml"/>
+        <log type="json" target="reports/logfile.json"/>
+        <log type="testdox-html" target="reports/testdox.html"/>
+        <log type="testdox-text" target="reports/testdox.txt"/>
+    </logging>
+
+</phpunit>
