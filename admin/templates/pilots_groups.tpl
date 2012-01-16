@@ -1,10 +1,7 @@
 <?php
-if(!$pilotgroups)
-{
+if(!$pilotgroups) {
 	echo '<br />This user is not in any groups!<br /><br />';
-}
-else
-{
+} else {
 ?>
 <table id="tabledlist" class="tablesorter" style="float: left">
 <thead>
@@ -16,8 +13,7 @@ else
 <tbody>
 
 <?php 
-	foreach($pilotgroups as $group)
-	{
+	foreach($pilotgroups as $group) {
 ?>
 	<tr>
 		<td><?php echo $group->name;?></td>
@@ -40,29 +36,27 @@ else
 </table>
 <div style="clear: both;"></div>
 <?php
-if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)) 
-{
+if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN) === false) {
+	return;
+}
 ?>
 <h3>Add to Group</h3>
 
 <?php 
 $total = count($freegroups);
-
-if($total == 0)
-{
+if($total == 0) {
 	echo 'No groups to add to';
 	return;
 }
 ?>
-<form id="selectpilotgroup" action="<?php echo adminaction('/pilotadmin/viewpilots');?>" method="post">
+<form id="pilotgroupform" action="<?php echo adminaction('/pilotadmin/viewpilots');?>" method="post">
 <dl>
 	<dt>Select Group:</dt>
 	<dd><select name="groupname">
 		<?php
-		for($i=0;$i<$total;$i++)
-		{
-			echo '<option value="'.$freegroups[$i].'">'.$freegroups[$i].'</option>';
-		}
+			foreach($freegroups as $group) {
+				echo '<option value="'.$group.'">'.$group.'</option>';
+			}
 		?>
 		</select></dd>
 
@@ -72,6 +66,3 @@ if($total == 0)
 		<input type="submit" name="submit" value="Add to Group" /></dd>
 </dl>
 </form>
-<?php
-}
-?>

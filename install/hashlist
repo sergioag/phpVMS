@@ -259,7 +259,7 @@ e68ef1f419f9a83014c9d19acac2e55a  *./admin/templates/pilots_pending.tpl
 2fd7e42cd602cb6e8efcf35ca1e2fb32  *./admin/templates/core_success.tpl
 c33276edb6f01b0dd27bafb8be5f475d  *./admin/templates/news_list.tpl
 3b778e44288421789318426894099d52  *./admin/templates/finance_balancesheet.tpl
-0d306b912d87514e8477bc1721ae6867  *./admin/templates/pilots_groups.tpl
+cbaabc9f35a5b6b8be005b0ff770f6e7  *./admin/templates/pilots_groups.tpl
 27ebca6795ac7fa1b91b08f3ca2ce33c  *./admin/templates/settings_addpirepfield.tpl
 6a7ceb10c281a6acc5d0a6bb429b5ec4  *./admin/templates/core_error.tpl
 dee9d14af1ed78bc6869b3f723930a6f  *./admin/templates/pilots_awards.tpl
@@ -295,7 +295,7 @@ d09d63e66e3dc5077990329100d227d3  *./admin/templates/sidebar_mailer.tpl
 00b5070a20404be0c4fff66f9b871135  *./admin/templates/pirep_addcomment.tpl
 41c5a1e1d22c034a19e44136a061c9d9  *./admin/templates/ranks_rankform.tpl
 651c1a89417a676c8737cc0fcc2de6cd  *./admin/templates/downloads_downloadform.tpl
-80385da1e9cc870133382762b17a38f4  *./admin/lib/phpvmsadmin.js
+0b516f9da024362dfe1681c97891f53c  *./admin/lib/phpvmsadmin.js
 915decfea9a409d9ba3ccc0a309352cd  *./admin/lib/layout/layout.php
 764c064e3cb5da3119901a266fd9deae  *./admin/lib/layout/header.tpl
 98460347f7f55d7659d03260572bf8bc  *./admin/lib/layout/footer.tpl

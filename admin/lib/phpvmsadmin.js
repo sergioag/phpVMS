@@ -22,8 +22,8 @@ $(document).ready(function() {
 	initListeners();
 });
 
-function initListeners()
-{
+function initListeners() {
+
 	formInit();
 	reloadGroups();
 	
@@ -216,6 +216,13 @@ function reloadGroups() {
 		    function() {
 		    	reloadGroups();
 		    });
+	});
+
+	$("#pilotgroupform").ajaxForm({
+		target: '#pilotgroups',
+		success: function() {
+			reloadGroups();
+		}
 	});
 
 	$('a.button').button();
