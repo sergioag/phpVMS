@@ -176,7 +176,7 @@ e58ee78f8e857ad150badae9ba04dddc  *./core/modules/news/news.php
 babe83f7ab556aa33583e5ef97b61cbd  *./core/modules/Registration/Registration.php
 988463925cdb864c6632b4534b59d952  *./core/modules/Downloads/Downloads.php
 b4ad5c67a03fc1f7bb910b263170c63e  *./core/modules/Pilots/Pilots.php
-1937c35267e444c12bf5796190fcfeba  *./core/modules/kACARS_Free/kACARS_Free.php
+d408976309d015db3faba5cf41376838  *./core/modules/kACARS_Free/kACARS_Free.php
 c75e1f34d88a90272e8b4f665e62ea3d  *./core/modules/Frontpage/Frontpage.php
 4745bff609adac50676f834dbf25f46c  *./core/modules/ACARS/fsacars.php
 6b946047c6c072b85d88792409097feb  *./core/modules/ACARS/fspax.php
@@ -295,7 +295,7 @@ d09d63e66e3dc5077990329100d227d3  *./admin/templates/sidebar_mailer.tpl
 00b5070a20404be0c4fff66f9b871135  *./admin/templates/pirep_addcomment.tpl
 41c5a1e1d22c034a19e44136a061c9d9  *./admin/templates/ranks_rankform.tpl
 651c1a89417a676c8737cc0fcc2de6cd  *./admin/templates/downloads_downloadform.tpl
-0b516f9da024362dfe1681c97891f53c  *./admin/lib/phpvmsadmin.js
+2830ae7558c28e4875184a94dff651ef  *./admin/lib/phpvmsadmin.js
 915decfea9a409d9ba3ccc0a309352cd  *./admin/lib/layout/layout.php
 764c064e3cb5da3119901a266fd9deae  *./admin/lib/layout/header.tpl
 98460347f7f55d7659d03260572bf8bc  *./admin/lib/layout/footer.tpl

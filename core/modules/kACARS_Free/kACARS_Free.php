@@ -14,17 +14,27 @@
  * @copyright Copyright (c) 2010, Jeffrey Kobus
  * @link http://www.fs-products.net
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
- * @ v1.0.0.7
+ * @ v1.0.1.1
  */
 
 
 
 class kACARS_Free extends CodonModule
-{
+{	
+	
 	public function index()
 	{
 		if($_SERVER['REQUEST_METHOD'] === 'POST')
 		{ 
+			
+			// Site Settings
+			$logTime 	= 0;     		// kACARS_Free FlightLog Timesatmp 0=System Time  or  1=FS Time
+			$logPause	= 0;			// kACARS_Free Pause Log 0=Log Pauses or 1=Do NOT Log Pauses
+			$version 	= '1.0.1.1';   	// kACARS_Free Version	
+			$forceOut 	= 1;          	// Force disconnect is wrong version 0=no 1=yes	
+			$charter	= 1;			// Allow Charter flights to be flown (Includes abilty to change aircraft) 0=no 1=yes
+			
+			
 			$postText = file_get_contents('php://input');			
 			$encoding = mb_detect_encoding($postText);
 			$rec_xml = trim(iconv($encoding, "UTF-8", $postText));			
@@ -47,14 +57,18 @@ class kACARS_Free extends CodonModule
 					if ($results)
 					{						
 						$params = array('loginStatus' => '1');
-						
-						//echo 1;
 					}
 					else
 					{
 						$params = array('loginStatus' => '0');
-						//echo 0;
 					}
+					
+					// Send Site Settings
+					$params['logTimeSetting'] 	= $logTime;
+					$params['logPauseSetting']	= $logPause;
+					$params['version'] 			= $version;
+					$params['forceOut'] 		= $forceOut;
+					$params['charter']			= $charter;
 					
 					$send = self::sendXML($params);
 					
@@ -174,7 +188,7 @@ class kACARS_Free extends CodonModule
 					else
 					{
 						$time_remain = '00:00';
-					}
+					}					
 					
 					$fields = array(
 						'pilotid'        =>$pilotid,
@@ -261,7 +275,7 @@ class kACARS_Free extends CodonModule
 						'aircraft'			=>$ac->id,
 						'flighttime'		=>$xml->pirep->flightTime,
 						'flighttype'		=>$xml->pirep->flightType,
-						'submitdate'		=>'NOW()',
+						'submitdate'		=>'UTC_TIMESTAMP()',
 						'comment'			=>$xml->pirep->comments,
 						'fuelused'			=>$fuelused,
 						'route'          	=>$xml->liveupdate->route,

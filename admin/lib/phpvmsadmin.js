@@ -210,6 +210,7 @@ function formInit()
 }
 
 function reloadGroups() {
+
 	$('.pilotgroupajax').live('click', function() {
 		$("#pilotgroups").load($(this).attr("href"),
 		    { action: $(this).attr("action"), pilotid: $(this).attr("pilotid"), groupid: $(this).attr("id") },
