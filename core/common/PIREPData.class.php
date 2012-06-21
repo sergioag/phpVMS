@@ -437,8 +437,8 @@ class PIREPData extends CodonData {
      */
     public static function getReportsByAcceptStatus($pilotid, $accept = 0) {
         return self::findPIREPS(array(
-            'pilotid' => intval($pilotid), 
-            'accepted' => intval($accept)
+            'p.pilotid' => intval($pilotid), 
+            'p.accepted' => intval($accept)
             )
         );
     }
@@ -1393,8 +1393,8 @@ class PIREPData extends CodonData {
         $fieldname = strtoupper(str_replace(' ', '_', $title));
 
         $sql = "UPDATE ".TABLE_PREFIX."pirepfields
-					SET title='$title', name='$fieldname', type='$type', options='$values'
-					WHERE fieldid=$id";
+				SET title='$title', name='$fieldname', type='$type', options='$values'
+				WHERE fieldid=$id";
 
         $res = DB::query($sql);
 
