@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h2>PIREP Approved</h2>
 
 PIREP #<?php echo $pirep->pirepid;?> has been approved<br />

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Pilot Ranks</h3>
 <table id="tabledlist" class="tablesorter">
 <thead>

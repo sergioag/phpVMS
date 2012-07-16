@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <div id="awardslist">
 <h3>Pilot Awards</h3>
 <?php

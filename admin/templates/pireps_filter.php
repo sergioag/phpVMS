@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <form action="<?php echo SITE_URL.'/admin/index.php/pirepadmin/viewall';?>" method="get">
 <strong>Filter schedules: </strong>
 <input type="text" name="query" value="<?php if($_GET['query']) { echo $_GET['query'];} else { echo '(Use % for wildcard)';}?>" onClick="this.value='';" />

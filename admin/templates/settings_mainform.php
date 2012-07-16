@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Site Settings</h3>
 <p>Select available site options from this page. Don't forget to save!</p>
 <form id="form" method="post" action="<?php echo SITE_URL?>/admin/action.php/settings/settings">

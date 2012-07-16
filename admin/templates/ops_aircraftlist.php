@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Aircraft List</h3>
 <p>These are all the aircraft that your airline operates.</p>
 <?php

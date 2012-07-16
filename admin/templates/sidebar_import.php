@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>CSV Import</h3>
 <p>From here, you may import a CSV (comma separated values) form to import your schedules.</p>
 

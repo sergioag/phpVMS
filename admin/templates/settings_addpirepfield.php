@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title ?></h3>
 <p>Add a custom PIREP field, which a pilot can enter information to when filing a PIREP.</p>
 <form id="form" method="post" action="<?php echo SITE_URL?>/admin/action.php/settings/pirepfields">

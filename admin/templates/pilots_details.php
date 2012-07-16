@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <form id="dialogform" action="<?php echo adminaction('/pilotadmin/viewpilots');?>" method="post">
 <table id="tabledlist" class="tablesorter" style="float: left">
 <thead>

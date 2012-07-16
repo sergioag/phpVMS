@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title?></h3>
 <?php
 Template::Show('finance_header.tpl'); 

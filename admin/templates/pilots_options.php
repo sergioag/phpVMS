@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <?php
 if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)) {
 $pilotid = $_GET['pilotid'];

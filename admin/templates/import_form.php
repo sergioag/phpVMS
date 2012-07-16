@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>CSV Import</h3>
 <p><strong>Instructions</strong> - You can import your flight plans from CSV. You can download
 a template CSV from <a href="<?php echo SITE_URL ?>/admin/lib/template.csv">here</a>. The following

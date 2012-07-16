@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <script type="text/javascript">
 var baseurl="<?php echo SITE_URL;?>";
 var geourl="<?php echo Config::Get('GEONAME_API_SERVER'); ?>";

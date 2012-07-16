@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <p><b>NOTE:</b> Be VERY cautioned when changing a pilot ID. Even though this is 'controlled', problems can still occur. If you change the pilot ID to a number which is HIGHER than the highest pilot ID, all new registered pilots will have an ID starting after that. This WILL change their login ID. <b>This user cannot be logged in while doing the change.</b></p>
 <p>The PILOT ID is shown in the following format below:<br />
 <pre>FORMATTED_PILOT_ID - DATABASE_ID - NAME</pre>

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title;?></h3>
 <form id="form" action="<?php echo adminaction('/operations/airlines');?>" method="post">
 <dl>

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Mass Mailer</h3>
 <form method="post" action="<?php echo adminurl('/massmailer/sendmail');?>">
 <p>
