@@ -20,7 +20,7 @@ define('ADMIN_PANEL', true);
 include dirname(__FILE__).'/includes/loader.inc.php';
 
 
-Template::Show('header.tpl');
+Template::Show('header');
 
 // Controller
 switch($_GET['page']) {
@@ -29,9 +29,9 @@ switch($_GET['page']) {
 	case '':
 		
 		if(!Installer::CheckServer()) {
-			Template::Show('s0_config_check.tpl');
+			Template::Show('s0_config_check');
 		} else {
-			Template::Show('s1_db_setup.tpl');
+			Template::Show('s1_db_setup');
 		}
 		
 		break;
@@ -67,7 +67,7 @@ switch($_GET['page']) {
 		
 	case 'sitesetup':
 		
-		Template::Show('s2_site_setup.tpl');
+		Template::Show('s2_site_setup');
 		break;
 		
 	case 'complete':
@@ -79,7 +79,7 @@ switch($_GET['page']) {
 				|| $_POST['vacode'] == '') {
 				    
 				Template::Set('message', 'You must fill out all of the fields');
-				Template::Show('s2_site_setup.tpl');
+				Template::Show('s2_site_setup');
 				break;
 			}
 			
@@ -87,14 +87,14 @@ switch($_GET['page']) {
 				
 			if(!Installer::SiteSetup()) {
 				Template::Set('message', Installer::$error);
-				Template::Show('s2_site_setup.tpl');
+				Template::Show('s2_site_setup');
 			} else {
 				Installer::RegisterInstall(INSTALLER_VERSION);
-				Template::Show('s3_setup_finished.tpl');
+				Template::Show('s3_setup_finished');
 			}
 		}
 		
 		break;
 }	
 
-Template::Show('footer.tpl');
+Template::Show('footer');
