@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h1>Login</h1>
 <form name="loginform" action="<?php echo url('/login');?>" method="post">
 <?php echo "<?xml version='1.0'?>"; ?>

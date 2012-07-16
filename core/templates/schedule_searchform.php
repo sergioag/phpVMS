@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Search Schedules</h3>
 <form id="form" action="<?php echo actionurl('/schedules/view');?>" method="post">
 

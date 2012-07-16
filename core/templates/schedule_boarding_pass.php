@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <?php
 # This will only show this message if it's not a popup window
 # Ends on line 13-15

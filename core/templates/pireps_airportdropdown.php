@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <?php
 if (!$airport_list) {
     echo 'There are no routes for this airline<br />';

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Add Comment to PIREP</h3>
 <form action="<?php echo url('/pireps/viewpireps');?>" method="post">
 <strong>Comment: </strong><br />

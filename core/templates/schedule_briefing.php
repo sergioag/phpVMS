@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Flight Briefing</h3>
 <script src="http://skyvector.com/linkchart.js"></script>
 <table width="98%" align="center" cellpadding="4">

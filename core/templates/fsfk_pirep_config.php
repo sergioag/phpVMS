@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 [WEB_CONFIG]
 ADDRESS=<?php echo actionurl('/fsfk/pirep'); ?>
 

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Schedule Details</h3>
 <div class="indent">
 <strong>Flight Number: </strong> <?php echo $schedule->code.$schedule->flightnum ?><br />
