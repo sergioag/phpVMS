@@ -45,7 +45,7 @@ class TemplateSet {
     public $enable_caching = false;
     public $cache_timeout;
 
-    public $tpl_ext = 'tpl';
+    public $tpl_ext = 'php';
     protected $vars = array();
 
     /*public function __construct($path='')
@@ -209,12 +209,13 @@ class TemplateSet {
      *
      */
     public function getTemplate($tpl_name, $ret = false, $checkskin = true, $force_base = false) {
-        /* See if the file has been over-rided in the skin directory
-        */
+        
         if (strstr($tpl_name, $this->tpl_ext) === false) {
             $tpl_name .= '.'.$this->tpl_ext;
         }
 
+        /* See if the file has been over-rided in the skin directory
+        */
         $tpl_path = $this->template_path . DS . $tpl_name;
         if($checkskin === true && $force_base === false) {
             if(file_exists($this->skin_path.DS.$tpl_name)) {
