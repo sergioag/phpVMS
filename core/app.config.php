@@ -27,6 +27,8 @@
  * View the docs for details about these settings
  */
 
+define('IN_PHPVMS', true);
+
 # Debug mode is off by default
 Config::Set('DEBUG_MODE', false);
 Config::Set('DEBUG_LEVEL', 1); // 1 logs query errors, 2 logs all queries
