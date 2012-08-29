@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <div id="pireplist">
 <?php if($title!='') echo "<h3>$title</h3>"; ?>
 <p><?php if(isset($descrip)) { echo $descrip; }?></p>

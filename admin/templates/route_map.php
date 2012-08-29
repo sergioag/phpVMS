@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Route Map</h3>
 <div class="mapcenter" align="center">
 	<div id="routemap" style="width:600px; height: 480px"></div>

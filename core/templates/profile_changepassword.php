@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Change Password</h3>
 <form action="<?php echo url('/profile');?>" method="post">
 <dl>

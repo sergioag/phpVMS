@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <div id="wrapper">
 <h3><?php echo $pilotinfo->firstname . ' ' . $pilotinfo->lastname; ?></h3>
 <div id="dialogresult"></div>

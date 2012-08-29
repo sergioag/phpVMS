@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <br /><div style="float: right;">
 <form action="<?php echo url('/finances/viewreport'); ?>" method="get">
 <strong>Select Report: </strong>

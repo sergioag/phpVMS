@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>vaCentral Options</h3>
 <p>These are your options for vaCentral. Note that your schedules and PIREPs will automatically export, and you don't need to manually do it.</p>
 

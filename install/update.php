@@ -40,7 +40,7 @@ if(!$CURRENT_VERSION) {
 $CURRENT_VERSION = str_replace('.', '', $CURRENT_VERSION);
 
 Template::SetTemplatePath(SITE_ROOT.'/install/templates');
-Template::Show('header.tpl');
+Template::Show('header');
 
 # Ew
 echo '<h3 align="left">phpVMS Updater</h3>';
@@ -51,7 +51,7 @@ if(!isset($_GET['force']) && !isset($_GET['test'])) {
 		echo '<p>You already have updated! Please delete this /install folder.<br /><br />
 				To force the update to run again, click: <a href="update.php?force">update.php?force</a></p>';
 		
-		Template::Show('footer.tpl');
+		Template::Show('footer');
 		exit;
 	}
 }
@@ -136,4 +136,4 @@ echo '<p><strong>Update completed!</strong></p>
 		<a href="update.php?force">Click here to force the update to run again</a></p>
 	  <p>Click here to <a href="'.SITE_URL.'">goto your site</a>, or <a href="'.SITE_URL.'/admin">your admin panel</a></p>  ';
 
-Template::Show('footer.tpl');
+Template::Show('footer');

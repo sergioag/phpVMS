@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 </ul>
 <h3>Help</h3>
 <p>When you add a schedule, you can add it on a per-airline basis.</p>

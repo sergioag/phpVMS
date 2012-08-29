@@ -209,9 +209,13 @@ class TemplateSet {
      *
      */
     public function getTemplate($tpl_name, $ret = false, $checkskin = true, $force_base = false) {
+
+		if(substr_count($tpl_name, '.tpl') > 0) {
+			$tpl_name = str_replace('.tpl', '.' . $this->tpl_ext, $tpl_name);
+		}
         
-        if (strstr($tpl_name, $this->tpl_ext) === false) {
-            $tpl_name .= '.'.$this->tpl_ext;
+        if (substr_count($tpl_name, '.' . $this->tpl_ext) === 0) {
+            $tpl_name .= '.' . $this->tpl_ext;
         }
 
         /* See if the file has been over-rided in the skin directory

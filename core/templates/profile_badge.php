@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Pilot Badge</h3>
 <p align="center">
 	<img src="<?php echo $badge_url ?>" />

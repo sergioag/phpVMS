@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 [Log]
 Log=<?php echo SITE_URL?>/action.php/acars/fsacars/pirep
 Mail=

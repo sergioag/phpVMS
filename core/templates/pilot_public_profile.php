@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <?php
 if(!$pilot) {
 	echo '<h3>This pilot does not exist!</h3>';

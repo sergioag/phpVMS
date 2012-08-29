@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <!--<h3>Options</h3>
 <ul class="filetree treeview-famfamfam">
 	<li><span class="file">

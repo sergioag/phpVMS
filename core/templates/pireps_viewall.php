@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>PIREPs List</h3>
 <p><?php if(isset($descrip)) { echo $descrip; }?></p>
 <?php

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <div id="wrapper">
 <h3><?php echo $title?></h3>
 <form action="<?php echo adminurl('/operations/schedules');?>" method="post">

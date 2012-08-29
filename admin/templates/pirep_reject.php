@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Reject PIREP</h3>
 <p>Please enter a comment for why you are rejecting this report. It'll be entered in the comments for the report. You do have the option later on to accept this report.</p>
 <form id="form" action="<?php echo SITE_URL?>/admin/action.php/pirepadmin/viewpending" method="post">

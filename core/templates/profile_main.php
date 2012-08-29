@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <div id="mainbox">
 <h3>Pilot Center</h3>
 <div class="indent">

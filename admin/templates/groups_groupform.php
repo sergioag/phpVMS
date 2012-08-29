@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title; ?></h3>
 <form  id="dialogform" action="<?php echo adminaction('/pilotadmin/pilotgroups');?>" method="post">
 

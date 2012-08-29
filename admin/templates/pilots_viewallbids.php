@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Current Open Bids</h3>
 <?php /*echo '<pre>'; print_r($allbids); echo '</pre>';*/ 
 if(!$allbids)

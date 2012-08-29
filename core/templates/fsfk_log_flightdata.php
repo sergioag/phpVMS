@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <div class="fsfk_section_title" >Flight Details</div>
 <table class="fsfk_flightplan">
 <thead>

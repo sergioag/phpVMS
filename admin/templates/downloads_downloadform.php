@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title?></h3>
 <form id="form" method="post" action="<?php echo adminaction('/downloads/overview');?>">
 <dl>

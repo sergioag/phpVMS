@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h2>Log for <?php echo $report->code.$report->pirepid?></h2>
 <div style="overflow: scroll; height: 300px">
 <?php

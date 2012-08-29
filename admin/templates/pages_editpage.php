@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Edit Page</h3>
 <form action="<?php echo adminurl('/sitecms/viewpages');?>" method="post">
 

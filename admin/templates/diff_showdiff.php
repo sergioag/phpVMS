@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>File Diffs</h3>
 
 <p>This is the diff between the two files. Red means deleted. Green means changed. Lines with diffs will show - the top line the stock template (in /core/templates), the one below in the current active skin. You can use this to get an approximate of what is different. </p>

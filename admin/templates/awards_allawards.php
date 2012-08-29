@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Awards</h3>
 <?php
 if(!$awards){ echo 'No awards have been added yet!'; return;}

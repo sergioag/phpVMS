@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Reports</h3>
 
 <h4>VA Stats: At a Glance</h4>

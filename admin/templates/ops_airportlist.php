@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Airports List</h3>
 <div id="results"></div>
 <table id="grid"></table>

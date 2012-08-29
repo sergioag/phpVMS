@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title?></h3>
 
 <form action="<?php echo adminurl('/sitecms/viewnews');?>" method="post">

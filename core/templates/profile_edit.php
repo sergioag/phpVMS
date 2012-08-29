@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Edit Profile</h3>
 <form action="<?php echo url('/profile');?>" method="post" enctype="multipart/form-data">
 <dl>

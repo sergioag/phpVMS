@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 
 <h3>Flight <?php echo $pirep->code . $pirep->flightnum; ?></h3>
 

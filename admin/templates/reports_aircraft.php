@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Aircraft Reports</h3>
 <?php
 if(!is_array($acstats))

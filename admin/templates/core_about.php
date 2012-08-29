@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>About phpVMS</h3>
 <p>phpVMS and the Codon framework are developed by <a href="http://www.nsslive.net" target="_new">Nabeel Shahzad</a>.</p>
 <ul>

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Give Award</h3>
 <?php
 $allawards = AwardsData::GetAllAwards();

@@ -1,5 +1,5 @@
 <?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
-<?php 
+<?php
 /**
  * These are some options for the ACARS map, you can change here
  * 

@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <li><a href="<?php echo url('/'); ?>">home</a></li>
 <?php
 if(!Auth::LoggedIn())

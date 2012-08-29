@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <form action="<?php echo url('/login/forgotpassword');?>" method="post">
 <p><strong>Enter your email address to get a new password: </strong>
 	<input type="text" name="email" />

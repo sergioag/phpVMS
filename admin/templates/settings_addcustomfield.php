@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title ?></h3>
 <p>Add a custom field, that a registrar can fill out on registration, or an admin can add information to.</p>
 <form id="form" method="post" action="<?php echo SITE_URL?>/admin/action.php/settings/customfields">

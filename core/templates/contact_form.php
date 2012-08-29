@@ -1,3 +1,4 @@
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3>Contact Us</h3>
 <form method="post" action="<?php echo url('/contact'); ?>">
   <table width='100%' border='0'>

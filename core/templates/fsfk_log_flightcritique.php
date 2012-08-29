@@ -1,4 +1,5 @@
-<?php 
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
+<?php
 /* This template is for FSFK log for the flight critique.
 	Be careful, it's a bit fragile
 	*/
