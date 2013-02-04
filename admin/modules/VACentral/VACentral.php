@@ -25,11 +25,13 @@ class VACentral extends CodonModule
 	
 	public function index()
 	{
+        $this->checkPermission(EDIT_VACENTRAL);
 		$this->render('vacentral_index.php');
 	}
 	
 	public function sendqueuedpireps()
 	{
+        $this->checkPermission(EDIT_VACENTRAL);
 		echo '<h3>vaCentral PIREP Export</h3>';
 		$pireps = PIREPData::getReportsByExportStatus(false);
 		
@@ -60,6 +62,7 @@ class VACentral extends CodonModule
 	
 	public function sendschedules()
 	{
+        $this->checkPermission(EDIT_VACENTRAL);
 		echo '<h3>Sending schedules...</h3>';
 		
 		$within_timelimit = CronData::check_hoursdiff('update_schedules', CentralData::$limits['update_schedules']);
@@ -77,6 +80,7 @@ class VACentral extends CodonModule
 	
 	public function sendpireps()
 	{
+        $this->checkPermission(EDIT_VACENTRAL);
 		echo '<h3>Sending all PIREPS</h3>';
 		
 		$within_timelimit = CronData::check_hoursdiff('update_pireps', CentralData::$limits['update_pireps']);
