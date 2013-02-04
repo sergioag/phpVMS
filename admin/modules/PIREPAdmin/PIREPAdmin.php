@@ -60,6 +60,7 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewpending() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
 
         $this->set('title', 'Pending Reports');
@@ -78,6 +79,7 @@ class PIREPAdmin extends CodonModule {
 
 
     public function pilotpireps() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
 
         $this->set('pending', false);
@@ -89,11 +91,13 @@ class PIREPAdmin extends CodonModule {
 
 
     public function rejectpirep() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->set('pirepid', $this->get->pirepid);
         $this->render('pirep_reject.php');
     }
 
     public function viewrecent() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->set('title', Lang::gs('pireps.view.recent'));
         $this->set('pireps', PIREPData::GetRecentReports());
         $this->set('descrip', 'These pilot reports are from the past 48 hours');
@@ -105,6 +109,7 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function approveall() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         echo '<h3>Approve All</h3>';
 
@@ -136,6 +141,7 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewall() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
 
         if (!isset($this->get->start) || $this->get->start == '')
@@ -182,6 +188,7 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function editpirep() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->set('pirep', PIREPData::GetReportDetails($this->get->pirepid));
         $this->set('allairlines', OperationsData::GetAllAirlines());
         $this->set('allairports', OperationsData::GetAllAirports());
@@ -194,12 +201,14 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewcomments() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
         $this->render('pireps_comments.php');
     }
 
     public function deletecomment() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         if (!isset($this->post)) {
             return;
@@ -214,12 +223,14 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewlog() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         $this->set('report', PIREPData::GetReportDetails($this->get->pirepid));
         $this->render('pirep_log.php');
     }
 
     public function addcomment() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         if (isset($this->post->submit)) {
             $this->add_comment_post();
@@ -237,6 +248,7 @@ class PIREPAdmin extends CodonModule {
     /* Utility functions */
 
     protected function add_comment_post() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         $comment = $this->post->comment;
         $commenter = Auth::$userinfo->pilotid;
@@ -258,6 +270,7 @@ class PIREPAdmin extends CodonModule {
     }
     
     public function approvepirep($pirepid) {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post->id = $pirepid;
         $this->approve_pirep_post();
         

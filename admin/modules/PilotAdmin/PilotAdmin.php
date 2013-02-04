@@ -196,6 +196,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function pendingpilots() {
+        $this->checkPermission(MODERATE_REGISTRATIONS);
         
         if (isset($this->post->action)) {
             switch ($this->post->action) {
@@ -222,6 +223,8 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function resendemail($show_pending = true) {
+        $this->checkPermission(MODERATE_REGISTRATIONS);
+        $this->checkPermission(EMAIL_PILOTS);
                 
         $pilot = PilotData::getPilotData($this->post->id);
 
@@ -621,6 +624,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function ApprovePilot() {
+        $this->checkPermission(MODERATE_REGISTRATIONS);
         
         PilotData::AcceptPilot($this->post->id);
         RanksData::CalculatePilotRanks();
@@ -652,6 +656,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function RejectPilot() {
+        $this->checkPermission(MODERATE_REGISTRATIONS);
         $pilot = PilotData::GetPilotData($this->post->id);
 
         # Send pilot notification
