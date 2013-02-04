@@ -36,6 +36,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function pilotranks() {
+        $this->checkPermission(EDIT_RANKS);
 		switch ($this->post->action) {
 			case 'addrank':
 				$this->add_rank_post();
@@ -59,6 +60,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function addrank() {
+        $this->checkPermission(EDIT_RANKS);
 		$this->set('title', 'Add Rank');
 		$this->set('action', 'addrank');
 
@@ -66,6 +68,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function editrank() {
+        $this->checkPermission(EDIT_RANKS);
 		$this->set('title', 'Edit Rank');
 		$this->set('action', 'editrank');
 		$this->set('rank', RanksData::GetRankInfo($this->get->rankid));
@@ -74,6 +77,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function awards() {
+        $this->checkPermission(EDIT_AWARDS);
 		if (isset($this->post->action)) {
 			switch ($this->post->action) {
 				case 'addaward':
@@ -97,6 +101,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function addaward() {
+        $this->checkPermission(EDIT_AWARDS);
 
 		$this->set('title', 'Add Award');
 		$this->set('action', 'addaward');
@@ -106,6 +111,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function editaward() {
+        $this->checkPermission(EDIT_AWARDS);
 		$this->set('title', 'Edit Award');
 		$this->set('action', 'editaward');
 		$this->set('award', AwardsData::GetAwardDetail($this->get->awardid));
@@ -117,6 +123,7 @@ class PilotRanking extends CodonModule {
 	/* Utility functions */
 
 	protected function add_rank_post() {
+        $this->checkPermission(EDIT_RANKS);
 
 		if ($this->post->minhours == '' || $this->post->rank == '') {
 			$this->set('message', 'Hours and Rank must be blank');
@@ -147,6 +154,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	protected function edit_rank_post() {
+        $this->checkPermission(EDIT_RANKS);
 		if ($this->post->minhours == '' || $this->post->rank == '') {
 			$this->set('message', 'Hours and Rank must be blank');
 			$this->render('core_error.php');
@@ -176,6 +184,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	protected function add_award_post() {
+        $this->checkPermission(EDIT_AWARDS);
 		if ($this->post->name == '' || $this->post->image == '') {
 			$this->set('message', 'The name and image must be entered');
 			$this->render('core_error.php');
@@ -191,6 +200,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	protected function edit_award_post() {
+        $this->checkPermission(EDIT_AWARDS);
 		if ($this->post->name == '' || $this->post->image == '') {
 			$this->set('message', 'The name and image must be entered');
 			$this->render('core_error.php');

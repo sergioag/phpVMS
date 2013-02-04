@@ -267,6 +267,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function addairport() {
+        $this->checkPermission(EDIT_SCHEDULES);
         $this->set('title', 'Add Airport');
         $this->set('action', 'addairport');
 
