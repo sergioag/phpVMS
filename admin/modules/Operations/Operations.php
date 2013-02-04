@@ -105,6 +105,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function addaircraft() {
+        $this->checkPermission(EDIT_FLEET);
         
         $this->set('title', 'Add Aircraft');
         $this->set('action', 'addaircraft');
@@ -118,7 +119,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function editaircraft() {
-        
+        $this->checkPermission(EDIT_FLEET);
         $id = $this->get->id;
 
         $this->set('aircraft', OperationsData::GetAircraftInfo($id));
@@ -134,6 +135,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function addairline() {
+        $this->checkPermission(EDIT_AIRLINES);
         $this->set('title', 'Add Airline');
         $this->set('action', 'addairline');
         $this->render('ops_airlineform.php');
@@ -145,6 +147,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function editairline() {
+        $this->checkPermission(EDIT_AIRLINES);
         $this->set('title', 'Edit Airline');
         $this->set('action', 'editairline');
         $this->set('airline', OperationsData::GetAirlineByID($this->get->id));
@@ -221,7 +224,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function airlines() {
-        
+        $this->checkPermission(EDIT_AIRLINES);
         if (isset($this->post->action)) {
             if ($this->post->action == 'addairline') {
                 $this->add_airline_post();
@@ -240,6 +243,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function aircraft() {
+        $this->checkPermission(EDIT_FLEET);
         /* If they're adding an aircraft, go through this pain
         */
         switch ($this->post->action) {
@@ -399,6 +403,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function addschedule() {
+        $this->checkPermission(EDIT_SCHEDULES);
         $this->set('title', 'Add Schedule');
         $this->set('action', 'addschedule');
 
@@ -442,6 +447,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function editschedule() {
+        $this->checkPermission(EDIT_SCHEDULES);
         $id = $this->get->id;
 
         $this->set('title', 'Edit Schedule');
@@ -463,6 +469,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function activeschedules() {
+        $this->checkPermission(EDIT_SCHEDULES);
         $this->schedules('activeschedules');
     }
 
@@ -472,6 +479,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function inactiveschedules() {
+        $this->checkPermission(EDIT_SCHEDULES);
         $this->schedules('inactiveschedules');
     }
 
@@ -481,6 +489,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function schedulegrid() {
+        $this->checkPermission(EDIT_SCHEDULES);
         $page = $this->get->page; // get the requested page
         $limit = $this->get->rows; // get how many rows we want to have into the grid
         $sidx = $this->get->sidx; // get index row - i.e. user click to sort
@@ -565,6 +574,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function schedules($type = 'activeschedules') {
+        $this->checkPermission(EDIT_SCHEDULES);
         /* These are loaded in popup box */
         if ($this->get->action == 'viewroute') {
             $id = $this->get->id;
@@ -654,6 +664,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function add_airline_post() {
+        $this->checkPermission(EDIT_AIRLINES);
         $this->post->code = strtoupper($this->post->code);
 
         if ($this->post->code == '' || $this->post->name == '') {
@@ -694,6 +705,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function edit_airline_post() {
+        $this->checkPermission(EDIT_AIRLINES);
         $this->post->code = strtoupper($this->post->code);
 
         if ($this->post->code == '' || $this->post->name == '') {
@@ -734,6 +746,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function add_aircraft_post() {
+        $this->checkPermission(EDIT_FLEET);
         
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->fullname ==
             '' || $this->post->registration == '') {
@@ -796,6 +809,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function edit_aircraft_post() {
+        $this->checkPermission(EDIT_FLEET);
         if ($this->post->id == '') {
             $this->set('message', 'Invalid ID specified');
             $this->render('core_error.php');
@@ -929,6 +943,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function add_schedule_post() {
+        $this->checkPermission(EDIT_SCHEDULES);
         
         if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->deptime ==
             '' || $this->post->arrtime == '' || $this->post->depicao == '' || $this->post->arricao ==
@@ -1042,6 +1057,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function edit_schedule_post() {
+        $this->checkPermission(EDIT_SCHEDULES);
         if ($this->post->code == '' || $this->post->flightnum == '' || $this->post->deptime ==
             '' || $this->post->arrtime == '' || $this->post->depicao == '' || $this->post->arricao ==
             '') {
@@ -1138,6 +1154,7 @@ class Operations extends CodonModule {
      * @return
      */
     protected function delete_schedule_post() {
+        $this->checkPermission(EDIT_SCHEDULES);
 
         $schedule = SchedulesData::findSchedules(array('s.id' => $this->post->id));
         SchedulesData::DeleteSchedule($this->post->id);
