@@ -37,7 +37,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function viewnews() {
-
+        $this->checkPermission(EDIT_NEWS);
 		$isset = isset($this->post->action);
 
 		if($isset && $this->post->action == 'addnews') {
@@ -64,6 +64,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function addnews() {
+        $this->checkPermission(EDIT_NEWS);
 		$this->set('title', Lang::gs('news.add.title'));
 		$this->set('action', 'addnews');
 		
@@ -71,6 +72,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function editnews() {
+        $this->checkPermission(EDIT_NEWS);
 		$this->set('title', Lang::gs('news.edit.title'));
 		$this->set('action', 'editnews');
 		$this->set('newsitem', SiteData::GetNewsItem($this->get->id));
@@ -79,6 +81,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function addpageform() {
+        $this->checkPermission(EDIT_PAGES);
 		$this->set('title', Lang::gs('page.add.title'));
 		$this->set('action', 'addpage');
 		
@@ -86,7 +89,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function editpage() {
-
+        $this->checkPermission(EDIT_PAGES);
 		$page = SiteData::GetPageData( $this->get->pageid);
 		$this->set('pagedata', $page);
 		$this->set('content', @file_get_contents(PAGES_PATH . '/' . $page->filename . PAGE_EXT));
@@ -99,7 +102,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function deletepage() {
-
+        $this->checkPermission(EDIT_PAGES);
 		if(SiteData::DeletePage( $this->get->pageid) == false) {
 			$this->set('message', Lang::gs('page.error.delete'));
 			$this->render('core_error.php');
@@ -112,7 +115,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	public function viewpages() {
-		
+        $this->checkPermission(EDIT_PAGES);
 		/* This is the actual adding page process
 		 */
 		if(isset($this->post->action)) {
@@ -149,7 +152,7 @@ class SiteCMS extends CodonModule
 	}
 
 	public function bumpnews() {
-
+        $this->checkPermission(EDIT_NEWS);
 		$id = $this->get->id;
 
 		SiteData::bumpNewsItem($id);
@@ -161,7 +164,7 @@ class SiteCMS extends CodonModule
 	 * This is the function for adding the actual page
 	 */
 	protected function add_page_post() {
-		
+        $this->checkPermission(EDIT_PAGES);
 		$public = ($this->post->public == 'true') ? true : false;
 		$enabled = ($this->post->enabled == 'true') ? true : false;
 		
@@ -190,6 +193,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	protected function edit_page_post() {
+        $this->checkPermission(EDIT_PAGES);
 		$public = ($this->post->public == 'true') ? true : false;
 		$enabled = ($this->post->enabled == 'true') ? true : false;
 		
@@ -205,7 +209,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	protected function AddNewsItem() {
-
+        $this->checkPermission(EDIT_NEWS);
 		if($this->post->subject == '')
 			return;
 		
@@ -222,7 +226,7 @@ class SiteCMS extends CodonModule
 	}
 	
 	protected function DeleteNewsItem() {
-
+        $this->checkPermission(EDIT_NEWS);
 		if(!SiteData::DeleteItem($this->post->id)) {
 			$this->set('message', Lang::gs('news.delete.error'));
 			$this->render('core_error.php');

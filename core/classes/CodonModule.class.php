@@ -42,10 +42,10 @@
  */
 class CodonModule
 {
-	public static $post;
-	public static $get;
-	public static $controller;
-	public static $activeModule;
+	public $post;
+	public $get;
+	public $controller;
+	public $activeModule;
 	public $action;
 	
 	public $title;
@@ -132,7 +132,7 @@ class CodonModule
     }
     
     private function checkPerm($perm){
-        if(!PilotGroups::group_has_perm(Auth::$usergroups, $permission)) {
+        if(!PilotGroups::group_has_perm(Auth::$usergroups, $perm)) {
         	Debug::showCritical('Unauthorized access - Invalid Permissions.');
         	die();
         }
