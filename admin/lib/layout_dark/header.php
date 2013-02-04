@@ -12,7 +12,7 @@
 	title="latest pilot registrations" type="application/rss+xml" />
 
 <?php
-Template::Show('core_htmlhead.tpl');
+Template::Show('core_htmlhead.php');
 ?>
 <link href="<?php echo SITE_URL?>/admin/lib/layout/styles.css" rel="stylesheet" type="text/css" />
 <!--[if IE]>
@@ -25,7 +25,7 @@ Template::Show('core_htmlhead.tpl');
 
 <body>
 <?php
-Template::Show('core_htmlreq.tpl');
+Template::Show('core_htmlreq.php');
 ?>
 <div id="container">
  	<div id="header">
@@ -33,7 +33,7 @@ Template::Show('core_htmlreq.tpl');
 	</div>
   <div id="sidebar">
 	<?php
-	Template::Show('core_sidebar.tpl');
+	Template::Show('core_sidebar.php');
 	?>
 	<h3>Options</h3>
 	
@@ -45,7 +45,7 @@ Template::Show('core_htmlreq.tpl');
 	</ul>
 	<ul id="slidermenu" class="menu">
 		<?php
-		Template::Show('core_navigation.tpl');
+		Template::Show('core_navigation.php');
 		?>
 	</ul>
 	<ul class="menu">

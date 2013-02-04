@@ -15,7 +15,7 @@
   </div>
 </div>
 <?php
-Template::Show('core_footer.tpl');
+Template::Show('core_footer.php');
 ?>
 
 </body>

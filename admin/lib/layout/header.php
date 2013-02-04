@@ -10,7 +10,7 @@
 <link rel="alternate" href="<?php echo SITE_URL?>/lib/rss/latestpilots.rss" title="latest pilot registrations" type="application/rss+xml" />
 
 <?php
-Template::Show('core_htmlhead.tpl');
+Template::Show('core_htmlhead.php');
 ?>
 
 <link href="<?php echo SITE_URL?>/admin/lib/css/flick/jquery-ui-1.8.custom.css" rel="stylesheet" type="text/css" />
@@ -25,7 +25,7 @@ Template::Show('core_htmlhead.tpl');
 
 <body>
 <?php
-Template::Show('core_htmlreq.tpl');
+Template::Show('core_htmlreq.php');
 ?>
 <div id="container">
  	<div id="header">
@@ -34,7 +34,7 @@ Template::Show('core_htmlreq.tpl');
 	
   <div id="sidebar">
 	<?php
-	Template::Show('core_sidebar.tpl');
+	Template::Show('core_sidebar.php');
 	?>
 	
 	<h3 >Options</h3>
@@ -46,7 +46,7 @@ Template::Show('core_htmlreq.tpl');
 	</ul>
 	<ul id="slidermenu" class="menu">
 	<?php
-	Template::Show('core_navigation.tpl');
+	Template::Show('core_navigation.php');
 	?>
 	</ul>
 	<ul class="menu">

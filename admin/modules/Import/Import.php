@@ -24,21 +24,21 @@ class Import extends CodonModule {
             case '':
             default:
             case 'processimport':
-                $this->set('sidebar', 'sidebar_import.tpl');
+                $this->set('sidebar', 'sidebar_import.php');
                 break;
 
             case 'importaircraft':
-                $this->set('sidebar', 'sidebar_aircraft.tpl');
+                $this->set('sidebar', 'sidebar_aircraft.php');
                 break;
         }
     }
 
     public function index() {
-        $this->render('import_form.tpl');
+        $this->render('import_form.php');
     }
 
     public function export() {
-        $this->render('export_form.tpl');
+        $this->render('export_form.php');
     }
 
 	/**
@@ -104,7 +104,7 @@ class Import extends CodonModule {
     public function importaircraft() {
 
         if (!file_exists($_FILES['uploadedfile']['tmp_name'])) {
-            $this->render('import_aircraftform.tpl');
+            $this->render('import_aircraftform.php');
             return;
         }
 
@@ -218,7 +218,7 @@ class Import extends CodonModule {
 
         if (!file_exists($_FILES['uploadedfile']['tmp_name'])) {
             $this->set('message', 'File upload failed!');
-            $this->render('core_error.tpl');
+            $this->render('core_error.php');
             return;
         }
 

@@ -20,12 +20,12 @@ class VACentral extends CodonModule
 {
 	public function HTMLHead()
 	{
-		$this->set('sidebar', 'sidebar_central.tpl');
+		$this->set('sidebar', 'sidebar_central.php');
 	}
 	
 	public function index()
 	{
-		$this->render('vacentral_index.tpl');
+		$this->render('vacentral_index.php');
 	}
 	
 	public function sendqueuedpireps()
