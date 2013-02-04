@@ -40,6 +40,7 @@ class Finance extends CodonModule {
     }
 
     public function viewexpensechart() {
+        $this->checkPermission(VIEW_FINANCES);
         $type = $this->get->type;
         $type = str_replace('m', '', $type);
         $check = date('Ym', $type);
@@ -63,6 +64,7 @@ class Finance extends CodonModule {
     }
 
     public function viewmonthchart() {
+        $this->checkPermission(VIEW_FINANCES);
         $params = $this->formfilter();
 
         /**
@@ -110,6 +112,7 @@ class Finance extends CodonModule {
     }
 
     public function viewreport() {
+        $this->checkPermission(VIEW_FINANCES);
         $type = $this->get->type;
         $params = $this->formfilter();
 
@@ -156,6 +159,7 @@ class Finance extends CodonModule {
     }
 
     protected function getmonthly($yearmonth) {
+        $this->checkPermission(VIEW_FINANCES);
         $params = array('p.accepted' => PIREP_ACCEPTED, "DATE_FORMAT(p.submitdate, '%Y%m') = '{$yearmonth}'");
 
         $params = array_merge($params, $this->formfilter());
@@ -169,6 +173,7 @@ class Finance extends CodonModule {
      * If there's nothing for that month, then blank it 
      */
     protected function getyearly($year) {
+        $this->checkPermission(VIEW_FINANCES);
         $params = $this->formfilter();
         $all_finances = array();
 
@@ -220,6 +225,7 @@ class Finance extends CodonModule {
     }
 
     public function viewexpenses() {
+        $this->checkPermission(VIEW_FINANCES);
         if ($this->post->action == 'addexpense' || $this->post->action == 'editexpense') {
             $this->processExpense();
         }
@@ -237,6 +243,7 @@ class Finance extends CodonModule {
     }
 
     public function addexpense() {
+        $this->checkPermission(EDIT_EXPENSES);
         $this->set('title', 'Add Expense');
         $this->set('action', 'addexpense');
 
@@ -244,6 +251,7 @@ class Finance extends CodonModule {
     }
 
     public function editexpense($id) {
+        $this->checkPermission(EDIT_EXPENSES);
         $this->set('title', 'Edit Expense');
         $this->set('action', 'editexpense');
         $this->set('expense', FinanceData::getExpenseDetail($id));
@@ -252,6 +260,7 @@ class Finance extends CodonModule {
     }
 
     public function processExpense() {
+        $this->checkPermission(EDIT_EXPENSES);
         if ($this->post->name == '' || $this->post->cost == '') {
             $this->set('message', 'Name and cost must be entered');
             $this->render('core_error.php');

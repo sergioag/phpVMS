@@ -59,6 +59,7 @@ class Downloads extends CodonModule {
 	}
 
 	public function addcategory() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Add Category');
 		$this->set('action', 'addcategory');
 
@@ -67,6 +68,7 @@ class Downloads extends CodonModule {
 	}
 
 	public function adddownload() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Add Download');
 		$this->set('allcategories', DownloadData::GetAllCategories());
 		$this->set('action', 'adddownload');
@@ -75,6 +77,7 @@ class Downloads extends CodonModule {
 	}
 
 	public function editcategory() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Edit Category');
 		$this->set('action', 'editcategory');
 		$this->set('category', DownloadData::GetAsset($this->get->id));
@@ -83,6 +86,7 @@ class Downloads extends CodonModule {
 	}
 
 	public function editdownload() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Edit Download');
 		$this->set('action', 'editdownload');
 		$this->set('allcategories', DownloadData::GetAllCategories());
@@ -92,6 +96,7 @@ class Downloads extends CodonModule {
 	}
 
 	protected function AddCategoryPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '') {
 			$this->set('message', 'No category name entered!');
 			$this->render('core_error.php');
@@ -111,6 +116,7 @@ class Downloads extends CodonModule {
 	}
 
 	protected function EditCategoryPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '') {
 			$this->set('message', 'No category name entered!');
 			$this->render('core_error.php');
@@ -133,6 +139,7 @@ class Downloads extends CodonModule {
 	}
 
 	protected function DeleteCategoryPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->id == '') {
 			$this->set('message', 'Invalid category!');
 			$this->render('core_error.php');
@@ -146,6 +153,7 @@ class Downloads extends CodonModule {
 	}
 
 	protected function AddDownloadPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '' || $this->post->link == '') {
 			$this->set('message', 'Link and name must be entered');
 			$this->render('core_error.php');
@@ -164,6 +172,7 @@ class Downloads extends CodonModule {
 	}
 
 	protected function EditDownloadPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '' || $this->post->link == '') {
 			$this->set('message', 'Link and name must be entered!');
 			$this->render('core_error.php');
@@ -179,6 +188,7 @@ class Downloads extends CodonModule {
 	}
 
 	protected function DeleteDownloadPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$params = array();
 		if ($this->post->id == '') {
 			$params['status'] = 'Invalid Download ID';
