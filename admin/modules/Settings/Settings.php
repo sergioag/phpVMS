@@ -46,6 +46,7 @@ class Settings extends CodonModule {
 	}
 	
 	public function settings() {
+        $this->checkPermission(EDIT_SETTINGS);
 
 		if(isset($this->post->action)) {
 			switch($this->post->action) {
@@ -64,6 +65,7 @@ class Settings extends CodonModule {
 	
 	
 	public function addfield() {
+        $this->checkPermission(EDIT_PROFILE_FIELDS);
 		$this->set('title', Lang::gs('settings.add.field'));
 		$this->set('action', 'addfield');
 		
@@ -71,6 +73,7 @@ class Settings extends CodonModule {
 	}
 	
 	public function editfield() {
+        $this->checkPermission(EDIT_PROFILE_FIELDS);
 		$this->set('title', Lang::gs('settings.edit.field'));
 		$this->set('action', 'savefield');
 		$this->set('field', SettingsData::GetField($this->get->id));
@@ -80,12 +83,14 @@ class Settings extends CodonModule {
 	
 	
 	public function addpirepfield() {
+        $this->checkPermission(EDIT_PIREPS_FIELDS);
 		$this->set('title', Lang::gs('pirep.field.add'));
 		$this->set('action', 'addfield');
 		$this->render('settings_addpirepfield.php');
 	}
 	
 	public function editpirepfield() {
+        $this->checkPermission(EDIT_PIREPS_FIELDS);
 		$this->set('title', Lang::gs('pirep.field.edit'));
 		$this->set('action', 'savefields');
 		$this->set('field', PIREPData::GetFieldInfo($this->get->id));
@@ -94,6 +99,7 @@ class Settings extends CodonModule {
 	}
 	
 	public function pirepfields() {
+        $this->checkPermission(EDIT_PIREPS_FIELDS);
 
 		switch($this->post->action) {
 			case 'savefields':
@@ -113,6 +119,7 @@ class Settings extends CodonModule {
 	}
 	
 	public function customfields() {
+        $this->checkPermission(EDIT_PROFILE_FIELDS);
 
 		switch($this->post->action) {
 			case 'savefield':
