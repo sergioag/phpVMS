@@ -26,11 +26,13 @@ class MassMailer extends CodonModule {
 	}
 
 	public function index() {
+        $this->checkPermission(EMAIL_PILOTS);
 		$this->set('allgroups', PilotGroups::getAllGroups());
 		$this->render('mailer_form.php');
 	}
 
 	public function sendmail() {
+        $this->checkPermission(EMAIL_PILOTS);
 		echo '<h3>Sending email</h3>';
 		if ($this->post->subject == '' || trim($this->post->message) == '') {
 			$this->set('message', 'You must enter a subject and message!');
