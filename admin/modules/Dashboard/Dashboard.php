@@ -32,7 +32,6 @@ class Dashboard extends CodonModule {
     public function index() {
         /* Dashboard.tpl calls the functions below
         */
-        $this->checkPermission(0);
         $this->CheckForUpdates();
         CentralData::send_vastats();
 
