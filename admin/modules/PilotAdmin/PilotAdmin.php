@@ -106,6 +106,7 @@ class PilotAdmin extends CodonModule {
                 $this->AddPilotToGroup();
                 $this->SetGroupsData($this->post->pilotid);
                 $this->render('pilots_groups.php');
+                $this->render('pilots_addtogroup.tpl');
                 return;
 
                 break;
@@ -116,7 +117,7 @@ class PilotAdmin extends CodonModule {
 
                 $this->SetGroupsData($this->post->pilotid);
                 $this->render('pilots_groups.php');
-
+                $this->render('pilots_addtogroup.tpl');
                 return;
 
                 break;
@@ -459,6 +460,13 @@ class PilotAdmin extends CodonModule {
      */
     protected function ViewPilotDetails() {
         //This is for the main tab
+        
+        if(
+        PilotGroups::group_has_perm(Auth::$usergroups, EDIT_PILOTS) ||
+        PilotGroups::group_has_perm(Auth::$usergroups, EDIT_GROUPS) ||
+        PilotGroups::group_has_perm(Auth::$usergroups, EDIT_AWARDS) ||
+        PilotGroups::group_has_perm(Auth::$usergroups, MODERATE_PIREPS)
+        ) {
         $this->set('pilotinfo', PilotData::GetPilotData($this->get->pilotid));
         $this->set('customfields', PilotData::GetFieldData($this->get->pilotid, true));
         $this->set('allawards', AwardsData::GetPilotAwards($this->get->pilotid));
@@ -472,6 +480,10 @@ class PilotAdmin extends CodonModule {
         $this->set('load', 'pilotpireps');
 
         $this->render('pilots_detailtabs.php');
+        }else{
+        	Debug::showCritical('Unauthorized access - Invalid Permissions.');
+        	die();
+        }
     }
 
     /**
