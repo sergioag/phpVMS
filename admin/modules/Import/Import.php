@@ -214,6 +214,7 @@ class Import extends CodonModule {
     }
 
     public function processimport() {
+        $this->checkPermission(IMPORT_SCHEDULES);
         echo '<h3>Processing Import</h3>';
 
         if (!file_exists($_FILES['uploadedfile']['tmp_name'])) {
