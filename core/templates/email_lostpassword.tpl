@@ -1,8 +1,8 @@
-Dear <?php echo $firstname .' '. $lastname; ?>,
+Estimado(a) <?php echo $firstname .' '. $lastname; ?>,
 
-Your password was reset, it is: <?php echo $newpw?>
+Su contraseña ha sido reestablecida, ahora es: <?php echo $newpw?>
 
-You can login with this new password and change it.
+Puede ingresar con esta nueva contraseña y cambiarla.
 
-Thanks!
-<?php echo SITE_NAME?> Staff
+¡Gracias!
+El equipo de <?php echo SITE_NAME?>
