@@ -54,11 +54,12 @@ var acars_map_defaults = {
 	<tr>
 		<td><b>Piloto</b></td>
 		<td><b>Número de Vuelo</b></td>
+		<td><b>Equipo</b></td>
 		<td><b>Origen</b></td>
 		<td><b>Destino</b></td>
-		<td><b>Estado</b></td>
 		<td><b>Altitud</b></td>
 		<td><b>Velocidad</b></td>
+		<td><b>Estado</b></td>
 		<td><b>Distancia/Tiempo Restante</b></td>
 	</tr>
 </thead>
@@ -101,11 +102,12 @@ var acars_map_defaults = {
 <tr class="<%=flight.trclass%>">
 <td><a href="<?php echo url('/profile/view');?>/<%=flight.pilotid%>"><%=flight.pilotid%> - <%=flight.pilotname%></a></td>
 <td><%=flight.flightnum%></td>
+<td><%=flight.aircraftname%></td>
 <td><%=flight.depicao%></td>
 <td><%=flight.arricao%></td>
-<td><%=flight.phasedetail%></td>
 <td><%=flight.alt%></td>
 <td><%=flight.gs%></td>
+<td><%=flight.phasedetail%></td>
 <td><%=flight.distremaining%> <?php echo Config::Get('UNITS');?> / <%=flight.timeremaining%></td>
 </tr>
 </script>
