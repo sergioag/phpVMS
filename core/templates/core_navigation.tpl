@@ -1,4 +1,4 @@
-<li><a href="<?php echo url('/'); ?>">home</a></li>
+<li><a href="<?php echo url('/'); ?>">Inicio</a></li>
 <?php
 if(!Auth::LoggedIn())
 {
