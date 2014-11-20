@@ -1,23 +1,23 @@
-<h3>Edit Profile</h3>
+<h3>Editar Perfil</h3>
 <form action="<?php echo url('/profile');?>" method="post" enctype="multipart/form-data">
 <dl>
-	<dt>Name</dt>
+	<dt>Nombre</dt>
 	<dd><?php echo $userinfo->firstname . ' ' . $userinfo->lastname;?></dd>
 	
-	<dt>Airline</dt>
+	<dt>Aerolínea</dt>
 	<dd><?php echo $userinfo->code?>
-		<p>To request a change, contact your admin</p>
+		<p>Para solicitar un cambio, contacte a un administrador</p>
 	</dd>
 	
-	<dt>Email Address</dt>
+	<dt>Dirección de Email</dt>
 	<dd><input type="text" name="email" value="<?php echo $userinfo->email;?>" />
 		<?php
 			if(isset($email_error) && $email_error == true)
-				echo '<p class="error">Please enter your email address</p>';
+				echo '<p class="error">Por favor ingrese su dirección de email</p>';
 		?>
 	</dd>
 	
-	<dt>Location</dt>
+	<dt>Ubicación</dt>
 	<dd><select name="location">
 		<?php
 		foreach($countries as $countryCode=>$countryName)
@@ -33,11 +33,11 @@
 		</select>
 		<?php
 			if(isset($location_error) &&  $location_error == true)
-				echo '<p class="error">Please enter your location</p>';
+				echo '<p class="error">Por favor ingrese su ubicación</p>';
 		?>
 	</dd>
 	
-	<dt>Signature Background</dt>
+	<dt>Fondo para la firma</dt>
 	<dd><select name="bgimage">
 		<?php
 		foreach($bgimages as $image)
@@ -103,13 +103,13 @@
 	<dt>Avatar:</dt>
 	<dd><input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Config::Get('AVATAR_FILE_SIZE');?>" />
 		<input type="file" name="avatar" size="40"> 
-		<p>Your image will be resized to <?php echo Config::Get('AVATAR_MAX_HEIGHT').'x'.Config::Get('AVATAR_MAX_WIDTH');?>px</p>
+		<p>Su imágen será redimensionada a <?php echo Config::Get('AVATAR_MAX_HEIGHT').'x'.Config::Get('AVATAR_MAX_WIDTH');?>px</p>
 	</dd>
-	<dt>Current Avatar:</dt>
+	<dt>Avatar Actual:</dt>
 	<dd><?php	
 			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png'))
 			{
-				echo 'None selected';
+				echo 'Ninguno seleccionado';
 			}
 			else
 			{
@@ -120,6 +120,6 @@
 		?>
 	<dt></dt>
 	<dd><input type="hidden" name="action" value="saveprofile" />
-		<input type="submit" name="submit" value="Save Changes" /></dd>
+		<input type="submit" name="submit" value="Guardar Cambios" /></dd>
 </dl>
 </form>
