@@ -1,28 +1,28 @@
-<h3>PIREPs List</h3>
+<h3>Lista de PIREPs</h3>
 <p><?php if(isset($descrip)) { echo $descrip; }?></p>
 <?php
 if(!$pireps)
 {
-	echo '<p>No reports have been found</p>';
+	echo '<p>No se han encontrado reportes</p>';
 	return;
 }
 ?>
 <table id="tabledlist" class="tablesorter">
 <thead>
 <tr>
-	<th>Flight Number</th>
-	<th>Departure</th>
-	<th>Arrival</th>
-	<th>Aircraft</th>
-	<th>Flight Time</th>
-	<th>Submitted</th>
-	<th>Status</th>
+	<th>Número de Vuelo</th>
+	<th>Salida</th>
+	<th>Llegada</th>
+	<th>Aeronave</th>
+	<th>Tiempo de Vuelo</th>
+	<th>Fecha de Envío</th>
+	<th>Estado</th>
 	<?php
 	// Only show this column if they're logged in, and the pilot viewing is the
 	//	owner/submitter of the PIREPs
 	if(Auth::LoggedIn() && Auth::$userinfo->pilotid == $userinfo->pilotid)
 	{
-		echo '<th>Options</th>';
+		echo '<th>Opciones</th>';
 	}
 	?>
 </tr>
@@ -45,13 +45,13 @@ foreach($pireps as $report)
 		<?php
 		
 		if($report->accepted == PIREP_ACCEPTED)
-			echo '<div id="success">Accepted</div>';
+			echo '<div id="success">Aceptado</div>';
 		elseif($report->accepted == PIREP_REJECTED)
-			echo '<div id="error">Rejected</div>';
+			echo '<div id="error">Rechazado</div>';
 		elseif($report->accepted == PIREP_PENDING)
-			echo '<div id="error">Approval Pending</div>';
+			echo '<div id="error">Aprobación Pendiente</div>';
 		elseif($report->accepted == PIREP_INPROGRESS)
-			echo '<div id="error">Flight in Progress</div>';
+			echo '<div id="error">Vuelo en Progreso</div>';
 		
 		?>
 	</td>
@@ -62,8 +62,8 @@ foreach($pireps as $report)
 	{
 		?>
 	<td align="right">
-		<a href="<?php echo url('/pireps/addcomment?id='.$report->pirepid);?>">Add Comment</a><br />
-		<a href="<?php echo url('/pireps/editpirep?id='.$report->pirepid);?>">Edit PIREP</a>
+		<a href="<?php echo url('/pireps/addcomment?id='.$report->pirepid);?>">Agregar Comentario</a><br />
+		<a href="<?php echo url('/pireps/editpirep?id='.$report->pirepid);?>">Editar PIREP</a>
 	</td>
 	<?php
 	}
