@@ -3,7 +3,7 @@
 <?php 
 if(!$allcategories)
 {
-	echo 'There are no downloads available!';
+	echo '¡No hay descargas disponibles!';
 	return;
 }
 
@@ -19,7 +19,7 @@ foreach($allcategories as $category)
 	
 	if(!$alldownloads)
 	{
-		echo 'There are no downloads under this category';
+		echo 'No hay descargas en esta categoría';
 		$alldownloads = array();
 	}
 	
@@ -30,7 +30,7 @@ foreach($allcategories as $category)
 		<a href="<?php echo url('/downloads/dl/'.$download->id);?>">
 			<?php echo $download->name?></a><br />
 	      <?php echo $download->description?><br />
-          <em>Downloaded <?php echo $download->hits?> times</em></li>
+          <em>Descargado <?php echo $download->hits?> veces</em></li>
 <?php
 	}
 ?><br />
