@@ -1,5 +1,5 @@
 <div align="center">
-<p>Your download will start in a few seconds, or <a href="<?php echo $download->link;?>">click here to manually start.</a></p>
+<p>Su descarga iniciará en unos segundos, o <a href="<?php echo $download->link;?>">haga click aquí</a> para inicialmente manualmente.</p>
 </div>
 
 <script type="text/javascript"> 
