@@ -1,2 +1,2 @@
-<h3>Error Registering</h3>
+<h3>Error Registrando</h3>
 <p><?php echo $error; ?></p>
