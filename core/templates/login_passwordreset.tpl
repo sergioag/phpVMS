@@ -1,2 +1,2 @@
-<h3>Password Reset</h3>
-<p>Your new password has been sent to your email!</p>
+<h3>Recuperar Contraseña</h3>
+<p>¡Su nueva contraseña ha sido enviada a su email!</p>
