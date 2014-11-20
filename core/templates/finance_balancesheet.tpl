@@ -5,21 +5,21 @@ Template::Show('finance_header.tpl');
 <table width="600px" class="balancesheet" cellpadding="0" cellspacing="0">
 
 	<tr class="balancesheet_header">
-		<td align="" colspan="2">Cash and Sales</td>
+		<td align="" colspan="2">Efectivo y Ventas</td>
 	</tr>
 	<tr>
-		<td align="right">Gross Revenue Flights: <br />
-			Total number of flights: <?php echo $month_data->total; ?>
+		<td align="right">Ingresos Brutos de Vuelos: <br />
+			Número total de vuelos: <?php echo $month_data->total; ?>
 		</td>
 		<td align="right" valign="top"><?php echo FinanceData::FormatMoney($month_data->gross);?></td>
 	</tr>
 	
 	<tr>
-		<td align="right">Pilot Payments: </td>
+		<td align="right">Pagos de Pilotos: </td>
 		<td align="right"> <?php echo str_replace('$', Config::Get('MONEY_UNIT'), FinanceData::FormatMoney(-1*$month_data->pilotpay));?></td>
 	</tr>
 	<tr>
-		<td align="right">Fuel Costs: </td>
+		<td align="right">Costos de Combustible: </td>
 		<td align="right"> <?php echo str_replace('$', Config::Get('MONEY_UNIT'), FinanceData::FormatMoney(-1*$month_data->fuelprice));?></td>
 	</tr>
 	
@@ -35,7 +35,7 @@ Template::Show('finance_header.tpl');
 	</tr>
 	
 	<tr class="balancesheet_header">
-		<td align="" colspan="2">Expenses (Monthly)</td>
+		<td align="" colspan="2">Gastos (Mensual)</td>
 	</tr>
 
 <?php
@@ -45,7 +45,7 @@ Template::Show('finance_header.tpl');
 		$month_data->expenses = array();
 		?>
 		<tr>
-		<td align="right">None</td>
+		<td align="right">Ninguno</td>
 		<td align="right"> <?php echo str_replace('$', Config::Get('MONEY_UNIT'), FinanceData::FormatMoney(0));?></td>
 	</tr>
 	<?php
@@ -69,12 +69,12 @@ Template::Show('finance_header.tpl');
 		<td align="" colspan="2" style="padding: 1px;"></td>
 	</tr>
 	<tr>
-		<td align="right"><strong>Expenses Total:</strong></td>
+		<td align="right"><strong>Total de Gastos:</strong></td>
 		<td align="right"> <?php echo str_replace('$', Config::Get('MONEY_UNIT'), FinanceData::FormatMoney(-1 * $month_data->expenses_total));?></td>
 	</tr>
 	
 	<tr class="balancesheet_header">
-		<td align="" colspan="2">Totals</td>
+		<td align="" colspan="2">Totales</td>
 	</tr>
 	
 	<tr class="balancesheet_header" style="border-bottom: 1px dotted">
