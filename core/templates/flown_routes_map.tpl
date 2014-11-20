@@ -5,7 +5,7 @@
  */
  
 ?>
-<h3>My Routes Map</h3>
+<h3>Mapa de Mis Vuelos</h3>
 <div class="mapcenter" align="center">
 	<div id="routemap" style="width: 800px; height: 600px;"></div>
 </div>
