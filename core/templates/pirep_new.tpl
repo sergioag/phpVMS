@@ -1,17 +1,17 @@
-<h3>File a Flight Report</h3>
+<h3>Enviar un Reporte de Vuelo</h3>
 <?php
 if(isset($message))
 	echo '<div id="error">'.$message.'</div>';
 ?>
 <form action="<?php echo url('/pireps/mine');?>" method="post">
 <dl>
-	<dt>Pilot:</dt>
+	<dt>Piloto:</dt>
 	<dd><strong><?php echo Auth::$userinfo->firstname . ' ' . Auth::$userinfo->lastname;?></strong></dd>
 	
-	<dt>Select Airline:</dt>
+	<dt>Seleccione Aerolínea:</dt>
 	<dd>
 		<select name="code" id="code">
-			<option value="">Select your airline</option>
+			<option value="">Seleccione su aerolínea</option>
 		<?php
 		foreach($allairlines as $airline)
 		{
@@ -23,14 +23,14 @@ if(isset($message))
 		</select>
 	</dd>
 	
-	<dt>Enter Flight Number:</dt>
+	<dt>Ingrese Número de Vuelo:</dt>
 	<dd><input type="text" name="flightnum" value="<?php if(isset($bid->flightnum)) { echo $bid->flightnum; }?><?php if(isset($_POST['flightnum'])) { echo $_POST['flightnum'];} ?>" /></dd>
 	
-	<dt>Select Departure Airport:</dt>
+	<dt>Seleccione Aeropuerto de Orígen:</dt>
 	<dd>
 		<div id="depairport">
 		<select id="depicao" name="depicao">
-			<option value="">Select a departure airport</option>
+			<option value="">Seleccione un aeropuerto de orígen</option>
 			<?php
 			foreach($allairports as $airport)
 			{
@@ -43,11 +43,11 @@ if(isset($message))
 		</div>
 	</dd>
 	
-	<dt>Select Arrival Airport:</dt>
+	<dt>Seleccione Aeropuerto de Destino:</dt>
 	<dd>
 		<div id="arrairport">
 		<select id="arricao" name="arricao">
-			<option value="">Select an arrival airport</option>
+			<option value="">Seleccione un aeropuerto de destino</option>
 			<?php
 			foreach($allairports as $airport)
 			{
@@ -60,10 +60,10 @@ if(isset($message))
 		</div>
 	</dd>
 	
-	<dt>Select Aircraft:</dt>
+	<dt>Seleccione Aeronave:</dt>
 	<dd>
 		<select name="aircraft" id="aircraft">
-			<option value="">Select the aircraft of this flight</option>
+			<option value="">Seleccione la Aeronave para este vuelo</option>
 		<?php
 		
 		foreach($allaircraft as $aircraft)
@@ -133,25 +133,25 @@ if(isset($message))
 	}
 	?>
 	
-	<dt>Fuel Used</dt>
+	<dt>Combustible Utilizado</dt>
 	<dd><input type="text" name="fuelused" value="<?php echo $_POST['fuelused']; ?>" />
-		<p>This is the fuel used on this flight in <?php echo Config::Get('LIQUID_UNIT_NAMES', Config::Get('LiquidUnit'))?></p></dd>
+		<p>Este es el combustible utilizado en este vuelo en <?php echo Config::Get('LIQUID_UNIT_NAMES', Config::Get('LiquidUnit'))?></p></dd>
 	
-	<dt>Flight Time</dt>
+	<dt>Tiempo de Vuelo</dt>
 	<dd><input type="text" name="flighttime" value="<?php echo $_POST['flighttime'] ?>" />
-		<p>Enter as hours - "5.30" is five hours and thirty minutes</p></dd>
+		<p>Ingrese como horas - "5.30" es cinco horas y treinta minutos</p></dd>
 		
-	<dt>Route</dt>
+	<dt>Ruta</dt>
 	<dd><textarea name="route" style="width: 100%"><?php echo (!isset($_POST['route'])) ? $bid->route : $_POST['route']; ?></textarea>
-		<p>Enter the route flown, or default will be from the schedule</p></dd>
+		<p>Ingrese la ruta volada, o se tomará el predeterminado del itinerario</p></dd>
 	
-	<dt>Comment</dt>
+	<dt>Comentarios</dt>
 	<dd><textarea name="comment" style="width: 100%"><?php echo $_POST['comment'] ?></textarea></dd>
 	
 	<dt></dt>
 	<dd><?php $bidid = ( isset($bid) )? $bid->bidid:$_POST['bid']; ?>
 		<input type="hidden" name="bid" value="<?php echo $bidid ?>" />
-		<input type="submit" name="submit_pirep" value="File Flight Report" /></dd>
+		<input type="submit" name="submit_pirep" value="Enviar Reporte de Vuelo" /></dd>
 </dl>
 
 </form>
