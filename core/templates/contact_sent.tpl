@@ -1,2 +1,2 @@
-<h3>Thanks!</h3>
-<p>Your request has been submitted, we will be in touch shortly.</p>
+<h3>¡Muchas gracias!</h3>
+<p>Su solicitud ha sido enviada, nos pondremos en contacto con usted en breve.</p>
