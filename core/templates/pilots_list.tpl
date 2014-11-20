@@ -3,18 +3,18 @@
 <?php
 	if(!$allpilots)
 	{
-		echo 'There are no pilots!';
+		echo '¡No hay pilotos!';
 		return;
 	}
 ?>
 <table id="tabledlist" class="tablesorter">
 <thead>
 <tr>
-	<th>Pilot ID</th>
-	<th>Name</th>
-	<th>Rank</th>
-	<th>Flights</th>
-	<th>Hours</th>
+	<th>ID de Piloto</th>
+	<th>Nombre</th>
+	<th>Rango</th>
+	<th>Vuelos</th>
+	<th>Horas</th>
 	<th>VATSIM PID</th>
 </tr>
 </thead>
