@@ -1,4 +1,4 @@
-<h1>Downloads</h1>
+<h1>Descargas</h1>
 
 <?php 
 if(!$allcategories)
