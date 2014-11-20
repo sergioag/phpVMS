@@ -1,3 +1,3 @@
-<h3>Unconfirmed</h3>
+<h3>No confirmado</h3>
 
-<p>Sorry! Your registration has not yet been checked by an administrator. Please try again later. You will receive an email when your registration has been accepted</p>
+<p>¡Disculpe! Su registro todavía no ha sido revisado por un administrador. Por favor reintente mas tarde. Recibirá un email cuando su registro sea aceptado</p>
