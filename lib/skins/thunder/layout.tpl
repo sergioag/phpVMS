@@ -1,18 +1,6 @@
 <?php
 /**
- * 
- * STOP!!!!!!!!
- * 
- * Are you editing the crystal skin directly?
- * DON'T
- * 
- * Copy and rename the crystal folder. Otherwise it'll get 
- * overwritten in an update.
- * 
- * Also, READ THE DOCS
- * 
- *   http://www.phpvms.net/docs/skinning
- * 
+ * Template for Thunder Airways
  */
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
@@ -49,7 +37,7 @@ echo $page_htmlreq;
 		if(Auth::LoggedIn() == false)
 		{ ?>
 			<form name="loginform" action="<?php echo url('/login'); ?>" method="post">
-				Sign-in with your pilot id or email, or <a href="<?php echo url('/registration'); ?>">register</a><br />
+				Ingrese con su ID de piloto, email, o <a href="<?php echo url('/registration'); ?>">regístrese</a><br />
 			<input type="text" name="email" value="" onClick="this.value=''" />
 			<input type="password" name="password" value="" />
 			<input type="hidden" name="remember" value="on" />
@@ -71,13 +59,12 @@ echo $page_htmlreq;
 		<img align="left" height="50px" width="50px" style="margin-right: 10px;"
 			src="<?php echo PilotData::getPilotAvatar($pilotid);?>" />
 
-		<strong>Pilot ID: </strong> <?php echo $pilotid ; ?>
-		<strong>Rank: </strong><?php echo Auth::$userinfo->rank;?><br />
-		<strong>Total Flights: </strong><?php echo Auth::$userinfo->totalflights?>, <strong>Total Hours: </strong><?php echo Auth::$userinfo->totalhours;?>
+		<strong>ID de PIloto: </strong> <?php echo $pilotid ; ?>
+		<strong>Rango: </strong><?php echo Auth::$userinfo->rank;?><br />
+		<strong>Total de Vuelos: </strong><?php echo Auth::$userinfo->totalflights?>, <strong>Total de Horas: </strong><?php echo Auth::$userinfo->totalhours;?>
 		<br />
-		<a href="<?php echo url('/pireps/new');?>">File a New PIREP</a> | 
-		<a href="<?php echo url('/schedules/bids');?>">View My Bids</a> | 
-		<a href="<?php echo url('/profile/');?>">View Pilot Center</a>
+		<a href="<?php echo url('/pireps/new');?>">Enviar un nuevo PIREP</a> | 
+		<a href="<?php echo url('/profile/');?>">Ver Sala de Pilotos</a>
 		<?php
 		} /* End the else */
 		?>
@@ -114,7 +101,7 @@ echo $page_htmlreq;
 	</div>
 	</div>
 	<div id="footer">
-	<p>copyright &copy; 2007 - <?php echo date('Y') ?> - <?php echo SITE_NAME; ?><br />
+	<p>copyright &copy; <?php echo date('Y') ?> - <?php echo SITE_NAME; ?><br />
 	<!-- Please retain this!! It's part of the phpVMS license. You must display a
 			"powered by phpVMS" somewhere on your page. Thanks! -->
 	<a href="http://www.phpvms.net" target="_blank">powered by phpVMS</a></p>
