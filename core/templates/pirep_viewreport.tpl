@@ -1,35 +1,35 @@
 
-<h3>Flight <?php echo $pirep->code . $pirep->flightnum; ?></h3>
+<h3>Vuelo <?php echo $pirep->code . $pirep->flightnum; ?></h3>
 
 <table width="100%">
 <tr>
 
 <td width="50%">
 <ul>
-	<li><strong>Submitted By: </strong><a href="<?php echo SITE_URL.'/index.php/profile/view/'.$pirep->pilotid?>">
+	<li><strong>Enviado Por: </strong><a href="<?php echo SITE_URL.'/index.php/profile/view/'.$pirep->pilotid?>">
 			<?php echo $pirep->firstname.' '.$pirep->lastname?></a></li>
-	<li><strong>Departure Airport: </strong><?php echo $pirep->depname?> (<?php echo $pirep->depicao; ?>)</li>
-	<li><strong>Arrival Airport: </strong><?php echo $pirep->arrname?> (<?php echo $pirep->arricao; ?>)</li>
-	<li><strong>Aircraft: </strong><?php echo $pirep->aircraft . " ($pirep->registration)"?></li>
-	<li><strong>Flight Time: </strong> <?php echo $pirep->flighttime; ?></li>
-	<li><strong>Date Submitted: </strong> <?php echo date(DATE_FORMAT, $pirep->submitdate);?></li>
+	<li><strong>Aeropuerto de Orígen: </strong><?php echo $pirep->depname?> (<?php echo $pirep->depicao; ?>)</li>
+	<li><strong>Aeropuerto de Destino: </strong><?php echo $pirep->arrname?> (<?php echo $pirep->arricao; ?>)</li>
+	<li><strong>Aeronave: </strong><?php echo $pirep->aircraft . " ($pirep->registration)"?></li>
+	<li><strong>Tiempo de Vuelo: </strong> <?php echo $pirep->flighttime; ?></li>
+	<li><strong>Fecha de envío: </strong> <?php echo date(DATE_FORMAT, $pirep->submitdate);?></li>
 	<?php
 	if($pirep->route != '')
 	{
-		echo "<li><strong>Route: </strong>{$pirep->route}</li>";
+		echo "<li><strong>Ruta: </strong>{$pirep->route}</li>";
 	}
 	?>
 	<li><strong>Status: </strong>
 		<?php
 
 		if($pirep->accepted == PIREP_ACCEPTED)
-			echo 'Accepted';
+			echo 'Aceptado';
 		elseif($pirep->accepted == PIREP_REJECTED)
-			echo 'Rejected';
+			echo 'Rechazado';
 		elseif($pirep->accepted == PIREP_PENDING)
-			echo 'Approval Pending';
+			echo 'Aprobación Pendiente';
 		elseif($pirep->accepted == PIREP_INPROGRESS)
-			echo 'Flight in Progress';
+			echo 'Vuelo en Progreso';
 		?>
 	</li>
 </ul>
@@ -38,16 +38,16 @@
 <table class="balancesheet" cellpadding="0" cellspacing="0" width="100%">
 
 	<tr class="balancesheet_header">
-		<td align="" colspan="2">Flight Details</td>
+		<td align="" colspan="2">Detalles del Vuelo</td>
 	</tr>
 	<tr>
-		<td align="right">Gross Revenue: <br /> 
-			(<?php echo $pirep->load;?> load / <?php echo FinanceData::FormatMoney($pirep->price);?> per unit  <br />
+		<td align="right">Ingreso Bruto: <br /> 
+			(<?php echo $pirep->load;?> carga / <?php echo FinanceData::FormatMoney($pirep->price);?> por unidad  <br />
 		<td align="right" valign="top"><?php echo FinanceData::FormatMoney($pirep->load * $pirep->price);?></td>
 	</tr>
 	<tr>
-		<td align="right">Fuel Cost: <br />
-			(<?php echo $pirep->fuelused;?> fuel used @ <?php echo $pirep->fuelunitcost?> / unit)<br />
+		<td align="right">Costo de Combustible: <br />
+			(combustible utilizado <?php echo $pirep->fuelused;?> @ <?php echo $pirep->fuelunitcost?> / unidad)<br />
 		<td align="right" valign="top"><?php echo FinanceData::FormatMoney($pirep->fuelused * $pirep->fuelunitcost);?></td>
 	</tr>
 	</table>
@@ -59,7 +59,7 @@
 if($fields)
 {
 ?>
-<h3>Flight Details</h3>			
+<h3>Detalles del Vuelo</h3>			
 <ul>
 	<?php
 	foreach ($fields as $field)
@@ -82,7 +82,7 @@ if($fields)
 if($pirep->log != '')
 {
 ?>
-<h3>Additional Log Information:</h3>
+<h3>Información Adicional del Reigstro:</h3>
 <p>
 	<?php
 	/* If it's FSFK, don't show the toggle. We want all the details and pretty
@@ -119,12 +119,12 @@ if($pirep->log != '')
 <?php
 if($comments)
 {
-echo '<h3>Comments</h3>
+echo '<h3>Comentarios</h3>
 	<table id="tabledlist" class="tablesorter">
 <thead>
 <tr>
-<th>Commenter</th>
-<th>Comment</th>
+<th>Comentarista</th>
+<th>Comentario</th>
 </tr>
 </thead>
 <tbody>';
