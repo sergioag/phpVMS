@@ -52,14 +52,14 @@ var acars_map_defaults = {
 <table border = "0" width="100%" class="acarsmap">
 <thead>
 	<tr>
-		<td><b>Pilot</b></td>
-		<td><b>Flight Number</b></td>
-		<td><b>Departure</b></td>
-		<td><b>Arrival</b></td>
-		<td><b>Status</b></td>
-		<td><b>Altitude</b></td>
-		<td><b>Speed</b></td>
-		<td><b>Distance/Time Remain</b></td>
+		<td><b>Piloto</b></td>
+		<td><b>Número de Vuelo</b></td>
+		<td><b>Origen</b></td>
+		<td><b>Destino</b></td>
+		<td><b>Estado</b></td>
+		<td><b>Altitud</b></td>
+		<td><b>Velocidad</b></td>
+		<td><b>Distancia/Tiempo Restante</b></td>
 	</tr>
 </thead>
 <tbody id="pilotlist"></tbody>
