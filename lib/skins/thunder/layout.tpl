@@ -59,7 +59,7 @@ echo $page_htmlreq;
 		<img align="left" height="50px" width="50px" style="margin-right: 10px;"
 			src="<?php echo PilotData::getPilotAvatar($pilotid);?>" />
 
-		<strong>ID de PIloto: </strong> <?php echo $pilotid ; ?>
+		<strong>ID de Piloto: </strong> <?php echo $pilotid ; ?>
 		<strong>Rango: </strong><?php echo Auth::$userinfo->rank;?><br />
 		<strong>Total de Vuelos: </strong><?php echo Auth::$userinfo->totalflights?>, <strong>Total de Horas: </strong><?php echo Auth::$userinfo->totalhours;?>
 		<br />
