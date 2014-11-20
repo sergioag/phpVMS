@@ -1,1 +1,1 @@
-<p>This email address was not found in our database. If you feel this was an error, please contact an administrator.</p>
+<p>Esta dirección de email no fue encontrada en nuestro sistema. Si considera que esto es un error, por favor contacte a un administrador.</p>
