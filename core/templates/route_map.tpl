@@ -1,4 +1,4 @@
-<h3>Route Map</h3>
+<h3>Mapa de Ruta</h3>
 <div class="mapcenter" align="center">
 	<div id="routemap" style="width:<?php echo  Config::Get('MAP_WIDTH');?>; height: <?php echo Config::Get('MAP_HEIGHT')?>"></div>
 </div>
@@ -44,8 +44,8 @@ if(isset($schedule))
 ?>
 <script type="text/html" id="navpoint_bubble">
 	<span style="font-size: 10px; text-align:left; width: 100%" align="left">
-	<strong>Name: </strong><%=nav.title%> (<%=nav.name%>)<br />
-	<strong>Type: </strong>
+	<strong>Nombre: </strong><%=nav.title%> (<%=nav.name%>)<br />
+	<strong>Tipo: </strong>
 	<?php	/* Show the type of point */ ?>
 	<% if(nav.type == 2) { %> NDB <% } %>
 	<% if(nav.type == 3) { %> VOR <% } %>
@@ -55,7 +55,7 @@ if(isset($schedule))
 	<br />
 	<?php	/* Only show frequency if it's not a 0*/ ?>
 	<% if(nav.freq != 0) { %>
-	<strong>Frequency: </strong><%=nav.freq%>
+	<strong>Frecuencia: </strong><%=nav.freq%>
 	<% } %>
 	</span>
 </script>
