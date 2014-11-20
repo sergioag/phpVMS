@@ -1,32 +1,32 @@
-<h3>Registration</h3>
-<p>Welcome to the registration form for <?php echo SITE_NAME; ?>. After you register, you will be notified by a staff member about your membership.</p>
+<h3>Registro</h3>
+<p>Bienvenido al formulario de registro de <?php echo SITE_NAME; ?>. Despues de registrarse, un miembro del staff le notificará sobre su membresía.</p>
 <form method="post" action="<?php echo url('/registration');?>">
 <dl>
-	<dt>First Name: *</dt>
+	<dt>Nombre: *</dt>
 	<dd><input type="text" name="firstname" value="<?php echo Vars::POST('firstname');?>" />
 		<?php
 			if($firstname_error == true)
-				echo '<p class="error">Please enter your first name</p>';
+				echo '<p class="error">Por favor ingrese su nombre</p>';
 		?>
 	</dd>
 	
-	<dt>Last Name: *</dt>
+	<dt>Apellidos: *</dt>
 	<dd><input type="text" name="lastname" value="<?php echo Vars::POST('lastname');?>" />
 		<?php
 			if($lastname_error == true)
-				echo '<p class="error">Please enter your last name</p>';
+				echo '<p class="error">Por favor ingrese sus apellidos</p>';
 		?>
 	</dd>
 	
-	<dt>Email Address: *</dt>
+	<dt>Dirección de Email: *</dt>
 	<dd><input type="text" name="email" value="<?php echo Vars::POST('email');?>" />
 		<?php
 			if($email_error == true)
-				echo '<p class="error">Please enter your email address</p>';
+				echo '<p class="error">Por favor ingrese su email</p>';
 		?>
 	</dd>
 	
-	<dt>Select Airline: *</dt>
+	<dt>Seleccione su Aerolínea: *</dt>
 	<dd>
 		<select name="code" id="code">
 		<?php
@@ -50,7 +50,7 @@
 		</select>
 	</dd>
 
-	<dt>Location: *</dt>
+	<dt>Ubicación: *</dt>
 	<dd><select name="location">
 		<?php
 			foreach($countries as $countryCode=>$countryName)
@@ -70,10 +70,10 @@
 		?>
 	</dd>
 	
-	<dt>Password: *</dt>
+	<dt>Contraseña: *</dt>
 	<dd><input id="password" type="password" name="password1" value="" /></dd>
 	
-	<dt>Enter your password again: *</dt>
+	<dt>Ingrese nuevamente su contraseña: *</dt>
 	<dd><input type="password" name="password2" value="" />
 		<?php
 			if($password_error != '')
@@ -96,8 +96,8 @@
 	</dd>
 		
 	<dt></dt>
-	<dd><p>By clicking register, you're agreeing to the terms and conditions</p></dd>
+	<dd><p>Al hacer click en Registrar, esta aceptando a los términos y condiciones</p></dd>
 	<dt></dt>
-	<dd><input type="submit" name="submit" value="Register!" /></dd>
+	<dd><input type="submit" name="submit" value="¡Registrar!" /></dd>
 </dl>
 </form>
