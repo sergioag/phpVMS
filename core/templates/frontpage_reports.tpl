@@ -1,7 +1,7 @@
 <?php
 if(!$reports)
 {
-	echo 'No reports have been filed';
+	echo 'No se han registrado reportes';
 	return;
 }
 
