@@ -116,7 +116,7 @@ foreach($allroutes as $route)
 	</td>
 	<td nowrap>
 		<a href="<?php echo url('/schedules/details/'.$route->id);?>">Ver Detalles</a><br />
-		<a href="<?php echo url('/schedules/brief/'.$route->id);?>">Briefind de Piloto</a><br />
+		<a href="<?php echo url('/schedules/brief/'.$route->id);?>">Briefing de Piloto</a><br />
 		
 		<?php 
 		# Don't allow overlapping bids and a bid exists
