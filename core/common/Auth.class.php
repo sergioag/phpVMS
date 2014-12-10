@@ -78,6 +78,7 @@ class Auth extends CodonData
 					SessionManager::Set('userinfo', $userinfo);
 					SessionManager::Set('usergroups', self::$usergroups);
 					PilotData::UpdateLogin($userinfo->pilotid);
+					Lang::set_language($userinfo->language);
 					
 					self::update_session(self::$session_id, self::$userinfo->pilotid);
 					
