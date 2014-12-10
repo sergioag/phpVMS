@@ -106,7 +106,7 @@ class Auth extends CodonData
 				# Bugfix, in case user updates their profile info, grab the latest
 				self::$userinfo = PilotData::GetPilotData(self::$pilotid);
 				self::update_session(self::$session_id, self::$userinfo->pilotid);
-				
+				Lang::set_language($userinfo->language);
 				return true;
 			}
 			else
