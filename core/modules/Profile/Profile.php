@@ -179,6 +179,8 @@ class Profile extends CodonModule
 
 		PilotData::SaveAvatar($userinfo->code, $userinfo->pilotid);
 
+		Lang::set_language($this->post->language);
+		
 		$this->set('message', 'Profile saved!');
 		$this->render('core_success.tpl');
 	}
