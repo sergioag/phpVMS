@@ -204,51 +204,17 @@ class TemplateSet
 			$tpl_name .= $this->tpl_ext;
 		}
 		
-		if($force_base === true) 
-		{
-			$old_tpl = $this->template_path;
-			$this->template_path = Config::Get('BASE_TEMPLATE_PATH');
-			
-			if($checkskin === true)
+
+		$tpl_path = $this->getTemplatePath($tpl_name, Lang::$language, $checkskin, $force_base);
+		if(!$tpl_path) {
+			$tpl_path = $this->getTemplatePath($tpl_name, Config::Get('SITE_LANGUAGE'), $checkskin, $force_base);
+			if(!$tpl_path)
 			{
-				if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $tpl_name))
-				{
-					$tpl_path = SKINS_PATH . DS . $tpl_name;
-				}
-				else
-				{
-					$tpl_path = $this->template_path . DS . $tpl_name;
-				}
+				trigger_error('The template file "'.$tpl_path.'" doesn\'t exist');
+				return;
 			}
 		}
 
-		if((!defined('ADMIN_PANEL') || $force_base == true) && $checkskin == true)
-		{
-			if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $tpl_name))
-			{
-				$tpl_path = SKINS_PATH . DS . $tpl_name;
-			}
-			else
-			{
-				$tpl_path = $this->template_path . DS . $tpl_name;
-			}
-		}
-		else
-		{
-			$tpl_path = $this->template_path . DS . $tpl_name;
-		}
-		
-		if($force_base) 
-		{
-			$this->template_path = $old_tpl;
-		}
-
-		if(!file_exists($tpl_path))
-		{
-			trigger_error('The template file "'.$tpl_path.'" doesn\'t exist');
-			return;
-		}
-			
 		extract($this->vars, EXTR_OVERWRITE);
 		
 		ob_start();
@@ -263,7 +229,53 @@ class TemplateSet
 		echo $cont;
 	}
 	
-	
+	public function getTemplatePath($tpl_name, $lang, $checkskin=true, $force_base=false)
+	{
+		if($force_base === true) 
+		{
+			$old_tpl = $this->template_path;
+			$this->template_path = Config::Get('BASE_TEMPLATE_PATH');
+			
+			if($checkskin === true)
+			{
+				if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $lang . DS . $tpl_name))
+				{
+					$tpl_path = SKINS_PATH . DS . $lang . DS . $tpl_name;
+				}
+				else
+				{
+					$tpl_path = $this->template_path . DS . $lang . DS . $tpl_name;
+				}
+			}
+		}
+
+		if((!defined('ADMIN_PANEL') || $force_base == true) && $checkskin == true)
+		{
+			if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $lang . DS . $tpl_name))
+			{
+				$tpl_path = SKINS_PATH . DS . $lang . DS . $tpl_name;
+			}
+			else
+			{
+				$tpl_path = $this->template_path . DS . $lang . DS . $tpl_name;
+			}
+		}
+		else
+		{
+			$tpl_path = $this->template_path . DS . $lang . DS . $tpl_name;
+		}
+		
+		if($force_base) 
+		{
+			$this->template_path = $old_tpl;
+		}
+		
+		if(file_exists($tpl_path))
+			return $tpl_path;
+		else
+			return false;
+	}
+
 	/**
 	 * ShowModule
 	 *	This is an alias to MainController::Run(); calls a function
