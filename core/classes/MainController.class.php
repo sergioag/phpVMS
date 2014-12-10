@@ -73,7 +73,7 @@ class MainController
 		    {
 		    	if(is_dir($path.'/'.$file))
 		    	{
-					$fullpath = $path . DS . $file . DS . $file . '.php';
+					$fullpath = $path . DS . $file . DS . 'module.php';
 					
 					if(file_exists($fullpath))
 					{
