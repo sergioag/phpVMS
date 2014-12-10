@@ -37,6 +37,22 @@
 		?>
 	</dd>
 	
+	<dt>Language</dt>
+	<dd><select name="language">
+		<?php
+		foreach($languages as $language)
+		{
+			if($userinfo->language == $language->language)
+				$sel = 'selected="selected"';
+			else
+				$sel = '';
+			
+			echo '<option value="'.$language->language.'" '.$sel.'>'.$language->name.'</option>';
+		}
+		?>
+	</select>
+	</dd>
+	
 	<dt>Signature Background</dt>
 	<dd><select name="bgimage">
 		<?php
