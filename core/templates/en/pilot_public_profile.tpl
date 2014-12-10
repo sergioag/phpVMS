@@ -1,22 +1,22 @@
 <?php
 if(!$userinfo)
 {
-	echo '<h3>¡Este piloto no existe!</h3>';
+	echo '<h3>This pilot does not exist!</h3>';
 	return;
 }
 ?>
-<h3>Perfil de <?php echo $userinfo->firstname . ' ' . $userinfo->lastname?></h3>
+<h3>Profile For <?php echo $userinfo->firstname . ' ' . $userinfo->lastname?></h3>
 <table>
 	<tr>
 		<td align="center" valign="top">
 			<?php
 			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png'))
 			{
-				echo 'Sin avatar';
+				echo 'No avatar';
 			}
 			else
 			{
-				echo '<img src="'.SITE_URL.AVATAR_PATH.'/'.$pilotcode.'.png'.'" alt="Sin Avatar" /> ';
+				echo '<img src="'.SITE_URL.AVATAR_PATH.'/'.$pilotcode.'.png'.'" alt="No Avatar" /> ';
 			}
 			?>
 			<br /><br />
@@ -24,11 +24,11 @@ if(!$userinfo)
 		</td>
 		<td valign="top">
 			<ul>
-				<li><strong>ID del Piloto: </strong><?php echo $pilotcode ?></li>
-				<li><strong>Rango: </strong><?php echo $userinfo->rank;?></li>
-				<li><strong>Total de Vuelos: </strong><?php echo $userinfo->totalflights?></li>
-				<li><strong>Total de Horas: </strong><?php echo Util::AddTime($userinfo->totalhours, $userinfo->transferhours); ?></li>
-				<li><strong>Ubicación: </strong>
+				<li><strong>Pilot ID: </strong><?php echo $pilotcode ?></li>
+				<li><strong>Rank: </strong><?php echo $userinfo->rank;?></li>
+				<li><strong>Total Flights: </strong><?php echo $userinfo->totalflights?></li>
+				<li><strong>Total Hours: </strong><?php echo Util::AddTime($userinfo->totalhours, $userinfo->transferhours); ?></li>
+				<li><strong>Location: </strong>
 					<img src="<?php echo Countries::getCountryImage($userinfo->location);?>" 
 								alt="<?php echo Countries::getCountryName($userinfo->location);?>" />
 					<?php echo Countries::getCountryName($userinfo->location);?> 
@@ -47,7 +47,7 @@ if(!$userinfo)
 			</ul>
 			
 			<p>
-			<strong>Premios</strong>
+			<strong>Awards</strong>
 			<?php
 			if(is_array($allawards))
 			{			

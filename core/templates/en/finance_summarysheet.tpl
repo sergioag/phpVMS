@@ -27,12 +27,12 @@
 <table width="670px" align="center" class="balancesheet" cellpadding="0" cellspacing="0">
 
 	<tr class="balancesheet_header" style="text-align: center">
-		<td align="left">Mes</td>
-		<td align="center">Vuelos</td>
-		<td align="left">Ingresos</td>
-		<td align="center" nowrap>Pago a Pilotos</td>
-		<td align="left">Gastos</td>
-		<td align="left">Combustible</td>
+		<td align="left">Month</td>
+		<td align="center">Flights</td>
+		<td align="left">Revenue</td>
+		<td align="center" nowrap>Pilot Pay</td>
+		<td align="left">Expenses</td>
+		<td align="left">Fuel</td>
 		<td align="center">Total</td>
 	</tr>
 	

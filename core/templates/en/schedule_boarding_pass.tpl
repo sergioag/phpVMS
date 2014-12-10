@@ -4,12 +4,12 @@
 if(!isset($_GET['newwindow']))
 {
 ?>
-<h3>Requerimientos para check-in en línea</h3>
+<h3>Requirements for Online Checkin</h3>
 
-<p>Para continuar a través del Control de Seguridad, necesita tener un documento gubernamental con fotografía y ademas su Pase de Abordaje o Documento de Seguridad. Clientes menores de 18 años no requiren mostrar documento gubernamental.</p>
+<p>To proceed through Security Checkpoint, you will need a government-issued photo ID and either a Boarding Pass or Security Document. Customers under 18 years of age are not required to show government-issued photo ID.</p>
 
 <p><a href="#" 
-	onclick="window.open('<?php echo actionurl('/schedules/boardingpass/'.$schedule->id.'?newwindow');?>'); return false;">Abrir en nueva ventana para imprimir</a></p>
+	onclick="window.open('<?php echo actionurl('/schedules/boardingpass/'.$schedule->id.'?newwindow');?>'); return false;">Open in new window for printing</a></p>
 <?php
 }
 ?>
@@ -37,7 +37,7 @@ if(!isset($_GET['newwindow']))
 		<td align="left"><h3><?php echo SITE_NAME;?></h3></td>
 	</tr>
 	<tr>
-		<td colspan="2"><h3>Pase de Abordaje</h3></td>
+		<td colspan="2"><h3>Boarding Pass</h3></td>
 	</tr>
 	<tr class="thickline">
 		<td colspan="2"></td>
@@ -47,10 +47,10 @@ if(!isset($_GET['newwindow']))
 			<table class="boardingpass">
 				<tr>
 				<td>
-					<strong>Fecha:</strong> <br />
-					<strong>Nombre: </strong> <br />
-					<strong>Número de Pasajero Frecuente: </strong> <br />
-					<strong>Número de Pase de Abordaje:</strong> 
+					<strong>Date:</strong> <br />
+					<strong>Name: </strong> <br />
+					<strong>Frequent Flier Number: </strong> <br />
+					<strong>Boarding Pass Number:</strong> 
 				</td>
 				<td>
 					<?php echo date('Y-m-d'); ?><br />
@@ -62,11 +62,11 @@ if(!isset($_GET['newwindow']))
 			</table>
 		</td>
 		<td valign="top">
-			<strong>Puerta:</strong> <?php # We are gonna get a random gate
+			<strong>Gate:</strong> <?php # We are gonna get a random gate
 				echo chr(rand(65, 90)); // echo's a random letter between A and Z
 				echo rand(1, 30);		// gate # (between 1 and 30)
 			?><br />
-			<strong>Confirmación:</strong>
+			<strong>Confirmation:</strong>
 			<?php 
 				# Generate a hash from the bid id, and get the first 6 characters
 				# That'll be used for our confirmation number, and upper-case them
@@ -79,12 +79,12 @@ if(!isset($_GET['newwindow']))
 	</tr>
 	<tr>
 		<td valign="top">
-			<strong>Vuelo: </strong><?php echo $schedule->code.$schedule->flightnum?><br />
-			<strong>Sale: </strong><?php echo $schedule->deptime; ?><br />
-			<strong>Llega: </strong><?php echo $schedule->arrtime;?><br />
+			<strong>Flight: </strong><?php echo $schedule->code.$schedule->flightnum?><br />
+			<strong>Depart: </strong><?php echo $schedule->deptime; ?><br />
+			<strong>Arrive: </strong><?php echo $schedule->arrtime;?><br />
 		</td>
 		<td valign="top">
-			<strong>Equipo: </strong><?php echo $schedule->aircraft?> <br />	
+			<strong>Aircraft: </strong><?php echo $schedule->aircraft?> <br />	
 			<?php echo "$schedule->depname ($schedule->depicao)";?><br />
 			<?php echo "$schedule->arrname ($schedule->arricao)"; ?><br />
 		</td>

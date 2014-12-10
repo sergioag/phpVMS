@@ -3,19 +3,18 @@
 <?php
 	if(!$allpilots)
 	{
-		echo '¡No hay pilotos!';
+		echo 'There are no pilots!';
 		return;
 	}
 ?>
 <table id="tabledlist" class="tablesorter">
 <thead>
 <tr>
-	<th>ID de Piloto</th>
-	<th>Nombre</th>
-	<th>Rango</th>
-	<th>Vuelos</th>
-	<th>Horas</th>
-	<th>VATSIM PID</th>
+	<th>Pilot ID</th>
+	<th>Name</th>
+	<th>Rank</th>
+	<th>Flights</th>
+	<th>Hours</th>
 </tr>
 </thead>
 <tbody>
@@ -50,7 +49,6 @@ foreach($allpilots as $pilot)
 	<td><img src="<?php echo $pilot->rankimage?>" alt="<?php echo $pilot->rank;?>" /></td>
 	<td><?php echo $pilot->totalflights?></td>
 	<td><?php echo Util::AddTime($pilot->totalhours, $pilot->transferhours); ?></td>
-	<td><?php echo PilotData::GetFieldValue($pilot->pilotid, 'VATSIM PID'); ?></td>
 <?php
 }
 ?>

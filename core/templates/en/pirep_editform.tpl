@@ -1,10 +1,10 @@
-<h3>Agregar Comentario al PIREP</h3>
+<h3>Add Comment to PIREP</h3>
 <form action="<?php echo url('/pireps/viewpireps');?>" method="post">
 <?php
 // List all of the custom PIREP fields
 if(!$pirepfields)
 {
-	echo '<p>¡No hay campos personalizados para editar en PIREPs!</p>';
+	echo '<p>There are no custom fields to edit for PIREPs!</p>';
 	return;
 }
 
@@ -59,5 +59,5 @@ foreach($pirepfields as $field)
 <br />
 <input type="hidden" name="action" value="editpirep" />
 <input type="hidden" name="pirepid" value="<?php echo $pirep->pirepid?>" />
-<input type="submit" name="submit" value="Guardar campos" />
+<input type="submit" name="submit" value="Save fields" />
 </form>

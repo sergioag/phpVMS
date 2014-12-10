@@ -1,8 +1,8 @@
-<h3>Contáctenos</h3>
+<h3>Contact Us</h3>
 <form method="post" action="<?php echo url('/contact'); ?>">
   <table width='100%' border='0'>
     <tr>
-      <td><strong>Nombre:</strong></td>
+      <td><strong>Name:</strong></td>
       <td>
 		<?php
 		if(Auth::LoggedIn())
@@ -22,7 +22,7 @@
       </td>
     </tr>
     <tr>
-		<td width="1%" nowrap><strong>E-Mail:</strong></td>
+		<td width="1%" nowrap><strong>E-Mail Address:</strong></td>
 		<td>
 		<?php
 		if(Auth::LoggedIn())
@@ -42,12 +42,12 @@
 	</tr>
 
 	<tr>
-		<td><strong>Asunto: </strong></td>
+		<td><strong>Subject: </strong></td>
 		<td><input type="text" name="subject" value="<?php echo $_POST['subject'];?>" /></td>
 	
 	</tr>
     <tr>
-      <td><strong>Mensaje:</strong></td>
+      <td><strong>Message:</strong></td>
       <td>
 		<textarea name="message" cols='45' rows='5'><?php echo $_POST['message'];?></textarea>
       </td>
@@ -67,7 +67,7 @@
 			<input type="hidden" name="loggedin" value="<?php echo (Auth::LoggedIn())?'true':'false'?>" />
 		</td>
 		<td>
-          <input type="submit" name="submit" value='Enviar Mensaje'>
+          <input type="submit" name="submit" value='Send Message'>
 		</td>
     </tr>
   </table>

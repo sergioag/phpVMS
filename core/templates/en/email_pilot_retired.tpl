@@ -1,7 +1,7 @@
-Estimado(a) <?php echo $pilot->firstname.' '.$pilot->lastname?>,
+Hi <?php echo $pilot->firstname.' '.$pilot->lastname?>,
 
-Su usuario ha sido marcado como retirado debido a que ha estado inactivo por más de <?php echo Config::Get('PILOT_INACTIVE_TIME')?> días. Para dejar de estar en retiro, debe enviar un PIREP.
+You have been marked as retired because you have been inactive for more than <?php echo Config::Get('PILOT_INACTIVE_TIME')?> days. To be un-retired, you must file a PIREP.
 
 
-Gracias,
-El equipo de <?php echo SITE_NAME; ?>
+Thanks,
+The <?php echo SITE_NAME; ?> Management

@@ -1,20 +1,20 @@
-<h3>Detalles de Itinerario</h3>
+<h3>Schedule Details</h3>
 <div class="indent">
-<strong>Número de Vuelo: </strong> <?php echo $schedule->code.$schedule->flightnum ?><br />
-<strong>Salida: </strong><?php echo $schedule->depname ?> (<?php echo $schedule->depicao ?>) a las <?php echo $schedule->deptime ?><br />
-<strong>Llegada: </strong><?php echo $schedule->arrname ?> (<?php echo $schedule->arricao ?>) a las <?php echo $schedule->arrtime ?><br />
+<strong>Flight Number: </strong> <?php echo $schedule->code.$schedule->flightnum ?><br />
+<strong>Departure: </strong><?php echo $schedule->depname ?> (<?php echo $schedule->depicao ?>) at <?php echo $schedule->deptime ?><br />
+<strong>Arrival: </strong><?php echo $schedule->arrname ?> (<?php echo $schedule->arricao ?>) at <?php echo $schedule->arrtime ?><br />
 <?php
 if($schedule->route!='')
 { ?>
-<strong>Ruta: </strong><?php echo $schedule->route ?><br />
+<strong>Route: </strong><?php echo $schedule->route ?><br />
 <?php
 }?>
 <br />
-<strong>Información Climatológica</strong>
-<div id="<?php echo $schedule->depicao ?>" class="metar">Obteniento información de METAR para <?php echo $schedule->depicao ?></div>
-<div id="<?php echo $schedule->arricao ?>" class="metar">Obteniendo información de METAR para <?php echo $schedule->arricao ?></div>
+<strong>Weather Information</strong>
+<div id="<?php echo $schedule->depicao ?>" class="metar">Getting current METAR information for <?php echo $schedule->depicao ?></div>
+<div id="<?php echo $schedule->arricao ?>" class="metar">Getting current METAR information for <?php echo $schedule->arricao ?></div>
 <br />
-<strong>Frecuencia del itinerario</strong>
+<strong>Schedule Frequency</strong>
 <div align="center">
 <?php
 /*

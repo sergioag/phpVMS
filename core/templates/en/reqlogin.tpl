@@ -1,2 +1,2 @@
-<h3>¡Se requiere ingresar!</h3>
-<p>¡Debe ingresar para accesar a esta área! <a href="<?php echo url('/login'); ?>">Haga click aquí para ingresar</a></p>
+<h3>Login required!</h3>
+<p>You must be logged in to access this area! <a href="<?php echo url('/login'); ?>">Click here to login</a></p>

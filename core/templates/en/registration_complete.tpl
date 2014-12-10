@@ -1,2 +1,2 @@
-<h3>¡Muchas gracias!</h3>
-<p>¡Su registro está ahora completo! Ahora puede ingresar</p>
+<h3>Thank you!</h3>
+<p>Your registration is now complete! You may log-in now</p>

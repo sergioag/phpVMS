@@ -1,2 +1,2 @@
-<h3>¡Lo malogró!</h3>
-<p>Es una broma. La página que busca se ha desaparecido. Contacte con un adminsitrador del sitio si cree que esto es un error.<p>
+<h3>You broke it!</h3>
+<p>Just kidding. The page you were looking for has run away. Contact the site admin if you think this is an error.<p>

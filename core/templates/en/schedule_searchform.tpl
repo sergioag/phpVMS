@@ -1,17 +1,17 @@
-<h3>Buscas Itinerarios</h3>
+<h3>Search Schedules</h3>
 <form id="form" action="<?php echo actionurl('/schedules/view');?>" method="post">
 
 <div id="tabcontainer">
 	<ul>
-		<li><a href="#depapttab"><span>Por Aeropuerto de Salida</span></a></li>
-		<li><a href="#arrapttab"><span>Por Aeropuerto de Llegada</span></a></li>
-		<li><a href="#aircrafttab"><span>Por Tipo de Aeronave</span></a></li>
-		<li><a href="#distance"><span>Por Distancia</span></a></li>
+		<li><a href="#depapttab"><span>By Departure Airport</span></a></li>
+		<li><a href="#arrapttab"><span>By Arrival Airport</span></a></li>
+		<li><a href="#aircrafttab"><span>By Aircraft Type</span></a></li>
+		<li><a href="#distance"><span>By Distance</span></a></li>
 	</ul>
 	<div id="depapttab">
-		<p>Seleccione su aeropuerto de salida:</p>
+		<p>Select your departure airport:</p>
 		<select id="depicao" name="depicao">
-		<option value="">Seleccionar Todos</option>
+		<option value="">Select All</option>
 		<?php
 		if(!$depairports) $depairports = array();
 			foreach($depairports as $airport)
@@ -22,12 +22,12 @@
 		?>
 			
 		</select>
-		<input type="submit" name="submit" value="Buscar Vuelos" />
+		<input type="submit" name="submit" value="Find Flights" />
 	</div>
 	<div id="arrapttab">
-		<p>Seleccione su aeropueto de llegada:</p>
+		<p>Select your arrival airport:</p>
 		<select id="arricao" name="arricao">
-			<option value="">Seleccionar Todos</option>
+			<option value="">Select All</option>
 		<?php
 		if(!$depairports) $depairports = array();
 			foreach($depairports as $airport)
@@ -38,12 +38,12 @@
 		?>
 			
 		</select>
-		<input type="submit" name="submit" value="Buscar Vuelos" />
+		<input type="submit" name="submit" value="Find Flights" />
 	</div>
 	<div id="aircrafttab">
-		<p>Seleccione Aeronave:</p>
+		<p>Select aircraft:</p>
 		<select id="equipment" name="equipment">
-			<option value="">Seleccione Equipo</option>
+			<option value="">Select equipment</option>
 		<?php
 		
 		if(!$equipment) $equipment = array();
@@ -54,16 +54,16 @@
 		
 		?>
 		</select>
-		<input type="submit" name="submit" value="Buscar Vuelos" />
+		<input type="submit" name="submit" value="Find Flights" />
 	</div>
 	<div id="distance">
-		<p>Seleccione Distancia:</p>
+		<p>Select Distance:</p>
 		<select id="type" name="type">
-			<option value="greater">Mayor que</option>
-			<option value="less">Menor que</option>
+			<option value="greater">Greater Than</option>
+			<option value="less">Less Than</option>
 		</select>
 		<input type="text" name="distance" value="" />
-		<input type="submit" name="submit" value="Buscar Vuelos" />
+		<input type="submit" name="submit" value="Find Flights" />
 	</div>
 </div>
 

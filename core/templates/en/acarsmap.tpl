@@ -52,15 +52,14 @@ var acars_map_defaults = {
 <table border = "0" width="100%" class="acarsmap">
 <thead>
 	<tr>
-		<td><b>Piloto</b></td>
-		<td><b>Número de Vuelo</b></td>
-		<td><b>Equipo</b></td>
-		<td><b>Origen</b></td>
-		<td><b>Destino</b></td>
-		<td><b>Altitud</b></td>
-		<td><b>Velocidad</b></td>
-		<td><b>Estado</b></td>
-		<td><b>Distancia/Tiempo Restante</b></td>
+		<td><b>Pilot</b></td>
+		<td><b>Flight Number</b></td>
+		<td><b>Departure</b></td>
+		<td><b>Arrival</b></td>
+		<td><b>Status</b></td>
+		<td><b>Altitude</b></td>
+		<td><b>Speed</b></td>
+		<td><b>Distance/Time Remain</b></td>
 	</tr>
 </thead>
 <tbody id="pilotlist"></tbody>
@@ -102,12 +101,11 @@ var acars_map_defaults = {
 <tr class="<%=flight.trclass%>">
 <td><a href="<?php echo url('/profile/view');?>/<%=flight.pilotid%>"><%=flight.pilotid%> - <%=flight.pilotname%></a></td>
 <td><%=flight.flightnum%></td>
-<td><%=flight.aircraftname%></td>
 <td><%=flight.depicao%></td>
 <td><%=flight.arricao%></td>
+<td><%=flight.phasedetail%></td>
 <td><%=flight.alt%></td>
 <td><%=flight.gs%></td>
-<td><%=flight.phasedetail%></td>
 <td><%=flight.distremaining%> <?php echo Config::Get('UNITS');?> / <%=flight.timeremaining%></td>
 </tr>
 </script>

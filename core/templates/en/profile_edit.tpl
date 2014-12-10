@@ -1,23 +1,23 @@
-<h3>Editar Perfil</h3>
+<h3>Edit Profile</h3>
 <form action="<?php echo url('/profile');?>" method="post" enctype="multipart/form-data">
 <dl>
-	<dt>Nombre</dt>
+	<dt>Name</dt>
 	<dd><?php echo $userinfo->firstname . ' ' . $userinfo->lastname;?></dd>
 	
-	<dt>Aerolínea</dt>
+	<dt>Airline</dt>
 	<dd><?php echo $userinfo->code?>
-		<p>Para solicitar un cambio, contacte a un administrador</p>
+		<p>To request a change, contact your admin</p>
 	</dd>
 	
-	<dt>Dirección de Email</dt>
+	<dt>Email Address</dt>
 	<dd><input type="text" name="email" value="<?php echo $userinfo->email;?>" />
 		<?php
 			if(isset($email_error) && $email_error == true)
-				echo '<p class="error">Por favor ingrese su dirección de email</p>';
+				echo '<p class="error">Please enter your email address</p>';
 		?>
 	</dd>
 	
-	<dt>Ubicación</dt>
+	<dt>Location</dt>
 	<dd><select name="location">
 		<?php
 		foreach($countries as $countryCode=>$countryName)
@@ -33,11 +33,11 @@
 		</select>
 		<?php
 			if(isset($location_error) &&  $location_error == true)
-				echo '<p class="error">Por favor ingrese su ubicación</p>';
+				echo '<p class="error">Please enter your location</p>';
 		?>
 	</dd>
 	
-	<dt>Idioma</dt>
+	<dt>Language</dt>
 	<dd><select name="language">
 		<?php
 		foreach($languages as $language)
@@ -53,7 +53,7 @@
 	</select>
 	</dd>
 	
-	<dt>Fondo para la firma</dt>
+	<dt>Signature Background</dt>
 	<dd><select name="bgimage">
 		<?php
 		foreach($bgimages as $image)
@@ -119,13 +119,13 @@
 	<dt>Avatar:</dt>
 	<dd><input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Config::Get('AVATAR_FILE_SIZE');?>" />
 		<input type="file" name="avatar" size="40"> 
-		<p>Su imágen será redimensionada a <?php echo Config::Get('AVATAR_MAX_HEIGHT').'x'.Config::Get('AVATAR_MAX_WIDTH');?>px</p>
+		<p>Your image will be resized to <?php echo Config::Get('AVATAR_MAX_HEIGHT').'x'.Config::Get('AVATAR_MAX_WIDTH');?>px</p>
 	</dd>
-	<dt>Avatar Actual:</dt>
+	<dt>Current Avatar:</dt>
 	<dd><?php	
 			if(!file_exists(SITE_ROOT.AVATAR_PATH.'/'.$pilotcode.'.png'))
 			{
-				echo 'Ninguno seleccionado';
+				echo 'None selected';
 			}
 			else
 			{
@@ -136,6 +136,6 @@
 		?>
 	<dt></dt>
 	<dd><input type="hidden" name="action" value="saveprofile" />
-		<input type="submit" name="submit" value="Guardar Cambios" /></dd>
+		<input type="submit" name="submit" value="Save Changes" /></dd>
 </dl>
 </form>

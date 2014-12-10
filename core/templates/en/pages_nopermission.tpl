@@ -1,2 +1,2 @@
-<h3>No Permitido</h3>
-<p>Usted no tiene permiso para accesar esta página<p>
+<h3>Not Allowed</h3>
+<p>You are not allowed permission to access this page<p>

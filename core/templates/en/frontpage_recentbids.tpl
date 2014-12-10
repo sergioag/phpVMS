@@ -1,7 +1,7 @@
 <?php
 if(!$lastbids)
 {
-	echo 'No se han hecho ofertas';
+	echo 'No bids have been made';
 	return;
    
 }
@@ -20,7 +20,7 @@ foreach($lastbids as $lastbid);
 
 <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
   <tr>
-    <td><p class="style2"><?php echo $lastbid->bidid . ' - ' . $lastbid->code.$lastbid->flightnum.' - '.$lastbid->depicao.' a '.$lastbid->arricao?></a>
+    <td><p class="style2"><?php echo $lastbid->bidid . ' - ' . $lastbid->code.$lastbid->flightnum.' - '.$lastbid->depicao.' to '.$lastbid->arricao?></a>
         </p>
         <?php
 }

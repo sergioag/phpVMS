@@ -1,13 +1,13 @@
 <br /><div style="float: right;">
 <form action="<?php echo url('/finances/viewreport'); ?>" method="get">
-<strong>Seleccione Reporte: </strong>
+<strong>Select Report: </strong>
 <?php
 $years = StatsData::GetYearsSinceStart();
 $months = StatsData::GetMonthsSinceStart();
 $months = array_reverse($months, true);
 ?>
 <select name="type">
-	<option value="" <?php echo ($_GET['type']=='')?'selected="selected"':''?>>Ver Resumen</option>
+	<option value="" <?php echo ($_GET['type']=='')?'selected="selected"':''?>>View Summary</option>
 <?php
 /*
  * Get the years since the VA started
@@ -21,7 +21,7 @@ foreach($years as $yearname=>$timestamp)
 		$selected = '';
 	
 ?>
-	<option value="<?php echo 'y'.$timestamp?>" <?php echo $selected?>>Anual: <?php echo $yearname?></option>
+	<option value="<?php echo 'y'.$timestamp?>" <?php echo $selected?>>Yearly: <?php echo $yearname?></option>
 	<?php
 }
 
@@ -38,11 +38,11 @@ foreach($months as $monthname=>$timestamp)
 		$selected = '';
 		
 ?>
-	<option value="<?php echo 'm'.$timestamp?>" <?php echo $selected?>>Mensual: <?php echo $monthname?></option>
+	<option value="<?php echo 'm'.$timestamp?>" <?php echo $selected?>>Monthly: <?php echo $monthname?></option>
 <?php
 }
 ?>
 </select>
-<input type="submit" name="submit" value="Ver Reporte" />
+<input type="submit" name="submit" value="View Report" />
 </form>
 </div><br />

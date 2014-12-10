@@ -3,8 +3,8 @@
 		$redir = SITE_URL;
 		
 ?><div align="center">
-<p>Usted será redireccionado en unos segundos, o haga click debajo para ser redireccionado.</p>
-<p><a href="<?php echo $redir;?>">Haga click aquí para ser redireccionado</a></p>
+<p>You will be forwarded in a few seconds, or click below to be forwarded.</p>
+<p><a href="<?php echo $redir;?>">Click here to be redirected</a></p>
 </div>
 
 <script type="text/javascript"> 

@@ -1,7 +1,7 @@
-Estimado(a) <?php echo $firstname .' '. $lastname; ?>,
+Dear <?php echo $firstname .' '. $lastname; ?>,
 
-Su cuenta en <?php echo SITE_NAME?> ha sido creada, pero todavía no ha sido activada. Recibirá un email cuando tu cuenta sea activada por alguien de nuestro equipo.
+Your account have been made at <?php echo SITE_NAME?>, but your account has not yet been activated. You will receive an email when your registration has been activated by someone on our staff.
 
 
-¡Gracias!
-El equipo de <?php echo SITE_NAME?>
+Thanks!
+<?php echo SITE_NAME?> Staff

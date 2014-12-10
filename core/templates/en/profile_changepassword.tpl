@@ -1,19 +1,19 @@
-<h3>Cambiar Contraseña</h3>
+<h3>Change Password</h3>
 <form action="<?php echo url('/profile');?>" method="post">
 <dl>
 
-	<dt>Ingrese su nueva contraseña</dt>
+	<dt>Enter your new password</dt>
 	<dd><input type="password" id="password" name="password1" value="" /></dd>
 	
-	<dt>Repita su nueva contraseña</dt>
+	<dt>Enter your new password again</dt>
 	<dd><input type="password" name="password2" value="" /></dd>
 	
-	<dt>Ingrese su antigua contraseña</dt>
+	<dt>Enter your old password</dt>
 	<dd><input type="password" name="oldpassword" /></dd>
 	
 	<dt></dt>
 	<dd><input type="hidden" name="action" value="changepassword" />
-		<input type="submit" name="submit" value="Guardar contraseña" />
+		<input type="submit" name="submit" value="Save Password" />
 	</dd>
 </dl>
 </form>

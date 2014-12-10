@@ -1,3 +1,3 @@
-<h3>Confirmación Enviada</h3>
+<h3>Confirmation Sent</h3>
 
-<p>Gracias por registrarse en <?php echo SITE_NAME; ?>, se le notificará via email sobre el estado de su registro.</p>
+<p>Thanks for registering for <?php echo SITE_NAME; ?>, you will be notified via email of your registration status.</p>
