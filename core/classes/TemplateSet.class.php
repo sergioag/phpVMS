@@ -207,10 +207,10 @@ class TemplateSet
 
 		$tpl_path = $this->getTemplatePath($tpl_name, Lang::$language, $checkskin, $force_base);
 		if(!$tpl_path) {
-			$tpl_path = $this->getTemplatePath($tpl_name, Config::Get('SITE_LANGUAGE'), $checkskin, $force_base);
+			$tpl_path = $this->getTemplatePath($tpl_name, Config::Get('SITE_BASE_LANGUAGE'), $checkskin, $force_base);
 			if(!$tpl_path)
 			{
-				trigger_error('The template file "'.$tpl_path.'" doesn\'t exist');
+				trigger_error('The template file "'.$tpl_name.'" doesn\'t exist');
 				return;
 			}
 		}
