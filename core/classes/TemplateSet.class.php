@@ -89,16 +89,6 @@ class TemplateSet
 	 */
 	public function set($name, $value)
 	{
-		// See if they're setting the template as a file
-		//	Check if the file exists 
-		if(is_string($value) && strstr($value, $this->tpl_ext))
-		{
-			if(file_exists($this->template_path . DS . $value))
-			{
-				$value = $this->GetTemplate($value, true);
-			}
-		}
-		
 		$this->vars[$name] = $value;
 	}
 	
