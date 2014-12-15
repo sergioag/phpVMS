@@ -10,6 +10,7 @@
 	<th>Rank</th>
 	<th>Flights</th>
 	<th>Hours</th>
+	<th>VATSIM PID</th>
 </tr>
 <?php
 		foreach($pilots['pilots'] as $pilot)
@@ -42,6 +43,7 @@
 	<td><img src="<?php echo $pilot->rankimage?>" alt="<?php echo $pilot->rank;?>" /></td>
 	<td><?php echo $pilot->totalflights?></td>
 	<td><?php echo Util::AddTime($pilot->totalhours, $pilot->transferhours); ?></td>
+	<td><?php echo PilotData::GetFieldValue($pilot->pilotid, 'VATSIM PID'); ?></td>
 </tr>
 <?php
 		}
