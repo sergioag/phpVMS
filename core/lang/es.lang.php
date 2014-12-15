@@ -40,11 +40,30 @@ $trans = array(
 	'password.changed'					=> 'La contraseña ha sido cambiada satisfactoriamente',
 	
 	/* Pilots Info */
+	'pilots.title'						=> 'Pilotos',
 	'pilot.deleted'						=> 'El piloto ha sido eliminado',
+	
+	/* ACARS */
+	'acars.title'						=> 'ACARS',
 	
 	/* Awards */
 	'award.exists'						=> '¡El piloto ya tiene este premio!',
 	'award.deleted'						=> '¡Premio eliminado!',
+	
+	/* Contact */
+	'contact.title'						=> 'Contacto',
+	
+	/* Downloads */
+	'downloads.title'					=> 'Descargas',
+	
+	/* Finances */
+	'finances.title'					=> 'Finanzas',
+	
+	/* Front Bids */
+	'frontbids.title'					=> 'Ofertas',
+	
+	/* Front Page */
+	'frontpage.title'					=> 'Página Principal',
 	
 	/* Groups */
 	'group.added'						=> 'El grupo %s ha sido agregado', /* %s is group name */
@@ -53,6 +72,12 @@ $trans = array(
 	'group.pilot.already.in'			=> '¡El usuario ya estaba en este grupo!',
 	'group.add.error'					=> 'Ocurrió un error agregando a este usuario al grupo',
 	'group.user.added'					=> '¡El usuario ha sido agregado al grupo!',
+	
+	/* Login */
+	'login.title'						=> 'Ingresar',
+	
+	/* Logout */
+	'logout.title'						=> 'Salir',
 	
 	/* Pages */
 	'page.add.title'					=> 'Agregar página',
@@ -63,7 +88,20 @@ $trans = array(
 	'page.error.delete'					=> '¡Ocurrió un error borrando la página!',
 	'page.deleted'						=> 'La página fue eliminada',
 	
+	/* Profile */
+	'profile.title'						=> 'Perfil',
+	
+	/* Registration */
+	'registration.title'					=> 'Registro',
+	
+	/* Route Map */
+	'routemap.title'					=> 'Mapa de la Ruta',
+	
+	/* Schedules */
+	'schedules.title'					=> 'Itinerarios',
+	
 	/* News */
+	'news.title'						=> 'Noticias',
 	'news.add.title'					=> 'Agregar Noticias',
 	'news.edit.title'					=> 'Editar Noticias',
 	'news.updated.success'				=> '¡Noticia editada correctamente!',
@@ -78,7 +116,14 @@ $trans = array(
 	'pirep.field.edit'					=> 'Editar campo de PIREP',
 	
 	/* PIREPS */
+	'pireps.title'					=> 'PIREPs',
 	'pireps.view.recent'				=> 'Reportes Recientes',
+	
+	/* XML */
+	'xml.title'					=> 'XML',
+	
+	/* kACARS Free */
+	'kacars_free.title'				=> 'kACARS Gratuito',
 	
 	
 	/*
