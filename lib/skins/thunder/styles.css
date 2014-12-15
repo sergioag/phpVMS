@@ -1,29 +1,29 @@
-body { background: url(images/mainbg.jpg) repeat-x 0 0 #fff; color: #171717; 
+body { /*background: url(images/mainbg.jpg) repeat-x 0 0 #fff;*/ color: #171717; 
 font-family: "segoe ui", tahoma, arial,helvetica,clean,sans-serif; font-size: 12px; margin: 0; padding: 0; }
 
 a { text-decoration: none; color: #0040FF; }
 
 #body { width: 970px; margin: 0 auto; padding: 0 0 0 0; background: #ffffff; font-size: 12px; border-top: none; border-bottom: none; padding-bottom: 10px; }
 
-h1 { color: #FF6633; }
+h1 { color: #6F0100; }
 
-h3 { background: url(images/h3.jpg) no-repeat left; height: 25px; font-size: 18px; padding-left: 28px; padding-bottom: 0px; margin-top: 10px; color: #FF6633; }
+h3 { background: url(images/h3.jpg) no-repeat left; height: 25px; font-size: 18px; padding-left: 28px; padding-bottom: 0px; margin-top: 10px; color: #6f0100; }
 
 hr{ margin-top: 15px; height: 1px; border: none; border-bottom: solid 1px #999; }
 
 #innerwrapper { width: 970px; background: #fff; float: right; }
 
-#topBanner { background: url(images/topbanner.jpg); width: 970px; height: 109px; }
+#topBanner { background: url(images/header.jpeg); width: 970px; height: 200px; }
 
 #topLogin { width: 370px; display: inline; float: right; padding-top: 30px; padding-right: 50px; }
 
-#topNav { font-size: 12px; width: 970px; margin: 0 auto; height: 37px; border-bottom: solid 1px #cccccc; }
+#topNav { font-size: 12px; width: 970px; margin: 0 auto; height: 37px; background-color: #6f0100; border-bottom: solid 1px #cccccc; }
 
 #topNav ul { margin: 0; padding: 0; list-style: none; margin: 0 auto; }
 
 #topNav ul li { height: 37px; float: left; padding: 0px; font: bold 12px/37px Arial, Helvetica, sans-serif; }
 
-#topNav ul li a { padding: 0 18px; height: 37px; float: left; text-decoration: none; display: block; color: #666666; font: 14px/37px Arial, Helvetica, sans-serif; }
+#topNav ul li a { padding: 0 18px; height: 37px; float: left; text-decoration: none; display: block; color: #000000; font: bold 14px/37px Arial, Helvetica, sans-serif; text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;}
 
 #bodytext { width: 950px; padding-left: 10px; padding-top: 5px; padding-right: 10px; padding-bottom: 0px; }
 
@@ -53,7 +53,7 @@ dd p { margin-top: 0px; }
 
 dd input { width: 300px; padding: 3px; margin-bottom: 3px; z-index: 500; }
 
-#footer { width: 970px; /*background: url(images/bottombg.jpg) repeat-x 0 0 #ffffff;*/ height: 148px; margin: 0 auto; padding: 10px 0 0 0; clear: both; text-align: right; border-left: none; border-right: none; }
+#footer { width: 970px; background: url(images/footer.jpeg) repeat-x 0 0 #ffffff; height: 148px; margin: 0 auto; padding: 10px 0 0 0; clear: both; text-align: left; border-left: none; border-right: none; }
 
 #footer p { padding: 10px; font-size: 10px; }
 
@@ -81,7 +81,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 .nav li { float: left; margin: 0; padding: 0; position: relative; /*background: url(images/navbg.jpg) repeat-x 0 0 #292929;*/ }
 .nav li a, .nav li a:link, .nav li a:active, .nav li a:visited { font: bold 1.22em/25px Arial, Helvetica, sans-serif; color: #959595; display: block; padding: 0 9px; text-transform: lowercase; text-decoration: none; }
 
-.nav li a:hover { background: /*#f2f2f2*/ #FAFBFF; color: #000; }
+.nav li a:hover { background: #900100; color: #000; }
 #nav-one li:hover a, #nav-one li.sfHover a { background: #ccc; color: #000; }
 #nav-one li:hover ul a, #nav-one li.sfHover ul a { background: #565656; color: #959595; }
 #nav-one li:hover ul a:hover, #nav-one li.sfHover ul a:hover { background: #ccc; color: #000; }
