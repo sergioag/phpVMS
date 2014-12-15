@@ -8,7 +8,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=7">
 <title><?php echo $page_title; ?></title>
 
-<link rel="stylesheet" media="all" type="text/css" href="<?php echo SITE_URL?>/lib/skins/crystal/styles.css" />
+<link rel="stylesheet" media="all" type="text/css" href="<?php echo SITE_URL?>/lib/skins/thunder/styles.css" />
 
 <?php 
 /* This is required, so phpVMS can output the necessary libraries it needs */
