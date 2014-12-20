@@ -57,6 +57,8 @@ dd input { width: 300px; padding: 3px; margin-bottom: 3px; z-index: 500; }
 
 #footer p { padding: 10px; font-size: 10px; }
 
+#slider_container { width: 970px; height: 450px; position: relative; margin: 0 auto; top: 0px; left: 0px; overflow: hidden; }
+
 /* Tables */
 /* tables */
 table.tablesorter { width: 100%; }
