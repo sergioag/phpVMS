@@ -96,7 +96,7 @@
 	</dd>
 		
 	<dt></dt>
-	<dd><p>Al hacer click en Registrar, esta aceptando a los <a href="<?php echo url('/pages/reglamento'); ?>">términos y condiciones</a></p></dd>
+	<dd><p>Al hacer click en Registrar, esta aceptando los <a href="<?php echo url('/pages/reglamento'); ?>" target="_new">términos y condiciones</a></p></dd>
 	<dt></dt>
 	<dd><input type="submit" name="submit" value="¡Registrar!" /></dd>
 </dl>
