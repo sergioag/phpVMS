@@ -13,6 +13,7 @@
 	<th>VATSIM PID</th>
 </tr>
 <?php
+	if(is_array($pilots['pilots'])) {
 		foreach($pilots['pilots'] as $pilot)
 		{
 			/* 
@@ -47,6 +48,14 @@
 </tr>
 <?php
 		}
+	}
+	else {
+?>
+	<tr>
+		<td colspan="6"><p align="center">¡No hay pilotos!</p></td>
+	</tr>
+<?php
+	}
 ?>
 <?php
 	}
