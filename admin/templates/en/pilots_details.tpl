@@ -113,7 +113,9 @@
 		
 		foreach($allranks as $rank)
 		{
-			echo "<option value=\"{$rank->rankid}\">{$rank->rank}</option>";
+			echo "<option value=\"{$rank->rankid}\"";
+			if($pilotinfo->rankid == $rank->rankid) echo " selected";
+			echo ">{$rank->rank}</option>";
 		}
 		echo '</select>';
 	}
