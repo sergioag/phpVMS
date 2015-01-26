@@ -102,32 +102,6 @@
 					Build your slider with anything, includes image, content, text, html, photo, picture
 				</div>-->
 			</div>
-			<div>
-				<img u="image" src="<?php echo fileurl('lib/skins/thunder/images/slider/3.jpeg');?>" />
-				<!--<img src="../img/new-site/c-phone.png" style="position: absolute; width: 445px; height: 300px; top: 100px; left: 600px; background-color: transparent;" />-->
-				<!--<div style="position: absolute; width: 480px; height: 120px; top: 30px; left: 30px; padding: 5px;
-					text-align: left; line-height: 60px; text-transform: uppercase; font-size: 50px;
-					color: #FFFFFF;">Touch Swipe Slider
-				</div>
-				<div style="position: absolute; width: 480px; height: 120px; top: 300px; left: 30px; padding: 5px;
-					text-align: left; line-height: 36px; font-size: 30px;
-					color: #FFFFFF;">
-					Build your slider with anything, includes image, content, text, html, photo, picture
-				</div>-->
-			</div>
-			<div>
-				<img u="image" src="<?php echo fileurl('lib/skins/thunder/images/slider/4.jpeg');?>" />
-				<!--<img src="../img/new-site/c-phone.png" style="position: absolute; width: 445px; height: 300px; top: 100px; left: 600px; background-color: transparent;" />-->
-				<!--<div style="position: absolute; width: 480px; height: 120px; top: 30px; left: 30px; padding: 5px;
-					text-align: left; line-height: 60px; text-transform: uppercase; font-size: 50px;
-					color: #FFFFFF;">Touch Swipe Slider
-				</div>
-				<div style="position: absolute; width: 480px; height: 120px; top: 300px; left: 30px; padding: 5px;
-					text-align: left; line-height: 36px; font-size: 30px;
-					color: #FFFFFF;">
-					Build your slider with anything, includes image, content, text, html, photo, picture
-				</div>-->
-			</div>
 		</div>
 
 		<!-- Bullet Navigator Skin Begin -->
