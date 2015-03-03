@@ -13,7 +13,7 @@ hr{ margin-top: 15px; height: 1px; border: none; border-bottom: solid 1px #999; 
 
 #innerwrapper { width: 970px; background: #fff; float: right; }
 
-#topBanner { background: url(images/header.jpeg); width: 970px; height: 100px; }
+#topBanner { background: url(images/header.jpeg); background-repeat: no-repeat; width: 970px; height: 100px; padding-bottom: 10px; }
 
 #topLogin { width: 370px; display: inline; float: right; padding-top: 30px; padding-right: 50px; }
 
